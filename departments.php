@@ -75,7 +75,7 @@
                     <div class="product-status-wrap drp-lst">
                         <h4>Departments List</h4>
                         <div class="add-product">
-                            <a href="add-department.html">Add Departments</a>
+                            <a href="add-department.php">Add Departments</a>
                         </div>
                         <div class="asset-inner">
                             <table>
