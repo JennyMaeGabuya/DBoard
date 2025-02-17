@@ -28,40 +28,19 @@
                 href="all-professors.php"
                 aria-expanded="false"><span
                   class="educate-icon educate-professor icon-wrap"></span>
-                <span class="mini-click-non">Professors</span></a>
+                <span class="mini-click-non">Employees</span></a>
               <ul class="submenu-angle" aria-expanded="false">
                 <li>
-                  <a title="All Professors" href="all-professors.php"><span class="mini-sub-pro">All Professors</span></a>
+                  <a title="All Professors" href="all-professors.php"><span class="mini-sub-pro">All Employees</span></a>
                 </li>
                 <li>
-                  <a title="Add Professor" href="add-professor.php"><span class="mini-sub-pro">Add Professor</span></a>
+                  <a title="Add Professor" href="add-professor.php"><span class="mini-sub-pro">Add Employees</span></a>
                 </li>
                 <li>
-                  <a title="Edit Professor" href="edit-professor.php"><span class="mini-sub-pro">Edit Professor</span></a>
+                  <a title="Edit Professor" href="edit-professor.php"><span class="mini-sub-pro">Edit Employees</span></a>
                 </li>
                 <li>
-                  <a title="Professor Profile" href="professor-profile.php"><span class="mini-sub-pro">Professor Profile</span></a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a
-                class="has-arrow"
-                href="all-students.php"
-                aria-expanded="false"><span class="educate-icon educate-student icon-wrap"></span>
-                <span class="mini-click-non">Students</span></a>
-              <ul class="submenu-angle" aria-expanded="false">
-                <li>
-                  <a title="All Students" href="all-students.php"><span class="mini-sub-pro">All Students</span></a>
-                </li>
-                <li>
-                  <a title="Add Students" href="add-student.php"><span class="mini-sub-pro">Add Student</span></a>
-                </li>
-                <li>
-                  <a title="Edit Students" href="edit-student.php"><span class="mini-sub-pro">Edit Student</span></a>
-                </li>
-                <li>
-                  <a title="Students Profile" href="student-profile.php"><span class="mini-sub-pro">Student Profile</span></a>
+                  <a title="Professor Profile" href="professor-profile.php"><span class="mini-sub-pro">Employees Profile</span></a>
                 </li>
               </ul>
             </li>
