@@ -198,5 +198,31 @@
         </div>
     </div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const searchInput = document.querySelector(".search-int");
+            const table = document.querySelector("table");
+            const rows = table.querySelectorAll("tr");
+
+            searchInput.addEventListener("keyup", function() {
+                const searchQuery = searchInput.value.toLowerCase();
+
+                rows.forEach(function(row, index) {
+                    if (index === 0) return; // Skip the header row
+                    const cells = row.querySelectorAll("td");
+                    let found = false;
+
+                    cells.forEach(function(cell) {
+                        if (cell.textContent.toLowerCase().includes(searchQuery)) {
+                            found = true;
+                        }
+                    });
+
+                    row.style.display = found ? "" : "none"; // Show or hide row based on search match
+                });
+            });
+        });
+    </script>
+
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>
