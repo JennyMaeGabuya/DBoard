@@ -25,22 +25,22 @@
             <li>
               <a
                 class="has-arrow"
-                href="all-professors.php"
+                href="all-employees.php"
                 aria-expanded="false"><span
                   class="educate-icon educate-professor icon-wrap"></span>
                 <span class="mini-click-non">Employees</span></a>
               <ul class="submenu-angle" aria-expanded="false">
                 <li>
-                  <a title="All Professors" href="all-professors.php"><span class="mini-sub-pro">All Employees</span></a>
+                  <a title="All Employee" href="all-employees.php"><span class="mini-sub-pro">All Employees</span></a>
                 </li>
                 <li>
-                  <a title="Add Professor" href="add-professor.php"><span class="mini-sub-pro">Add Employees</span></a>
+                  <a title="Add Employee" href="add-employee.php"><span class="mini-sub-pro">Add Employees</span></a>
                 </li>
                 <li>
-                  <a title="Edit Professor" href="edit-professor.php"><span class="mini-sub-pro">Edit Employees</span></a>
+                  <a title="Edit Employee" href="edit-employee.php"><span class="mini-sub-pro">Edit Employees</span></a>
                 </li>
                 <li>
-                  <a title="Professor Profile" href="professor-profile.php"><span class="mini-sub-pro">Employees Profile</span></a>
+                  <a title="Employee Profile" href="employee-profile.php"><span class="mini-sub-pro">Employees Profile</span></a>
                 </li>
               </ul>
             </li>
