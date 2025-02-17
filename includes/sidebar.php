@@ -28,11 +28,7 @@
                 href="all-employees.php"
                 aria-expanded="false"><span
                   class="educate-icon educate-professor icon-wrap"></span>
-<<<<<<< Updated upstream
-                <span class="mini-click-non">Employees</span></a>
-=======
                 <span class="mini-click-non">Employee</span></a>
->>>>>>> Stashed changes
               <ul class="submenu-angle" aria-expanded="false">
                 <li>
                   <a title="All Employee" href="all-employees.php"><span class="mini-sub-pro">All Employees</span></a>
