@@ -212,7 +212,7 @@
                                                       aria-expanded="false"
                                                       class="nav-link dropdown-toggle">
                                                       <img src="img/product/pro4.jpg" alt="" />
-                                                      <span class="admin-name">Prof.Anderson</span>
+                                                      <span class="admin-name">Admin</span>
                                                       <i
                                                           class="fa fa-angle-down edu-icon edu-down-arrow"></i>
                                                   </a>
@@ -224,7 +224,7 @@
                                                                   class="edu-icon edu-home-admin author-log-ic"></span>My Account</a>
                                                       </li>
                                                       <li>
-                                                          <a href="#"><span
+                                                          <a href="my-profile.php"><span
                                                                   class="edu-icon edu-user-rounded author-log-ic"></span>My Profile</a>
                                                       </li>
                                                       <li>
