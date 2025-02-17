@@ -29,6 +29,7 @@
   <link rel="stylesheet" href="css/responsive.css" />
   <script src="js/vendor/modernizr-2.8.3.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.2/css/dataTables.bootstrap5.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -81,13 +82,13 @@
                     <h4>Employees</h4>     
                             </div>
     <div class="button-container">
-        <a href="add-employee.php" class="btn btn-info btn-border btn-round btn-sm">
+        <a href="add-employee.php" class="btn btn-primary btn-border btn-round btn-sm">
             <i class="fa fa-plus"></i> Add Employee
         </a>
         <a href="" class="btn btn-success btn-border btn-round btn-sm">
             <i class="fa fa-excel"></i> export Excel
         </a>
-        <a href="add-employee.php" class="btn btn-info btn-border btn-round btn-sm">
+        <a href="add-employee.php" class="btn btn-warning btn-border btn-round btn-sm">
             <i class="fa fa-file"></i> View Employee
         </a>
         <a href="" class="btn btn-danger btn-border btn-round btn-sm">
@@ -136,11 +137,11 @@
                         <td><?php echo htmlspecialchars($birthdate); ?></td>
                         <td>
                             <div style="display: flex;">
-                                <a href="studentdetails.php?studid=<?php echo $id; ?>" class="btn btn-sm btn-primary" title="View">
-                                    <i class="fa fa-file"></i> View
+                                <a href="employeedetails.php?id=<?php echo $id; ?>"  class="btn btn-info" title="View">
+                                    <i class="fa fa-pencil-square-o"></i> 
                                 </a>
-                                <a href="studentdetails.php?studid=<?php echo $id; ?>" class="btn btn-sm btn-danger" title="View">
-                                    <i class="fa fa-trash"></i> Delete
+                                <a href="employeedetails.php?id=<?php echo $id; ?>" class="btn btn-danger" title="Delete">
+                                    <i class="fa fa-trash-o"></i> 
                                 </a>
                           
                             </div>
