@@ -126,29 +126,11 @@
                 </li>
               </ul>
             </li>
-            <li id="removable">
-              <a class="has-arrow" href="#" aria-expanded="false"><span class="educate-icon educate-pages icon-wrap"></span>
-                <span class="mini-click-non">Pages</span></a>
-              <ul class="submenu-angle page-mini-nb-dp" aria-expanded="false">
-                <li>
-                  <a title="Login" href="login.php"><span class="mini-sub-pro">Login</span></a>
-                </li>
-                <li>
-                  <a title="Register" href="register.php"><span class="mini-sub-pro">Register</span></a>
-                </li>
-                <li>
-                  <a title="Lock" href="lock.php"><span class="mini-sub-pro">Lock</span></a>
-                </li>
-                <li>
-                  <a title="Password Recovery" href="password-recovery.php"><span class="mini-sub-pro">Password Recovery</span></a>
-                </li>
-                <li>
-                  <a title="404 Page" href="404.php"><span class="mini-sub-pro">404 Page</span></a>
-                </li>
-                <li>
-                  <a title="500 Page" href="500.php"><span class="mini-sub-pro">500 Page</span></a>
-                </li>
-              </ul>
+            <li>
+              <a title="Landing Page" href="./logout.php" aria-expanded="false"><span
+                  class="educate-icon educate-pages icon-wrap sub-icon-mg"
+                  aria-hidden="true"></span>
+                <span class="mini-click-non">Logout</span></a>
             </li>
           </ul>
         </nav>

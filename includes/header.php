@@ -269,7 +269,7 @@
                                                                   class="edu-icon edu-settings author-log-ic"></span>Settings</a>
                                                       </li>
                                                       <li>
-                                                          <a href="#"><span
+                                                          <a href="./logout.php"><span
                                                                   class="edu-icon edu-locked author-log-ic"></span>Log Out</a>
                                                       </li>
                                                   </ul>
