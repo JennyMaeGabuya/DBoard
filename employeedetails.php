@@ -144,7 +144,7 @@ if (isset($_GET['employee_no'])) {
 										</div>
 									</div>
 								</div>
-
+<!-- HINDI PA FINAL, WALA PANG FORMAT-->
 								<div class="card-body m-5" id="printThis">
                                 <div class="d-flex justify-content-between align-items-center">
     <div class="text-center">
@@ -201,8 +201,7 @@ if (isset($_GET['employee_no'])) {
         <td colspan ="" ><?php echo $dob; ?></td>
        <th >Blood Type</th>
         <td colspan ="" ><?php echo $blood_type; ?></td>
-       
-    </tr>
+           </tr>
 
  
 
