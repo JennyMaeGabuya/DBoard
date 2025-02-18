@@ -1,3 +1,13 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+  header('location:../index.php');
+  exit();
+}
+
+include "dbcon.php";
+?>
+
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 

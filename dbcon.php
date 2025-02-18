@@ -1,9 +1,13 @@
 <?php
-$con = mysqli_connect("localhost", "root", "", "hr_records");
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "hr_records";
+
+$con = new mysqli($servername, $username, $password, $database);
 
 // Check connection
-if (mysqli_connect_errno()) 
-  {
-  echo "Failed to connect to MySQL: " . mysqli_connect_error();
-  }
+if ($con->connect_error) {
+    die("Connection failed: " . $con->connect_error);
+}
 ?>
