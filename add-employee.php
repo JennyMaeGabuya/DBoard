@@ -82,8 +82,8 @@
               <li class="active">
                 <a href="#description">Basic Information</a>
               </li>
-              <li><a href="#reviews"> Account Information</a></li>
-              <li><a href="#INFORMATION">Social Information</a></li>
+              <li><a href="#reviews"> Address Information</a></li>
+              <li><a href="#INFORMATION">Account Information</a></li>
             </ul>
             <div id="myTabContent" class="tab-content custom-product-edit">
               <div
