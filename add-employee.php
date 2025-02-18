@@ -72,7 +72,7 @@ include "dbcon.php";
                     <a href="#">Home</a>
                     <span class="bread-slash">/</span>
                   </li>
-                  <li><span class="bread-blod">Add Professor</span></li>
+                  <li><span class="bread-blod">Add New Employee</span></li>
                 </ul>
               </div>
             </div>
@@ -92,15 +92,15 @@ include "dbcon.php";
               <li class="active">
                 <a href="#description">Basic Information</a>
               </li>
-              <li><a href="#reviews"> Address Information</a></li>
-              <li><a href="#INFORMATION">Account Information</a></li>
+              <li><a href="#reviews"> Service Records</a></li>
+              <li><a href="#INFORMATION">Compensation</a></li>
             </ul>
             <div id="myTabContent" class="tab-content custom-product-edit">
               <div
                 class="product-tab-list tab-pane fade active in"
                 id="description">
                 <div class="row">
-                  <form action="" method="POST" enctype="multipart/form-data">
+                  <form action="" method="POST" enctype="multipart/form-data"  id="demo1-upload">
                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="review-content-section">
                       <div id="dropzone1" class="pro-ad">
@@ -249,37 +249,142 @@ include "dbcon.php";
                             action="#"
                             class="acount-infor">
                             <div class="devit-card-custom">
+                             
+                            <div class="row">
+                            <div
+                              class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                              
                               <div class="form-group">
                                 <input
+                                  name="firstname"
                                   type="text"
                                   class="form-control"
-                                  name="email"
-                                  placeholder="Email" />
+                                  placeholder="GSIS number" />
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="phoneno"
-                                  type="number"
+                                  name="middlename"
+                                  type="text"
                                   class="form-control"
-                                  placeholder="Phone" />
+                                  placeholder="PAGIBIG number" />
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="password"
-                                  type="password"
+                                  name="middlename"
+                                  type="text"
                                   class="form-control"
-                                  placeholder="Password" />
+                                  placeholder="Date started" />
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="confarmpassword"
-                                  type="password"
+                                  name="middlename"
+                                  type="text"
                                   class="form-control"
-                                  placeholder="Confirm Password" />
+                                  placeholder="Salary" />
                               </div>
-                              <a
-                                href="#"
-                                class="btn btn-primary waves-effect waves-light">Submit</a>
+                              <div class="form-group">
+                                <input
+                                  name="middlename"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Absent without Pay" />
+                              </div>
+                            
+                            </div>
+                            <div
+                              class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                              
+                              
+                             
+                              <div class="form-group">
+                                <input
+                                  name="laststname"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="PHILHEALTH number" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="name_extension"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="SSS number" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="middlename"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Date Ended" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="middlename"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Station Place" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="middlename"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Date separated" />
+                              </div>
+                            </div>
+                            <div
+                              class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                              
+                              
+                              <div class="form-group">
+                                <input
+                                  name="email_address"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="TIN number" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="email_address"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Designation" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="middlename"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Status" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="middlename"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="branch" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="middlename"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Cause of separation" />
+                              </div>
+                            </div>
+                          </div>
+                              
+                          <div class="row">
+                            <div class="col-lg-12">
+                              <div class="payment-adress">
+                                <button
+                                  type="submit"
+                                  class="btn btn-primary waves-effect waves-light">
+                                  Submit
+                                </button>
+                              </div>
+                            </div>
+                          </div>
                             </div>
                           </form>
                         </div>
