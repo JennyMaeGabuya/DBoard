@@ -174,7 +174,7 @@ include "dbcon.php";
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="department"
+                                  name="pob"
                                   type="text"
                                   class="form-control"
                                   placeholder="Place of Birth" />
@@ -208,14 +208,14 @@ include "dbcon.php";
                               </div>
                                <div class="form-group">
                                 <input
-                                  name="website"
+                                  name="blood_type"
                                   type="text"
                                   class="form-control"
                                   placeholder="Blood Type" />
                               </div>
                               <div class="form-group">
   <label for="formFile" class="form-label">Upload profile picture</label>
-  <input class="form-control" type="file" id="formFile">
+  <input class="form-control" type="file" id="formFile"  name="image">
 </div>
                             </div>
                           </div>
@@ -256,35 +256,35 @@ include "dbcon.php";
                               
                               <div class="form-group">
                                 <input
-                                  name="firstname"
+                                  name="gsis"
                                   type="text"
                                   class="form-control"
                                   placeholder="GSIS number" />
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="middlename"
+                                  name="pag-ibig"
                                   type="text"
                                   class="form-control"
                                   placeholder="PAGIBIG number" />
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="middlename"
+                                  name="date_started"
                                   type="text"
                                   class="form-control"
                                   placeholder="Date started" />
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="middlename"
+                                  name="salary"
                                   type="text"
                                   class="form-control"
                                   placeholder="Salary" />
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="middlename"
+                                  name="abs_wo_pay"
                                   type="text"
                                   class="form-control"
                                   placeholder="Absent without Pay" />
@@ -298,35 +298,35 @@ include "dbcon.php";
                              
                               <div class="form-group">
                                 <input
-                                  name="laststname"
+                                  name="philhealth"
                                   type="text"
                                   class="form-control"
                                   placeholder="PHILHEALTH number" />
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="name_extension"
+                                  name="sss"
                                   type="text"
                                   class="form-control"
                                   placeholder="SSS number" />
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="middlename"
+                                  name="date_ended"
                                   type="text"
                                   class="form-control"
                                   placeholder="Date Ended" />
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="middlename"
+                                  name="station_place"
                                   type="text"
                                   class="form-control"
                                   placeholder="Station Place" />
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="middlename"
+                                  name="date_separated"
                                   type="text"
                                   class="form-control"
                                   placeholder="Date separated" />
@@ -338,35 +338,35 @@ include "dbcon.php";
                               
                               <div class="form-group">
                                 <input
-                                  name="email_address"
+                                  name="tin"
                                   type="text"
                                   class="form-control"
                                   placeholder="TIN number" />
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="email_address"
+                                  name="designation"
                                   type="text"
                                   class="form-control"
                                   placeholder="Designation" />
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="middlename"
+                                  name="status"
                                   type="text"
                                   class="form-control"
                                   placeholder="Status" />
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="middlename"
+                                  name="branch"
                                   type="text"
                                   class="form-control"
                                   placeholder="branch" />
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="middlename"
+                                  name="separation"
                                   type="text"
                                   class="form-control"
                                   placeholder="Cause of separation" />
@@ -378,7 +378,7 @@ include "dbcon.php";
                             <div class="col-lg-12">
                               <div class="payment-adress">
                                 <button
-                                  type="submit"
+                                  type="submit" name="servicerecordbtn"
                                   class="btn btn-primary waves-effect waves-light">
                                   Submit
                                 </button>
@@ -398,39 +398,117 @@ include "dbcon.php";
                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="review-content-section">
                       <div class="row">
-                        <div class="col-lg-12">
-                          <div class="devit-card-custom">
-                            <div class="form-group">
-                              <input
-                                type="url"
-                                class="form-control"
-                                placeholder="Facebook URL" />
+                      <form
+                            id="acount-infor"
+                            action="#"
+                            class="acount-infor">
+                            <div class="devit-card-custom">
+                             
+                            <div class="row">
+                            <div
+                              class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                              
+                              <div class="form-group">
+                                <input
+                                  name="salary"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Salary" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="pera"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Pera" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="rt_allowance"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="RT Allowance" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="allowance"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Allowance" />
+                              </div>
+                             
+                            
                             </div>
-                            <div class="form-group">
-                              <input
-                                type="url"
-                                class="form-control"
-                                placeholder="Twitter URL" />
+                            <div
+                              class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                              
+                              
+                             
+                              <div class="form-group">
+                                <input
+                                  name="clothing"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Clothing" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="midyear"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="mid year" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="yearend"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="year end bonus" />
+                              </div>
+                            
                             </div>
-                            <div class="form-group">
-                              <input
-                                type="url"
-                                class="form-control"
-                                placeholder="Google Plus" />
+                            <div
+                              class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                              
+                              
+                              <div class="form-group">
+                                <input
+                                  name="cash_gift"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Cash gift" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="incentive"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Incentive" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="issued_date"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Issued date" />
+                              </div>
+                              
                             </div>
-                            <div class="form-group">
-                              <input
-                                type="url"
-                                class="form-control"
-                                placeholder="Linkedin URL" />
-                            </div>
-                            <button
-                              type="submit"
-                              class="btn btn-primary waves-effect waves-light">
-                              Submit
-                            </button>
                           </div>
-                        </div>
+                              
+                          <div class="row">
+                            <div class="col-lg-12">
+                              <div class="payment-adress">
+                                <button
+                                  type="submit" name="compensationbtn"
+                                  class="btn btn-primary waves-effect waves-light">
+                                  Submit
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                            </div>
+                          </form>
                       </div>
                     </div>
                   </div>
