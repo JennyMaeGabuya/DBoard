@@ -158,7 +158,7 @@ include "dbcon.php";
                                             <td><?php echo htmlspecialchars($email_address); ?></td>
                                             <td>
                                                 <div style="display: flex;">
-                                                    <a href="employeedetails.php?employee_no=<?php echo $id; ?>"
+                                                    <a href="employeedetails.php?employee_no=<?php echo $employee_no; ?>"
                                                         class="btn btn-info" title="View" style="margin-right: 8px;">
                                                         <i class="fa fa-pencil-square-o"></i>
                                                     </a>
