@@ -72,7 +72,7 @@ include "dbcon.php";
                     <a href="#">Home</a>
                     <span class="bread-slash">/</span>
                   </li>
-                  <li><span class="bread-blod">Add New Employee</span></li>
+                  <li><span class="bread-blod">Add Professor</span></li>
                 </ul>
               </div>
             </div>
@@ -92,8 +92,8 @@ include "dbcon.php";
               <li class="active">
                 <a href="#description">Basic Information</a>
               </li>
-              <li><a href="#reviews"> Service Records</a></li>
-              <li><a href="#INFORMATION">Compensation</a></li>
+              <li><a href="#reviews"> Address Information</a></li>
+              <li><a href="#INFORMATION">Account Information</a></li>
             </ul>
             <div id="myTabContent" class="tab-content custom-product-edit">
               <div

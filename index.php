@@ -32,7 +32,7 @@ include('dbcon.php');
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
   <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -49,7 +49,7 @@ include('dbcon.php');
           <div class="panel-body">
             <form action="login.php" method="POST" id="loginForm">
               <div class="form-group">
-                <label class="control-label" for="username">Username/Email</label>
+                <label class="control-label" for="username">Username</label>
                 <input
                   type="text"
                   placeholder="example@gmail.com"
@@ -59,7 +59,7 @@ include('dbcon.php');
                   name="username"
                   id="username"
                   class="form-control" />
-                <span class="help-block small">Enter your username or email</span>
+                <span class="help-block small">Your unique username to app</span>
               </div>
 
               <div class="form-group" style="position: relative;">
@@ -67,7 +67,7 @@ include('dbcon.php');
                 <input
                   type="password"
                   title="Please enter your password"
-                  placeholder="************"
+                  placeholder="******"
                   required=""
                   name="password"
                   id="password"
@@ -82,16 +82,21 @@ include('dbcon.php');
 
               <!-- Password Toggle Script -->
               <script>
-                const togglePassword = document.getElementById("togglePassword");
-                const passwordField = document.getElementById("password");
+                document.addEventListener("DOMContentLoaded", function() {
+                  const togglePassword = document.getElementById("togglePassword");
+                  const passwordField = document.getElementById("password");
 
-                togglePassword.addEventListener("click", function() {
-                  // Toggle the type attribute
-                  const type = passwordField.type === "password" ? "text" : "password";
-                  passwordField.type = type;
-
-                  // Toggle the icon between eye and eye-slash
-                  this.classList.toggle("fa-eye-slash");
+                  togglePassword.addEventListener("click", function() {
+                    if (passwordField.type === "password") {
+                      passwordField.type = "text";
+                      togglePassword.classList.remove("fa-eye");
+                      togglePassword.classList.add("fa-eye-slash");
+                    } else {
+                      passwordField.type = "password";
+                      togglePassword.classList.remove("fa-eye-slash");
+                      togglePassword.classList.add("fa-eye");
+                    }
+                  });
                 });
               </script>
 
@@ -104,9 +109,29 @@ include('dbcon.php');
                 </p>
               </div>
 
-              <button class="btn btn-success btn-block loginbtn" onclick="window.location.href='dashboard.php'">
+              <button id="loginButton" class="btn btn-success btn-block loginbtn" disabled>
                 Login
               </button>
+
+              <!-- Login Button Disable Script -->
+              <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                  const usernameField = document.getElementById("username");
+                  const passwordField = document.getElementById("password");
+                  const loginButton = document.getElementById("loginButton");
+
+                  function toggleButtonState() {
+                    if (usernameField.value.trim() !== "" && passwordField.value.trim() !== "") {
+                      loginButton.removeAttribute("disabled");
+                    } else {
+                      loginButton.setAttribute("disabled", "true");
+                    }
+                  }
+
+                  usernameField.addEventListener("input", toggleButtonState);
+                  passwordField.addEventListener("input", toggleButtonState);
+                });
+              </script>
 
             </form>
           </div>
