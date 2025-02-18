@@ -38,6 +38,7 @@ include "dbcon.php";
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
   <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+  
 </head>
 
 <body>
@@ -87,7 +88,7 @@ include "dbcon.php";
               <h5>Employee</h5>
               <h2>
                 <span class="counter">500</span>
-                <span class="tuition-fees">Tuition Fees</span>
+                <span class="tuition-fees">.....</span>
               </h2>
               <div class="progress m-b-0">
                 <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="0"
