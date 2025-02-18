@@ -3,7 +3,7 @@
     <nav id="sidebar" class="">
       <div class="sidebar-header">
         <a href="./dashboard.php">
-          <img class="main-logo" src="img/logo/header-logo.png" alt="" style="width: 200px; height: auto; margin-top: 10px; margin-bottom: 10px;" />
+          <img class="main-logo" src="img/logo/header-logo.png" alt="" style="width: 200px; height: auto; margin-top: 15px; margin-bottom: 30px;" />
         </a>
         <strong><a href="./dashboard.php"><img src="img/logo/sidebar-logo.png" alt="" style="width: 60px; height: auto;" /></a></strong>
       </div>
