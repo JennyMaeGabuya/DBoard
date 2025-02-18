@@ -100,23 +100,71 @@ include "dbcon.php";
                 class="product-tab-list tab-pane fade active in"
                 id="description">
                 <div class="row">
+                  <form action="" method="POST" enctype="multipart/form-data">
                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="review-content-section">
                       <div id="dropzone1" class="pro-ad">
-                        <form
-                          action="/upload"
-                          class="dropzone dropzone-custom needsclick add-professors"
-                          id="demo1-upload">
+                        
                           <div class="row">
                             <div
                               class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                              
                               <div class="form-group">
                                 <input
                                   name="firstname"
                                   type="text"
                                   class="form-control"
-                                  placeholder="Full Name" />
+                                  placeholder="Firstname" />
                               </div>
+                              <div class="form-group">
+                                <input
+                                  name="middlename"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Middlename" />
+                              </div>
+                             
+                              <div class="form-group">
+                                <input
+                                  name="laststname"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Lastname" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="name_extension"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Extension Name" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="email_address"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Email Address" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="mobileno"
+                                  type="tel"
+                                  class="form-control"
+                                  placeholder="Mobile no." />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="dob"
+                                  id="finish"
+                                  type="date"
+                                  class="form-control"
+                                  placeholder="Date of Birth" />
+                              </div>
+   
+                            
+                            </div>
+                            <div
+                              class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                               <div class="form-group">
                                 <input
                                   name="address"
@@ -126,62 +174,25 @@ include "dbcon.php";
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="mobileno"
-                                  type="number"
-                                  class="form-control"
-                                  placeholder="Mobile no." />
-                              </div>
-                              <div class="form-group">
-                                <input
-                                  name="finish"
-                                  id="finish"
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Date of Birth" />
-                              </div>
-                              <div class="form-group">
-                                <input
-                                  name="postcode"
-                                  id="postcode"
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Postcode" />
-                              </div>
-                              <div class="form-group alert-up-pd">
-                                <div
-                                  class="dz-message needsclick download-custom">
-                                  <i
-                                    class="fa fa-download edudropnone"
-                                    aria-hidden="true"></i>
-                                  <h2 class="edudropnone">
-                                    Drop image here or click to upload.
-                                  </h2>
-                                  <p class="edudropnone">
-                                    <span class="note needsclick">(This is just a demo dropzone.
-                                      Selected image is
-                                      <strong>not</strong> actually
-                                      uploaded.)</span>
-                                  </p>
-                                  <input
-                                    name="imageico"
-                                    class="hd-pro-img"
-                                    type="text" />
-                                </div>
-                              </div>
-                            </div>
-                            <div
-                              class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                              <div class="form-group">
-                                <input
                                   name="department"
                                   type="text"
                                   class="form-control"
-                                  placeholder="Department" />
+                                  placeholder="Place of Birth" />
                               </div>
-                              <div class="form-group res-mg-t-15">
-                                <textarea
-                                  name="description"
-                                  placeholder="Description"></textarea>
+                             
+                              <div class="form-group">
+                                <select name="gender" class="form-control">
+                                  <option
+                                    value="none"
+                                    selected=""
+                                    disabled="">
+                                    Civil Status
+                                  </option>
+                                  <option value="Single">Single</option>
+                                  <option value="Married">Married</option>
+                                  <option value="Widowed">Widowed</option>
+                                  <option value="Separated">Separated</option>
+                                </select>
                               </div>
                               <div class="form-group">
                                 <select name="gender" class="form-control">
@@ -189,66 +200,23 @@ include "dbcon.php";
                                     value="none"
                                     selected=""
                                     disabled="">
-                                    Select Gender
+                                    Sex
                                   </option>
-                                  <option value="0">Male</option>
-                                  <option value="1">Female</option>
+                                  <option value="Male">Male</option>
+                                  <option value="Female">Female</option>
                                 </select>
                               </div>
-                              <div class="form-group">
-                                <select name="country" class="form-control">
-                                  <option
-                                    value="none"
-                                    selected=""
-                                    disabled="">
-                                    Select country
-                                  </option>
-                                  <option value="0">India</option>
-                                  <option value="1">Pakistan</option>
-                                  <option value="2">Amerika</option>
-                                  <option value="3">China</option>
-                                  <option value="4">Dubai</option>
-                                  <option value="5">Nepal</option>
-                                </select>
-                              </div>
-                              <div class="form-group">
-                                <select name="state" class="form-control">
-                                  <option
-                                    value="none"
-                                    selected=""
-                                    disabled="">
-                                    Select state
-                                  </option>
-                                  <option value="0">Gujarat</option>
-                                  <option value="1">Maharastra</option>
-                                  <option value="2">Rajastan</option>
-                                  <option value="3">Maharastra</option>
-                                  <option value="4">Rajastan</option>
-                                  <option value="5">Gujarat</option>
-                                </select>
-                              </div>
-                              <div class="form-group">
-                                <select name="city" class="form-control">
-                                  <option
-                                    value="none"
-                                    selected=""
-                                    disabled="">
-                                    Select city
-                                  </option>
-                                  <option value="0">Surat</option>
-                                  <option value="1">Baroda</option>
-                                  <option value="2">Navsari</option>
-                                  <option value="3">Baroda</option>
-                                  <option value="4">Surat</option>
-                                </select>
-                              </div>
-                              <div class="form-group">
+                               <div class="form-group">
                                 <input
                                   name="website"
                                   type="text"
                                   class="form-control"
-                                  placeholder="Website URL" />
+                                  placeholder="Blood Type" />
                               </div>
+                              <div class="form-group">
+  <label for="formFile" class="form-label">Upload profile picture</label>
+  <input class="form-control" type="file" id="formFile">
+</div>
                             </div>
                           </div>
                           <div class="row">
@@ -262,10 +230,11 @@ include "dbcon.php";
                               </div>
                             </div>
                           </div>
-                        </form>
+                     
                       </div>
                     </div>
                   </div>
+                  </form>
                 </div>
               </div>
               <div class="product-tab-list tab-pane fade" id="reviews">
