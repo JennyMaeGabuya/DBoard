@@ -1,3 +1,13 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+  header('location:../index.php');
+  exit();
+}
+
+include "dbcon.php";
+?>
+
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 
@@ -104,25 +114,32 @@
                     <th scope="col">No</th>
                          <th scope="col">Profile</th>
                         <th scope="col">Employee Name</th>
-                        <th scope="col">Department</th>
+                        <th scope="col">Address</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Gender</th>
+                        <th scope="col">Sex</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    $query = "SELECT * from service_records";
+                    $query = "SELECT * from employee";
                     $view_data = mysqli_query($con, $query);
                     $count = 1;
 
                     while ($row = mysqli_fetch_assoc($view_data)) {
-                        $id = $row['id'];
-                        $name = $row['name'];
-                        $birthdate = $row['birthdate'];
-                        $status = $row['status'];
-                        $department = $row['station_place'];
-                        $imagePath = $row['picture'];
+                        $employee_no = $row['employee_no'];
+                        $firstname = $row['firstname'];
+                        $middlename = $row['middlename'];
+                        $lastname = $row['lastname'];
+                        $name_extension = $row['name_extension'];
+                        $dob = $row['dob'];
+                        $pob = $row['pob'];
+                        $sex = $row['sex'];
+                        $civil_status = $row['civil_status'];
+                        $address = $row['address'];
+                        $mobile_no = $row['mobile_no'];
+                        $email_address = $row['email_address'];
+                        $imagePath = $row['image'];
                         $imageUrl = empty($imagePath) ? 'img/logo.png' : '../applicants/assets/uploads/applicant_profile/' . $imagePath;
                     ?>
                     <tr>
@@ -131,16 +148,16 @@
                         <td>
                             <img src="<?php echo htmlspecialchars($imageUrl); ?>" alt=""  style="height: 50px; width: 50px;">
                         </td>
-                        <td><?php echo htmlspecialchars($name); ?></td>
-                        <td><?php echo htmlspecialchars($department); ?></td>
-                        <td><?php echo htmlspecialchars($status); ?></td>
-                        <td><?php echo htmlspecialchars($birthdate); ?></td>
+                        <td><?php echo htmlspecialchars($lastname. ' ,'. $firstname. ' '. $middlename. ' '. $name_extension ); ?></td>
+                        <td><?php echo htmlspecialchars($address); ?></td>
+                        <td><?php echo htmlspecialchars($civil_status); ?></td>
+                        <td><?php echo htmlspecialchars($email_address); ?></td>
                         <td>
                             <div style="display: flex;">
-                                <a href="employeedetails.php?id=<?php echo $id; ?>"  class="btn btn-info" title="View">
+                                <a href="employeedetails.php?employee_no=<?php echo $id; ?>"  class="btn btn-info" title="View">
                                     <i class="fa fa-pencil-square-o"></i> 
                                 </a>
-                                <a href="employeedetails.php?id=<?php echo $id; ?>" class="btn btn-danger" title="Delete">
+                                <a href="employeedetails.php?employee_no=<?php echo $id; ?>" class="btn btn-danger" title="Delete">
                                     <i class="fa fa-trash-o"></i> 
                                 </a>
                           
