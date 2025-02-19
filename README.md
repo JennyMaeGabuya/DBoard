@@ -51,6 +51,7 @@ We believe we have covered everything you need to set up an All kind of website.
 - JSTREE
 - LOBIBOX
 - SUMMERNOTE
+  
 
 # Other resources:
 
