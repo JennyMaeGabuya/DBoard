@@ -67,7 +67,7 @@ include "dbcon.php";
                                 <ul class="breadcome-menu">
                                     <li><a href="#">Home</a> <span class="bread-slash">/</span>
                                     </li>
-                                    <li><span class="bread-blod">Departments</span>
+                                    <li><span class="bread-blod">Organization</span>
                                     </li>
                                 </ul>
                             </div>
@@ -83,9 +83,9 @@ include "dbcon.php";
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="product-status-wrap drp-lst">
-                        <h4>Departments List</h4>
+                        <h4>Human Resource Management Office </h4>
                         <div class="add-product">
-                            <a href="add-department.php">Add Departments</a>
+                            <a href="add-member.php">Add Member</a>
                         </div>
                         <div class="asset-inner">
                             <table>

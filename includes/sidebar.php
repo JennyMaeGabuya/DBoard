@@ -22,6 +22,25 @@
                   aria-hidden="true"></span>
                 <span class="mini-click-non">Event</span></a>
             </li>
+             <li>
+              <a
+                class="has-arrow"
+                href="all-courses.php"
+                aria-expanded="false"><span
+                  class="educate-icon educate-department icon-wrap"></span>
+                <span class="mini-click-non">Organization</span></a>
+              <ul class="submenu-angle" aria-expanded="false">
+                <li>
+                  <a title="Organization " href="organization.php"><span class="mini-sub-pro">Member</span></a>
+                </li>
+                <li>
+                  <a title="Add Members" href="add-member.php"><span class="mini-sub-pro">Add Member</span></a>
+                </li>
+                <li>
+                  <a title="Edit Members" href="edit-member.php"><span class="mini-sub-pro">Edit Member</span></a>
+                </li>
+              </ul>
+            </li>
             <li>
               <a
                 class="has-arrow"
@@ -83,25 +102,6 @@
                 </li>
                 <li>
                   <a title="Edit Library" href="edit-library-assets.php"><span class="mini-sub-pro">Edit Library Asset</span></a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a
-                class="has-arrow"
-                href="all-courses.php"
-                aria-expanded="false"><span
-                  class="educate-icon educate-department icon-wrap"></span>
-                <span class="mini-click-non">Departments</span></a>
-              <ul class="submenu-angle" aria-expanded="false">
-                <li>
-                  <a title="Departments List" href="departments.php"><span class="mini-sub-pro">Departments List</span></a>
-                </li>
-                <li>
-                  <a title="Add Departments" href="add-department.php"><span class="mini-sub-pro">Add Departments</span></a>
-                </li>
-                <li>
-                  <a title="Edit Departments" href="edit-department.php"><span class="mini-sub-pro">Edit Departments</span></a>
                 </li>
               </ul>
             </li>

@@ -38,53 +38,6 @@ include "dbcon.php";
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
   <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-  <style>
-  body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa; /* Light gray background */
-            color: #343a40; /* Dark gray text */
-            margin: 0;
-            padding: 0;
-        }
-
-        .product-payment-inner-st {
-            background-color: #fff; /* White background for the form */
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-        }
-
-        .tab-review-design {
-            margin-bottom: 20px;
-        }
-
-        .nav-tabs .nav-link {
-            background-color: #e9ecef; /* Light gray for tabs */
-            color: #495057; /* Gray text for tabs */
-            border: 1px solid #dee2e6; /* Lighter border */
-            border-radius: 0; /* Remove rounded corners */
-        }
-
-        .nav-tabs .nav-link.active {
-            background-color: #007bff; /* Blue for active tab */
-            color: #fff; /* White text for active tab */
-            border-color: #007bff;
-        }
-
-        .form-control {
-            margin-bottom: 15px;
-        }
-
-        .btn-primary {
-            background-color: #007bff; /* Blue button */
-            border-color: #007bff;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3; /* Darker blue on hover */
-            border-color: #0056b3;
-        }  
-</style>
 </head>
 
 <body>
@@ -275,7 +228,7 @@ include "dbcon.php";
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="dob "
+                                  name="dob"
                                   id="finish"
                                   type="date"
                                   class="form-control"
@@ -344,9 +297,9 @@ include "dbcon.php";
                             <div class="col-lg-12">
                               <div class="payment-adress">
                                 <button
-                                  type="edit" href="edit-profile.php"
+                                  type="submit"
                                   class="btn btn-primary waves-effect waves-light">
-                                  Edit
+                                  Submit
                                 </button>
                               </div>
                             </div>
@@ -499,9 +452,9 @@ include "dbcon.php";
                             <div class="col-lg-12">
                               <div class="payment-adress">
                                 <button
-                                  type="edit" href="edit-profile.php" name="servicerecordbtn"
+                                  type="submit" name="servicerecordbtn"
                                   class="btn btn-primary waves-effect waves-light">
-                                  Edit
+                                  Submit
                                 </button>
                               </div>
                             </div>
@@ -621,9 +574,9 @@ include "dbcon.php";
                             <div class="col-lg-12">
                               <div class="payment-adress">
                                 <button
-                                  type="edit" href="edit-profile.php" name="compensationbtn"
+                                  type="submit" name="compensationbtn"
                                   class="btn btn-primary waves-effect waves-light">
-                                  Edit
+                                  Submit
                                 </button>
                               </div>
                             </div>
