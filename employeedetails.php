@@ -101,19 +101,16 @@ if (isset($_GET['employee_no'])) {
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="breadcome-list single-page-breadcome">
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="breadcome-heading">
-                                    <form role="search" class="sr-input-func">
-                                        <input type="text" placeholder="Search..." class="search-int form-control">
-                                        <a href="#"><i class="fa fa-search"></i></a>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <ul class="breadcome-menu">
-                                    <li><a href="#">Home</a> <span class="bread-slash">/</span>
-                                    </li>
-                                    <li><span class="bread-blod">Employees</span>
+                            <div class="col-lg-12">
+                                <ul class="breadcome-menu" style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
+                                    <li>
+                                        <a href="dashboard.php">
+                                            <i class="fa fa-home"></i> Home
+                                        </a>
+                                        <span class="bread-slash">/</span>
+                                        <a href="all-employees.php">Employees</a>
+                                        <span class="bread-slash">/</span>
+                                        <span class="bread-blod">View Report</span>
                                     </li>
                                 </ul>
                             </div>
@@ -123,7 +120,7 @@ if (isset($_GET['employee_no'])) {
             </div>
         </div>
     </div>
-    </div>
+
     <div class="product-status mg-b-15">
         <div class="container-fluid">
             <div class="row">
@@ -144,6 +141,7 @@ if (isset($_GET['employee_no'])) {
                                     </div>
                                 </div>
                             </div>
+
                             <!-- HINDI PA FINAL, WALA PANG FORMAT-->
                             <div class="card-body m-5" id="printThis">
                                 <div class="d-flex justify-content-between align-items-center">
@@ -162,23 +160,14 @@ if (isset($_GET['employee_no'])) {
                                     </div>
                                 </div>
                                 <br>
-
-
-
                                 <div class="row mt-2">
-
-
                                     <div class="col-md-12 table-responsive">
-
                                         <br>
-
-
                                         <table class="table table-bordered">
                                             <tr>
                                                 <th colspan="4" style="text-align: center;">
                                                     <h3>Employee Information</h3>
                                                 </th>
-
                                             </tr>
                                             <tr>
                                                 <th><img src="<?php echo htmlspecialchars($imageUrl); ?>" alt="" class="avatar-img rounded-circle" style="height: 80px; width: 80px;"></th>
@@ -204,48 +193,16 @@ if (isset($_GET['employee_no'])) {
                                                 <th>Blood Type</th>
                                                 <td colspan=""><?php echo $blood_type; ?></td>
                                             </tr>
-
-
-
                                         </table>
-
-
-
-
-
-
                                     </div>
                                 </div>
+
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-
-    <div class="breadcome-area">
-        <div class="container-fluid">
-
-
-
-
-
-        </div>
-    </div>
-    </div>
-
-
-    <script type="text/javascript" src="https://cdn.datatables.net/2.1.2/js/dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/2.1.2/js/dataTables.bootstrap5.min.js"></script>
-    <!--sweet alert -->
-
-
-
-
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>

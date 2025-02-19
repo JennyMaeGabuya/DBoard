@@ -69,7 +69,7 @@ include('dbcon.php');
           <div class="panel-body">
             <form action="login.php" method="POST" id="loginForm">
               <div class="form-group">
-                <label class="control-label" for="username">Username</label>
+                <label class="control-label" for="username">Username/Email</label>
                 <input
                   type="text"
                   placeholder="example@gmail.com"
@@ -79,7 +79,7 @@ include('dbcon.php');
                   name="username"
                   id="username"
                   class="form-control" />
-                <span class="help-block small">Your unique username to app</span>
+                <span class="help-block small">Enter your username or email</span>
               </div>
 
               <div class="form-group" style="position: relative;">
@@ -87,7 +87,7 @@ include('dbcon.php');
                 <input
                   type="password"
                   title="Please enter your password"
-                  placeholder="******"
+                  placeholder="*********"
                   required=""
                   name="password"
                   id="password"
