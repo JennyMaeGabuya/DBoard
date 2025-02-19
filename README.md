@@ -12,7 +12,9 @@ It is a fully responsive bootstrap admin template/bootstrap admin dashboard temp
 
 We believe we have covered everything you need to set up an All kind of website.If there is something that you would like to know then we are happy to help you out.
 
+
 # Template Features:
+
 
 - 50+ PAGES
 - VALID HTML5 & CSS3
