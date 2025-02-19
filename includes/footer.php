@@ -23,17 +23,15 @@
         bottom: 0;
         left: var(--sidebar-width);
         width: calc(100% - var(--sidebar-width));
-        background-color: #333;
         color: white;
         text-align: center;
         z-index: 1000;
         transition: left 0.3s ease-in-out, width 0.3s ease-in-out, transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     }
 
-    /* Adjust for collapsed sidebar */
     .sidebar-collapsed #footer {
-        --sidebar-width: 1px;
-        /* Adjusted width when collapsed */
+        left: 1px;
+        width: calc(100% - 1px);
     }
 
     #footer.hide {
