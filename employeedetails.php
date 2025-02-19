@@ -80,9 +80,6 @@ if (isset($_GET['employee_no'])) {
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="css/responsive.css" />
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.2/css/dataTables.bootstrap5.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
@@ -92,9 +89,8 @@ if (isset($_GET['employee_no'])) {
 
     <!--Header-part-->
     <?php include 'includes/header.php'; ?>
-    <?php include 'includes/dbcon.php'; ?>
-    <!-- Mobile Menu end -->
 
+    <!-- Mobile Menu end -->
     <div class="breadcome-area">
         <div class="container-fluid">
             <div class="row">
