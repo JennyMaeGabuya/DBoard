@@ -41,7 +41,7 @@ if (isset($_GET['employee_no'])) {
 
         // Determine the image URL based on position
 
-        $imageUrl = empty($imagePath) ? 'img/logo.png' : '../staff/assets/uploads/avatar/' . $imagePath;
+        $imageUrl = empty($imagePath) ? 'img/logo.png' : 'img/profile/' . $imagePath;
     }
 
     // Close the statement
