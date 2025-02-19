@@ -165,7 +165,18 @@ include "dbcon.php";
                                                     style="height: 50px; width: 50px;">
                                             </td>
                                             <td><?php echo htmlspecialchars($employee_no); ?></td>
-                                            <td><?php echo htmlspecialchars($lastname . ', ' . $firstname . ' ' . $middlename . ' ' . $name_extension); ?>
+                                            <td>
+                                                <?php
+                                                $full_name = $lastname;
+                                                if (!empty($name_extension)) {
+                                                    $full_name .= ' ' . $name_extension;
+                                                }
+                                                $full_name .= ', ' . $firstname;
+                                                if (!empty($middlename)) {
+                                                    $full_name .= ' ' . substr($middlename, 0, 1) . '.';
+                                                }
+                                                echo htmlspecialchars($full_name);
+                                                ?>
                                             </td>
                                             <td><?php echo htmlspecialchars($address); ?></td>
                                             <td><?php echo htmlspecialchars($email_address); ?></td>
