@@ -20,11 +20,11 @@ if (isset($_POST['basic_infobtn'])) {
     $civil_status = $_POST['civil_status'];
     $sex = $_POST['sex'];
     $blood_type = $_POST['blood_type'];
-    
+
     // Handle the image upload
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
         $image = $_FILES['image'];
-        
+
         // Validate the image (optional)
         $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
         if (!in_array($image['type'], $allowedTypes)) {
@@ -36,7 +36,7 @@ if (isset($_POST['basic_infobtn'])) {
         }
 
         // Define the upload directory
-        $uploadDir = 'uploads/'; // Make sure this directory exists and is writable
+        $uploadDir = 'img/uploads/'; // Make sure this directory exists and is writable
         $imagePath = $uploadDir . basename($image['name']);
 
         // Move the uploaded file to the designated directory
@@ -62,7 +62,7 @@ if (isset($_POST['basic_infobtn'])) {
                 $insertQuery = "INSERT INTO `employee` (`firstname`, `middlename`, `lastname`, `name_extension`, `dob`, `pob`, `sex`, `civil_status`, `address`, `blood_type`, `mobile_no`, `email_address`, `image`, `created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $con->prepare($insertQuery);
                 $stmt->bind_param("ssssssssssissss", $firstname, $middlename, $lastname, $name_extension, $dob, $pob, $sex, $civil_status, $address, $blood_type, $mobile_no, $email_address, $imagePath, $created_at, $updated_at);
-                
+
                 if ($stmt->execute()) {
                     $_SESSION['display'] = 'Successfully added a new employee!';
                     $_SESSION['title'] = 'Good Job';
@@ -92,4 +92,3 @@ if (isset($_POST['basic_infobtn'])) {
         exit();
     }
 }
-?>
