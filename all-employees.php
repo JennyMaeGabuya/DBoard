@@ -159,7 +159,7 @@ include "dbcon.php";
                                     ?>
                                         <tr>
 
-                                            <td><?php echo $count; ?></td>
+                                            <td style="text-align: center;"><?php echo $count; ?></td>
                                             <td>
                                                 <img src="<?php echo htmlspecialchars($imageUrl); ?>" alt=""
                                                     style="height: 50px; width: 50px;">
