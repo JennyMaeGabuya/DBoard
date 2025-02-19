@@ -1,17 +1,76 @@
-<div class="footer-copyright-area">
+<div class="footer-copyright-area" id="footer">
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
                 <div class="footer-copy-right">
-                    <p>
-                        Copyright © 2025
+                    <p style="text-align: center;">
+                        <?php echo date("Y"); ?> &copy; Municipality of Mataasnakahoy
                     </p>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</div>
+
+<style>
+    :root {
+        --sidebar-width: 200px;
+    }
+
+    #footer {
+        padding: 5px;
+        position: fixed;
+        bottom: 0;
+        left: var(--sidebar-width);
+        width: calc(100% - var(--sidebar-width));
+        background-color: #333;
+        color: white;
+        text-align: center;
+        z-index: 1000;
+        transition: left 0.3s ease-in-out, width 0.3s ease-in-out, transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    }
+
+    /* Adjust for collapsed sidebar */
+    .sidebar-collapsed #footer {
+        --sidebar-width: 1px;
+        /* Adjusted width when collapsed */
+    }
+
+    #footer.hide {
+        transform: translateY(100%);
+        opacity: 0;
+        pointer-events: none;
+    }
+</style>
+
+<script>
+    let lastScrollTop = 0;
+    const footer = document.getElementById("footer");
+    const sidebar = document.querySelector(".left-sidebar-pro");
+    const sidebarToggle = document.getElementById("sidebarCollapse");
+
+    function handleScroll() {
+        let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        if (currentScroll > lastScrollTop) {
+            footer.classList.add("hide"); // Hide footer when scrolling down
+        } else {
+            footer.classList.remove("hide"); // Show footer when scrolling up
+        }
+        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+    }
+
+    // Sidebar toggle event listener
+    sidebarToggle.addEventListener("click", function() {
+        document.body.classList.toggle("sidebar-collapsed");
+    });
+
+    // Debounce scroll event
+    let isScrolling;
+    window.addEventListener("scroll", function() {
+        clearTimeout(isScrolling);
+        isScrolling = setTimeout(handleScroll, 50);
+    });
+</script>
 
 <script src=" js/vendor/jquery-1.12.4.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
