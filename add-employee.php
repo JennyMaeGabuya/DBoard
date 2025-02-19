@@ -38,6 +38,8 @@ include "dbcon.php";
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
   <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -100,7 +102,7 @@ include "dbcon.php";
                 class="product-tab-list tab-pane fade active in"
                 id="description">
                 <div class="row">
-                  <form action="" method="POST" enctype="multipart/form-data"  id="demo1-upload">
+                  <form action="basic_info.php" method="POST" enctype="multipart/form-data"  id="demo1-upload">
                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="review-content-section">
                       <div id="dropzone1" class="pro-ad">
@@ -126,7 +128,7 @@ include "dbcon.php";
                              
                               <div class="form-group">
                                 <input
-                                  name="laststname"
+                                  name="lastname"
                                   type="text"
                                   class="form-control"
                                   placeholder="Lastname" />
@@ -147,10 +149,10 @@ include "dbcon.php";
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="mobileno"
+                                  name="mobile_no" id="mobile"
                                   type="tel"
                                   class="form-control"
-                                  placeholder="Mobile no." />
+                                  placeholder="Mobile no." required pattern="\d{11}"  />
                               </div>
                               <div class="form-group">
                                 <input
@@ -181,7 +183,7 @@ include "dbcon.php";
                               </div>
                              
                               <div class="form-group">
-                                <select name="gender" class="form-control">
+                                <select name="civil_status" class="form-control">
                                   <option
                                     value="none"
                                     selected=""
@@ -195,7 +197,7 @@ include "dbcon.php";
                                 </select>
                               </div>
                               <div class="form-group">
-                                <select name="gender" class="form-control">
+                                <select name="sex" class="form-control">
                                   <option
                                     value="none"
                                     selected=""
@@ -206,13 +208,27 @@ include "dbcon.php";
                                   <option value="Female">Female</option>
                                 </select>
                               </div>
-                               <div class="form-group">
-                                <input
-                                  name="blood_type"
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Blood Type" />
+                              <div class="form-group">
+                                <select name="blood_type" class="form-control">
+                                  <option
+                                    value="none"
+                                    selected=""
+                                    disabled="">
+                                    Blood_type
+                                  </option>
+                                  <option value="A+">A+</option>
+                                  <option value="A-">A-</option>
+                                  <option value="B+">B+</option>
+                                  <option value="B-">B-</option>
+                                  <option value="AB+">AB+</option>
+                                  <option value="AB-">AB-</option>
+                                  <option value="O+">O+</option>
+                                  <option value="O-">O-</option>
+                                  <option value="Unknown">Unknown</option>
+                                  
+                                </select>
                               </div>
+                              
                               <div class="form-group">
   <label for="formFile" class="form-label">Upload profile picture</label>
   <input class="form-control" type="file" id="formFile"  name="image">
@@ -223,7 +239,7 @@ include "dbcon.php";
                             <div class="col-lg-12">
                               <div class="payment-adress">
                                 <button
-                                  type="submit"
+                                  type="submit" name="basic_infobtn"
                                   class="btn btn-primary waves-effect waves-light">
                                   Submit
                                 </button>
@@ -234,6 +250,28 @@ include "dbcon.php";
                       </div>
                     </div>
                   </div>
+
+                  <script>
+    document.getElementById('mobile').addEventListener('input', function (e) {
+        const value = e.target.value;
+        if (value.length > 11) {
+            e.target.value = value.slice(0, 11); // Limit input to 11 digits
+        }
+    });
+</script>
+<?php if (isset($_SESSION['display'])) : ?>
+                                <script>
+                                    Swal.fire({
+                                        title: '<?php echo $_SESSION['title']; ?>',
+                                        text: '<?php echo $_SESSION['display']; ?>',
+                                        icon: '<?php echo $_SESSION['success']; ?>',
+                                        confirmButtonText: 'OK'
+                                    });
+                                </script>
+                                <?php unset($_SESSION['display']);
+                                unset($_SESSION['success']); ?>
+                            <?php endif; ?>
+
                   </form>
                 </div>
               </div>
