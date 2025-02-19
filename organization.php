@@ -1,8 +1,8 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
-  header('location:../index.php');
-  exit();
+    header('location:../index.php');
+    exit();
 }
 
 include "dbcon.php";
@@ -77,7 +77,7 @@ include "dbcon.php";
             </div>
         </div>
     </div>
-    </div>
+
     <div class="product-status mg-b-15">
         <div class="container-fluid">
             <div class="row">
