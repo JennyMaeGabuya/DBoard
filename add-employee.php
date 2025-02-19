@@ -38,8 +38,6 @@ include "dbcon.php";
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
   <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -59,55 +57,51 @@ include "dbcon.php";
             <div class="row">
               <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="breadcome-heading">
-                  <form role="search" class="sr-input-func">
-                    <input
-                      type="text"
-                      placeholder="Search..."
-                      class="search-int form-control" />
-                    <a href="#"><i class="fa fa-search"></i></a>
-                  </form>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <ul class="breadcome-menu" style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
+                        <li>
+                          <a href="dashboard.php">
+                            <i class="fa fa-home"></i> Home
+                          </a>
+                          <span class="bread-slash">/</span>
+                          <a href="organization.php"> Employee </a>
+                          <span class="bread-slash">/</span>
+                          <span class="bread-blod">Add New Employee</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <ul class="breadcome-menu">
-                  <li>
-                    <a href="#">Home</a>
-                    <span class="bread-slash">/</span>
-                  </li>
-                  <li><span class="bread-blod">Add New Employee</span></li>
-                </ul>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- Single pro tab review Start-->
-  <div class="single-pro-review-area mt-t-30 mg-b-15">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="product-payment-inner-st">
-            <ul id="myTabedu1" class="tab-review-design">
-              <li class="active">
-                <a href="#description">Basic Information</a>
-              </li>
-              <li><a href="#reviews"> Service Records</a></li>
-              <li><a href="#INFORMATION">Compensation</a></li>
-            </ul>
-            <div id="myTabContent" class="tab-content custom-product-edit">
-              <div
-                class="product-tab-list tab-pane fade active in"
-                id="description">
-                <div class="row">
-                  <form action="basic-info.php" method="POST" enctype="multipart/form-data" id="demo1-upload">
+    
+    <!-- Single pro tab review Start-->
+    <div class="single-pro-review-area mt-t-30 mg-b-15">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="product-payment-inner-st">
+              <ul id="myTabedu1" class="tab-review-design">
+                <li class="active">
+                  <a href="#description">Basic Information</a>
+                </li>
+                <li><a href="#reviews"> Service Records</a></li>
+                <li><a href="#INFORMATION">Compensation</a></li>
+              </ul>
+              <div id="myTabContent" class="tab-content custom-product-edit">
+                <div
+                  class="product-tab-list tab-pane fade active in"
+                  id="description">
+                  <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <div class="review-content-section">
-                        <div id="dropzone1" class="pro-ad">
-
-                          <div class="row">
+                        <form id="add-department"    action="basic-info.php" method="POST" enctype="multipart/form-data"  class="add-department">
+                        <div class="row">
                             <div
                               class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 
@@ -248,12 +242,7 @@ include "dbcon.php";
                             </div>
                           </div>
 
-                        </div>
-                      </div>
-                    </div>
-                </div>
-
-                <script>
+                          <script>
                   document.getElementById('mobile').addEventListener('input', function(e) {
                     const value = e.target.value;
                     if (value.length > 11) {
@@ -273,24 +262,17 @@ include "dbcon.php";
                   <?php unset($_SESSION['display']);
                   unset($_SESSION['success']); ?>
                 <?php endif; ?>
-
-                </form>
-              </div>
-            </div>
-            <div class="product-tab-list tab-pane fade" id="reviews">
-              <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <div class="review-content-section">
-                    <div class="row">
-                      <div
-                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <form
-                          id="acount-infor"
-                          action="#"
-                          class="acount-infor">
-                          <div class="devit-card-custom">
-
-                            <div class="row">
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="product-tab-list tab-pane fade" id="reviews">
+                  <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <div class="review-content-section">
+                      <form id="add-department"    action=".php" method="POST" enctype="multipart/form-data"  class="add-department">
+                      <div class="row">
                               <div
                                 class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
 
@@ -407,7 +389,6 @@ include "dbcon.php";
                                 </div>
                               </div>
                             </div>
-
                             <div class="row">
                               <div class="col-lg-12">
                                 <div class="payment-adress">
@@ -419,23 +400,17 @@ include "dbcon.php";
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        </form>
+                            </form>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="product-tab-list tab-pane fade" id="INFORMATION">
-              <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <div class="review-content-section">
-                    <div class="row">
-
-                      <form id="acount-infor" action="#" class="acount-infor">
-                        <div class="devit-card-custom">
-                          <div class="row">
+                <div class="product-tab-list tab-pane fade" id="INFORMATION">
+                  <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <div class="review-content-section">
+                      <form id="add-department"    action=".php" method="POST" enctype="multipart/form-data"  class="add-department">
+                      <div class="row">
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                               <div class="form-group">
                                 <input
@@ -527,9 +502,8 @@ include "dbcon.php";
                               </div>
                             </div>
                           </div>
-
-                        </div>
                       </form>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -539,7 +513,6 @@ include "dbcon.php";
         </div>
       </div>
     </div>
-  </div>
 
-  <!--Footer-part-->
-  <?php include 'includes/footer.php'; ?>
+    <!--Footer-part-->
+    <?php include 'includes/footer.php'; ?>

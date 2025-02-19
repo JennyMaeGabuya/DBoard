@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
 
 include "dbcon.php";
 
-if (isset($_POST['basic_infobtn'])) {
+if (isset($_POST['basic-infobtn'])) {
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
     $middlename = $_POST['middlename'];
@@ -36,7 +36,7 @@ if (isset($_POST['basic_infobtn'])) {
         }
 
         // Define the upload directory
-        $uploadDir = 'img/uploads/'; // Make sure this directory exists and is writable
+        $uploadDir = 'img/profile/'; // Make sure this directory exists and is writable
         $imagePath = $uploadDir . basename($image['name']);
 
         // Move the uploaded file to the designated directory
