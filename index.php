@@ -34,36 +34,38 @@ include('dbcon.php');
   <script src="js/vendor/modernizr-2.8.3.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <style>
+    .spin-logo {
+      max-width: 120px;
+      margin-bottom: 10px;
+      display: inline-block;
+      animation: spin 5s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotateY(0deg);
+      }
+
+      100% {
+        transform: rotateY(360deg);
+      }
+    }
+  </style>
 </head>
 
 <body>
+
   <div class="error-pagewrap">
     <div class="error-page-int">
       <div class="text-center m-b-md custom-login">
-        <img src="img/logo.png" alt="Logo" class="spin-logo" style="animation: spin 5s linear infinite;">
-
-        <style>
-          .spin-logo {
-            max-width: 120px;
-            margin-bottom: 10px;
-            display: inline-block;
-            animation: spin 1s linear forwards;
-          }
-
-          @keyframes spin {
-            0% {
-              transform: rotateY(0deg);
-            }
-
-            100% {
-              transform: rotateY(360deg);
-            }
-          }
-        </style>
-
+        <img src="img/logo.png" alt="Logo" class="spin-logo">
         <h3>ADMIN LOGIN</h3>
         <p>Employee Records Management System</p>
       </div>
+
       <div class="content-error">
         <div class="hpanel">
           <div class="panel-body">
@@ -73,9 +75,8 @@ include('dbcon.php');
                 <input
                   type="text"
                   placeholder="example@gmail.com"
-                  title="Please enter you username"
-                  required=""
-                  value=""
+                  title="Please enter your username"
+                  required
                   name="username"
                   id="username"
                   class="form-control" />
@@ -88,7 +89,7 @@ include('dbcon.php');
                   type="password"
                   title="Please enter your password"
                   placeholder="*********"
-                  required=""
+                  required
                   name="password"
                   id="password"
                   class="form-control" />
@@ -97,68 +98,21 @@ include('dbcon.php');
                 </i>
               </div>
 
-              <!-- FontAwesome for Icons -->
-              <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
-              <!-- Password Toggle Script -->
-              <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                  const togglePassword = document.getElementById("togglePassword");
-                  const passwordField = document.getElementById("password");
-
-                  togglePassword.addEventListener("click", function() {
-                    if (passwordField.type === "password") {
-                      passwordField.type = "text";
-                      togglePassword.classList.remove("fa-eye");
-                      togglePassword.classList.add("fa-eye-slash");
-                    } else {
-                      passwordField.type = "password";
-                      togglePassword.classList.remove("fa-eye-slash");
-                      togglePassword.classList.add("fa-eye");
-                    }
-                  });
-                });
-              </script>
-
               <div class="checkbox login-checkbox">
                 <label>
-                  <input type="checkbox" class="i-checks" /> Remember Me
+                  <input type="checkbox" id="rememberMe" class="i-checks"> Remember Me
                 </label>
-                <p class="help-block small">
-                  (if this is a private computer)
-                </p>
               </div>
 
               <button id="loginButton" class="btn btn-success btn-block loginbtn" disabled>
                 Login
               </button>
-
-              <!-- Login Button Disable Script -->
-              <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                  const usernameField = document.getElementById("username");
-                  const passwordField = document.getElementById("password");
-                  const loginButton = document.getElementById("loginButton");
-
-                  function toggleButtonState() {
-                    if (usernameField.value.trim() !== "" && passwordField.value.trim() !== "") {
-                      loginButton.removeAttribute("disabled");
-                    } else {
-                      loginButton.setAttribute("disabled", "true");
-                    }
-                  }
-
-                  usernameField.addEventListener("input", toggleButtonState);
-                  passwordField.addEventListener("input", toggleButtonState);
-                });
-              </script>
-
             </form>
           </div>
         </div>
       </div>
+
       <div class="text-center login-footer">
-        <!-- Footer-part -->
         <div class="row-fluid">
           <div id="footer" class="span12">
             <?php echo date("Y"); ?> &copy; Municipality of Mataasnakahoy
@@ -166,25 +120,78 @@ include('dbcon.php');
         </div>
       </div>
     </div>
+  </div>
 
-    <script src="js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/wow.min.js"></script>
-    <script src="js/jquery-price-slider.js"></script>
-    <script src="js/jquery.meanmenu.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/jquery.sticky.js"></script>
-    <script src="js/jquery.scrollUp.min.js"></script>
-    <script src="js/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script src="js/scrollbar/mCustomScrollbar-active.js"></script>
-    <script src="js/metisMenu/metisMenu.min.js"></script>
-    <script src="js/metisMenu/metisMenu-active.js"></script>
-    <script src="js/tab.js"></script>
-    <script src="js/icheck/icheck.min.js"></script>
-    <script src="js/icheck/icheck-active.js"></script>
-    <script src="js/plugins.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/tawk-chat.js"></script>
+  <!-- JavaScript -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Remember Me Functionality
+      const usernameField = document.getElementById("username");
+      const rememberMeCheckbox = document.getElementById("rememberMe");
+
+      if (localStorage.getItem("rememberedUsername")) {
+        usernameField.value = localStorage.getItem("rememberedUsername");
+        rememberMeCheckbox.checked = true;
+      }
+
+      document.getElementById("loginForm").addEventListener("submit", function() {
+        if (rememberMeCheckbox.checked) {
+          localStorage.setItem("rememberedUsername", usernameField.value);
+        } else {
+          localStorage.removeItem("rememberedUsername");
+        }
+      });
+
+      // Toggle Password Visibility
+      const passwordField = document.getElementById("password");
+      const togglePassword = document.getElementById("togglePassword");
+
+      togglePassword.addEventListener("click", function() {
+        if (passwordField.type === "password") {
+          passwordField.type = "text";
+          togglePassword.classList.remove("fa-eye");
+          togglePassword.classList.add("fa-eye-slash");
+        } else {
+          passwordField.type = "password";
+          togglePassword.classList.remove("fa-eye-slash");
+          togglePassword.classList.add("fa-eye");
+        }
+      });
+
+      // Enable/Disable Login Button
+      const loginButton = document.getElementById("loginButton");
+
+      function toggleButtonState() {
+        if (usernameField.value.trim() !== "" && passwordField.value.trim() !== "") {
+          loginButton.removeAttribute("disabled");
+        } else {
+          loginButton.setAttribute("disabled", "true");
+        }
+      }
+
+      usernameField.addEventListener("input", toggleButtonState);
+      passwordField.addEventListener("input", toggleButtonState);
+    });
+  </script>
+
+  <script src="js/vendor/jquery-1.12.4.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/wow.min.js"></script>
+  <script src="js/jquery-price-slider.js"></script>
+  <script src="js/jquery.meanmenu.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.sticky.js"></script>
+  <script src="js/jquery.scrollUp.min.js"></script>
+  <script src="js/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="js/scrollbar/mCustomScrollbar-active.js"></script>
+  <script src="js/metisMenu/metisMenu.min.js"></script>
+  <script src="js/metisMenu/metisMenu-active.js"></script>
+  <script src="js/tab.js"></script>
+  <script src="js/icheck/icheck.min.js"></script>
+  <script src="js/icheck/icheck-active.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/tawk-chat.js"></script>
 </body>
 
 </html>
