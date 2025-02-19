@@ -15,7 +15,7 @@ if (isset($_GET['employee_no'])) {
     $stmt = $con->prepare($query);
 
     // Bind the parameter
-    $stmt->bind_param("i", $employee_no); // "i" means integer
+    $stmt->bind_param("s", $employee_no); // "s" means string
 
     // Execute the statement
     $stmt->execute();
