@@ -38,6 +38,8 @@ include "dbcon.php";
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="css/responsive.css" />
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <link rel="stylesheet" href="//cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -52,7 +54,7 @@ include "dbcon.php";
     <div class="breadcome-area">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-12">
                     <div class="breadcome-list single-page-breadcome">
                         <div class="row">
                             <div class="col-lg-12">
@@ -78,145 +80,153 @@ include "dbcon.php";
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="product-status-wrap drp-lst">
-                        <h4>Human Resource Management Office </h4>
-                        <div class="add-product">
-                            <a href="add-member.php">Add Member</a>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <h4>Office of Human Resource Management</h4>
                         </div>
-                        <div class="asset-inner">
-                            <table>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Name of Dept.</th>
-                                    <th>Status</th>
-                                    <th>Head</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>No. of Students</th>
-                                    <th>Setting</th>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Computer</td>
-                                    <td>
-                                        <button class="pd-setting">Active</button>
-                                    </td>
-                                    <td>John Alva</td>
-                                    <td>admin@gmail.com</td>
-                                    <td>01962067309</td>
-                                    <td>1500</td>
-                                    <td>
-                                        <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Mechanical</td>
-                                    <td>
-                                        <button class="ps-setting">Paused</button>
-                                    </td>
-                                    <td>John Alva</td>
-                                    <td>admin@gmail.com</td>
-                                    <td>01962067309</td>
-                                    <td>1700</td>
-                                    <td>
-                                        <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>MBA</td>
-                                    <td>
-                                        <button class="ds-setting">Disabled</button>
-                                    </td>
-                                    <td>John Alva</td>
-                                    <td>admin@gmail.com</td>
-                                    <td>01962067309</td>
-                                    <td>1500</td>
-                                    <td>
-                                        <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>BBA</td>
-                                    <td>
-                                        <button class="pd-setting">Active</button>
-                                    </td>
-                                    <td>John Alva</td>
-                                    <td>admin@gmail.com</td>
-                                    <td>01962067309</td>
-                                    <td>1200</td>
-                                    <td>
-                                        <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>CSE</td>
-                                    <td>
-                                        <button class="pd-setting">Active</button>
-                                    </td>
-                                    <td>John Alva</td>
-                                    <td>admin@gmail.com</td>
-                                    <td>01962067309</td>
-                                    <td>1800</td>
-                                    <td>
-                                        <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>MBA</td>
-                                    <td>
-                                        <button class="ps-setting">Paused</button>
-                                    </td>
-                                    <td>John Alva</td>
-                                    <td>admin@gmail.com</td>
-                                    <td>01962067309</td>
-                                    <td>1000</td>
-                                    <td>
-                                        <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                    </td>
-                                </tr>
+                        <div class="row">
+                            <div class="col-md-6 text-right">
+                                <div class="button-container">
+                                    <a href="add-office-member.php" class="btn btn-primary btn-border btn-round btn-sm">
+                                        <i class="fa fa-plus"></i> Add
+                                    </a>
+                                    <a href="#" class="btn btn-success btn-border btn-round btn-sm">
+                                        <i class="fa fa-file-excel-o"></i> Export
+                                    </a>
+                                    <a href="organization-chart.php" class="btn btn-danger btn-border btn-round btn-sm">
+                                        <i class="fa fa-file-pdf-o"></i> PDF
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="widget-box">
+                            <!-- JavaScript for live search -->
+                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                            <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
+
+                            <script>
+                                $(function() {
+                                    new DataTable('#myTable', {
+                                        responsive: true,
+                                        autoWidth: false,
+                                        language: {
+                                            searchPlaceholder: "Search records",
+                                            lengthMenu: "Show _MENU_ entries",
+                                        },
+                                    });
+                                });
+                            </script>
+                        </div>
+
+                        <div class="asset-inner" style="margin-top: 5px;">
+                            <table id="myTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Profile</th>
+                                        <th scope="col">Employee No</th>
+                                        <th scope="col">Employee Name</th>
+                                        <th scope="col">Address</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $stmt = $con->prepare("SELECT 
+                                            e.employee_no,
+                                            e.firstname,
+                                            e.middlename,
+                                            e.lastname,
+                                            e.name_extension,
+                                            e.dob,
+                                            e.pob,
+                                            e.sex,
+                                            e.civil_status,
+                                            e.address,
+                                            e.blood_type,
+                                            e.mobile_no,
+                                            e.email_address,
+                                            e.image,
+                                            h.designation,
+                                            h.role,
+                                            e.created_at,
+                                            e.updated_at
+                                        FROM employee e
+                                        JOIN hr_staffs h ON e.employee_no = h.employee_no");
+
+                                    $stmt->execute();
+                                    $result = $stmt->get_result();
+
+                                    $count = 1;
+
+                                    while ($row = $result->fetch_assoc()) {
+                                        $employee_no = $row['employee_no'];
+                                        $firstname = $row['firstname'];
+                                        $middlename = $row['middlename'];
+                                        $lastname = $row['lastname'];
+                                        $name_extension = $row['name_extension'];
+                                        $dob = $row['dob'];
+                                        $pob = $row['pob'];
+                                        $sex = $row['sex'];
+                                        $civil_status = $row['civil_status'];
+                                        $address = $row['address'];
+                                        $mobile_no = $row['mobile_no'];
+                                        $email_address = $row['email_address'];
+                                        $designation = $row['designation'];
+                                        $role = $row['role'];
+                                        $imagePath = $row['image'];
+                                        $imageUrl = empty($imagePath) ? 'img/logo.png' : 'img/profile/' . $imagePath;
+                                    ?>
+
+                                        <tr>
+                                            <td style="text-align: center;"><?php echo $count; ?></td>
+                                            <td>
+                                                <img src="<?php echo htmlspecialchars($imageUrl); ?>" alt="Profile Image"
+                                                    style="height: 50px; width: 50px; border-radius: 50%; object-fit: cover;">
+                                            </td>
+                                            <td><?php echo htmlspecialchars($employee_no); ?></td>
+                                            <td>
+                                                <?php
+                                                $full_name = $lastname;
+                                                if (!empty($name_extension)) {
+                                                    $full_name .= ' ' . $name_extension;
+                                                }
+                                                $full_name .= ', ' . $firstname;
+                                                if (!empty($middlename)) {
+                                                    $full_name .= ' ' . substr($middlename, 0, 1) . '.';
+                                                }
+                                                echo htmlspecialchars($full_name);
+                                                ?>
+                                            </td>
+                                            <td><?php echo htmlspecialchars($address); ?></td>
+                                            <td><?php echo htmlspecialchars($email_address); ?></td>
+                                            <td>
+                                                <div style="display: flex;">
+                                                    <a href="employeedetails.php?employee_no=<?php echo htmlspecialchars($employee_no); ?>"
+                                                        class="btn btn-info" title="View" style="margin-right: 8px;">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                    <a href="delete_employee.php?employee_no=<?php echo htmlspecialchars($employee_no); ?>"
+                                                        class="btn btn-danger" title="Delete">
+                                                        <i class="fa fa-trash-o"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    <?php $count++;
+                                    } ?>
+                                </tbody>
                             </table>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const searchInput = document.querySelector(".search-int");
-            const table = document.querySelector("table");
-            const rows = table.querySelectorAll("tr");
-
-            searchInput.addEventListener("keyup", function() {
-                const searchQuery = searchInput.value.toLowerCase();
-
-                rows.forEach(function(row, index) {
-                    if (index === 0) return; // Skip the header row
-                    const cells = row.querySelectorAll("td");
-                    let found = false;
-
-                    cells.forEach(function(cell) {
-                        if (cell.textContent.toLowerCase().includes(searchQuery)) {
-                            found = true;
-                        }
-                    });
-
-                    row.style.display = found ? "" : "none"; // Show or hide row based on search match
-                });
-            });
-        });
-    </script>
 
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>

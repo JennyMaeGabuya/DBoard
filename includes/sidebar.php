@@ -22,7 +22,7 @@
                   aria-hidden="true"></span>
                 <span class="mini-click-non">Event</span></a>
             </li>
-             <li>
+            <li>
               <a
                 class="has-arrow"
                 href="all-courses.php"
@@ -34,7 +34,7 @@
                   <a title="Organization " href="organization.php"><span class="mini-sub-pro">Member</span></a>
                 </li>
                 <li>
-                  <a title="Add Members" href="add-member.php"><span class="mini-sub-pro">Add Member</span></a>
+                  <a title="Add Members" href="add-office-member.php"><span class="mini-sub-pro">Add Member</span></a>
                 </li>
                 <li>
                   <a title="Edit Members" href="edit-member.php"><span class="mini-sub-pro">Edit Member</span></a>
@@ -68,10 +68,10 @@
                 class="has-arrow"
                 href="all-courses.php"
                 aria-expanded="false"><span class="educate-icon educate-course icon-wrap"></span>
-                <span class="mini-click-non">Courses</span></a>
+                <span class="mini-click-non">Issue Certificate</span></a>
               <ul class="submenu-angle" aria-expanded="false">
                 <li>
-                  <a title="All Courses" href="all-courses.php"><span class="mini-sub-pro">All Courses</span></a>
+                  <a title="All Courses" href="certifications.php"><span class="mini-sub-pro">Certifications</span></a>
                 </li>
                 <li>
                   <a title="Add Courses" href="add-course.php"><span class="mini-sub-pro">Add Course</span></a>
@@ -84,24 +84,6 @@
                 </li>
                 <li>
                   <a title="Product Payment" href="course-payment.php"><span class="mini-sub-pro">Courses Payment</span></a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a
-                class="has-arrow"
-                href="all-courses.php"
-                aria-expanded="false"><span class="educate-icon educate-library icon-wrap"></span>
-                <span class="mini-click-non">Library</span></a>
-              <ul class="submenu-angle" aria-expanded="false">
-                <li>
-                  <a title="All Library" href="library-assets.php"><span class="mini-sub-pro">Library Assets</span></a>
-                </li>
-                <li>
-                  <a title="Add Library" href="add-library-assets.php"><span class="mini-sub-pro">Add Library Asset</span></a>
-                </li>
-                <li>
-                  <a title="Edit Library" href="edit-library-assets.php"><span class="mini-sub-pro">Edit Library Asset</span></a>
                 </li>
               </ul>
             </li>
