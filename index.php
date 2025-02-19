@@ -40,7 +40,27 @@ include('dbcon.php');
   <div class="error-pagewrap">
     <div class="error-page-int">
       <div class="text-center m-b-md custom-login">
-        <img src="img/logo.png" alt="Logo" style="max-width: 120px; margin-bottom: 10px;">
+        <img src="img/logo.png" alt="Logo" class="spin-logo" style="animation: spin 5s linear infinite;">
+
+        <style>
+          .spin-logo {
+            max-width: 120px;
+            margin-bottom: 10px;
+            display: inline-block;
+            animation: spin 1s linear forwards;
+          }
+
+          @keyframes spin {
+            0% {
+              transform: rotateY(0deg);
+            }
+
+            100% {
+              transform: rotateY(360deg);
+            }
+          }
+        </style>
+
         <h3>ADMIN LOGIN</h3>
         <p>Employee Records Management System</p>
       </div>
