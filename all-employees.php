@@ -38,7 +38,7 @@ include "dbcon.php";
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="css/responsive.css" />
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.2/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
@@ -49,28 +49,22 @@ include "dbcon.php";
 
     <!--Header-part-->
     <?php include 'includes/header.php'; ?>
-    <?php include 'includes/dbcon.php'; ?>
-    <!-- Mobile Menu end -->
 
+    <!-- Mobile Menu end -->
     <div class="breadcome-area">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-12">
                     <div class="breadcome-list single-page-breadcome">
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="breadcome-heading">
-                                    <form role="search" class="sr-input-func">
-                                        <input type="text" placeholder="Search..." class="search-int form-control">
-                                        <a href="#"><i class="fa fa-search"></i></a>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <ul class="breadcome-menu">
-                                    <li><a href="#">Home</a> <span class="bread-slash">/</span>
-                                    </li>
-                                    <li><span class="bread-blod">Employees</span>
+                            <div class="col-lg-12">
+                                <ul class="breadcome-menu" style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
+                                    <li>
+                                        <a href="dashboard.php">
+                                            <i class="fa fa-home"></i> Home
+                                        </a>
+                                        <span class="bread-slash">/</span>
+                                        <span class="bread-blod">Employees</span>
                                     </li>
                                 </ul>
                             </div>
@@ -80,28 +74,26 @@ include "dbcon.php";
             </div>
         </div>
     </div>
-    </div>
+
     <div class="product-status mg-b-15">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
                     <div class="product-status-wrap drp-lst">
-
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <h4>Employees</h4>
                         </div>
                         <div class="row">
-                            <div class="col-md-12 text-right">
+                            <div class="col-md-6 text-right">
                                 <div class="button-container">
                                     <a href="add-employee.php" class="btn btn-primary btn-border btn-round btn-sm">
-                                        <i class="fa fa-plus"></i> Add Employee
-                                    </a>
-                                    <a href="" class="btn btn-success btn-border btn-round btn-sm">
-                                        <i class="fa fa-file-excel-o"></i> Export Excel
+                                        <i class="fa fa-plus"></i> Add
                                     </a>
                                     <a href="add-employee.php" class="btn btn-warning btn-border btn-round btn-sm">
-                                        <i class="fa fa-file"></i> View Employee
+                                        <i class="fa fa-eye"></i> View
+                                    </a>
+                                    <a href="" class="btn btn-success btn-border btn-round btn-sm">
+                                        <i class="fa fa-file-excel-o"></i> Export
                                     </a>
                                     <a href="" class="btn btn-danger btn-border btn-round btn-sm">
                                         <i class="fa fa-print"></i> Print
@@ -109,12 +101,33 @@ include "dbcon.php";
                                 </div>
                             </div>
                         </div>
-                        <div class="asset-inner" style="margin-top: 20px;"> <!-- Added margin-top here -->
+
+                        <div class="widget-box">
+                            <!-- JavaScript for live search -->
+                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                            <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
+
+                            <script>
+                                $(function() {
+                                    new DataTable('#myTable', {
+                                        responsive: true,
+                                        autoWidth: false,
+                                        language: {
+                                            searchPlaceholder: "Search records",
+                                            lengthMenu: "Show _MENU_ entries",
+                                        },
+                                    });
+                                });
+                            </script>
+                        </div>
+
+                        <div class="asset-inner" style="margin-top: 5px;">
                             <table id="myTable" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th scope="col">No</th>
                                         <th scope="col">Profile</th>
+                                        <th scope="col">Employee No</th>
                                         <th scope="col">Employee Name</th>
                                         <th scope="col">Address</th>
                                         <th scope="col">Email</th>
@@ -124,7 +137,7 @@ include "dbcon.php";
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $query = "SELECT * from employee";
+                                    $query = "SELECT * FROM employee";
                                     $view_data = mysqli_query($con, $query);
                                     $count = 1;
 
@@ -143,7 +156,7 @@ include "dbcon.php";
                                         $email_address = $row['email_address'];
                                         $imagePath = $row['image'];
                                         $imageUrl = empty($imagePath) ? 'img/logo.png' : '../applicants/assets/uploads/applicant_profile/' . $imagePath;
-                                        ?>
+                                    ?>
                                         <tr>
 
                                             <td><?php echo $count; ?></td>
@@ -151,11 +164,12 @@ include "dbcon.php";
                                                 <img src="<?php echo htmlspecialchars($imageUrl); ?>" alt=""
                                                     style="height: 50px; width: 50px;">
                                             </td>
-                                            <td><?php echo htmlspecialchars($lastname . ' ,' . $firstname . ' ' . $middlename . ' ' . $name_extension); ?>
+                                            <td><?php echo htmlspecialchars($employee_no); ?></td>
+                                            <td><?php echo htmlspecialchars($lastname . ', ' . $firstname . ' ' . $middlename . ' ' . $name_extension); ?>
                                             </td>
                                             <td><?php echo htmlspecialchars($address); ?></td>
-                                            <td><?php echo htmlspecialchars($civil_status); ?></td>
                                             <td><?php echo htmlspecialchars($email_address); ?></td>
+                                            <td><?php echo htmlspecialchars($sex); ?></td>
                                             <td>
                                                 <div style="display: flex;">
                                                     <a href="employeedetails.php?employee_no=<?php echo $employee_no; ?>"
@@ -166,99 +180,20 @@ include "dbcon.php";
                                                         class="btn btn-danger" title="Delete">
                                                         <i class="fa fa-trash-o"></i>
                                                     </a>
-
                                                 </div>
                                             </td>
                                         </tr>
-                                        <?php $count++;
+                                    <?php $count++;
                                     } ?>
                                 </tbody>
                             </table>
                         </div>
-                        <div class="custom-pagination">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination">
-                                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                </ul>
-                            </nav>
-                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const searchInput = document.querySelector(".search-int");
-            const table = document.querySelector("table");
-            const rows = table.querySelectorAll("tr");
-
-            searchInput.addEventListener("keyup", function () {
-                const searchQuery = searchInput.value.toLowerCase();
-
-                rows.forEach(function (row, index) {
-                    if (index === 0) return; // Skip the header row
-                    const cells = row.querySelectorAll("td");
-                    let found = false;
-
-                    cells.forEach(function (cell) {
-                        if (cell.textContent.toLowerCase().includes(searchQuery)) {
-                            found = true;
-                        }
-                    });
-
-                    row.style.display = found ? "" : "none"; // Show or hide row based on search match
-                });
-            });
-        });
-    </script>
-
-    <div class="breadcome-area">
-        <div class="container-fluid">
-
-
-
-
-
-        </div>
-    </div>
-    </div>
-
-
-    <script type="text/javascript" src="https://cdn.datatables.net/2.1.2/js/dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/2.1.2/js/dataTables.bootstrap5.min.js"></script>
-    <!--sweet alert -->
-
-    <script>
-        $(document).ready(function () {
-            $('#myTable').DataTable({
-                "lengthMenu": [
-                    [10, 25, 50, -1],
-                    [10, 25, 50, "All"]
-                ],
-                "pageLength": 10,
-                "lengthChange": true,
-                "order": [
-                    // [1, "asc"], [0, "asc"]
-                ],
-                "searching": true,
-                "ordering": true,
-                "language": {
-                    "search": "_INPUT_",
-                    "searchPlaceholder": "Search here",
-                    "lengthMenu": "_MENU_entries per page"
-                },
-            });
-        });
-
-
-    </script>
-
 
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>
