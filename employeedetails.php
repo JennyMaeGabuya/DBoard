@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
@@ -41,10 +40,9 @@ if (isset($_GET['employee_no'])) {
         $blood_type = $row['blood_type'];
 
         // Determine the image URL based on position
-       
-            $imageUrl = empty($imagePath) ? 'img/logo.png' : '../staff/assets/uploads/avatar/' . $imagePath;
-      
-    } 
+
+        $imageUrl = empty($imagePath) ? 'img/logo.png' : '../staff/assets/uploads/avatar/' . $imagePath;
+    }
 
     // Close the statement
     $stmt->close();
@@ -54,6 +52,8 @@ if (isset($_GET['employee_no'])) {
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
+
+<head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>All Employees | ERMS</title>
@@ -130,101 +130,103 @@ if (isset($_GET['employee_no'])) {
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                     <div class="product-status-wrap drp-lst">
-     
+
                         <div class="card">
-								<div class="card-header">
-									<div class="card-head-row">
-										
-										<div class="card-tools">
-											<button class="btn btn-danger btn-border btn-round btn-sm" >
-												<i class="fa fa-print"></i>
-												Print 
-											</button>
-											
-										</div>
-									</div>
-								</div>
-<!-- HINDI PA FINAL, WALA PANG FORMAT-->
-								<div class="card-body m-5" id="printThis">
+                            <div class="card-header">
+                                <div class="card-head-row">
+
+                                    <div class="card-tools">
+                                        <button class="btn btn-danger btn-border btn-round btn-sm">
+                                            <i class="fa fa-print"></i>
+                                            Print
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- HINDI PA FINAL, WALA PANG FORMAT-->
+                            <div class="card-body m-5" id="printThis">
                                 <div class="d-flex justify-content-between align-items-center">
-    <div class="text-center">
-        <img src="img/logo.png" class="img-fluid" width="100">
-    </div>
+                                    <div class="text-center">
+                                        <img src="img/logo.png" class="img-fluid" width="100">
+                                    </div>
 
-    <div class="text-center">
-        <h3 class="mb-0">Republic of the Philippines</h3>
-        <h3 class="mb-0">Province of Batangas</h3>
-        <h3 class="fw-bold mb-0">Mataas na Kahoy</h3>
-    </div>
+                                    <div class="text-center">
+                                        <h3 class="mb-0">Republic of the Philippines</h3>
+                                        <h3 class="mb-0">Province of Batangas</h3>
+                                        <h3 class="fw-bold mb-0">Mataas na Kahoy</h3>
+                                    </div>
 
-    <div class="text-center">
-        <img src="img/logo.png" class="img-fluid" width="100">
-    </div>
-</div>
+                                    <div class="text-center">
+                                        <img src="img/logo.png" class="img-fluid" width="100">
+                                    </div>
+                                </div>
                                 <br>
 
- 
 
-                                    <div class="row mt-2">
-                                    
-            
-            <div class="col-md-12 table-responsive">
-        
-            <br>
-     
-  
-  <table class="table table-bordered">
-  <tr>
-        <th colspan="4" style="text-align: center;"><h3>Employee Information</h3></th>
-        
-    </tr>
-    <tr>
-        <th><img src="<?php echo htmlspecialchars($imageUrl); ?>" alt="" class="avatar-img rounded-circle" style="height: 80px; width: 80px;"></th>
-        <td style="text-transform: uppercase;font-weight:bold;"><?php echo $firstname .' '. $middlename. ' ' . $lastname. $name_extension; ?></td>
-        <th>Email</th>
-        <td><?php echo $email_address; ?></td>
-    </tr>
-    <tr>
-        <th>Contact No.:</th>
-        <td><?php echo $mobile_no; ?></td>
-        <th>Address:</th>
-        <td><?php echo $address; ?></td>
-    </tr>
-    <tr>
-        <th>Place of Birth:</th>
-        <td><?php echo $pob; ?></td>
-        <th>Sex:</th>
-        <td><?php echo $sex; ?></td>
-    </tr>
-    <tr>
-        <th >Birthday:</th>
-        <td colspan ="" ><?php echo $dob; ?></td>
-       <th >Blood Type</th>
-        <td colspan ="" ><?php echo $blood_type; ?></td>
-           </tr>
 
- 
+                                <div class="row mt-2">
 
-</table>
 
-     
-                                          
-                                        
-                                  
-                                 
-								</div>
-							</div>
-						</div>
-					</div>
-                        
-                      
+                                    <div class="col-md-12 table-responsive">
+
+                                        <br>
+
+
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th colspan="4" style="text-align: center;">
+                                                    <h3>Employee Information</h3>
+                                                </th>
+
+                                            </tr>
+                                            <tr>
+                                                <th><img src="<?php echo htmlspecialchars($imageUrl); ?>" alt="" class="avatar-img rounded-circle" style="height: 80px; width: 80px;"></th>
+                                                <td style="text-transform: uppercase;font-weight:bold;"><?php echo $firstname . ' ' . $middlename . ' ' . $lastname . $name_extension; ?></td>
+                                                <th>Email</th>
+                                                <td><?php echo $email_address; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Contact No.:</th>
+                                                <td><?php echo $mobile_no; ?></td>
+                                                <th>Address:</th>
+                                                <td><?php echo $address; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Place of Birth:</th>
+                                                <td><?php echo $pob; ?></td>
+                                                <th>Sex:</th>
+                                                <td><?php echo $sex; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Birthday:</th>
+                                                <td colspan=""><?php echo $dob; ?></td>
+                                                <th>Blood Type</th>
+                                                <td colspan=""><?php echo $blood_type; ?></td>
+                                            </tr>
+
+
+
+                                        </table>
+
+
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-   
+
 
     <div class="breadcome-area">
         <div class="container-fluid">
@@ -242,7 +244,7 @@ if (isset($_GET['employee_no'])) {
     <script type="text/javascript" src="https://cdn.datatables.net/2.1.2/js/dataTables.bootstrap5.min.js"></script>
     <!--sweet alert -->
 
-   
+
 
 
     <!--Footer-part-->
