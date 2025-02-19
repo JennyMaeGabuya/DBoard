@@ -174,14 +174,14 @@ include "dbcon.php";
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <div class="form-group">
+                              <div class="form-group">
                                 <input
                                   name="emp_no"
                                   type="text"
                                   class="form-control"
                                   placeholder="Employee Number" />
-                              </div> 
-                            <div class="form-group">
+                              </div>
+                              <div class="form-group">
                                 <input
                                   name="address"
                                   type="text"
@@ -230,7 +230,7 @@ include "dbcon.php";
                                     value="none"
                                     selected=""
                                     disabled="">
-                                    Blood_type
+                                    Blood Type
                                   </option>
                                   <option value="A+">A+</option>
                                   <option value="A-">A-</option>
@@ -245,14 +245,20 @@ include "dbcon.php";
                                 </select>
                               </div>
 
+                              <style>
+                                .form-label {
+                                  margin-top: 10px
+                                }
+                              </style>
+
                               <div class="form-group">
-                                <label for="formFile" class="form-label">Upload profile picture</label>
+                                <label for="formFile" class="form-label">Upload Profile Picture</label>
                                 <input class="form-control" type="file" id="formFile" name="image">
                               </div>
                             </div>
                           </div>
 
-                          <div class="row">
+                          <div class="row" style="margin-top: 15px;">
                             <div class="col-lg-12">
                               <div class="payment-adress">
                                 <button
@@ -303,21 +309,21 @@ include "dbcon.php";
                                   name="gsis"
                                   type="text"
                                   class="form-control"
-                                  placeholder="GSIS number" />
+                                  placeholder="GSIS Number" />
                               </div>
                               <div class="form-group">
                                 <input
                                   name="pag-ibig"
                                   type="text"
                                   class="form-control"
-                                  placeholder="PAGIBIG number" />
+                                  placeholder="PAGIBIG Number" />
                               </div>
                               <div class="form-group">
                                 <input
                                   name="date_started"
                                   type="text"
                                   class="form-control"
-                                  placeholder="Date started" />
+                                  placeholder="Date Started" />
                               </div>
                               <div class="form-group">
                                 <input
@@ -341,14 +347,14 @@ include "dbcon.php";
                                   name="philhealth"
                                   type="text"
                                   class="form-control"
-                                  placeholder="PHILHEALTH number" />
+                                  placeholder="PhilHealth Number" />
                               </div>
                               <div class="form-group">
                                 <input
                                   name="sss"
                                   type="text"
                                   class="form-control"
-                                  placeholder="SSS number" />
+                                  placeholder="SSS Number" />
                               </div>
                               <div class="form-group">
                                 <input
@@ -369,7 +375,7 @@ include "dbcon.php";
                                   name="date_separated"
                                   type="text"
                                   class="form-control"
-                                  placeholder="Date separated" />
+                                  placeholder="Date Separated" />
                               </div>
                             </div>
 
@@ -379,7 +385,7 @@ include "dbcon.php";
                                   name="tin"
                                   type="text"
                                   class="form-control"
-                                  placeholder="TIN number" />
+                                  placeholder="TIN Number" />
                               </div>
                               <div class="form-group">
                                 <input
@@ -400,18 +406,19 @@ include "dbcon.php";
                                   name="branch"
                                   type="text"
                                   class="form-control"
-                                  placeholder="branch" />
+                                  placeholder="Branch" />
                               </div>
                               <div class="form-group">
                                 <input
                                   name="separation"
                                   type="text"
                                   class="form-control"
-                                  placeholder="Cause of separation" />
+                                  placeholder="Cause of Separation" />
                               </div>
                             </div>
                           </div>
-                          <div class="row">
+
+                          <div class="row" style="margin-top: 15px;">
                             <div class="col-lg-12">
                               <div class="payment-adress">
                                 <button
@@ -477,14 +484,14 @@ include "dbcon.php";
                                   name="midyear"
                                   type="text"
                                   class="form-control"
-                                  placeholder="mid year" />
+                                  placeholder="Mid Year" />
                               </div>
                               <div class="form-group">
                                 <input
                                   name="yearend"
                                   type="text"
                                   class="form-control"
-                                  placeholder="year end bonus" />
+                                  placeholder="Year End Bonus" />
                               </div>
                             </div>
 
@@ -494,7 +501,7 @@ include "dbcon.php";
                                   name="cash_gift"
                                   type="text"
                                   class="form-control"
-                                  placeholder="Cash gift" />
+                                  placeholder="Cash Gift" />
                               </div>
                               <div class="form-group">
                                 <input
@@ -508,12 +515,12 @@ include "dbcon.php";
                                   name="issued_date"
                                   type="text"
                                   class="form-control"
-                                  placeholder="Issued date" />
+                                  placeholder="Issued Date" />
                               </div>
                             </div>
                           </div>
 
-                          <div class="row">
+                          <div class="row" style="margin-top: 15px;">
                             <div class="col-lg-12">
                               <div class="payment-adress">
                                 <button
