@@ -38,6 +38,8 @@ include "dbcon.php";
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
   <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -100,11 +102,30 @@ include "dbcon.php";
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <div class="review-content-section">
+<<<<<<< Updated upstream
                         <form id="add-department" action="basic-info.php" method="POST" enctype="multipart/form-data" class="add-department">
                           <div class="row">
+=======
+                        <form id="add-department"    action="basic-info.php" method="POST" enctype="multipart/form-data"  class="add-department">
+                        <div class="row">
+                       
+>>>>>>> Stashed changes
                             <div
                               class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-
+                              <div class="form-group">
+                                <select name="dept" class="form-control">
+                                  <option
+                                    value="none"
+                                    selected=""
+                                    disabled="">
+                                    Department
+                                  </option>
+                                  <option value="HRM">Human Resource Management</option>
+                                  <option value="IT">Information Technology</option>
+                                  <option value="MKT">Marketing</option>
+                                  <option value="ACT">Accounting</option>
+                                </select>
+                              </div>
                               <div class="form-group">
                                 <input
                                   name="firstname"
@@ -159,7 +180,14 @@ include "dbcon.php";
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                              <div class="form-group">
+                            <div class="form-group">
+                                <input
+                                  name="emp_no"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Employee Number" />
+                              </div> 
+                            <div class="form-group">
                                 <input
                                   name="address"
                                   type="text"

@@ -155,7 +155,7 @@ include "dbcon.php";
                                         $mobile_no = $row['mobile_no'];
                                         $email_address = $row['email_address'];
                                         $imagePath = $row['image'];
-                                        $imageUrl = empty($imagePath) ? 'img/logo.png' : '../applicants/assets/uploads/applicant_profile/' . $imagePath;
+                                        $imageUrl = empty($imagePath) ? 'img/logo.png' : 'img/profile/' . $imagePath;
                                     ?>
                                         <tr>
 

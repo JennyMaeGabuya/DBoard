@@ -8,6 +8,8 @@ if (!isset($_SESSION['user_id'])) {
 include "dbcon.php";
 
 if (isset($_POST['basic-infobtn'])) {
+    $emp_no= $_POST['emp_no'];
+   $dept= $_POST['dept'];
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
     $middlename = $_POST['middlename'];
@@ -20,6 +22,7 @@ if (isset($_POST['basic-infobtn'])) {
     $civil_status = $_POST['civil_status'];
     $sex = $_POST['sex'];
     $blood_type = $_POST['blood_type'];
+    $employee_no =$dept . $emp_no;
 
     // Handle the image upload
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
@@ -59,9 +62,9 @@ if (isset($_POST['basic-infobtn'])) {
                 header("Location: add-employee.php");
                 exit();
             } else {
-                $insertQuery = "INSERT INTO `employee` (`firstname`, `middlename`, `lastname`, `name_extension`, `dob`, `pob`, `sex`, `civil_status`, `address`, `blood_type`, `mobile_no`, `email_address`, `image`, `created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $insertQuery = "INSERT INTO `employee` (`employee_no`,`firstname`, `middlename`, `lastname`, `name_extension`, `dob`, `pob`, `sex`, `civil_status`, `address`, `blood_type`, `mobile_no`, `email_address`, `image`, `created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $con->prepare($insertQuery);
-                $stmt->bind_param("ssssssssssissss", $firstname, $middlename, $lastname, $name_extension, $dob, $pob, $sex, $civil_status, $address, $blood_type, $mobile_no, $email_address, $imagePath, $created_at, $updated_at);
+                $stmt->bind_param("sssssssssssissss", $employee_no, $firstname, $middlename, $lastname, $name_extension, $dob, $pob, $sex, $civil_status, $address, $blood_type, $mobile_no, $email_address, $image['name'], $created_at, $updated_at);
 
                 if ($stmt->execute()) {
                     $_SESSION['display'] = 'Successfully added a new employee!';
