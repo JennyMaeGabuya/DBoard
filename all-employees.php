@@ -113,7 +113,6 @@ include "dbcon.php";
                                         responsive: true,
                                         autoWidth: false,
                                         language: {
-                                            searchPlaceholder: "Search records",
                                             lengthMenu: "Show _MENU_ entries",
                                         },
                                     });

@@ -92,7 +92,7 @@ include "dbcon.php";
                                     <a href="#" class="btn btn-success btn-border btn-round btn-sm">
                                         <i class="fa fa-file-excel-o"></i> Export
                                     </a>
-                                    <a href="organization-chart.php" class="btn btn-danger btn-border btn-round btn-sm">
+                                    <a href="organization-chart.php" class="btn btn-danger btn-border btn-round btn-sm" target="_blank">
                                         <i class="fa fa-file-pdf-o"></i> PDF
                                     </a>
                                 </div>
@@ -110,7 +110,6 @@ include "dbcon.php";
                                         responsive: true,
                                         autoWidth: false,
                                         language: {
-                                            searchPlaceholder: "Search records",
                                             lengthMenu: "Show _MENU_ entries",
                                         },
                                     });
