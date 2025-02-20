@@ -161,7 +161,7 @@ include "dbcon.php";
                                             <td style="text-align: center;"><?php echo $count; ?></td>
                                             <td>
                                                 <img src="<?php echo htmlspecialchars($imageUrl); ?>" alt=""
-                                                    style="height: 50px; width: 50px;">
+                                                    style="height: 50px; width: 50px; border-radius: 50%; object-fit: cover;">
                                             </td>
                                             <td><?php echo htmlspecialchars($employee_no); ?></td>
                                             <td>
