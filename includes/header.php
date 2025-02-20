@@ -260,7 +260,6 @@
                                                     $user_name = 'Admin';
                                                 }
 
-                                                $con->close();
                                                 ?>
 
                                                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
@@ -279,7 +278,7 @@
                                                                 class="edu-icon edu-home-admin author-log-ic"></span>My Account</a>
                                                     </li>
                                                     <li>
-                                                        <a href="#"><span
+                                                        <a href="./settings.php"><span
                                                                 class="edu-icon edu-settings author-log-ic"></span>Settings</a>
                                                     </li>
                                                     <li>
