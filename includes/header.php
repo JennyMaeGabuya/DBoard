@@ -204,18 +204,73 @@
                                                     </div>
                                                 </div>
                                             </li>
+
                                             <li class="nav-item">
-                                                <a
-                                                    href="#"
-                                                    data-toggle="dropdown"
-                                                    role="button"
-                                                    aria-expanded="false"
-                                                    class="nav-link dropdown-toggle">
-                                                    <img src="img/product/pro4.jpg" alt="" />
-                                                    <span class="admin-name">Admin</span>
-                                                    <i
-                                                        class="fa fa-angle-down edu-icon edu-down-arrow"></i>
+
+                                                <?php
+                                                if (!isset($_SESSION['user_id'])) {
+                                                    header('location:../index.php');
+                                                    exit();
+                                                }
+
+                                                include "dbcon.php";
+
+                                                // Get the logged-in user's employee number
+                                                $user_id = $_SESSION['user_id'];
+
+                                                // Check if user_id is valid before running the query
+                                                if (!empty($user_id)) {
+                                                    $query = "
+                                                        SELECT e.image, e.firstname, e.lastname, e.sex
+                                                        FROM employee e 
+                                                        INNER JOIN admin a ON e.employee_no = a.employee_no 
+                                                        WHERE a.employee_no = ?
+                                                    ";
+
+                                                    $stmt = $con->prepare($query);
+                                                    $stmt->bind_param("s", $user_id);
+                                                    $stmt->execute();
+                                                    $result = $stmt->get_result();
+
+                                                    if ($row = $result->fetch_assoc()) {
+                                                        $imagePath = $row['image'];
+                                                        $sex = strtolower($row['sex']);
+
+                                                        // Determine salutation based on sex
+                                                        if ($sex === 'male') {
+                                                            $salutation = "Mr.";
+                                                        } elseif ($sex === 'female') {
+                                                            $salutation = "Ms.";
+                                                        } else {
+                                                            $salutation = ""; // Default to no salutation if sex is not set
+                                                        }
+
+                                                        $user_image = !empty($imagePath) ? 'img/profile/' . $imagePath : 'img/logo.png'; // Default image if empty
+                                                        $user_name = trim("$salutation {$row['firstname']} {$row['lastname']}"); // Full name with salutation
+                                                    } else {
+                                                        // If no matching employee record, set default values
+                                                        $user_image = 'img/logo.png';
+                                                        $user_name = 'Admin';
+                                                    }
+
+                                                    $stmt->close();
+                                                } else {
+                                                    // Handle case where session data is missing
+                                                    $user_image = 'img/logo.png';
+                                                    $user_name = 'Admin';
+                                                }
+
+                                                $con->close();
+                                                ?>
+
+                                                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
+                                                    <img src="<?php echo htmlspecialchars($user_image); ?>" alt="User Image" />
+                                                    <span class="admin-name"><?php echo htmlspecialchars($user_name); ?></span>
+                                                    <i class="fa fa-angle-down edu-icon edu-down-arrow"></i>
                                                 </a>
+
+                                                <!-- NOT YET EDITED -->
+
                                                 <ul
                                                     role="menu"
                                                     class="dropdown-header-top author-log dropdown-menu ">
@@ -233,6 +288,7 @@
                                                     </li>
                                                 </ul>
                                             </li>
+
                                             <li class="nav-item nav-setting-open">
                                                 <a
                                                     href="#"

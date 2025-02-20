@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Prepare statement to prevent SQL injection
-    $stmt = $con->prepare("SELECT id, username, password FROM admin WHERE username = ? OR email = ?");
+    $stmt = $con->prepare("SELECT id, employee_no, username, password FROM admin WHERE username = ? OR email = ?");
     $stmt->bind_param("ss", $username, $username);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // Verify password (Assuming passwords are hashed in the database)
         if (password_verify($password, $row['password'])) {
-            $_SESSION['user_id'] = $row['id'];
+            $_SESSION['user_id'] = $row['employee_no'];
             $_SESSION['username'] = $row['username'];
             header("Location: dashboard.php");
             exit();
