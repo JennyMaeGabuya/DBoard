@@ -14,18 +14,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
   }
 
   .metismenu li.active>ul li.active a {
-    background-color: rgba(118, 184, 250, 0.67) !important;
+    background-color: rgba(118, 184, 250, 0.51) !important;
     color: black !important;
     font-weight: bold;
   }
 
   .metismenu li>a:hover {
-    background-color: rgba(51, 135, 245, 0.35) !important;
+    background-color: rgba(51, 135, 245, 0.15) !important;
     color: black !important;
   }
 
   .metismenu li.active>ul li a:hover {
-    background-color: rgba(51, 135, 245, 0.2) !important;
+    background-color: rgba(63, 141, 244, 0.59) !important;
     color: black !important;
   }
 </style>
