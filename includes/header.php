@@ -1,14 +1,31 @@
 <!-- Start Welcome area -->
 <div class="all-content-wrapper">
-    <div class="container-fluid">
+    <div class="container-fluid hidden-logo">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="logo-pro">
-                    <a href="./dashboard.php"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
+                    <a href="./dashboard.php">
+                        <img class="main-logo" src="img/logo/header-logo.png" alt=""
+                            style="width: 150px; height: auto; margin-top: 10px; margin-bottom: 10px;" />
+                    </a>
                 </div>
             </div>
         </div>
     </div>
+
+    <style>
+        .hidden-logo {
+            visibility: hidden;
+        }
+
+        @media screen and (max-width: 768px) {
+            .hidden-logo {
+                display: none;
+                text-align: center;
+            }
+        }
+    </style>
+
     <div class="header-advance-area">
         <div class="header-top-area">
             <div class="container-fluid">

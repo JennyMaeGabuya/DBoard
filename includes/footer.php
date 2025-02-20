@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="footer-copy-right">
-                    <p style="text-align: center;">
+                    <p>
                         <?php echo date("Y"); ?> &copy; Municipality of Mataasnakahoy
                     </p>
                 </div>
@@ -39,12 +39,21 @@
         opacity: 0;
         pointer-events: none;
     }
+
+    @media screen and (max-width: 768px) {
+        #footer {
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 5px;
+            font-size: 13px;
+        }
+    }
 </style>
 
 <script>
     let lastScrollTop = 0;
     const footer = document.getElementById("footer");
-    const sidebar = document.querySelector(".left-sidebar-pro");
     const sidebarToggle = document.getElementById("sidebarCollapse");
 
     function handleScroll() {
@@ -58,9 +67,11 @@
     }
 
     // Sidebar toggle event listener
-    sidebarToggle.addEventListener("click", function() {
-        document.body.classList.toggle("sidebar-collapsed");
-    });
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener("click", function() {
+            document.body.classList.toggle("sidebar-collapsed");
+        });
+    }
 
     // Debounce scroll event
     let isScrolling;
