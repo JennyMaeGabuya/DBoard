@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 20, 2025 at 02:59 AM
+-- Generation Time: Feb 20, 2025 at 03:18 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -108,7 +108,7 @@ INSERT INTO `employee` (`employee_no`, `firstname`, `middlename`, `lastname`, `n
 ('EMP008', 'Isabel', 'T.', 'Mendoza', '', '1998-02-25', 'Laguna', 'Female', 'Single', '505 Calamba Rd., Laguna', 'AB-', 9891234567, 'isabel.mendoza@email.com', NULL, '2025-02-19 14:09:03', '2025-02-19 14:14:28'),
 ('EMP009', 'Miguel', 'R.', 'Domingo', '', '1991-08-09', 'Pampanga', 'Male', 'Married', '606 Angeles St., Pampanga', 'O+', 9991234567, 'miguel.domingo@email.com', NULL, '2025-02-19 14:09:03', '2025-02-19 14:14:31'),
 ('EMP010', 'Carmen', 'S.', 'Delos Reyes', '', '1984-12-01', 'Zamboanga City', 'Female', 'Separated', '707 Pilar St., Zamboanga', 'A+', 9091234567, 'carmen.reyes@email.com', NULL, '2025-02-19 14:09:03', '2025-02-19 14:14:34'),
-('HRM-ADMIN', 'ADMIN', 'ADMIN', 'ADMIN', NULL, '1990-06-28', 'CUENCA, BATANGAS', 'Male', 'Single', 'CUENCA, BATANGAS', 'A+', 9123456789, 'admin@gmail.com', NULL, '2025-02-17 06:33:54', '2025-02-17 06:33:54'),
+('HRM-ADMIN', 'GALLY', 'ADMIN', 'TIPAN', NULL, '1990-06-28', 'CUENCA, BATANGAS', 'Male', 'Single', 'CUENCA, BATANGAS', 'A+', 9123456789, 'admin@gmail.com', '2.jpg', '2025-02-17 06:33:54', '2025-02-20 14:16:46'),
 ('HRM004', 'GELYN', 'MATIBAG', 'KATIMBANG', NULL, '1981-06-28', 'DITA, CUENCA, BATANGAS', 'Female', 'Married', 'CUENCA, BATANGAS', 'B-', 9772866201, 'gmatibag10581@yahoo.com', NULL, '2025-02-17 06:27:21', '2025-02-17 06:31:42');
 
 -- --------------------------------------------------------
