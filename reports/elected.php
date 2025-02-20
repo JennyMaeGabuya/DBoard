@@ -1,5 +1,5 @@
 <?php
-require('fpdf/fpdf.php');
+require('../fpdf/fpdf.php');
 include('dbcon.php');
 
 // Create new class extending fpdf class for multi-cell tables
@@ -95,10 +95,10 @@ class PDF extends PDF_MC_Table
     function Header()
     {
         // Insert the logo image with specific positioning and size
-        $this->Image('img/M-Kahoy.png', 29, 17, 30);
+        $this->Image('../img/M-Kahoy.png', 29, 17, 30);
 
         // Insert the logo image with specific positioning and size
-        $this->Image('img/Bagong-Pilipinas.png', 157, 18, 30);
+        $this->Image('../img/Bagong-Pilipinas.png', 157, 18, 30);
 
         $this->Ln(5);
         // Set font and size for the first line
@@ -202,9 +202,9 @@ class PDF extends PDF_MC_Table
 
         // Justified text with bold inline formatting
         $this->SetFont('Times', '', 12);
-        $text1 = 'THIS IS TO CERTIFY that as per records available in this office ';
-        $text2 = 'Ms. VICKY K. MANIGBAS,';
-        $text3 = ' is a regular employee of this municipality since December 21, 2000 and presently holding position as Administrative Officer II (Budget Officer I) in the Office of the Municipal Budget, this municipality. Her annual compensation is as follows:';
+        $text1 = 'THIS IS TO CERTIFY that per records available in this office ';
+        $text2 = 'Hon. Atty. ROWELL B. MALABAG';
+        $text3 = ' was duly elected as a member of the Sangguniang Bayan on July 1, 2022, to present for National and Local election. His annual compensation is as follows:';
 
         // Combine text with inline bold formatting
         $this->MultiCell(0, 5, $text1 . $this->SetFont('Times', 'B', 12) . $text2 . $this->SetFont('Times', '', 12) . $text3, 0, 'J');
@@ -266,7 +266,7 @@ class PDF extends PDF_MC_Table
         $this->SetY(-13);
 
         // Add the image
-        $this->Image('Img/JMi.png', 15, 240, 185);
+        $this->Image('../img/JMi.png', 15, 240, 185);
     }
 }
 
@@ -281,7 +281,7 @@ $pdf->DisplayText([]);
 // Handle the action
 if ($action === 'download') {
     // Output the PDF as a download
-    $pdf->Output('D', 'CoEC-appointed.pdf');
+    $pdf->Output('D', 'CoEC-elected.pdf');
 } else {
     // Default output to the browser
     $pdf->Output();
