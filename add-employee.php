@@ -105,7 +105,7 @@ include "dbcon.php";
                         <form id="add-department" action="basic-info.php" method="POST" enctype="multipart/form-data" class="add-department">
                           <div class="row">
                             <div
-                              class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                              class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                               <div class="form-group">
                                 <select name="dept" class="form-control">
                                   <option
@@ -119,6 +119,13 @@ include "dbcon.php";
                                   <option value="MKT">Marketing</option>
                                   <option value="ACT">Accounting</option>
                                 </select>
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="emp_no"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Employee Number" />
                               </div>
                               <div class="form-group">
                                 <input
@@ -163,23 +170,17 @@ include "dbcon.php";
                                   class="form-control"
                                   placeholder="Mobile no." required pattern="\d{11}" />
                               </div>
-                              <div class="form-group">
+                             
+                            </div>
+
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-group">
                                 <input
                                   name="dob"
                                   id="finish"
                                   type="date"
                                   class="form-control"
                                   placeholder="Date of Birth" />
-                              </div>
-                            </div>
-
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                              <div class="form-group">
-                                <input
-                                  name="emp_no"
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Employee Number" />
                               </div>
                               <div class="form-group">
                                 <input
@@ -256,51 +257,6 @@ include "dbcon.php";
                                 <input class="form-control" type="file" id="formFile" name="image">
                               </div>
                             </div>
-                          </div>
-
-                          <div class="row" style="margin-top: 15px;">
-                            <div class="col-lg-12">
-                              <div class="payment-adress">
-                                <button
-                                  type="submit" name="basic-infobtn"
-                                  class="btn btn-primary waves-effect waves-light">
-                                  Submit
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-
-                          <script>
-                            document.getElementById('mobile').addEventListener('input', function(e) {
-                              const value = e.target.value;
-                              if (value.length > 11) {
-                                e.target.value = value.slice(0, 11); // Limit input to 11 digits
-                              }
-                            });
-                          </script>
-                          <?php if (isset($_SESSION['display'])) : ?>
-                            <script>
-                              Swal.fire({
-                                title: '<?php echo $_SESSION['title']; ?>',
-                                text: '<?php echo $_SESSION['display']; ?>',
-                                icon: '<?php echo $_SESSION['success']; ?>',
-                                confirmButtonText: 'OK'
-                              });
-                            </script>
-                            <?php unset($_SESSION['display']);
-                            unset($_SESSION['success']); ?>
-                          <?php endif; ?>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="product-tab-list tab-pane fade" id="reviews">
-                  <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      <div class="review-content-section">
-                        <form id="add-department" action=".php" method="POST" enctype="multipart/form-data" class="add-department">
-                          <div class="row">
                             <div
                               class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
 
@@ -313,11 +269,51 @@ include "dbcon.php";
                               </div>
                               <div class="form-group">
                                 <input
-                                  name="pag-ibig"
+                                  name="pag_ibig"
                                   type="text"
                                   class="form-control"
                                   placeholder="PAGIBIG Number" />
                               </div>
+                              <div class="form-group">
+                                <input
+                                  name="philhealth"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="PhilHealth Number" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="sss"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="SSS Number" />
+                              </div>
+                              <div class="form-group">
+                                <input
+                                  name="tin"
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="TIN Number" />
+                              </div>
+                            </div>
+                          </div>
+
+                        
+                      <!--  </form>-->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="product-tab-list tab-pane fade" id="reviews">
+                  <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <div class="review-content-section">
+                       <!-- <form id="add-department" action=".php" method="POST" enctype="multipart/form-data" class="add-department">-->
+                          <div class="row">
+                            <div
+                              class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+
+                            
                               <div class="form-group">
                                 <input
                                   name="date_started"
@@ -342,20 +338,7 @@ include "dbcon.php";
                             </div>
 
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                              <div class="form-group">
-                                <input
-                                  name="philhealth"
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="PhilHealth Number" />
-                              </div>
-                              <div class="form-group">
-                                <input
-                                  name="sss"
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="SSS Number" />
-                              </div>
+                            
                               <div class="form-group">
                                 <input
                                   name="date_ended"
@@ -380,13 +363,7 @@ include "dbcon.php";
                             </div>
 
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                              <div class="form-group">
-                                <input
-                                  name="tin"
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="TIN Number" />
-                              </div>
+                            
                               <div class="form-group">
                                 <input
                                   name="designation"
@@ -418,18 +395,8 @@ include "dbcon.php";
                             </div>
                           </div>
 
-                          <div class="row" style="margin-top: 15px;">
-                            <div class="col-lg-12">
-                              <div class="payment-adress">
-                                <button
-                                  type="submit" name="servicerecordbtn"
-                                  class="btn btn-primary waves-effect waves-light">
-                                  Submit
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </form>
+                        
+                     <!--   </form>-->
                       </div>
                     </div>
                   </div>
@@ -438,7 +405,7 @@ include "dbcon.php";
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <div class="review-content-section">
-                        <form id="add-department" action=".php" method="POST" enctype="multipart/form-data" class="add-department">
+                       <!-- <form id="add-department" action=".php" method="POST" enctype="multipart/form-data" class="add-department">-->
                           <div class="row">
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                               <div class="form-group">
@@ -524,13 +491,34 @@ include "dbcon.php";
                             <div class="col-lg-12">
                               <div class="payment-adress">
                                 <button
-                                  type="submit" name="compensationbtn"
+                                  type="submit" name="basic-infobtn"
                                   class="btn btn-primary waves-effect waves-light">
                                   Submit
                                 </button>
                               </div>
                             </div>
                           </div>
+
+                          <script>
+                            document.getElementById('mobile').addEventListener('input', function(e) {
+                              const value = e.target.value;
+                              if (value.length > 11) {
+                                e.target.value = value.slice(0, 11); // Limit input to 11 digits
+                              }
+                            });
+                          </script>
+                          <?php if (isset($_SESSION['display'])) : ?>
+                            <script>
+                              Swal.fire({
+                                title: '<?php echo $_SESSION['title']; ?>',
+                                text: '<?php echo $_SESSION['display']; ?>',
+                                icon: '<?php echo $_SESSION['success']; ?>',
+                                confirmButtonText: 'OK'
+                              });
+                            </script>
+                            <?php unset($_SESSION['display']);
+                            unset($_SESSION['success']); ?>
+                          <?php endif; ?>
                         </form>
                       </div>
                     </div>

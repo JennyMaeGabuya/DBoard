@@ -24,6 +24,38 @@ if (isset($_POST['basic-infobtn'])) {
     $blood_type = $_POST['blood_type'];
     $employee_no =$dept . $emp_no;
 
+    //government records
+    $gsis= $_POST['gsis'];
+    $pag_ibig= $_POST['Pag_ibig'];
+    $sss= $_POST['sss'];
+    $philhealth= $_POST['philhealth'];
+    $tin= $_POST['tin'];
+
+    //service records
+    $date_started= $_POST['date_started'];
+    $salary= $_POST['salary'];
+    $abs_wo_pay= $_POST['abs_wo_pay'];
+    $date_ended= $_POST['date_ended'];
+    $station_place= $_POST['station_place'];
+    $date_separated= $_POST['date_separated'];
+    $designation= $_POST['designation'];
+    $status= $_POST['status'];
+    $branch= $_POST['branch'];
+    $separation= $_POST['separation'];
+
+    //compensation
+    $salary= $_POST['salary'];
+    $pera= $_POST['pera'];
+    $rt_allowance= $_POST['rt_allowance'];
+    $allowance= $_POST['allowance'];
+    $clothing= $_POST['clothing'];
+    $midyear= $_POST['midyear'];
+    $yearend= $_POST['yearend'];
+    $cash_gift= $_POST['cash_gift'];
+    $incentive= $_POST['incentive'];
+    $issued_date= $_POST['issued_date'];
+
+
     // Handle the image upload
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
         $image = $_FILES['image'];
@@ -70,7 +102,22 @@ if (isset($_POST['basic-infobtn'])) {
                     $_SESSION['display'] = 'Successfully added a new employee!';
                     $_SESSION['title'] = 'Good Job';
                     $_SESSION['success'] = 'success';
-                    header("Location: add-employee.php");
+
+                // Now insert the government records
+                $govInsertQuery = "INSERT INTO `government_info` (`employee_no`, `gsis_no`, `pag_ibig_no`, `philhealth_no`,`sss_no`, `tin_no`, `created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                $govStmt = $con->prepare($govInsertQuery);
+                $govStmt->bind_param("ssssssss", $employee_no, $gsis, $pag_ibig, $philhealth, $sss,  $tin, $created_at, $updated_at);
+
+                $serviceInsertQuery = "INSERT INTO `service_records` (`employee_no`, `from_date`, `to_date`, `designation`,`status`, `salary`, `station_place`, `branch`, `abs_wo_pay`, `date_separated`, `cause_of_separation`, `created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $serviceStmt = $con->prepare($serviceInsertQuery);
+                $serviceStmt->bind_param("sssssdsssssss", $employee_no, $date_started, $date_ended, $designation, $status,  $salary, $station_place, $branch, $abs_wo_pay, $date_separated, $separation,  $created_at, $updated_at);
+
+                $compensationInsertQuery = "INSERT INTO `compensation` (`employee_no`, `salary`, `pera`, `rt_allowance`,`allowance`, `clothing`, `mid_year`, `year_end_bonus`, `cash_gift`, `productivity_incentive`, `issued_date`, `created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $compensationStmt = $con->prepare($serviceInsertQuery);
+                $compensationStmt->bind_param("sdddddddddsss", $employee_no, $salary, $pera, $rt_allowance, $allowance,  $clothing, $midyear, $yearend, $cash_gift, $incentive, $issued_date,  $created_at, $updated_at);
+
+                
+                header("Location: add-employee.php");
                     exit();
                 } else {
                     $_SESSION['display'] = 'Something went wrong during the database insertion!';
