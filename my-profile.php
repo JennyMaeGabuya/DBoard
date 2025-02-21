@@ -10,13 +10,8 @@ if (!isset($_SESSION['user_id'])) {
 // Include the database connection file
 include_once "dbcon.php";
 
-// Check if the database connection is established
-if (!isset($conn) || !$conn) {
-  die("Database connection failed: " . mysqli_connect_error());
-}
-
-// Set the employee_no for the admin
-$employee_no = 'HRM-ADMIN'; // This is the specific employee_no for the admin
+// Set the user_id logged in as the employee_no
+$employee_no = $_SESSION['user_id'];
 
 // Fetch user data from the database using the specified employee_no
 $query = "SELECT 
@@ -72,9 +67,9 @@ LEFT JOIN
 WHERE 
     e.employee_no = ?"; // Use employee_no to fetch data
 
-$stmt = $conn->prepare($query);
+$stmt = $con->prepare($query);
 if ($stmt === false) {
-  die("Error preparing statement: " . $conn->error);
+  die("Error preparing statement: " . $con->error);
 }
 $stmt->bind_param("s", $employee_no); // Bind the employee_no as a string
 $stmt->execute();
@@ -97,6 +92,7 @@ if ($result->num_rows > 0) {
   $sex = $row['sex'];
   $blood_type = $row['blood_type'];
   $image = $row['image'];
+  $user_image = !empty($image) ? 'img/profile/' . $image : 'img/logo.png';
   $gsis_no = $row['gsis_no'];
   $pag_ibig_no = $row['pag_ibig_no'];
   $philhealth_no = $row['philhealth_no'];
@@ -122,7 +118,6 @@ if ($result->num_rows > 0) {
   $year_end_bonus = $row['year_end_bonus'];
   $issued_date = $row['issued_date'];
   $allowance = $row['allowance'];
-
 } else {
   die("No user data found.");
 }
@@ -158,24 +153,21 @@ if ($result->num_rows > 0) {
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
   <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+
   <style>
     body {
       font-family: Arial, sans-serif;
       background-color: #f8f9fa;
-      /* Light gray background */
       color: #343a40;
-      /* Dark gray text */
       margin: 0;
       padding: 0;
     }
 
     .product-payment-inner-st {
       background-color: #fff;
-      /* White background for the form */
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      /* Subtle shadow */
     }
 
     .tab-review-design {
@@ -184,20 +176,14 @@ if ($result->num_rows > 0) {
 
     .nav-tabs .nav-link {
       background-color: #e9ecef;
-      /* Light gray for tabs */
       color: #495057;
-      /* Gray text for tabs */
       border: 1px solid #dee2e6;
-      /* Lighter border */
       border-radius: 0;
-      /* Remove rounded corners */
     }
 
     .nav-tabs .nav-link.active {
       background-color: #007bff;
-      /* Blue for active tab */
       color: #fff;
-      /* White text for active tab */
       border-color: #007bff;
     }
 
@@ -207,17 +193,13 @@ if ($result->num_rows > 0) {
 
     .btn-primary {
       background-color: #007bff;
-      /* Blue button */
       border-color: #007bff;
     }
 
     .btn-primary:hover {
       background-color: #0056b3;
-      /* Darker blue on hover */
       border-color: #0056b3;
     }
-
-    
   </style>
 </head>
 
@@ -267,8 +249,9 @@ if ($result->num_rows > 0) {
           <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
             <div class="profile-info-inner">
               <div class="profile-img">
-                <img src="img/profile/1.jpg" alt="" />
+                <img src="<?php echo htmlspecialchars($user_image); ?>" alt="User Image" />
               </div>
+
               <div class="profile-details-hr">
                 <div class="row">
                   <div class="col-lg-6 col-md-12 col-sm-12 col-xs-6">
@@ -588,6 +571,3 @@ if ($result->num_rows > 0) {
 
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>
-</body>
-
-</html>
