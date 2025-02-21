@@ -53,6 +53,8 @@ include('dbcon.php');
         transform: rotateY(360deg);
       }
     }
+    /* General Reset */S
+   
   </style>
 </head>
 
@@ -74,7 +76,7 @@ include('dbcon.php');
                 <label class="control-label" for="username">Username/Email</label>
                 <input
                   type="text"
-                  placeholder="example@gmail.com"
+                  placeholder="Email"
                   title="Please enter your username"
                   required
                   name="username"
@@ -88,7 +90,7 @@ include('dbcon.php');
                 <input
                   type="password"
                   title="Please enter your password"
-                  placeholder="*********"
+                  placeholder="Password"
                   required
                   name="password"
                   id="password"
@@ -104,8 +106,8 @@ include('dbcon.php');
                 </label>
               </div>
 
-              <button id="loginButton" class="btn btn-success btn-block loginbtn" disabled>
-                Login
+              <button id="loginButton"  class="btn btn-success btn-block loginbtn" disabled>
+              <i id="buttonIcon" class="fas fa-lock"></i> Login
               </button>
             </form>
           </div>
