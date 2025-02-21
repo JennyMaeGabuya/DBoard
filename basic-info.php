@@ -1,5 +1,8 @@
 <?php
+
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 if (!isset($_SESSION['user_id'])) {
     header('location:../index.php');
     exit();
@@ -23,16 +26,17 @@ if (isset($_POST['basic-infobtn'])) {
     $sex = $_POST['sex'];
     $blood_type = $_POST['blood_type'];
     $employee_no =$dept . $emp_no;
-
+    $created_at = date('Y-m-d');
+            $updated_at = date('Y-m-d');
     //government records
     $gsis= $_POST['gsis'];
-    $pag_ibig= $_POST['Pag_ibig'];
+    $pag_ibig= $_POST['pag_ibig'];
     $sss= $_POST['sss'];
     $philhealth= $_POST['philhealth'];
     $tin= $_POST['tin'];
 
     //service records
-    $date_started= $_POST['date_started'];
+   /* $date_started= $_POST['date_started'];
     $salary= $_POST['salary'];
     $abs_wo_pay= $_POST['abs_wo_pay'];
     $date_ended= $_POST['date_ended'];
@@ -43,7 +47,7 @@ if (isset($_POST['basic-infobtn'])) {
     $branch= $_POST['branch'];
     $separation= $_POST['separation'];
 
-    //compensation
+    compensation
     $salary= $_POST['salary'];
     $pera= $_POST['pera'];
     $rt_allowance= $_POST['rt_allowance'];
@@ -54,7 +58,7 @@ if (isset($_POST['basic-infobtn'])) {
     $cash_gift= $_POST['cash_gift'];
     $incentive= $_POST['incentive'];
     $issued_date= $_POST['issued_date'];
-
+*/
 
     // Handle the image upload
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
@@ -76,8 +80,7 @@ if (isset($_POST['basic-infobtn'])) {
 
         // Move the uploaded file to the designated directory
         if (move_uploaded_file($image['tmp_name'], $imagePath)) {
-            $created_at = date('Y-m-d');
-            $updated_at = date('Y-m-d');
+        
 
             // Check if the employee name already exists
             $checkNameQuery = "SELECT * FROM employee WHERE firstname = ? AND middlename = ? AND lastname = ?";
@@ -91,39 +94,37 @@ if (isset($_POST['basic-infobtn'])) {
                 $_SESSION['display'] = 'Employee already exists!';
                 $_SESSION['title'] = 'Error';
                 $_SESSION['success'] = 'error';
-                header("Location: add-employee.php");
+                header("Location: all-employees.php");
                 exit();
             } else {
                 $insertQuery = "INSERT INTO `employee` (`employee_no`,`firstname`, `middlename`, `lastname`, `name_extension`, `dob`, `pob`, `sex`, `civil_status`, `address`, `blood_type`, `mobile_no`, `email_address`, `image`, `created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $con->prepare($insertQuery);
                 $stmt->bind_param("sssssssssssissss", $employee_no, $firstname, $middlename, $lastname, $name_extension, $dob, $pob, $sex, $civil_status, $address, $blood_type, $mobile_no, $email_address, $image['name'], $created_at, $updated_at);
 
-                if ($stmt->execute()) {
-                    $_SESSION['display'] = 'Successfully added a new employee!';
-                    $_SESSION['title'] = 'Good Job';
-                    $_SESSION['success'] = 'success';
-
-                // Now insert the government records
-                $govInsertQuery = "INSERT INTO `government_info` (`employee_no`, `gsis_no`, `pag_ibig_no`, `philhealth_no`,`sss_no`, `tin_no`, `created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-                $govStmt = $con->prepare($govInsertQuery);
-                $govStmt->bind_param("ssssssss", $employee_no, $gsis, $pag_ibig, $philhealth, $sss,  $tin, $created_at, $updated_at);
-
-                $serviceInsertQuery = "INSERT INTO `service_records` (`employee_no`, `from_date`, `to_date`, `designation`,`status`, `salary`, `station_place`, `branch`, `abs_wo_pay`, `date_separated`, `cause_of_separation`, `created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                $serviceStmt = $con->prepare($serviceInsertQuery);
-                $serviceStmt->bind_param("sssssdsssssss", $employee_no, $date_started, $date_ended, $designation, $status,  $salary, $station_place, $branch, $abs_wo_pay, $date_separated, $separation,  $created_at, $updated_at);
-
-                $compensationInsertQuery = "INSERT INTO `compensation` (`employee_no`, `salary`, `pera`, `rt_allowance`,`allowance`, `clothing`, `mid_year`, `year_end_bonus`, `cash_gift`, `productivity_incentive`, `issued_date`, `created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                $compensationStmt = $con->prepare($serviceInsertQuery);
-                $compensationStmt->bind_param("sdddddddddsss", $employee_no, $salary, $pera, $rt_allowance, $allowance,  $clothing, $midyear, $yearend, $cash_gift, $incentive, $issued_date,  $created_at, $updated_at);
-
+                if ($stmt->execute()) { 
+                    // Now insert the government records
+                    $govInsertQuery = "INSERT INTO `government_info` (`employee_no`, `gsis_no`, `pag_ibig_no`, `philhealth_no`, `sss_no`, `tin_no`, `created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    $govStmt = $con->prepare($govInsertQuery);
+                    $govStmt->bind_param("ssssssss", $employee_no, $gsis, $pag_ibig, $philhealth, $sss, $tin, $created_at, $updated_at);
                 
-                header("Location: add-employee.php");
+                    // Execute the government records insertion
+                    if ($govStmt->execute()) {
+                        $_SESSION['display'] = 'Successfully added a new employee and government records!';
+                        $_SESSION['title'] = 'Good Job';
+                        $_SESSION['success'] = 'success';
+                    } else {
+                        $_SESSION['display'] = 'Failed to insert government records!';
+                        $_SESSION['title'] = 'Error';
+                        $_SESSION['success'] = 'error';
+                    }
+                
+                    header("Location: add-employee.php");
                     exit();
                 } else {
-                    $_SESSION['display'] = 'Something went wrong during the database insertion!';
+                    $_SESSION['display'] = 'Something went wrong. Please, Try Again!';
                     $_SESSION['title'] = 'Error';
                     $_SESSION['success'] = 'error';
-                    header("Location: add-employee.php");
+                    header("Location: all-employees.php");
                     exit();
                 }
             }
@@ -131,14 +132,14 @@ if (isset($_POST['basic-infobtn'])) {
             $_SESSION['display'] = 'Failed to upload image!';
             $_SESSION['title'] = 'Error';
             $_SESSION['success'] = 'error';
-            header("Location: add-employee.php");
+            header("Location: all-employees.php");
             exit();
         }
     } else {
         $_SESSION['display'] = 'No image uploaded or there was an error!';
         $_SESSION['title'] = 'Error';
         $_SESSION['success'] = 'error';
-        header("Location: add-employee.php");
+        header("Location: all-employees.php");
         exit();
     }
 }
