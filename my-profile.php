@@ -193,13 +193,13 @@ if ($result->num_rows > 0) {
         margin-bottom: 20px; /* Increased spacing between form groups */
        
         border-radius: 5px; /* Rounded corners */
-        padding: 15px; /* Padding inside form groups */
+        padding: 5px; /* Padding inside form groups */
        
     }
 
     .form-control {
         border: 1px solid #ced4da; /* Light border for inputs */
-        border-radius: 5px; /* Rounded corners for inputs */
+        border-radius: 8px; /* Rounded corners for inputs */
         transition: border-color 0.3s; /* Smooth transition */
     }
 
@@ -230,7 +230,7 @@ if ($result->num_rows > 0) {
     }
 
     .address-hr {
-        margin-bottom: 15px; /* Spacing between address sections */
+        margin-bottom: 20px; /* Spacing between address sections */
     }
 
     .address-hr p {
@@ -239,7 +239,7 @@ if ($result->num_rows > 0) {
     }
 
     .single-pro-review-area {
-        margin-top: 30px; /* Increased margin for spacing */
+        margin-top: 0spx; /* Increased margin for spacing */
     }
 
     /* Responsive adjustments */
@@ -248,9 +248,7 @@ if ($result->num_rows > 0) {
             padding: 20px; /* Less padding on smaller screens */
         }
 
-        .form-group {
-            padding: 10px; /* Less padding for form groups */
-        }
+      
     }
 </style>
 </head>
