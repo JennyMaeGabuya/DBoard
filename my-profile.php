@@ -451,9 +451,9 @@ if ($result->num_rows > 0) {
                                                                         value="<?php echo $to_date; ?>">
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="station_place">Station Place</label>
+                                                                    <label for="station_place">Station/Place</label>
                                                                     <input type="text" class="form-control" id="station_place"
-                                                                        name="station_place" placeholder="Station Place"
+                                                                        name="station_place" placeholder="Station/Place"
                                                                         value="<?php echo $station_place; ?>">
                                                                 </div>
                                                                 <div class="form-group">
