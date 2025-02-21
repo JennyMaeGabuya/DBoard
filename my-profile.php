@@ -15,45 +15,8 @@ $employee_no = $_SESSION['user_id'];
 
 // Fetch user data from the database using the specified employee_no
 $query = "SELECT
-    e.employee_no,
-    e.firstname,
-    e.middlename,
-    e.lastname,
-    e.name_extension,
-    e.email_address,
-    e.mobile_no,
-    e.dob,
-    e.address,
-    e.pob,
-    e.civil_status,
-    e.sex,
-    e.blood_type,
-    e.image,
-    s.designation,
-    g.gsis_no,
-    g.pag_ibig_no,
-    g.philhealth_no,
-    g.tin_no,
-    g.sss_no,
-    s.from_date,
-    s.to_date,
-    s.status,
-    s.salary,
-    s.station_place,
-    s.branch,
-    s.abs_wo_pay,
-    s.date_separated,
-    s.cause_of_separation,
-    c.salary AS compensation_salary,
-    c.pera,
-    c.clothing,
-    c.cash_gift,
-    c.mid_year,
-    c.productivity_incentive,
-    c.rt_allowance,
-    c.year_end_bonus,
-    c.issued_date,
-    c.allowance
+    e.*, s.*, g.*, c.*,
+    c.salary AS compensation_salary
 FROM
     employee e
 JOIN
@@ -291,7 +254,7 @@ if ($result->num_rows > 0) {
                 </div>
             </div>
         </div>
-       
+
         <!-- Single pro tab review Start-->
         <div class="single-pro-review-area mt-t-30 mg-b-15">
             <div class="container-fluid">
@@ -527,7 +490,7 @@ if ($result->num_rows > 0) {
                                                                         name="from_date" placeholder="SSS No."
                                                                         value="<?php echo $from_date; ?>">
                                                                 </div>
-                                                              
+
                                                                 <div class="form-group">
                                                                     <label for="status">Status</label>
                                                                     <input type="text" class="form-control" id="status"
@@ -552,7 +515,7 @@ if ($result->num_rows > 0) {
                                                                         name="cause_of_separation" placeholder="Cause of Separation"
                                                                         value="<?php echo $cause_of_separation; ?>">
                                                                 </div>
-                                                               
+
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                                 <div class="form-group">
@@ -660,7 +623,7 @@ if ($result->num_rows > 0) {
                                                                         placeholder="Issued Date"
                                                                         value="<?php echo $issued_date; ?>">
                                                                 </div>
-                                                                
+
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                                 <div class="form-group">
@@ -695,7 +658,7 @@ if ($result->num_rows > 0) {
                                                                         placeholder="Year End Bonus"
                                                                         value="<?php echo $year_end_bonus; ?>">
                                                                 </div>
-                                                                
+
                                                             </div>
                                                         </div>
                                                         <div class="row">
@@ -722,59 +685,3 @@ if ($result->num_rows > 0) {
 
     <!-- Footer Start-->
     <?php include 'includes/footer.php'; ?>
-    <!-- Footer End-->
-
-    <!-- jquery
-        ============================================ -->
-    <script src="js/vendor/jquery-1.12.4.min.js"></script>
-    <!-- bootstrap JS
-        ============================================ -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- wow JS
-        ============================================ -->
-    <script src="js/wow.min.js"></script>
-    <!-- price-slider JS
-        ============================================ -->
-    <script src="js/jquery-price-slider.js"></script>
-    <!-- meanmenu JS
-        ============================================ -->
-    <script src="js/jquery.meanmenu.js"></script>
-    <!-- owl.carousel JS
-        ============================================ -->
-    <script src="js/owl.carousel.min.js"></script>
-    <!-- sticky JS
-        ============================================ -->
-    <script src="js/jquery.sticky.js"></script>
-    <!-- scrollUp JS
-        ============================================ -->
-    <script src="js/jquery.scrollUp.min.js"></script>
-    <!-- mCustomScrollbar JS
-        ============================================ -->
-    <script src="js/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script src="js/scrollbar/mCustomScrollbar-active.js"></script>
-    <!-- metisMenu JS
-        ============================================ -->
-    <script src="js/metisMenu/metisMenu.min.js"></script>
-    <script src="js/metisMenu/metisMenu-active.js"></script>
-    <!-- morrisjs JS
-        ============================================ -->
-    <script src="js/morrisjs/raphael.min.js"></script>
-    <script src="js/morrisjs/morris.js"></script>
-    <script src="js/morrisjs/morris-active.js"></script>
-    <!-- calendar JS
-        ============================================ -->
-    <script src="js/calendar/moment.min.js"></script>
-    <script src="js/calendar/fullcalendar.min.js"></script>
-    <script src="js/calendar/fullcalendar-active.js"></script>
-    <!-- plugins JS
-        ============================================ -->
-    <script src="js/plugins.js"></script>
-    <!-- main JS
-        ============================================ -->
-    <script src="js/main.js"></script>
-    <!-- tawk chat JS
-        ============================================ -->
-    <script src="js/tawk-chat.js"></script>
-</body>
-
-</html>
