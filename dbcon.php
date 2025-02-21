@@ -1,13 +1,13 @@
 <?php
-$servername = "localhost";
+$servername = "localhost"; // e.g., "localhost"
 $username = "root";
 $password = "";
 $database = "hr_records";
 
-$con = new mysqli($servername, $username, $password, $database);
+$conn = new mysqli($servername, $username, $password, $database);
 
-// Check connection
-if ($con->connect_error) {
-    die("Connection failed: " . $con->connect_error);
+// Check the connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 ?>
