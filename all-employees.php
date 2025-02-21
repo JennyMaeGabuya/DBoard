@@ -1,5 +1,7 @@
 <?php
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 if (!isset($_SESSION['user_id'])) {
     header('location:../index.php');
     exit();
@@ -40,6 +42,8 @@ include "dbcon.php";
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     <link rel="stylesheet" href="//cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -451,7 +455,28 @@ include "dbcon.php";
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary" name="basic-infobtn">Create</button>
                             </div>
+
                             </form>
                         </div>
                     </div>
                 </div>
+ <script>
+                            document.getElementById('mobile').addEventListener('input', function(e) {
+                              const value = e.target.value;
+                              if (value.length > 11) {
+                                e.target.value = value.slice(0, 11); // Limit input to 11 digits
+                              }
+                            });
+                          </script>
+                          <?php if (isset($_SESSION['display'])) : ?>
+                            <script>
+                              Swal.fire({
+                                title: '<?php echo $_SESSION['title']; ?>',
+                                text: '<?php echo $_SESSION['display']; ?>',
+                                icon: '<?php echo $_SESSION['success']; ?>',
+                                confirmButtonText: 'OK'
+                              });
+                            </script>
+                            <?php unset($_SESSION['display']);
+                            unset($_SESSION['success']); ?>
+                          <?php endif; ?>
