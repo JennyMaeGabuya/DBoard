@@ -55,7 +55,7 @@ if ($result->num_rows > 0) {
     $sex = $row['sex'];
     $blood_type = $row['blood_type'];
     $image = $row['image'];
-    $user_image = !empty($image) ? 'img/profile/' . $image : 'img/logo.png';
+    $user_image = !empty($image) ? 'img/profile/' . $image : 'img/mk-logo.png';
     $gsis_no = $row['gsis_no'];
     $pag_ibig_no = $row['pag_ibig_no'];
     $philhealth_no = $row['philhealth_no'];
@@ -95,7 +95,7 @@ if ($result->num_rows > 0) {
     <title>Admin Profile | ERMS</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="img/mk-icon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="img/mk-logo.ico" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet" />
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/font-awesome.min.css" />

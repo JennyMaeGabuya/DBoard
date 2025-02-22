@@ -12,7 +12,7 @@ include('dbcon.php');
   <title>Login | Employee Records Management System</title>
   <meta name="description" content="" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="shortcut icon" type="image/x-icon" href="img/mk-icon.ico" />
+  <link rel="shortcut icon" type="image/x-icon" href="img/mk-logo.ico" />
   <link href="https://fonts.googleapis.com/css?family=Play:400,700" rel="stylesheet" />
   <link rel="stylesheet" href="css/bootstrap.min.css" />
   <link rel="stylesheet" href="css/font-awesome.min.css" />
@@ -63,7 +63,7 @@ include('dbcon.php');
   <div class="error-pagewrap">
     <div class="error-page-int">
       <div class="text-center m-b-md custom-login">
-        <img src="img/logo.png" alt="Logo" class="spin-logo">
+        <img src="img/mk-logo.png" alt="Logo" class="spin-logo">
         <h3>ADMIN LOGIN</h3>
         <p>Employee Records Management System</p>
       </div>

@@ -41,7 +41,7 @@ if (isset($_GET['employee_no'])) {
 
         // Determine the image URL based on position
 
-        $imageUrl = empty($imagePath) ? 'img/logo.png' : 'img/profile/' . $imagePath;
+        $imageUrl = empty($imagePath) ? 'img/mk-logo.png' : 'img/profile/' . $imagePath;
     }
 
     // Close the statement
@@ -59,7 +59,7 @@ if (isset($_GET['employee_no'])) {
     <title>All Employees | ERMS</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="img/mk-icon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="img/mk-logo.ico" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet" />
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/font-awesome.min.css" />
@@ -142,7 +142,7 @@ if (isset($_GET['employee_no'])) {
                             <div class="card-body m-5" id="printThis">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="text-center">
-                                        <img src="img/logo.png" class="img-fluid" width="100">
+                                        <img src="img/mk-logo.png" class="img-fluid" width="100">
                                     </div>
 
                                     <div class="text-center">
@@ -152,7 +152,7 @@ if (isset($_GET['employee_no'])) {
                                     </div>
 
                                     <div class="text-center">
-                                        <img src="img/logo.png" class="img-fluid" width="100">
+                                        <img src="img/mk-logo.png" class="img-fluid" width="100">
                                     </div>
                                 </div>
                                 <br>

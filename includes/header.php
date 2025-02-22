@@ -5,7 +5,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="logo-pro">
                     <a href="./dashboard.php">
-                        <img class="main-logo" src="img/logo/header-logo.png" alt=""
+                        <img class="main-logo" src="img/hdr-logo.png" alt=""
                             style="width: 150px; height: auto; margin-top: 10px; margin-bottom: 10px;" />
                     </a>
                 </div>
@@ -262,18 +262,18 @@
                                                             $salutation = ""; // Default to no salutation if sex is not set
                                                         }
 
-                                                        $user_image = !empty($imagePath) ? 'img/profile/' . $imagePath : 'img/logo.png'; // Default image if empty
+                                                        $user_image = !empty($imagePath) ? 'img/profile/' . $imagePath : 'img/mk-logo.png'; // Default image if empty
                                                         $user_name = trim("$salutation {$row['firstname']} {$row['lastname']}"); // Full name with salutation
                                                     } else {
                                                         // If no matching employee record, set default values
-                                                        $user_image = 'img/logo.png';
+                                                        $user_image = 'img/mk-logo.png';
                                                         $user_name = 'Admin';
                                                     }
 
                                                     $stmt->close();
                                                 } else {
                                                     // Handle case where session data is missing
-                                                    $user_image = 'img/logo.png';
+                                                    $user_image = 'img/mk-logo.png';
                                                     $user_name = 'Admin';
                                                 }
 
