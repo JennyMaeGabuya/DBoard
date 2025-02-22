@@ -95,7 +95,7 @@ class PDF extends PDF_MC_Table
     function Header()
     {
         // Insert the logo image with specific positioning and size
-        $this->Image('../img/M-Kahoy.png', 29, 17, 30);
+        $this->Image('../img/mk-logo.png', 32, 17, 26);
 
         // Insert the logo image with specific positioning and size
         $this->Image('../img/Bagong-Pilipinas.png', 157, 18, 30);
