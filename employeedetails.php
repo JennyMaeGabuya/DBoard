@@ -42,11 +42,42 @@ if (isset($_GET['employee_no'])) {
         // Determine the image URL based on position
 
         $imageUrl = empty($imagePath) ? 'img/mk-logo.png' : 'img/profile/' . $imagePath;
+   
+     
     }
 
     // Close the statement
     $stmt->close();
+  // Fetch service records
+  $compQuery = "SELECT * FROM compensation WHERE employee_no = ?";
+  $compStmt = $con->prepare($compQuery);
+  $compStmt->bind_param("s", $employee_no); // "s" means string
+  $compStmt->execute();
+  $compResult = $compStmt->get_result();
+
+  // Initialize variables to hold compensation data
+  $salary = $pera = $rt_allowance = $allowance = $clothing = $midyear = $yearend = $gift = $incentive = $issued = $created = $updated = null;
+
+  // Fetch compensation data
+  if ($compRow = $compResult->fetch_assoc()) {
+      $salary = $compRow['salary'];
+      $pera = $compRow['pera'];
+      $rt_allowance = $compRow['rt_allowance'];
+      $allowance = $compRow['allowance'];
+      $clothing = $compRow['clothing'];
+      $midyear = $compRow['mid_year'];
+      $yearend = $compRow['year_end_bonus'];
+      $gift = $compRow['cash_gift'];
+      $incentive = $compRow['productivity_incentive'];
+      $issued = $compRow['issued_date'];
+      $created = $compRow['created_at'];
+      $updated = $compRow['updated_at'];
+  }
+
+  // Close the service statement
+  $compStmt->close();
 }
+ //fetch service records
 
 ?>
 
@@ -150,7 +181,13 @@ if (isset($_GET['employee_no'])) {
 												<i class="fa fa-print"></i>
 												Print 
 											</button>
-
+                                            <a href="#addcomp" data-toggle="modal" class="btn btn-primary btn-border btn-round btn-sm">
+                                        <i class="fa fa-file"></i> Compensation
+                                    </a>
+                                            <button class="btn btn-danger btn-border btn-round btn-sm" onclick="printDiv('printThis')">
+												<i class="fa fa-file"></i>
+												Service Records
+											</button>
                                     </div>
                                 </div>
                             </div>
@@ -226,6 +263,146 @@ if (isset($_GET['employee_no'])) {
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>
 
+    <!--COMPENSATION FORM MODAL-->
+    
+    <div class="modal fade" id="addcomp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary" style="border-radius: 3px;">
+                    <h5 class="modal-title" id="exampleModalLabel">COMPENSATION RECORDS</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="compensation-info.php" method="POST" enctype="multipart/form-data">
+                     
+                        <div class="row">
+                          
+                            <div class="form-group col-md-4 mb-2">
+                                <label>Employee Number</label>
+                                <input
+                                    name="emp_no"
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Employee Number"  value="<?php echo $employee_no; ?>" readonly />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Salary</label>
+                                <input
+                                    name="salary"
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Salary" value="<?php echo $salary; ?>"/>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Pera</label>
+                                <input
+                                    name="pera"
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Pera" value="<?php echo $pera; ?>" required />
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            
+                            <div class="form-group col-md-4">
+                                <label>RT Allowance</label>
+                                <div class="form-group">
+                                    <input
+                                        name="rt_allowance"
+                                        type="text"
+                                        class="form-control" value="<?php echo $rt_allowance; ?>"
+                                         required />
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label>Allowance</label>
+                                <input
+                                    name="allowance"
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Extension Name" value="<?php echo $allowance; ?>" required />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Clothing</label>
+                                <input
+                                    name="clothing"
+                                    type="text"
+                                    class="form-control"
+                                     value="<?php echo $clothing; ?>" required />
+                            </div>
+                        </div>
+
+                                          
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label>Mid Year Bonus</label>
+                                <input
+                                    name="midyear"
+                                    type="text"
+                                    class="form-control"  value="<?php echo $midyear; ?>"
+                                    required />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Year End Bonus</label>
+                                <input
+                                    name="yearend"
+                                    type="text"
+                                    class="form-control" value="<?php echo $yearend; ?>"
+                                     required />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Cash Gift</label>
+                                <input
+                                    name="gift"
+                                    type="text"
+                                    class="form-control" value="<?php echo $gift; ?>"
+                                     required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label>Productivity Incentive</label>
+                                <input
+                                    name="incentive"
+                                    type="text"
+                                    class="form-control"  value="<?php echo $incentive; ?>"
+                                    required />
+                            </div>
+                           
+                            <div class="form-group col-md-4">
+                                <label>Cash Gift</label>
+                                <input
+                                    name="gift"
+                                    type="text"
+                                    class="form-control" value="<?php echo $gift; ?>"
+                                     required />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Issued Date</label>
+                                <input
+                                    name="issued"
+                                    type="text"
+                                    class="form-control" value="<?php echo $issued; ?>"
+                                     required />
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <!--  <input type="hidden" id="pos_id" name="id"> -->
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" name="compsavebtn">Save</button>
+                    <button type="submit" class="btn btn-warning" name="compviewbtn">View</button>
+                </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
     <script>
            
             function printDiv(divName) {
