@@ -54,22 +54,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
               <span class="mini-click-non">Event</span>
             </a>
           </li>
-          <li class="<?= ($current_page == 'organization.php' || $current_page == 'add-office-member.php' || $current_page == 'edit-member.php') ? 'active' : ''; ?>">
-            <a class="has-arrow" href="#">
-              <span class="educate-icon educate-department icon-wrap"></span>
+          <li class="<?= ($current_page == 'organization.php') ? 'active' : ''; ?>">
+            <a href="organization.php">
+              <span class="educate-icon educate-department icon-wrap sub-icon-mg"></span>
               <span class="mini-click-non">Organization</span>
             </a>
-            <ul class="submenu-angle">
-              <li class="<?= ($current_page == 'organization.php') ? 'active' : ''; ?>">
-                <a href="organization.php"><span class="mini-sub-pro">Member</span></a>
-              </li>
-              <li class="<?= ($current_page == 'add-office-member.php') ? 'active' : ''; ?>">
-                <a href="add-office-member.php"><span class="mini-sub-pro">Add Member</span></a>
-              </li>
-              <li class="<?= ($current_page == 'edit-member.php') ? 'active' : ''; ?>">
-                <a href="edit-member.php"><span class="mini-sub-pro">Edit Member</span></a>
-              </li>
-            </ul>
           </li>
           <li class="<?= ($current_page == 'all-employees.php' || $current_page == 'add-employee.php' || $current_page == 'edit-employee.php' || $current_page == 'employee-profile.php') ? 'active' : ''; ?>">
             <a class="has-arrow" href="#">
@@ -94,23 +83,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
           <li class="<?= ($current_page == 'certifications.php' || $current_page == 'add-course.php' || $current_page == 'edit-course.php' || $current_page == 'course-info.php' || $current_page == 'course-payment.php') ? 'active' : ''; ?>">
             <a class="has-arrow" href="#">
               <span class="educate-icon educate-course icon-wrap"></span>
-              <span class="mini-click-non">Issue Certificate</span>
+              <span class="mini-click-non">Certifications</span>
             </a>
             <ul class="submenu-angle">
               <li class="<?= ($current_page == 'certifications.php') ? 'active' : ''; ?>">
-                <a href="certifications.php"><span class="mini-sub-pro">Certifications</span></a>
+                <a href="certifications.php"><span class="mini-sub-pro">Certificate Info</span></a>
               </li>
-              <li class="<?= ($current_page == 'add-course.php') ? 'active' : ''; ?>">
-                <a href="add-course.php"><span class="mini-sub-pro">Add Course</span></a>
+              <li class="<?= ($current_page == 'issue-certificate.php') ? 'active' : ''; ?>">
+                <a href="issue-certificate.php"><span class="mini-sub-pro">Issue Certificate</span></a>
               </li>
-              <li class="<?= ($current_page == 'edit-course.php') ? 'active' : ''; ?>">
-                <a href="edit-course.php"><span class="mini-sub-pro">Edit Course</span></a>
-              </li>
-              <li class="<?= ($current_page == 'course-info.php') ? 'active' : ''; ?>">
-                <a href="course-info.php"><span class="mini-sub-pro">Courses Info</span></a>
-              </li>
-              <li class="<?= ($current_page == 'course-payment.php') ? 'active' : ''; ?>">
-                <a href="course-payment.php"><span class="mini-sub-pro">Courses Payment</span></a>
+              <li class="<?= ($current_page == 'cert-history.php') ? 'active' : ''; ?>">
+                <a href="cert-history.php"><span class="mini-sub-pro">History</span></a>
               </li>
             </ul>
           </li>

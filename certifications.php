@@ -38,6 +38,44 @@ include "dbcon.php";
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
   <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+
+
+  <style>
+    .clickable-container {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .courses-title {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      width: 250px;
+      padding: 10px;
+      border-radius: 10px;
+      color: white;
+      font-weight: bold;
+      transition: background 0.3s ease, transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    /* Hover effect */
+    .courses-title:hover {
+      background-color: rgb(244, 244, 244);
+      transform: scale(1.03);
+    }
+
+    .fixed-img {
+      width: 180px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+  </style>
+
 </head>
 
 <body>
@@ -65,7 +103,7 @@ include "dbcon.php";
                             <i class="fa fa-home"></i> Home
                           </a>
                           <span class="bread-slash">/</span>
-                          <span class="bread-blod">Courses</span>
+                          <span class="bread-blod">Certificates</span>
                         </li>
                       </ul>
                     </div>
@@ -77,23 +115,19 @@ include "dbcon.php";
         </div>
       </div>
     </div>
+
     <div class="courses-area">
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-            <div class="courses-inner res-mg-b-30">
-              <div class="courses-title">
-                <a href="#"><img src="img/courses/1.jpg" alt="" /></a>
-                <h2>Apps Development</h2>
-              </div>
-              <div class="courses-alaltic">
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-clock"></i></span>
-                  1 Year</span>
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-heart"></i></span>
-                  50</span>
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-dollar"></i></span>
-                  500</span>
-              </div>
+            <div class="courses-inner">
+              <a href="#" class="clickable-container">
+                <div class="courses-title">
+                  <img src="img/certificate/appointed.png" alt="" class="fixed-img" />
+                  <h2>Appointed Certification</h2>
+                </div>
+              </a>
+
               <div class="course-des">
                 <p>
                   <span><i class="fa fa-clock"></i></span> <b>Duration:</b> 6
@@ -103,32 +137,24 @@ include "dbcon.php";
                   <span><i class="fa fa-clock"></i></span>
                   <b>Professor:</b> Jane Doe
                 </p>
-                <p>
-                  <span><i class="fa fa-clock"></i></span>
-                  <b>Students:</b> 100+
-                </p>
               </div>
-              <div class="product-buttons">
-                <button type="button" class="button-default cart-btn">
-                  Read More
+              <div class="buttons">
+                <button type="button" class="btn btn-warning">
+                  Select
                 </button>
               </div>
             </div>
           </div>
+
           <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
             <div class="courses-inner">
-              <div class="courses-title">
-                <a href="#"><img src="img/courses/2.jpg" alt="" /></a>
-                <h2>Illustrator CC 2018</h2>
-              </div>
-              <div class="courses-alaltic">
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-clock"></i></span>
-                  1 Year</span>
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-heart"></i></span>
-                  50</span>
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-dollar"></i></span>
-                  500</span>
-              </div>
+              <a href="#" class="clickable-container">
+                <div class="courses-title">
+                  <img src="img/certificate/elected.png" alt="" class="fixed-img" />
+                  <h2>Elected Certification</h2>
+                </div>
+              </a>
+
               <div class="course-des">
                 <p>
                   <span><i class="fa fa-clock"></i></span> <b>Duration:</b> 6
@@ -138,226 +164,10 @@ include "dbcon.php";
                   <span><i class="fa fa-clock"></i></span>
                   <b>Professor:</b> Jane Doe
                 </p>
-                <p>
-                  <span><i class="fa fa-clock"></i></span>
-                  <b>Students:</b> 100+
-                </p>
               </div>
-              <div class="product-buttons">
-                <button type="button" class="button-default cart-btn">
-                  Read More
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-            <div class="courses-inner res-mg-t-30 dk-res-t-pro-30">
-              <div class="courses-title">
-                <a href="#"><img src="img/courses/3.jpg" alt="" /></a>
-                <h2>Indesign cs6 2018</h2>
-              </div>
-              <div class="courses-alaltic">
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-clock"></i></span>
-                  1 Year</span>
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-heart"></i></span>
-                  50</span>
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-dollar"></i></span>
-                  500</span>
-              </div>
-              <div class="course-des">
-                <p>
-                  <span><i class="fa fa-clock"></i></span> <b>Duration:</b> 6
-                  Months
-                </p>
-                <p>
-                  <span><i class="fa fa-clock"></i></span>
-                  <b>Professor:</b> Jane Doe
-                </p>
-                <p>
-                  <span><i class="fa fa-clock"></i></span>
-                  <b>Students:</b> 100+
-                </p>
-              </div>
-              <div class="product-buttons">
-                <button type="button" class="button-default cart-btn">
-                  Read More
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-            <div class="courses-inner res-mg-t-30 dk-res-t-pro-30">
-              <div class="courses-title">
-                <a href="#"><img src="img/courses/1.jpg" alt="" /></a>
-                <h2>Web Development</h2>
-              </div>
-              <div class="courses-alaltic">
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-clock"></i></span>
-                  1 Year</span>
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-heart"></i></span>
-                  50</span>
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-dollar"></i></span>
-                  500</span>
-              </div>
-              <div class="course-des">
-                <p>
-                  <span><i class="fa fa-clock"></i></span> <b>Duration:</b> 6
-                  Months
-                </p>
-                <p>
-                  <span><i class="fa fa-clock"></i></span>
-                  <b>Professor:</b> Jane Doe
-                </p>
-                <p>
-                  <span><i class="fa fa-clock"></i></span>
-                  <b>Students:</b> 100+
-                </p>
-              </div>
-              <div class="product-buttons">
-                <button type="button" class="button-default cart-btn">
-                  Read More
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row mg-b-15">
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-            <div class="courses-inner mg-t-30">
-              <div class="courses-title">
-                <a href="#"><img src="img/courses/1.jpg" alt="" /></a>
-                <h2>Apps Development</h2>
-              </div>
-              <div class="courses-alaltic">
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-clock"></i></span>
-                  1 Year</span>
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-heart"></i></span>
-                  50</span>
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-dollar"></i></span>
-                  500</span>
-              </div>
-              <div class="course-des">
-                <p>
-                  <span><i class="fa fa-clock"></i></span> <b>Duration:</b> 6
-                  Months
-                </p>
-                <p>
-                  <span><i class="fa fa-clock"></i></span>
-                  <b>Professor:</b> Jane Doe
-                </p>
-                <p>
-                  <span><i class="fa fa-clock"></i></span>
-                  <b>Students:</b> 100+
-                </p>
-              </div>
-              <div class="product-buttons">
-                <button type="button" class="button-default cart-btn">
-                  Read More
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-            <div class="courses-inner mg-t-30">
-              <div class="courses-title">
-                <a href="#"><img src="img/courses/2.jpg" alt="" /></a>
-                <h2>Illustrator CC 2018</h2>
-              </div>
-              <div class="courses-alaltic">
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-clock"></i></span>
-                  1 Year</span>
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-heart"></i></span>
-                  50</span>
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-dollar"></i></span>
-                  500</span>
-              </div>
-              <div class="course-des">
-                <p>
-                  <span><i class="fa fa-clock"></i></span> <b>Duration:</b> 6
-                  Months
-                </p>
-                <p>
-                  <span><i class="fa fa-clock"></i></span>
-                  <b>Professor:</b> Jane Doe
-                </p>
-                <p>
-                  <span><i class="fa fa-clock"></i></span>
-                  <b>Students:</b> 100+
-                </p>
-              </div>
-              <div class="product-buttons">
-                <button type="button" class="button-default cart-btn">
-                  Read More
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-            <div class="courses-inner mg-t-30">
-              <div class="courses-title">
-                <a href="#"><img src="img/courses/3.jpg" alt="" /></a>
-                <h2>Indesign cs6 2018</h2>
-              </div>
-              <div class="courses-alaltic">
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-clock"></i></span>
-                  1 Year</span>
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-heart"></i></span>
-                  50</span>
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-dollar"></i></span>
-                  500</span>
-              </div>
-              <div class="course-des">
-                <p>
-                  <span><i class="fa fa-clock"></i></span> <b>Duration:</b> 6
-                  Months
-                </p>
-                <p>
-                  <span><i class="fa fa-clock"></i></span>
-                  <b>Professor:</b> Jane Doe
-                </p>
-                <p>
-                  <span><i class="fa fa-clock"></i></span>
-                  <b>Students:</b> 100+
-                </p>
-              </div>
-              <div class="product-buttons">
-                <button type="button" class="button-default cart-btn">
-                  Read More
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-            <div class="courses-inner mg-t-30">
-              <div class="courses-title">
-                <a href="#"><img src="img/courses/1.jpg" alt="" /></a>
-                <h2>Web Development</h2>
-              </div>
-              <div class="courses-alaltic">
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-clock"></i></span>
-                  1 Year</span>
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-heart"></i></span>
-                  50</span>
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-dollar"></i></span>
-                  500</span>
-              </div>
-              <div class="course-des">
-                <p>
-                  <span><i class="fa fa-clock"></i></span> <b>Duration:</b> 6
-                  Months
-                </p>
-                <p>
-                  <span><i class="fa fa-clock"></i></span>
-                  <b>Professor:</b> Jane Doe
-                </p>
-                <p>
-                  <span><i class="fa fa-clock"></i></span>
-                  <b>Students:</b> 100+
-                </p>
-              </div>
-              <div class="product-buttons">
-                <button type="button" class="button-default cart-btn">
-                  Read More
+              <div class="buttons">
+                <button type="button" class="btn btn-warning">
+                  Select
                 </button>
               </div>
             </div>
@@ -365,6 +175,7 @@ include "dbcon.php";
         </div>
       </div>
     </div>
+  </div>
 
-    <!--Footer-part-->
-    <?php include 'includes/footer.php'; ?>
+  <!--Footer-part-->
+  <?php include 'includes/footer.php'; ?>

@@ -14,7 +14,7 @@ include "dbcon.php";
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="x-ua-compatible" content="ie=edge" />
-  <title>Add Course | ERMS</title>
+  <title>Certifications History | ERMS</title>
   <meta name="description" content="" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="shortcut icon" type="image/x-icon" href="img/mk-logo.ico" />
@@ -48,7 +48,6 @@ include "dbcon.php";
   <!--Header-part-->
   <?php include 'includes/header.php'; ?>
 
-
   <!-- Mobile Menu end -->
   <div class="breadcome-area">
     <div class="container-fluid">
@@ -66,9 +65,11 @@ include "dbcon.php";
                             <i class="fa fa-home"></i> Home
                           </a>
                           <span class="bread-slash">/</span>
-                          <a href="all-courses.php">Courses</a>
+                          <a href="certifications.php">Certificates</a>
                           <span class="bread-slash">/</span>
-                          <span class="bread-blod">Add Courses</span>
+                          <a href="issue-certificate.php">Issue Certificate</a>
+                          <span class="bread-slash">/</span>
+                          <a href="#">History</a>
                         </li>
                       </ul>
                     </div>
@@ -80,6 +81,7 @@ include "dbcon.php";
         </div>
       </div>
     </div>
+
     <!-- Single pro tab review Start-->
     <div class="single-pro-review-area mt-t-30 mg-b-15">
       <div class="container-fluid">
@@ -207,6 +209,7 @@ include "dbcon.php";
                     </div>
                   </div>
                 </div>
+
                 <div class="product-tab-list tab-pane fade" id="reviews">
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -249,6 +252,7 @@ include "dbcon.php";
                     </div>
                   </div>
                 </div>
+
                 <div class="product-tab-list tab-pane fade" id="INFORMATION">
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -293,6 +297,7 @@ include "dbcon.php";
                   </div>
                 </div>
               </div>
+              
             </div>
           </div>
         </div>
