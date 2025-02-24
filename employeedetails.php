@@ -384,7 +384,7 @@ if (isset($_GET['employee_no'])) {
                                 <label>Issued Date</label>
                                 <input
                                     name="issued"
-                                    type="text"
+                                    type="date"
                                     class="form-control" value="<?php echo $issued; ?>"
                                     required />
                             </div>
