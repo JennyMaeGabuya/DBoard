@@ -80,6 +80,23 @@ if (isset($_GET['employee_no'])) {
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="css/responsive.css" />
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+
+<style>
+         .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header-text {
+            text-align: center;
+            flex-grow: 1;
+            margin-bottom: 0px;
+        }
+        .logo {
+            width: 160px;
+            height: 100px;
+        }
+</style>
 </head>
 
 <body>
@@ -129,10 +146,10 @@ if (isset($_GET['employee_no'])) {
                                 <div class="card-head-row">
 
                                     <div class="card-tools">
-                                        <button class="btn btn-danger btn-border btn-round btn-sm">
-                                            <i class="fa fa-print"></i>
-                                            Print
-                                        </button>
+                                    <button class="btn btn-danger btn-border btn-round btn-sm" onclick="printDiv('printThis')">
+												<i class="fa fa-print"></i>
+												Print 
+											</button>
 
                                     </div>
                                 </div>
@@ -140,21 +157,27 @@ if (isset($_GET['employee_no'])) {
 
                             <!-- HINDI PA FINAL, WALA PANG FORMAT-->
                             <div class="card-body m-5" id="printThis">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="text-center">
-                                        <img src="img/mk-logo.png" class="img-fluid" width="100">
-                                    </div>
+                            <div class="row">
+            <div class="col-xs-12">
+                <div class="header-container">
+                    <div class="text-center">
+                        <img src="img/mk-logo.png" class="logo" alt="Logo Left">
+                    </div>
 
-                                    <div class="text-center">
-                                        <h3 class="mb-0">Republic of the Philippines</h3>
-                                        <h3 class="mb-0">Province of Batangas</h3>
-                                        <h3 class="fw-bold mb-0">Mataas na Kahoy</h3>
-                                    </div>
+                    <div class="header-text">
+                        <p class="text1">Republic of the Philippines</p>
+                        <p class="text1">Province of Batangas</p>
+                        <h4>MUNICIPALITY OF MATAAS NA KAHOY</h4>
+                        <p class="text1">Tel. No.: (043) 784-1088</p>
+                        <h6 class="fw-bold mb-0">hrmo_lgumatasnakahoy@yahoo.com</h6>
+                    </div>
 
-                                    <div class="text-center">
-                                        <img src="img/mk-logo.png" class="img-fluid" width="100">
-                                    </div>
-                                </div>
+                    <div class="text-center">
+                        <img src="img/Bagong-Pilipinas.png" class="logo" alt="Logo Right">
+                    </div>
+                </div>
+            </div>
+        </div>
                                 <br>
                                 <div class="row mt-2">
                                     <div class="col-md-12 table-responsive">
@@ -202,3 +225,17 @@ if (isset($_GET['employee_no'])) {
     </div>
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>
+
+    <script>
+           
+            function printDiv(divName) {
+                var printContents = document.getElementById(divName).innerHTML;
+                var originalContents = document.body.innerHTML;
+
+                document.body.innerHTML = printContents;
+
+                window.print();
+
+                document.body.innerHTML = originalContents;
+            }
+    </script>
