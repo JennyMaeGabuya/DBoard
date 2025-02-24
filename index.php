@@ -53,8 +53,6 @@ include('dbcon.php');
         transform: rotateY(360deg);
       }
     }
-    /* General Reset */S
-   
   </style>
 </head>
 
@@ -63,7 +61,7 @@ include('dbcon.php');
   <div class="error-pagewrap">
     <div class="error-page-int">
       <div class="text-center m-b-md custom-login">
-        <img src="img/mk-logo.png" alt="Logo" class="spin-logo">
+        <img src="img/spin-logo.png" alt="Logo" class="spin-logo">
         <h3>ADMIN LOGIN</h3>
         <p>Employee Records Management System</p>
       </div>
@@ -106,8 +104,8 @@ include('dbcon.php');
                 </label>
               </div>
 
-              <button id="loginButton"  class="btn btn-success btn-block loginbtn" disabled>
-              <i id="buttonIcon" class="fas fa-lock"></i> Login
+              <button id="loginButton" class="btn btn-success btn-block loginbtn" disabled>
+                <i id="buttonIcon" class="fas fa-lock"></i> Login
               </button>
             </form>
           </div>
