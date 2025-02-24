@@ -42,43 +42,40 @@ if (isset($_GET['employee_no'])) {
         // Determine the image URL based on position
 
         $imageUrl = empty($imagePath) ? 'img/mk-logo.png' : 'img/profile/' . $imagePath;
-   
-     
     }
 
     // Close the statement
     $stmt->close();
-  // Fetch service records
-  $compQuery = "SELECT * FROM compensation WHERE employee_no = ?";
-  $compStmt = $con->prepare($compQuery);
-  $compStmt->bind_param("s", $employee_no); // "s" means string
-  $compStmt->execute();
-  $compResult = $compStmt->get_result();
+    // Fetch service records
+    $compQuery = "SELECT * FROM compensation WHERE employee_no = ?";
+    $compStmt = $con->prepare($compQuery);
+    $compStmt->bind_param("s", $employee_no); // "s" means string
+    $compStmt->execute();
+    $compResult = $compStmt->get_result();
 
-  // Initialize variables to hold compensation data
-  $salary = $pera = $rt_allowance = $allowance = $clothing = $midyear = $yearend = $gift = $incentive = $issued = $created = $updated = null;
+    // Initialize variables to hold compensation data
+    $salary = $pera = $rt_allowance = $allowance = $clothing = $midyear = $yearend = $gift = $incentive = $issued = $created = $updated = null;
 
-  // Fetch compensation data
-  if ($compRow = $compResult->fetch_assoc()) {
-      $salary = $compRow['salary'];
-      $pera = $compRow['pera'];
-      $rt_allowance = $compRow['rt_allowance'];
-      $allowance = $compRow['allowance'];
-      $clothing = $compRow['clothing'];
-      $midyear = $compRow['mid_year'];
-      $yearend = $compRow['year_end_bonus'];
-      $gift = $compRow['cash_gift'];
-      $incentive = $compRow['productivity_incentive'];
-      $issued = $compRow['issued_date'];
-      $created = $compRow['created_at'];
-      $updated = $compRow['updated_at'];
-  }
+    // Fetch compensation data
+    if ($compRow = $compResult->fetch_assoc()) {
+        $salary = $compRow['salary'];
+        $pera = $compRow['pera'];
+        $rt_allowance = $compRow['rt_allowance'];
+        $allowance = $compRow['allowance'];
+        $clothing = $compRow['clothing'];
+        $midyear = $compRow['mid_year'];
+        $yearend = $compRow['year_end_bonus'];
+        $gift = $compRow['cash_gift'];
+        $incentive = $compRow['productivity_incentive'];
+        $issued = $compRow['issued_date'];
+        $created = $compRow['created_at'];
+        $updated = $compRow['updated_at'];
+    }
 
-  // Close the service statement
-  $compStmt->close();
+    // Close the service statement
+    $compStmt->close();
 }
- //fetch service records
-
+//fetch service records
 ?>
 
 <!DOCTYPE html>
@@ -87,7 +84,7 @@ if (isset($_GET['employee_no'])) {
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>All Employees | ERMS</title>
+    <title>Employee Details | ERMS</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="img/mk-logo.ico" />
@@ -112,26 +109,27 @@ if (isset($_GET['employee_no'])) {
     <link rel="stylesheet" href="css/responsive.css" />
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
 
-<style>
-         .header-container {
+    <style>
+        .header-container {
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
+
         .header-text {
             text-align: center;
             flex-grow: 1;
             margin-bottom: 0px;
         }
+
         .logo {
             width: 160px;
             height: 100px;
         }
-</style>
+    </style>
 </head>
 
 <body>
-
     <!--Sidebar-part-->
     <?php include 'includes/sidebar.php'; ?>
 
@@ -177,44 +175,44 @@ if (isset($_GET['employee_no'])) {
                                 <div class="card-head-row">
 
                                     <div class="card-tools">
-                                    <button class="btn btn-danger btn-border btn-round btn-sm" onclick="printDiv('printThis')">
-												<i class="fa fa-print"></i>
-												Print 
-											</button>
-                                            <a href="#addcomp" data-toggle="modal" class="btn btn-primary btn-border btn-round btn-sm">
-                                        <i class="fa fa-file"></i> Compensation
-                                    </a>
-                                            <button class="btn btn-danger btn-border btn-round btn-sm" onclick="printDiv('printThis')">
-												<i class="fa fa-file"></i>
-												Service Records
-											</button>
+                                        <button class="btn btn-danger btn-border btn-round btn-sm" onclick="printDiv('printThis')">
+                                            <i class="fa fa-print"></i>
+                                            Print
+                                        </button>
+                                        <a href="#addcomp" data-toggle="modal" class="btn btn-primary btn-border btn-round btn-sm">
+                                            <i class="fa fa-file"></i> Compensation
+                                        </a>
+                                        <button class="btn btn-danger btn-border btn-round btn-sm" onclick="printDiv('printThis')">
+                                            <i class="fa fa-file"></i>
+                                            Service Records
+                                        </button>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- HINDI PA FINAL, WALA PANG FORMAT-->
                             <div class="card-body m-5" id="printThis">
-                            <div class="row">
-            <div class="col-xs-12">
-                <div class="header-container">
-                    <div class="text-center">
-                        <img src="img/mk-logo.png" class="logo" alt="Logo Left">
-                    </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="header-container">
+                                            <div class="text-center">
+                                                <img src="img/mk-logo.png" class="logo" alt="Logo Left">
+                                            </div>
 
-                    <div class="header-text">
-                        <p class="text1">Republic of the Philippines</p>
-                        <p class="text1">Province of Batangas</p>
-                        <h4>MUNICIPALITY OF MATAAS NA KAHOY</h4>
-                        <p class="text1">Tel. No.: (043) 784-1088</p>
-                        <h6 class="fw-bold mb-0">hrmo_lgumatasnakahoy@yahoo.com</h6>
-                    </div>
+                                            <div class="header-text">
+                                                <p class="text1">Republic of the Philippines</p>
+                                                <p class="text1">Province of Batangas</p>
+                                                <h4>MUNICIPALITY OF MATAAS NA KAHOY</h4>
+                                                <p class="text1">Tel. No.: (043) 784-1088</p>
+                                                <h6 class="fw-bold mb-0">hrmo_lgumatasnakahoy@yahoo.com</h6>
+                                            </div>
 
-                    <div class="text-center">
-                        <img src="img/Bagong-Pilipinas.png" class="logo" alt="Logo Right">
-                    </div>
-                </div>
-            </div>
-        </div>
+                                            <div class="text-center">
+                                                <img src="img/Bagong-Pilipinas.png" class="logo" alt="Logo Right">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <br>
                                 <div class="row mt-2">
                                     <div class="col-md-12 table-responsive">
@@ -260,11 +258,12 @@ if (isset($_GET['employee_no'])) {
             </div>
         </div>
     </div>
+
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>
 
     <!--COMPENSATION FORM MODAL-->
-    
+
     <div class="modal fade" id="addcomp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -274,18 +273,18 @@ if (isset($_GET['employee_no'])) {
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+
                 <div class="modal-body">
                     <form method="POST" action="compensation-info.php" method="POST" enctype="multipart/form-data">
-                     
+
                         <div class="row">
-                          
                             <div class="form-group col-md-4 mb-2">
                                 <label>Employee Number</label>
                                 <input
                                     name="emp_no"
                                     type="text"
                                     class="form-control"
-                                    placeholder="Employee Number"  value="<?php echo $employee_no; ?>" readonly />
+                                    placeholder="Employee Number" value="<?php echo $employee_no; ?>" readonly />
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Salary</label>
@@ -293,7 +292,7 @@ if (isset($_GET['employee_no'])) {
                                     name="salary"
                                     type="text"
                                     class="form-control"
-                                    placeholder="Salary" value="<?php echo $salary; ?>"/>
+                                    placeholder="Salary" value="<?php echo $salary; ?>" />
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Pera</label>
@@ -307,7 +306,6 @@ if (isset($_GET['employee_no'])) {
                         </div>
 
                         <div class="row">
-                            
                             <div class="form-group col-md-4">
                                 <label>RT Allowance</label>
                                 <div class="form-group">
@@ -315,7 +313,7 @@ if (isset($_GET['employee_no'])) {
                                         name="rt_allowance"
                                         type="text"
                                         class="form-control" value="<?php echo $rt_allowance; ?>"
-                                         required />
+                                        required />
                                 </div>
                             </div>
 
@@ -333,18 +331,17 @@ if (isset($_GET['employee_no'])) {
                                     name="clothing"
                                     type="text"
                                     class="form-control"
-                                     value="<?php echo $clothing; ?>" required />
+                                    value="<?php echo $clothing; ?>" required />
                             </div>
                         </div>
 
-                                          
                         <div class="row">
                             <div class="form-group col-md-4">
                                 <label>Mid Year Bonus</label>
                                 <input
                                     name="midyear"
                                     type="text"
-                                    class="form-control"  value="<?php echo $midyear; ?>"
+                                    class="form-control" value="<?php echo $midyear; ?>"
                                     required />
                             </div>
                             <div class="form-group col-md-4">
@@ -353,7 +350,7 @@ if (isset($_GET['employee_no'])) {
                                     name="yearend"
                                     type="text"
                                     class="form-control" value="<?php echo $yearend; ?>"
-                                     required />
+                                    required />
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Cash Gift</label>
@@ -361,26 +358,27 @@ if (isset($_GET['employee_no'])) {
                                     name="gift"
                                     type="text"
                                     class="form-control" value="<?php echo $gift; ?>"
-                                     required />
+                                    required />
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="form-group col-md-4">
                                 <label>Productivity Incentive</label>
                                 <input
                                     name="incentive"
                                     type="text"
-                                    class="form-control"  value="<?php echo $incentive; ?>"
+                                    class="form-control" value="<?php echo $incentive; ?>"
                                     required />
                             </div>
-                           
+
                             <div class="form-group col-md-4">
                                 <label>Cash Gift</label>
                                 <input
                                     name="gift"
                                     type="text"
                                     class="form-control" value="<?php echo $gift; ?>"
-                                     required />
+                                    required />
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Issued Date</label>
@@ -388,10 +386,11 @@ if (isset($_GET['employee_no'])) {
                                     name="issued"
                                     type="text"
                                     class="form-control" value="<?php echo $issued; ?>"
-                                     required />
+                                    required />
                             </div>
                         </div>
                 </div>
+
                 <div class="modal-footer">
                     <!--  <input type="hidden" id="pos_id" name="id"> -->
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -403,16 +402,16 @@ if (isset($_GET['employee_no'])) {
             </div>
         </div>
     </div>
+
     <script>
-           
-            function printDiv(divName) {
-                var printContents = document.getElementById(divName).innerHTML;
-                var originalContents = document.body.innerHTML;
+        function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
 
-                document.body.innerHTML = printContents;
+            document.body.innerHTML = printContents;
 
-                window.print();
+            window.print();
 
-                document.body.innerHTML = originalContents;
-            }
+            document.body.innerHTML = originalContents;
+        }
     </script>
