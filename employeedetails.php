@@ -108,6 +108,8 @@ if (isset($_GET['employee_no'])) {
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="css/responsive.css" />
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
 
     <style>
         .header-container {
@@ -402,7 +404,18 @@ if (isset($_GET['employee_no'])) {
             </div>
         </div>
     </div>
-
+    <?php if (isset($_SESSION['display'])) : ?>
+        <script>
+            Swal.fire({
+                title: '<?php echo $_SESSION['title']; ?>',
+                text: '<?php echo $_SESSION['display']; ?>',
+                icon: '<?php echo $_SESSION['success']; ?>',
+                confirmButtonText: 'OK'
+            });
+        </script>
+        <?php unset($_SESSION['display']);
+        unset($_SESSION['success']); ?>
+    <?php endif; ?>
     <script>
         function printDiv(divName) {
             var printContents = document.getElementById(divName).innerHTML;

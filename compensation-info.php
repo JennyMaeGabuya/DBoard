@@ -92,6 +92,7 @@ if (isset($_POST['compsavebtn'])) {
     }
 
     // Redirect to the appropriate page
-    header("Location: employeedetails.php");
+    $previous_page = $_SERVER['HTTP_REFERER'];
+    header("Location: $previous_page");
     exit();
 }
