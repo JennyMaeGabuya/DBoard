@@ -556,7 +556,7 @@ $serviceStmt->close();
                 <div class="modal-footer">
                     <!--  <input type="hidden" id="pos_id" name="id"> -->
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" name="compsavebtn">Save</button>
+                    <button type="submit" class="btn btn-primary" name="servicesavebtn">Save</button>
                     <button type="submit" class="btn btn-warning" name="compviewbtn">View</button>
                 </div>
 
