@@ -53,7 +53,6 @@ include "dbcon.php";
       align-items: center;
       justify-content: center;
       text-align: center;
-      width: 250px;
       padding: 10px;
       border-radius: 10px;
       color: white;
