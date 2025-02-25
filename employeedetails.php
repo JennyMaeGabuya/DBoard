@@ -72,8 +72,37 @@ if (isset($_GET['employee_no'])) {
         $updated = $compRow['updated_at'];
     }
 
-    // Close the service statement
+    // Close the compensation statement
     $compStmt->close();
+// Fetch service records
+$serviceQuery = "SELECT * FROM service_records WHERE employee_no = ?";
+$serviceStmt = $con->prepare($serviceQuery);
+$serviceStmt->bind_param("s", $employee_no); // "s" means string
+$serviceStmt->execute();
+$serviceResult = $serviceStmt->get_result();
+
+// Initialize variables to hold service data
+$date_started = $date_ended = $designation = $status = $servicesalary = $station = $branch = $abs_wo_pay = $separated = $separation = null;
+
+// Fetch compensation data
+if ($serviceRow = $serviceResult->fetch_assoc()) {
+    $date_started = $serviceRow['from_date'];
+    $date_ended = $serviceRow['to_date'];
+    $designation = $serviceRow['designation'];
+    $status = $serviceRow['status'];
+    $servicesalary = $serviceRow['salary'];
+    $station = $serviceRow['station_place'];
+    $branch = $serviceRow['branch'];
+    $abs_wo_pay = $serviceRow['abs_wo_pay'];
+    $separated = $serviceRow['date_separated'];
+    $separation = $serviceRow['cause_of_separation'];
+   // $created = $compRow['created_at'];
+    //$updated = $compRow['updated_at'];
+}
+
+// Close the service statement
+$serviceStmt->close();
+
 }
 //fetch service records
 ?>
@@ -184,10 +213,9 @@ if (isset($_GET['employee_no'])) {
                                         <a href="#addcomp" data-toggle="modal" class="btn btn-primary btn-border btn-round btn-sm">
                                             <i class="fa fa-file"></i> Compensation
                                         </a>
-                                        <button class="btn btn-danger btn-border btn-round btn-sm" onclick="printDiv('printThis')">
-                                            <i class="fa fa-file"></i>
-                                            Service Records
-                                        </button>
+                                        <a href="#addservice" data-toggle="modal" class="btn btn-success btn-border btn-round btn-sm">
+                                            <i class="fa fa-file"></i> Service Records
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -404,6 +432,139 @@ if (isset($_GET['employee_no'])) {
             </div>
         </div>
     </div>
+  <!--SERVICE RECORDS FORM MODAL-->
+    <div class="modal fade" id="addservice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary" style="border-radius: 3px;">
+                    <h5 class="modal-title" id="exampleModalLabel">SERVICE RECORDS</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form method="POST" action="service-info.php" method="POST" enctype="multipart/form-data">
+
+                        <div class="row">
+                            <div class="form-group col-md-4 mb-2">
+                                <label>Employee Number</label>
+                                <input
+                                    name="emp_no"
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Employee Number" value="<?php echo $employee_no; ?>" readonly />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Date Started</label>
+                                <input
+                                    name="date_started"
+                                    type="date"
+                                    class="form-control"
+                                    placeholder="Salary" value="<?php echo $date_started; ?>" />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Date Ended</label>
+                                <input
+                                    name="date_ended"
+                                    type="date"
+                                    class="form-control"
+                                    placeholder="Pera" value="<?php echo $date_ended; ?>" required />
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label>Designation</label>
+                                <div class="form-group">
+                                    <input
+                                        name="designation"
+                                        type="text"
+                                        class="form-control" value="<?php echo $designation; ?>"
+                                        required />
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label>Status</label>
+                                <input
+                                    name="status"
+                                    type="text"
+                                    class="form-control"
+                                     value="<?php echo $status; ?>" required />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Salary</label>
+                                <input
+                                    name="servicesalary"
+                                    type="number"
+                                    class="form-control"
+                                    value="<?php echo $servicesalary; ?>" required />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label>Station Place</label>
+                                <input
+                                    name="station"
+                                    type="text"
+                                    class="form-control" value="<?php echo $station; ?>"
+                                    required />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Branch</label>
+                                <input
+                                    name="branch"
+                                    type="text"
+                                    class="form-control" value="<?php echo $branch; ?>"
+                                    required />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Absent without Pay</label>
+                                <input
+                                    name="abs_wo_pay"
+                                    type="text"
+                                    class="form-control" value="<?php echo $abs_wo_pay; ?>"
+                                    required />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label>Date Separated</label>
+                                <input
+                                    name="separated"
+                                    type="date"
+                                    class="form-control" value="<?php echo $separated; ?>"
+                                    required />
+                            </div>
+
+                            <div class="form-group col-md-8">
+                                <label>Cause of Separation</label>
+                                <input
+                                    name="separation"
+                                    type="text"
+                                    class="form-control" value="<?php echo $separation; ?>"
+                                    required />
+                            </div>
+                         
+                        </div>
+                </div>
+
+                <div class="modal-footer">
+                    <!--  <input type="hidden" id="pos_id" name="id"> -->
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" name="compsavebtn">Save</button>
+                    <button type="submit" class="btn btn-warning" name="compviewbtn">View</button>
+                </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
     <?php if (isset($_SESSION['display'])) : ?>
         <script>
             Swal.fire({
