@@ -120,14 +120,6 @@ if ($result->num_rows > 0) {
 
 <body>
 
-   <!-- Display success message -->
-   <?php if (isset($_GET['update']) && $_GET['update'] == 'success'): ?>
-        <div class="alert alert-success" style="margin: 20px;">
-            Profile updated successfully!
-        </div>
-    <?php endif; ?>
-
-
     <!--Sidebar-part-->
     <?php include 'includes/sidebar.php'; ?>
 

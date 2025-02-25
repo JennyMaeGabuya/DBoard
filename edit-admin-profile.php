@@ -183,13 +183,13 @@ if ($result->num_rows > 0) {
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                     <div class="product-payment-inner-st res-mg-t-30 analysis-progrebar-ctn">
                         <ul id="myTabedu1" class="tab-review-design">
-                            <li class="active"><a href="#description">Basic Information</a></li>
+                            <li class="active"><a href="#description">Basic Informations</a></li>
                             <li><a href="#reviews">Service Records</a></li>
                             <li><a href="#INFORMATION">Compensation</a></li>
                         </ul>
 
                         <div class="tab-content custom-product-edit">
-                            <div id="description" class="tab-pane fade active in">s
+                            <div id="description" class="tab-pane fade active in">
                             <form action="update-admin-profile.php" method="POST" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="firstname">Firstname</label>
