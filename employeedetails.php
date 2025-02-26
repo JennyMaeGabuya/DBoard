@@ -11,7 +11,8 @@ if (isset($_GET['employee_no'])) {
     $employee_no = $_GET['employee_no'];
 
     // Prepare the SQL statement
-    $query = "SELECT * FROM employee WHERE employee_no = ?";
+    $query = "SELECT * 
+FROM employee WHERE employee.employee_no = ?";
     $stmt = $con->prepare($query);
 
     // Bind the parameter
@@ -103,6 +104,26 @@ if ($serviceRow = $serviceResult->fetch_assoc()) {
 // Close the service statement
 $serviceStmt->close();
 
+$govQuery = "SELECT * FROM government_info WHERE employee_no = ?";
+$govStmt = $con->prepare($govQuery);
+$govStmt->bind_param("s", $employee_no); // "s" means string
+$govStmt->execute();
+$govResult = $govStmt->get_result();
+
+// Initialize variables to hold service data
+$gsis = $pag_ibig = $philhealth = $sss = $tin = null;
+
+// Fetch compensation data
+if ($govRow = $govResult->fetch_assoc()) {
+    $gsis = $govRow['gsis_no'];
+    $pag_ibig = $govRow['pag_ibig_no'];
+    $philhealth = $govRow['philhealth_no'];
+    $sss = $govRow['sss_no'];
+    $tin = $govRow['tin_no'];
+}
+
+// Close the service statement
+$govStmt->close();
 }
 //fetch service records
 ?>
@@ -142,12 +163,22 @@ $serviceStmt->close();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
-   .card {
-            margin: 20px;
+     .card {
+        /* Set height to letter size */
+   
+      align-items: center;
+        position: relative;
+        overflow: hidden; 
+        }
+        .card-body{
+            margin: 20px auto; /* Center the card horizontally */
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            width: 8.5in; /* Set width to letter size */
+            height: 11in;
             position: relative;
+            overflow: hidden; 
         }
         .header-container {
             display: flex;
@@ -158,7 +189,7 @@ $serviceStmt->close();
         .header-text {
             text-align: center;
             flex-grow: 1;
-            line-height: 1;
+            line-height: 0.5;
             
         }
         .footer {
@@ -169,14 +200,18 @@ $serviceStmt->close();
             text-align: center;
         }
         .footer img {
-            width: 100%; /* Adjust as needed */
+            width: 100%; 
         }
         .logo{
             height: 100px;
             width: 100px;
             margin:10px;
         }
-      
+        .card-head-row {
+    display: flex; 
+    justify-content: flex-end; 
+    align-items: center; /* Center items vertically */
+}
     </style>
 </head>
 
@@ -259,10 +294,10 @@ $serviceStmt->close();
         <div class="row mt-2">
             <div class="col-md-12 table-responsive">
                 <br>
-                <table class="table table-bordered">
+                <table class="table table-borderless">
                     <tr>
-                        <th colspan="4" style="text-align: center;">
-                            <h3>EMPLOYEE INFORMATION</h3>
+                        <th colspan="4" style="text-align: center; background-color: #ccc;line-height:0.5px;">
+                            <h6>EMPLOYEE INFORMATION</h6>
                         </th>
                     </tr>
                     <tr>
@@ -289,6 +324,30 @@ $serviceStmt->close();
                         <th>Blood Type</th>
                         <td><?php echo $blood_type; ?></td>
                     </tr>
+                    <tr>
+                        <th colspan="4" style="text-align: center; background-color: #ccc;line-height:0.5px;">
+                            <h6>GOVERNMENT INFORMATION</h6>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>GSIS NO</th>
+                        <td><?php echo $gsis; ?></td>
+                        <th>SSS NO</th>
+                        <td><?php echo $sss; ?></td>
+                    </tr>
+                    <tr>
+                        <th>PHILHEALTH NO</th>
+                        <td><?php echo $philhealth; ?></td>
+                        <th>PAG-IBIG NO</th>
+                        <td><?php echo $pag_ibig; ?></td>
+                    </tr>
+                    <tr>
+                        <th>TIN NO</th>
+                        <td><?php echo $tin; ?></td>
+                        <th>AGENCY EMPLOYEE NO</th>
+                        <td><?php echo $employee_no; ?></td>
+                    </tr>
+               
                 </table>
             </div>
             <div class="footer">
@@ -603,5 +662,10 @@ $serviceStmt->close();
             window.print();
 
             document.body.innerHTML = originalContents;
+            
+            window.onafterprint = function() {
+                newWindow.close();
+                location.reload();
+            };
         }
     </script>
