@@ -1,19 +1,5 @@
 <?php
 session_start();
-if (isset($_SESSION['success'])) {
-  echo "<script>
-        setTimeout(() => {
-            Swal.fire({
-                title: 'Success!',
-                text: '" . $_SESSION['success'] . "',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-        }, 100);
-    </script>";
-  unset($_SESSION['success']);
-}
-
 if (!isset($_SESSION['user_id'])) {
   header('location:../index.php');
   exit();
@@ -52,7 +38,6 @@ include "dbcon.php";
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
   <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -94,7 +79,7 @@ include "dbcon.php";
         </div>
       </div>
     </div>
-
+    
     <div class="analytics-sparkle-area">
       <div class="container-fluid">
         <div class="row">
