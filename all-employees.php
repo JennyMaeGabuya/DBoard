@@ -187,7 +187,7 @@ include "dbcon.php";
                                             <td><?php echo htmlspecialchars($email_address); ?></td>
                                             <td><?php echo htmlspecialchars($sex); ?></td>
                                             <td>
-                                                <div style="display: flex;">
+                                                <div style="text-align: center;">
                                                     <a href="#edit" data-toggle="modal" class="btn btn-primary"
                                                         style="margin-right: 8px;">
                                                         <i class="fa fa-pencil"></i>
@@ -492,9 +492,9 @@ include "dbcon.php";
                                     placeholder="Date Separated" required />
                             </div>
                         </div>
-            
-                                     
-                <br>
+
+
+                        <br>
                         <hr>
                         <h4 class="text-center">COMPENSATION</h4>
                         <hr>
@@ -555,16 +555,16 @@ include "dbcon.php";
 
                     </form>
                 </div>
-            </div>                        
-                <div class="modal-footer">
-                    <!--  <input type="hidden" id="pos_id" name="id"> -->
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" name="basic-infobtn">Save Changes</button>
-                </div>
-
-                </form>
             </div>
+            <div class="modal-footer">
+                <!--  <input type="hidden" id="pos_id" name="id"> -->
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" name="basic-infobtn">Save Changes</button>
+            </div>
+
+            </form>
         </div>
+    </div>
     </div>
     <script>
         document.getElementById('mobile').addEventListener('input', function(e) {

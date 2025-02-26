@@ -202,7 +202,7 @@ include "dbcon.php";
                                             <td><?php echo htmlspecialchars($address); ?></td>
                                             <td><?php echo htmlspecialchars($email_address); ?></td>
                                             <td>
-                                                <div style="display: flex;">
+                                                <div style="text-align: center;">
                                                     <a href="employeedetails.php?employee_no=<?php echo htmlspecialchars($employee_no); ?>"
                                                         class="btn btn-success" title="View" style="margin-right: 8px;">
                                                         <i class="fa fa-eye"></i>
