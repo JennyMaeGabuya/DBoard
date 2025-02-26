@@ -111,13 +111,20 @@ include "dbcon.php";
                     <div class="col-lg-12">
                       <ul class="breadcome-menu" style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
                         <li>
-                          <a href="dashboard.php">
-                            <i class="fa fa-home"></i> Home
-                          </a>
-                          <span class="bread-slash">/</span>
-                          <a href="certifications.php">Certificates</a>
-                          <span class="bread-slash">/</span>
-                          <span class="bread-blod">Issue Certificate</span>
+                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<a href="dashboard.php">
+    <i class="fas fa-home"></i> <strong>Home</strong>
+</a>
+<span class="bread-slash"> / </span>
+<a href="certificates.php">
+    <i class="fas fa-certificate"></i> <strong>Certificates</strong>
+</a>
+<span class="bread-slash"> / </span>
+<a href="issue-certificates.php">
+    <i class="fas fa-file-signature"></i> <strong>Issue Certificates</strong>
+</a>
+
                         </li>
                       </ul>
                     </div>
