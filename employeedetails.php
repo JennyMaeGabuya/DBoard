@@ -164,7 +164,6 @@ $govStmt->close();
 
     <style>
      .card {
-        /* Set height to letter size */
    
       align-items: center;
         position: relative;
