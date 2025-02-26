@@ -301,7 +301,7 @@ include "dbcon.php";
                             </div>
                             <div class="form-group col-md-4 mb-2">
                                 <label>Employee Number</label>
-                                <input name="emp_no" type="number" class="form-control" placeholder="Employee Number"
+                                <input name="emp_no" type="text" class="form-control" placeholder="Employee Number"
                                     required />
                             </div>
                             <div class="form-group col-md-4">
