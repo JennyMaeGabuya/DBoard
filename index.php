@@ -122,7 +122,9 @@ include('dbcon.php');
     </div>
   </div>
 
-  <!-- JavaScript -->
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       // Remember Me Functionality
@@ -149,12 +151,10 @@ include('dbcon.php');
       togglePassword.addEventListener("click", function() {
         if (passwordField.type === "password") {
           passwordField.type = "text";
-          togglePassword.classList.remove("fa-eye");
-          togglePassword.classList.add("fa-eye-slash");
+          togglePassword.classList.replace("fa-eye", "fa-eye-slash");
         } else {
           passwordField.type = "password";
-          togglePassword.classList.remove("fa-eye-slash");
-          togglePassword.classList.add("fa-eye");
+          togglePassword.classList.replace("fa-eye-slash", "fa-eye");
         }
       });
 
@@ -162,15 +162,34 @@ include('dbcon.php');
       const loginButton = document.getElementById("loginButton");
 
       function toggleButtonState() {
-        if (usernameField.value.trim() !== "" && passwordField.value.trim() !== "") {
-          loginButton.removeAttribute("disabled");
-        } else {
-          loginButton.setAttribute("disabled", "true");
-        }
+        loginButton.disabled = !(usernameField.value.trim() && passwordField.value.trim());
       }
 
       usernameField.addEventListener("input", toggleButtonState);
       passwordField.addEventListener("input", toggleButtonState);
+
+      // SweetAlert2 for Login Feedback
+      <?php if (isset($_SESSION['success'])): ?>
+        Swal.fire({
+          title: "Success!",
+          text: "<?php echo $_SESSION['success']; ?>",
+          icon: "success",
+          confirmButtonText: "OK"
+        }).then(() => {
+          window.location.href = "dashboard.php"; // Redirect after user clicks OK
+        });
+        <?php unset($_SESSION['success']); ?> // Clear session message
+      <?php endif; ?>
+
+      <?php if (isset($_SESSION['error'])): ?>
+        Swal.fire({
+          title: "Error!",
+          text: "<?php echo $_SESSION['error']; ?>",
+          icon: "error",
+          confirmButtonText: "OK"
+        });
+        <?php unset($_SESSION['error']); ?> // Clear session error
+      <?php endif; ?>
     });
   </script>
 
