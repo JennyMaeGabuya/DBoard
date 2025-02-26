@@ -77,55 +77,55 @@ FROM employee WHERE employee.employee_no = ?";
 
     // Close the compensation statement
     $compStmt->close();
-// Fetch service records
-$serviceQuery = "SELECT * FROM service_records WHERE employee_no = ?";
-$serviceStmt = $con->prepare($serviceQuery);
-$serviceStmt->bind_param("s", $employee_no); // "s" means string
-$serviceStmt->execute();
-$serviceResult = $serviceStmt->get_result();
+    // Fetch service records
+    $serviceQuery = "SELECT * FROM service_records WHERE employee_no = ?";
+    $serviceStmt = $con->prepare($serviceQuery);
+    $serviceStmt->bind_param("s", $employee_no); // "s" means string
+    $serviceStmt->execute();
+    $serviceResult = $serviceStmt->get_result();
 
-// Initialize variables to hold service data
-$date_started = $date_ended = $designation = $status = $servicesalary = $station = $branch = $abs_wo_pay = $separated = $separation = null;
+    // Initialize variables to hold service data
+    $date_started = $date_ended = $designation = $status = $servicesalary = $station = $branch = $abs_wo_pay = $separated = $separation = null;
 
-// Fetch compensation data
-if ($serviceRow = $serviceResult->fetch_assoc()) {
-    $date_started = $serviceRow['from_date'];
-    $date_ended = $serviceRow['to_date'];
-    $designation = $serviceRow['designation'];
-    $status = $serviceRow['status'];
-    $servicesalary = $serviceRow['salary'];
-    $station = $serviceRow['station_place'];
-    $branch = $serviceRow['branch'];
-    $abs_wo_pay = $serviceRow['abs_wo_pay'];
-    $separated = $serviceRow['date_separated'];
-    $separation = $serviceRow['cause_of_separation'];
-   // $created = $compRow['created_at'];
-    //$updated = $compRow['updated_at'];
-}
+    // Fetch compensation data
+    if ($serviceRow = $serviceResult->fetch_assoc()) {
+        $date_started = $serviceRow['from_date'];
+        $date_ended = $serviceRow['to_date'];
+        $designation = $serviceRow['designation'];
+        $status = $serviceRow['status'];
+        $servicesalary = $serviceRow['salary'];
+        $station = $serviceRow['station_place'];
+        $branch = $serviceRow['branch'];
+        $abs_wo_pay = $serviceRow['abs_wo_pay'];
+        $separated = $serviceRow['date_separated'];
+        $separation = $serviceRow['cause_of_separation'];
+        // $created = $compRow['created_at'];
+        //$updated = $compRow['updated_at'];
+    }
 
-// Close the service statement
-$serviceStmt->close();
+    // Close the service statement
+    $serviceStmt->close();
 
-$govQuery = "SELECT * FROM government_info WHERE employee_no = ?";
-$govStmt = $con->prepare($govQuery);
-$govStmt->bind_param("s", $employee_no); // "s" means string
-$govStmt->execute();
-$govResult = $govStmt->get_result();
+    $govQuery = "SELECT * FROM government_info WHERE employee_no = ?";
+    $govStmt = $con->prepare($govQuery);
+    $govStmt->bind_param("s", $employee_no); // "s" means string
+    $govStmt->execute();
+    $govResult = $govStmt->get_result();
 
-// Initialize variables to hold service data
-$gsis = $pag_ibig = $philhealth = $sss = $tin = null;
+    // Initialize variables to hold service data
+    $gsis = $pag_ibig = $philhealth = $sss = $tin = null;
 
-// Fetch compensation data
-if ($govRow = $govResult->fetch_assoc()) {
-    $gsis = $govRow['gsis_no'];
-    $pag_ibig = $govRow['pag_ibig_no'];
-    $philhealth = $govRow['philhealth_no'];
-    $sss = $govRow['sss_no'];
-    $tin = $govRow['tin_no'];
-}
+    // Fetch compensation data
+    if ($govRow = $govResult->fetch_assoc()) {
+        $gsis = $govRow['gsis_no'];
+        $pag_ibig = $govRow['pag_ibig_no'];
+        $philhealth = $govRow['philhealth_no'];
+        $sss = $govRow['sss_no'];
+        $tin = $govRow['tin_no'];
+    }
 
-// Close the service statement
-$govStmt->close();
+    // Close the service statement
+    $govStmt->close();
 }
 //fetch service records
 ?>
@@ -165,34 +165,38 @@ $govStmt->close();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
-     .card {
-   
-      align-items: center;
-        position: relative;
-        overflow: hidden; 
+        .card {
+
+            align-items: center;
+            position: relative;
+            overflow: hidden;
         }
-        .card-body{
-            margin: 20px auto; /* Center the card horizontally */
+
+        .card-body {
+            margin: 20px auto;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            width: 8.5in; /* Set width to letter size */
+            width: 8.27in;
             height: 11in;
             position: relative;
-            overflow: hidden; 
+            overflow: hidden;
         }
+
         .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
+
         .header-text {
             text-align: center;
             flex-grow: 1;
             line-height: 0.5;
-            
+
         }
+
         .footer {
             position: absolute;
             bottom: 20px;
@@ -200,31 +204,34 @@ $govStmt->close();
             right: 0;
             text-align: center;
         }
+
         .footer img {
-            width: 100%; 
+            width: 100%;
         }
-        .logo{
+
+        .logo {
             height: 100px;
             width: 100px;
-            margin:10px;
+            margin: 10px;
         }
+
         .card-head-row {
-    display: flex; 
-    justify-content: flex-end; 
-    align-items: center; /* Center items vertically */
-}
-.table{
-    border: 1px solidrgb(110, 106, 106);
-}
-@media print {
-    .pds {
-        background-color: #ccc !important; /* Ensure the background color is applied */
-        color: #000 !important; /* Ensure text color is visible */
-        padding: 10px; /* Optional: Add padding for better appearance */
-    }
-    }
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
 
+        .table {
+            border: 1px solidrgb(110, 106, 106);
+        }
 
+        @media print {
+            .pds {
+                background-color: #ccc !important;
+                color: #000 !important;
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 
@@ -269,40 +276,23 @@ $govStmt->close();
 
                     <div class="product-status-wrap drp-lst">
 
-                    <div class="card">
-    <div class="card-header">
-        <div class="card-head-row">
-            <div class="card-tools">
-                <button class="btn btn-danger btn-border btn-round btn-sm" onclick="printDiv('printThis')">
-                    <i class="fa fa-print"></i> Print
-                </button>
-         
-                <a href="#addcomp" data-toggle="modal" class="btn btn-primary btn-border btn-round btn-sm">
-                    <i class="fa fa-file"></i> Compensation
-                </a>
-                <a href="#addservice" data-toggle="modal" class="btn btn-success btn-border btn-round btn-sm">
-                    <i class="fa fa-file"></i> Service Records
-                </a>
-            </div>
-        </div>
-    </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-head-row">
+                                    <div class="card-tools">
+                                        <button class="btn btn-danger btn-border btn-round btn-sm" onclick="printDiv('printThis')">
+                                            <i class="fa fa-print"></i> Print
+                                        </button>
 
-    <div class="card-body m-5" id="printThis">
-        <div class="header-container">
-            <div class="text-center">
-                <img src="img/mk-logo.png" class="logo" alt="Logo Left" style="height: 100px;width: 100px;">
-            </div>
-            <div class="header-text">
-                <p class="text1">Republic of the Philippines</p>
-                <p class="text1">Province of Batangas</p>
-                <h4>MUNICIPALITY OF MATAAS NA KAHOY</h4>
-                <p class="text1">Tel. No.: (043) 784-1088</p>
-                <h6 class="fw-bold mb-0">hrmo_lgumatasnakahoy@yahoo.com</h6>
-            </div>
-            <div class="text-center">
-                <img src="img/Bagong-Pilipinas.png" class="logo" alt="Logo Right" style="height: 100px;width: 130px;">
-            </div>
-        </div>
+                                        <a href="#addcomp" data-toggle="modal" class="btn btn-primary btn-border btn-round btn-sm">
+                                            <i class="fa fa-file"></i> Compensation
+                                        </a>
+                                        <a href="#addservice" data-toggle="modal" class="btn btn-success btn-border btn-round btn-sm">
+                                            <i class="fa fa-file"></i> Service Records
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
 
         <br>
         <div class="row mt-2">
@@ -385,9 +375,89 @@ $govStmt->close();
         </div>
         </div>
 
-        
-    </div>
-</div>
+                                <br>
+                                <div class="row mt-2">
+                                    <div class="col-md-12 table-responsive">
+                                        <br>
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th colspan="4" style="text-align: center; background-color: #ccc;line-height:0.5px;">
+                                                    <h4 class="pds">PERSONAL DATA SHEET</h4>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th rowspan="3">
+                                                    <img src="<?php echo htmlspecialchars($imageUrl); ?>" alt="" class="avatar-img rounded-circle" style="height: 150px; width: 150px;margin-left:10px;">
+                                                </th>
+                                                <th colspan="1">SURNAME</th>
+                                                <td><?php echo $lastname; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <th>FIRST NAME</th>
+                                                <td><?php echo $firstname; ?></td>
+                                                <th> NAME EXTENSION <br><?php echo $name_extension; ?></th>
+
+                                            </tr>
+                                            <tr>
+                                                <th colspan="1">MIDDLE NAME</th>
+                                                <td><?php echo $middlename; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Email</th>
+                                                <td><?php echo $email_address; ?></td>
+                                                <th>Contact No.:</th>
+                                                <td><?php echo $mobile_no; ?></td>
+                                            </tr>
+                                            <tr>
+
+                                                <th>Address:</th>
+                                                <td colspan="3"><?php echo $address; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Place of Birth:</th>
+                                                <td><?php echo $pob; ?></td>
+                                                <th>Sex:</th>
+                                                <td><?php echo $sex; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Birthday:</th>
+                                                <td><?php echo $bday; ?></td>
+                                                <th>Blood Type</th>
+                                                <td><?php echo $blood_type; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="4" style="text-align: center; background-color: #ccc;line-height:0.5px;">
+                                                    <h6>GOVERNMENT INFORMATION</h6>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th>GSIS NO</th>
+                                                <td><?php echo $gsis; ?></td>
+                                                <th>SSS NO</th>
+                                                <td><?php echo $sss; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <th>PHILHEALTH NO</th>
+                                                <td><?php echo $philhealth; ?></td>
+                                                <th>PAG-IBIG NO</th>
+                                                <td><?php echo $pag_ibig; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <th>TIN NO</th>
+                                                <td><?php echo $tin; ?></td>
+                                                <th>AGENCY EMPLOYEE NO</th>
+                                                <td><?php echo $employee_no; ?></td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+                                    <div class="footer">
+                                        <img src="img/JMI.png" class="jmifooter" alt="">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -537,7 +607,7 @@ $govStmt->close();
             </div>
         </div>
     </div>
-  <!--SERVICE RECORDS FORM MODAL-->
+    <!--SERVICE RECORDS FORM MODAL-->
     <div class="modal fade" id="addservice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -597,7 +667,7 @@ $govStmt->close();
                                     name="status"
                                     type="text"
                                     class="form-control"
-                                     value="<?php echo $status; ?>" required />
+                                    value="<?php echo $status; ?>" required />
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Salary</label>
@@ -654,7 +724,7 @@ $govStmt->close();
                                     class="form-control" value="<?php echo $separation; ?>"
                                     required />
                             </div>
-                         
+
                         </div>
                 </div>
 
@@ -692,13 +762,10 @@ $govStmt->close();
             window.print();
 
             document.body.innerHTML = originalContents;
-            
+
             window.onafterprint = function() {
                 newWindow.close();
                 location.reload();
             };
         }
-
-  
     </script>
-    
