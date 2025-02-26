@@ -294,86 +294,23 @@ FROM employee WHERE employee.employee_no = ?";
                                 </div>
                             </div>
 
-        <br>
-        <div class="row mt-2">
-            <div class="col-md-12 table-responsive">
-                <br>
-                <table class="table table-bordered">
-                    <tr>
-                        <th colspan="4" style="text-align: center; background-color: #ccc;line-height:0.5px;">
-                            <h4 class="pds">PERSONAL DATA SHEET</h4>
-                        </th>
-                    </tr>
-                    <tr>
-        <th rowspan="3">
-            <img src="<?php echo htmlspecialchars($imageUrl); ?>" alt="" class="avatar-img rounded-circle" style="height: 150px; width: 150px;margin-left:15px;">
-        </th>
-        <th colspan="1">SURNAME</th>
-        <td colspan="2"?php echo $lastname; ?></td>
-    </tr>
-    <tr>
-        <th>FIRST NAME</th>
-        <td><?php echo $firstname; ?></td>
-        <th> NAME EXTENSION <br><?php echo $name_extension; ?></th>
-     
-    </tr>
-    <tr>
-        <th colspan="1">MIDDLE NAME</th>
-        <td colspan="2"><?php echo $middlename; ?></td>
-    </tr>
-                    <tr>
-                          <th>Email</th>
-                        <td><?php echo $email_address; ?></td>
-                        <th>Contact No.:</th>
-                        <td><?php echo $mobile_no; ?></td>
-                    </tr>
-                    <tr>
-                       
-                        <th >Address:</th>
-                        <td colspan="3"><?php echo $address; ?></td>
-                    </tr>
-                    <tr>
-                        <th>Place of Birth:</th>
-                        <td><?php echo $pob; ?></td>
-                        <th>Sex:</th>
-                        <td><?php echo $sex; ?></td>
-                    </tr>
-                    <tr>
-                        <th>Birthday:</th>
-                        <td><?php echo $bday; ?></td>
-                        <th>Blood Type</th>
-                        <td><?php echo $blood_type; ?></td>
-                    </tr>
-                    <tr>
-                        <th colspan="4" style="text-align: center; background-color: #ccc;line-height:0.5px;">
-                            <h6>GOVERNMENT INFORMATION</h6>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>GSIS NO</th>
-                        <td><?php echo $gsis; ?></td>
-                        <th>SSS NO</th>
-                        <td><?php echo $sss; ?></td>
-                    </tr>
-                    <tr>
-                        <th>PHILHEALTH NO</th>
-                        <td><?php echo $philhealth; ?></td>
-                        <th>PAG-IBIG NO</th>
-                        <td><?php echo $pag_ibig; ?></td>
-                    </tr>
-                    <tr>
-                        <th>TIN NO</th>
-                        <td><?php echo $tin; ?></td>
-                        <th>AGENCY EMPLOYEE NO</th>
-                        <td><?php echo $employee_no; ?></td>
-                    </tr>
-               
-                </table>
-            </div>
-            <div class="footer">
-            <img src="img/JMI.png" class="jmifooter" alt="">
-        </div>
-        </div>
+                            <div class="card-body m-5" id="printThis">
+                                <div class="header-container">
+                                    <div class="text-center">
+                                        <img src="img/mk-logo.png" class="logo" alt="Logo Left" style="height: 100px;width: 100px;">
+                                    </div>
+                                    <div class="header-text">
+                                        <p class="text1">Republic of the Philippines</p>
+                                        <p class="text1">Province of Batangas</p>
+                                        <h4>MUNICIPALITY OF MATAAS NA KAHOY</h4>
+                                        <p class="text1">Tel. No.: (043) 784-1088</p>
+                                        <h6 class="fw-bold mb-0">hrmo_lgumatasnakahoy@yahoo.com</h6>
+                                    </div>
+                                    <div class="text-center">
+                                        <img src="img/Bagong-Pilipinas.png" class="logo" alt="Logo Right" style="height: 100px;width: 130px;">
+                                    </div>
+                                </div>
+
 
                                 <br>
                                 <div class="row mt-2">
