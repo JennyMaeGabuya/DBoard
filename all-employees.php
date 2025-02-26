@@ -546,14 +546,7 @@ include "dbcon.php";
                                 <input name="year_end_bonus" type="number" class="form-control"
                                     placeholder="Year End Bonus" required />
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <!--  <input type="hidden" id="pos_id" name="id"> -->
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" name="basic-infobtn">Create</button>
-                        </div>
-
-                    </form>
+                        
                 </div>
             </div>
             <div class="modal-footer">
