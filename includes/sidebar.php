@@ -72,9 +72,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
               <li class="<?= ($current_page == 'add-employee.php') ? 'active' : ''; ?>">
                 <a href="add-employee.php"><span class="mini-sub-pro">Add Employees</span></a>
               </li>
-              <li class="<?= ($current_page == 'edit-employee.php') ? 'active' : ''; ?>">
-                <a href="edit-employee.php"><span class="mini-sub-pro">Edit Employees</span></a>
-              </li>
               <li class="<?= ($current_page == 'employee-profile.php') ? 'active' : ''; ?>">
                 <a href="employee-profile.php"><span class="mini-sub-pro">Employees Profile</span></a>
               </li>
