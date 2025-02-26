@@ -139,24 +139,44 @@ $serviceStmt->close();
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
+   .card {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            position: relative;
+        }
         .header-container {
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
-
         .header-text {
             text-align: center;
             flex-grow: 1;
-            margin-bottom: 0px;
+            line-height: 1;
+            
         }
-
-        .logo {
-            width: 160px;
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+        .footer img {
+            width: 100%; /* Adjust as needed */
+        }
+        .logo{
             height: 100px;
+            width: 100px;
+            margin:10px;
         }
+      
     </style>
 </head>
 
@@ -201,88 +221,84 @@ $serviceStmt->close();
 
                     <div class="product-status-wrap drp-lst">
 
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-head-row">
+                    <div class="card">
+    <div class="card-header">
+        <div class="card-head-row">
+            <div class="card-tools">
+                <button class="btn btn-danger btn-border btn-round btn-sm" onclick="printDiv('printThis')">
+                    <i class="fa fa-print"></i> Print
+                </button>
+                <a href="#addcomp" data-toggle="modal" class="btn btn-primary btn-border btn-round btn-sm">
+                    <i class="fa fa-file"></i> Compensation
+                </a>
+                <a href="#addservice" data-toggle="modal" class="btn btn-success btn-border btn-round btn-sm">
+                    <i class="fa fa-file"></i> Service Records
+                </a>
+            </div>
+        </div>
+    </div>
 
-                                    <div class="card-tools">
-                                        <button class="btn btn-danger btn-border btn-round btn-sm" onclick="printDiv('printThis')">
-                                            <i class="fa fa-print"></i>
-                                            Print
-                                        </button>
-                                        <a href="#addcomp" data-toggle="modal" class="btn btn-primary btn-border btn-round btn-sm">
-                                            <i class="fa fa-file"></i> Compensation
-                                        </a>
-                                        <a href="#addservice" data-toggle="modal" class="btn btn-success btn-border btn-round btn-sm">
-                                            <i class="fa fa-file"></i> Service Records
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+    <div class="card-body m-5" id="printThis">
+        <div class="header-container">
+            <div class="text-center">
+                <img src="img/mk-logo.png" class="logo" alt="Logo Left" style="height: 100px;width: 100px;">
+            </div>
+            <div class="header-text">
+                <p class="text1">Republic of the Philippines</p>
+                <p class="text1">Province of Batangas</p>
+                <h4>MUNICIPALITY OF MATAAS NA KAHOY</h4>
+                <p class="text1">Tel. No.: (043) 784-1088</p>
+                <h6 class="fw-bold mb-0">hrmo_lgumatasnakahoy@yahoo.com</h6>
+            </div>
+            <div class="text-center">
+                <img src="img/Bagong-Pilipinas.png" class="logo" alt="Logo Right" style="height: 100px;width: 130px;">
+            </div>
+        </div>
 
-                            <!-- HINDI PA FINAL, WALA PANG FORMAT-->
-                            <div class="card-body m-5" id="printThis">
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <div class="header-container">
-                                            <div class="text-center">
-                                                <img src="img/mk-logo.png" class="logo" alt="Logo Left">
-                                            </div>
+        <br>
+        <div class="row mt-2">
+            <div class="col-md-12 table-responsive">
+                <br>
+                <table class="table table-bordered">
+                    <tr>
+                        <th colspan="4" style="text-align: center;">
+                            <h3>EMPLOYEE INFORMATION</h3>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th><img src="<?php echo htmlspecialchars($imageUrl); ?>" alt="" class="avatar-img rounded-circle" style="height: 80px; width: 80px;"></th>
+                        <td style="text-transform: uppercase;font-weight:bold;"><?php echo $firstname . ' ' . $middlename . ' ' . $lastname . $name_extension; ?></td>
+                        <th>Email</th>
+                        <td><?php echo $email_address; ?></td>
+                    </tr>
+                    <tr>
+                        <th>Contact No.:</th>
+                        <td><?php echo $mobile_no; ?></td>
+                        <th>Address:</th>
+                        <td><?php echo $address; ?></td>
+                    </tr>
+                    <tr>
+                        <th>Place of Birth:</th>
+                        <td><?php echo $pob; ?></td>
+                        <th>Sex:</th>
+                        <td><?php echo $sex; ?></td>
+                    </tr>
+                    <tr>
+                        <th>Birthday:</th>
+                        <td><?php echo $dob; ?></td>
+                        <th>Blood Type</th>
+                        <td><?php echo $blood_type; ?></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="footer">
+            <img src="img/JMI.png" class="jmifooter" alt="">
+        </div>
+        </div>
 
-                                            <div class="header-text">
-                                                <p class="text1">Republic of the Philippines</p>
-                                                <p class="text1">Province of Batangas</p>
-                                                <h4>MUNICIPALITY OF MATAAS NA KAHOY</h4>
-                                                <p class="text1">Tel. No.: (043) 784-1088</p>
-                                                <h6 class="fw-bold mb-0">hrmo_lgumatasnakahoy@yahoo.com</h6>
-                                            </div>
-
-                                            <div class="text-center">
-                                                <img src="img/Bagong-Pilipinas.png" class="logo" alt="Logo Right">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row mt-2">
-                                    <div class="col-md-12 table-responsive">
-                                        <br>
-                                        <table class="table table-bordered">
-                                            <tr>
-                                                <th colspan="4" style="text-align: center;">
-                                                    <h3>Employee Information</h3>
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th><img src="<?php echo htmlspecialchars($imageUrl); ?>" alt="" class="avatar-img rounded-circle" style="height: 80px; width: 80px;"></th>
-                                                <td style="text-transform: uppercase;font-weight:bold;"><?php echo $firstname . ' ' . $middlename . ' ' . $lastname . $name_extension; ?></td>
-                                                <th>Email</th>
-                                                <td><?php echo $email_address; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Contact No.:</th>
-                                                <td><?php echo $mobile_no; ?></td>
-                                                <th>Address:</th>
-                                                <td><?php echo $address; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Place of Birth:</th>
-                                                <td><?php echo $pob; ?></td>
-                                                <th>Sex:</th>
-                                                <td><?php echo $sex; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Birthday:</th>
-                                                <td colspan=""><?php echo $dob; ?></td>
-                                                <th>Blood Type</th>
-                                                <td colspan=""><?php echo $blood_type; ?></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
+        
+    </div>
+</div>
                     </div>
                 </div>
             </div>
