@@ -114,7 +114,7 @@ include "dbcon.php";
                             <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
 
                             <script>
-                                $(function () {
+                                $(function() {
                                     new DataTable('#myTable', {
                                         responsive: true,
                                         autoWidth: false,
@@ -161,7 +161,7 @@ include "dbcon.php";
                                         $email_address = $row['email_address'];
                                         $imagePath = $row['image'];
                                         $imageUrl = empty($imagePath) ? 'img/mk-logo.png' : 'img/profile/' . $imagePath;
-                                        ?>
+                                    ?>
                                         <tr>
 
                                             <td style="text-align: center;"><?php echo $count; ?></td>
@@ -196,14 +196,67 @@ include "dbcon.php";
                                                         class="btn btn-success" title="View" style="margin-right: 8px;">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
-                                                    <a href="employeedetails.php?employee_no=<?php echo $id; ?>"
-                                                        class="btn btn-danger" title="Delete">
+                                                    <a href="#" class="btn btn-danger delete-btn" data-id="<?php echo $employee_no; ?>" title="Delete">
                                                         <i class="fa fa-trash-o"></i>
                                                     </a>
                                                 </div>
                                             </td>
+
+                                            <!-- SweetAlert2 Library -->
+                                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+                                            <script>
+                                                document.addEventListener("DOMContentLoaded", function() {
+                                                    // Confirmation before deleting an employee
+                                                    document.querySelectorAll(".delete-btn").forEach(button => {
+                                                        button.addEventListener("click", function() {
+                                                            let employee_no = this.getAttribute("data-id");
+
+                                                            Swal.fire({
+                                                                title: "Are you sure?",
+                                                                text: "You won't be able to revert this!",
+                                                                icon: "warning",
+                                                                showCancelButton: true,
+                                                                confirmButtonColor: "#d33",
+                                                                cancelButtonColor: "#3085d6",
+                                                                confirmButtonText: "Yes, delete it!"
+                                                            }).then((result) => {
+                                                                if (result.isConfirmed) {
+                                                                    window.location.href = "actions/delete-employee.php?employee_no=" + employee_no;
+                                                                }
+                                                            });
+                                                        });
+                                                    });
+
+                                                    // Handle success or error messages from PHP redirects (Only One Handler)
+                                                    const urlParams = new URLSearchParams(window.location.search);
+                                                    let message = urlParams.get("message");
+                                                    let error = urlParams.get("error");
+
+                                                    if (message) {
+                                                        Swal.fire({
+                                                            title: "Success!",
+                                                            text: message,
+                                                            icon: "success",
+                                                            confirmButtonText: "OK"
+                                                        }).then(() => {
+                                                            window.history.replaceState(null, null, window.location.pathname); // Clear URL params
+                                                        });
+                                                    } else if (error) {
+                                                        Swal.fire({
+                                                            title: "Error!",
+                                                            text: error,
+                                                            icon: "error",
+                                                            confirmButtonText: "OK"
+                                                        }).then(() => {
+                                                            window.history.replaceState(null, null, window.location.pathname); // Clear URL params
+                                                        });
+                                                    }
+                                                });
+                                            </script>
+
                                         </tr>
-                                        <?php $count++;
+                                    <?php $count++;
                                     } ?>
                                 </tbody>
                             </table>
@@ -439,8 +492,9 @@ include "dbcon.php";
                                     placeholder="Date Separated" required />
                             </div>
                         </div>
-
-                        <br>
+            
+                                     
+                <br>
                         <hr>
                         <h4 class="text-center">COMPENSATION</h4>
                         <hr>
@@ -501,309 +555,19 @@ include "dbcon.php";
 
                     </form>
                 </div>
-            </div>
-        </div>
-
-        <!-- Modal Edit Employee Info -->
-        <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header bg-primary" style="border-radius: 3px;">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit Employee</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form method="POST" action="basic-info.php" method="POST" enctype="multipart/form-data">
-                            <h4 class="text-center">BASIC INFORMATION</h4>
-                            <hr>
-                            <div class="row">
-                                <div class="form-group col-md-4 mb-2">
-                                    <label>Department</label>
-                                    <select name="dept" class="form-control" required>
-                                        <option value="none" selected="" disabled="">
-                                            Department
-                                        </option>
-                                        <option value="HRM">Human Resource Management</option>
-                                        <option value="IT">Information Technology</option>
-                                        <option value="MKT">Marketing</option>
-                                        <option value="ACT">Accounting</option>
-                                        <option value="ENGR">Engineering</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-4 mb-2">
-                                    <label>Employee Number</label>
-                                    <input name="emp_no" type="number" class="form-control"
-                                        placeholder="Employee Number" required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Last Name</label>
-                                    <input name="lastname" type="text" class="form-control" placeholder="Lastname"
-                                        required />
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>First Name</label>
-                                    <input name="firstname" type="text" class="form-control" placeholder="Firstname"
-                                        required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Middle Name</label>
-                                    <div class="form-group">
-                                        <input name="middlename" type="text" class="form-control"
-                                            placeholder="Middlename" required />
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-md-4">
-                                    <label>Name Extension</label>
-                                    <input name="name_extension" type="text" class="form-control"
-                                        placeholder="Extension Name" required />
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>Email </label>
-                                    <input name="email_address" type="email" class="form-control"
-                                        placeholder="Email Address" required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Mobile Number</label>
-                                    <input name="mobile_no" id="mobile" type="tel" class="form-control"
-                                        placeholder="Mobile no." required pattern="\d{11}" required />
-                                </div>
-
-                                <div class="form-group col-md-4">
-                                    <label>Birthdate</label>
-                                    <input name="dob" id="finish" type="date" class="form-control"
-                                        placeholder="Date of Birth" required />
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>Civil Status</label>
-                                    <select name="civil_status" class="form-control" required>
-                                        <option value="none" selected="" disabled="">
-                                            Civil Status
-                                        </option>
-                                        <option value="Single">Single</option>
-                                        <option value="Married">Married</option>
-                                        <option value="Widowed">Widowed</option>
-                                        <option value="Separated">Separated</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Sex</label>
-                                    <select name="sex" class="form-control" required>
-                                        <option value="none" selected="" disabled="">
-                                            Sex
-                                        </option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Blood Type</label>
-                                    <select name="blood_type" class="form-control" required>
-                                        <option value="none" selected="" disabled="">
-                                            Blood Type
-                                        </option>
-                                        <option value="A+">A+</option>
-                                        <option value="A-">A-</option>
-                                        <option value="B+">B+</option>
-                                        <option value="B-">B-</option>
-                                        <option value="AB+">AB+</option>
-                                        <option value="AB-">AB-</option>
-                                        <option value="O+">O+</option>
-                                        <option value="O-">O-</option>
-                                        <option value="Unknown">Unknown</option>
-
-                                    </select>
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>Address</label>
-                                    <input name="address" type="text" class="form-control" placeholder="Address"
-                                        required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Place of Birth</label>
-                                    <input name="pob" type="text" class="form-control" placeholder="Place of Birth"
-                                        required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Upload Profile Picture</label>
-                                    <input class="form-control" type="file" id="formFile" name="image" required>
-                                </div>
-
-                            </div>
-                            <br>
-                            <hr>
-                            <h4 class="text-center">SERVICE RECORDS</h4>
-                            <hr>
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>GSIS Number</label>
-                                    <input name="gsis" type="text" class="form-control" placeholder="GSIS Number"
-                                        required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Pag-Ibig Number</label>
-                                    <input name="pag_ibig" type="text" class="form-control" placeholder="PAGIBIG Number"
-                                        required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>PhilHealth Number</label>
-                                    <input name="philhealth" type="text" class="form-control"
-                                        placeholder="PhilHealth Number" required />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>SSS Number</label>
-                                    <input name="sss" type="text" class="form-control" placeholder="SSS Number"
-                                        required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>TIN Number</label>
-                                    <input name="tin" type="text" class="form-control" placeholder="TIN Number"
-                                        required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Date Started</label>
-                                    <input name="date_started" type="date" class="form-control"
-                                        placeholder="Date Started" required />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>Status</label>
-                                    <input name="status" type="text" class="form-control" placeholder="Status"
-                                        required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Branch</label>
-                                    <input name="branch" type="text" class="form-control" placeholder="Branch"
-                                        required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Absent without Pay</label>
-                                    <input name="abs_wo_pay" type="text" class="form-control"
-                                        placeholder="Absent without Pay" required />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>Cause of Separation</label>
-                                    <input name="cause_of_separation" type="text" class="form-control"
-                                        placeholder="Cause of Separation" required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Salary</label>
-                                    <input name="salary" type="number" class="form-control" placeholder="Salary"
-                                        required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>To Date</label>
-                                    <input name="to_date" type="date" class="form-control" placeholder="To Date"
-                                        required />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>Station/Place</label>
-                                    <input name="station_place" type="text" class="form-control"
-                                        placeholder="Station/Place" required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Date Separated</label>
-                                    <input name="date_separated" type="number" class="form-control"
-                                        placeholder="Date Separated" required />
-                                </div>
-                            </div>
-
-
-                            <br>
-                            <hr>
-                            <h4 class="text-center">COMPENSATION</h4>
-                            <hr>
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>Salary</label>
-                                    <input name="salary" type="number" class="form-control" placeholder="Salary"
-                                        required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Pera</label>
-                                    <input name="pera" type="number" class="form-control" placeholder="Pera" required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Clothing Allowance</label>
-                                    <input name="clothing" type="number" class="form-control"
-                                        placeholder="Clothing Allowance" required />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>RT Allowance</label>
-                                    <input name="rt_allowance" type="number" class="form-control"
-                                        placeholder="Representative and Transportation Allowance" required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Issued Date</label>
-                                    <input name="issued_date" type="date" class="form-control" placeholder="Issued Date"
-                                        required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Cash Gift</label>
-                                    <input name="cash_gift" type="number" class="form-control" placeholder="Cash Gift"
-                                        required />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>Mid_Year Bonus</label>
-                                    <input name="mid_year" type="number" class="form-control" placeholder="Mid_Year"
-                                        required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Productivity Enhancement Incentive</label>
-                                    <input name="productivity_incentive" type="number" class="form-control"
-                                        placeholder="Productivity Enhancement Incentive" required />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Year End Bonus</label>
-                                    <input name="year_end_bonus" type="number" class="form-control"
-                                        placeholder="Year End Bonus" required />
-                                </div>
-                            </div>
-
-                            <div class="modal-footer">
-                                <!--  <input type="hidden" id="pos_id" name="id"> -->
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary" name="basic-infobtn">Save Changes</button>
-                            </div>
-
-                        </form>
-                    </div>
+            </div>                        
+                <div class="modal-footer">
+                    <!--  <input type="hidden" id="pos_id" name="id"> -->
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" name="basic-infobtn">Save Changes</button>
                 </div>
+
+                </form>
             </div>
         </div>
     </div>
     <script>
-        document.getElementById('mobile').addEventListener('input', function (e) {
+        document.getElementById('mobile').addEventListener('input', function(e) {
             const value = e.target.value;
             if (value.length > 11) {
                 e.target.value = value.slice(0, 11); // Limit input to 11 digits

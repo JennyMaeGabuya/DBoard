@@ -204,12 +204,8 @@ include "dbcon.php";
                                             <td>
                                                 <div style="display: flex;">
                                                     <a href="employeedetails.php?employee_no=<?php echo htmlspecialchars($employee_no); ?>"
-                                                        class="btn btn-info" title="View" style="margin-right: 8px;">
+                                                        class="btn btn-success" title="View" style="margin-right: 8px;">
                                                         <i class="fa fa-eye"></i>
-                                                    </a>
-                                                    <a href="delete_employee.php?employee_no=<?php echo htmlspecialchars($employee_no); ?>"
-                                                        class="btn btn-danger" title="Delete">
-                                                        <i class="fa fa-trash-o"></i>
                                                     </a>
                                                 </div>
                                             </td>
