@@ -316,10 +316,10 @@ $govStmt->close();
                     </tr>
                     <tr>
         <th rowspan="3">
-            <img src="<?php echo htmlspecialchars($imageUrl); ?>" alt="" class="avatar-img rounded-circle" style="height: 150px; width: 150px;margin-left:10px;">
+            <img src="<?php echo htmlspecialchars($imageUrl); ?>" alt="" class="avatar-img rounded-circle" style="height: 150px; width: 150px;margin-left:15px;">
         </th>
         <th colspan="1">SURNAME</th>
-        <td><?php echo $lastname; ?></td>
+        <td colspan="2"?php echo $lastname; ?></td>
     </tr>
     <tr>
         <th>FIRST NAME</th>
@@ -329,7 +329,7 @@ $govStmt->close();
     </tr>
     <tr>
         <th colspan="1">MIDDLE NAME</th>
-        <td><?php echo $middlename; ?></td>
+        <td colspan="2"><?php echo $middlename; ?></td>
     </tr>
                     <tr>
                           <th>Email</th>
