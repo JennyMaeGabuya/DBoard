@@ -34,6 +34,8 @@ FROM employee WHERE employee.employee_no = ?";
         $mobile_no = $row['mobile_no'];
         $pob = $row['pob'];
         $dob = $row['dob'];
+        $date = new DateTime($dob);
+        $bday = $date->format('F j, Y');
         $sex = $row['sex'];
         $civil_status = $row['civil_status'];
         $imagePath = $row['image'];
@@ -211,6 +213,18 @@ $govStmt->close();
     justify-content: flex-end; 
     align-items: center; /* Center items vertically */
 }
+.table{
+    border: 1px solidrgb(110, 106, 106);
+}
+@media print {
+    .pds {
+        background-color: #ccc !important; /* Ensure the background color is applied */
+        color: #000 !important; /* Ensure text color is visible */
+        padding: 10px; /* Optional: Add padding for better appearance */
+    }
+    }
+
+
     </style>
 </head>
 
@@ -262,6 +276,7 @@ $govStmt->close();
                 <button class="btn btn-danger btn-border btn-round btn-sm" onclick="printDiv('printThis')">
                     <i class="fa fa-print"></i> Print
                 </button>
+         
                 <a href="#addcomp" data-toggle="modal" class="btn btn-primary btn-border btn-round btn-sm">
                     <i class="fa fa-file"></i> Compensation
                 </a>
@@ -293,23 +308,39 @@ $govStmt->close();
         <div class="row mt-2">
             <div class="col-md-12 table-responsive">
                 <br>
-                <table class="table table-borderless">
+                <table class="table table-bordered">
                     <tr>
                         <th colspan="4" style="text-align: center; background-color: #ccc;line-height:0.5px;">
-                            <h6>EMPLOYEE INFORMATION</h6>
+                            <h4 class="pds">PERSONAL DATA SHEET</h4>
                         </th>
                     </tr>
                     <tr>
-                        <th><img src="<?php echo htmlspecialchars($imageUrl); ?>" alt="" class="avatar-img rounded-circle" style="height: 80px; width: 80px;"></th>
-                        <td style="text-transform: uppercase;font-weight:bold;"><?php echo $firstname . ' ' . $middlename . ' ' . $lastname . $name_extension; ?></td>
-                        <th>Email</th>
-                        <td><?php echo $email_address; ?></td>
-                    </tr>
+        <th rowspan="3">
+            <img src="<?php echo htmlspecialchars($imageUrl); ?>" alt="" class="avatar-img rounded-circle" style="height: 150px; width: 150px;margin-left:10px;">
+        </th>
+        <th colspan="1">SURNAME</th>
+        <td><?php echo $lastname; ?></td>
+    </tr>
+    <tr>
+        <th>FIRST NAME</th>
+        <td><?php echo $firstname; ?></td>
+        <th> NAME EXTENSION <br><?php echo $name_extension; ?></th>
+     
+    </tr>
+    <tr>
+        <th colspan="1">MIDDLE NAME</th>
+        <td><?php echo $middlename; ?></td>
+    </tr>
                     <tr>
+                          <th>Email</th>
+                        <td><?php echo $email_address; ?></td>
                         <th>Contact No.:</th>
                         <td><?php echo $mobile_no; ?></td>
-                        <th>Address:</th>
-                        <td><?php echo $address; ?></td>
+                    </tr>
+                    <tr>
+                       
+                        <th >Address:</th>
+                        <td colspan="3"><?php echo $address; ?></td>
                     </tr>
                     <tr>
                         <th>Place of Birth:</th>
@@ -319,7 +350,7 @@ $govStmt->close();
                     </tr>
                     <tr>
                         <th>Birthday:</th>
-                        <td><?php echo $dob; ?></td>
+                        <td><?php echo $bday; ?></td>
                         <th>Blood Type</th>
                         <td><?php echo $blood_type; ?></td>
                     </tr>
@@ -667,4 +698,7 @@ $govStmt->close();
                 location.reload();
             };
         }
+
+  
     </script>
+    
