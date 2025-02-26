@@ -96,7 +96,7 @@ include "dbcon.php";
                                     <a href="add-employee.php" class="btn btn-warning btn-border btn-round btn-sm">
                                         <i class="fa fa-eye"></i> View
                                     </a>
-                                    <a href="" class="btn btn-success btn-border btn-round btn-sm">
+                                    <a href="csv-employees.php" class="btn btn-success btn-border btn-round btn-sm">
                                         <i class="fa fa-file-excel-o"></i> Export
                                     </a>
                                     <a href="" class="btn btn-danger btn-border btn-round btn-sm">
