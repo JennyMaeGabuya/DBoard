@@ -230,198 +230,6 @@ include "dbcon.php";
                 </div>
                 <div class="modal-body">
                     <form method="POST" action="basic-info.php" method="POST" enctype="multipart/form-data">
-                        <h4 class="text-center">Basic Information</h4>
-                        <hr>
-                        <div class="row">
-                            <div class="form-group col-md-4 mb-2">
-                                <label>Department</label>
-                                <select name="dept" class="form-control" required>
-                                    <option value="none" selected="" disabled="">
-                                        Department
-                                    </option>
-                                    <option value="HRM">Human Resource Management</option>
-                                    <option value="IT">Information Technology</option>
-                                    <option value="MKT">Marketing</option>
-                                    <option value="ACT">Accounting</option>
-                                    <option value="ENGR">Engineering</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4 mb-2">
-                                <label>Employee Number</label>
-                                <input name="emp_no" type="number" class="form-control" placeholder="Employee Number"
-                                    required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Last Name</label>
-                                <input name="lastname" type="text" class="form-control" placeholder="Lastname"
-                                    required />
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label>First Name</label>
-                                <input name="firstname" type="text" class="form-control" placeholder="Firstname"
-                                    required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Middle Name</label>
-                                <div class="form-group">
-                                    <input name="middlename" type="text" class="form-control" placeholder="Middlename"
-                                        required />
-                                </div>
-                            </div>
-
-                            <div class="form-group col-md-4">
-                                <label>Name Extension</label>
-                                <input name="name_extension" type="text" class="form-control"
-                                    placeholder="Extension Name" required />
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label>Email </label>
-                                <input name="email_address" type="email" class="form-control"
-                                    placeholder="Email Address" required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Mobile Number</label>
-                                <input name="mobile_no" id="mobile" type="tel" class="form-control"
-                                    placeholder="Mobile no." required pattern="\d{11}" required />
-                            </div>
-
-                            <div class="form-group col-md-4">
-                                <label>Birthdate</label>
-                                <input name="dob" id="finish" type="date" class="form-control"
-                                    placeholder="Date of Birth" required />
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label>Civil Status</label>
-                                <select name="civil_status" class="form-control" required>
-                                    <option value="none" selected="" disabled="">
-                                        Civil Status
-                                    </option>
-                                    <option value="Single">Single</option>
-                                    <option value="Married">Married</option>
-                                    <option value="Widowed">Widowed</option>
-                                    <option value="Separated">Separated</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Sex</label>
-                                <select name="sex" class="form-control" required>
-                                    <option value="none" selected="" disabled="">
-                                        Sex
-                                    </option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Blood Type</label>
-                                <select name="blood_type" class="form-control" required>
-                                    <option value="none" selected="" disabled="">
-                                        Blood Type
-                                    </option>
-                                    <option value="A+">A+</option>
-                                    <option value="A-">A-</option>
-                                    <option value="B+">B+</option>
-                                    <option value="B-">B-</option>
-                                    <option value="AB+">AB+</option>
-                                    <option value="AB-">AB-</option>
-                                    <option value="O+">O+</option>
-                                    <option value="O-">O-</option>
-                                    <option value="Unknown">Unknown</option>
-
-                                </select>
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label>Address</label>
-                                <input name="address" type="text" class="form-control" placeholder="Address" required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Place of Birth</label>
-                                <input name="pob" type="text" class="form-control" placeholder="Place of Birth"
-                                    required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Upload Profile Picture</label>
-                                <input class="form-control" type="file" id="formFile" name="image" required>
-                            </div>
-
-                        </div>
-                        <br>
-                        <hr>
-                        <h4 class="text-center">Government Records</h4>
-                        <hr>
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label>GSIS Number</label>
-                                <input name="gsis" type="text" class="form-control" placeholder="GSIS Number"
-                                    required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>PAG-IBIG Number</label>
-                                <input name="pag_ibig" type="text" class="form-control" placeholder="PAGIBIG Number"
-                                    required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>PHILIHEALTH Number</label>
-                                <input name="philhealth" type="text" class="form-control"
-                                    placeholder="PhilHealth Number" required />
-                            </div>
-
-
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label>SSS Number</label>
-                                <input name="sss" type="text" class="form-control" placeholder="SSS Number" required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>TIN Number</label>
-                                <input name="tin" type="text" class="form-control" placeholder="TIN Number" required />
-                            </div>
-
-
-
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <!--  <input type="hidden" id="pos_id" name="id"> -->
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" name="basic-infobtn">Create</button>
-                </div>
-
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Edit Employee Info -->
-    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-primary" style="border-radius: 3px;">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Employee</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="basic-info.php" method="POST" enctype="multipart/form-data">
                         <h4 class="text-center">BASIC INFORMATION</h4>
                         <hr>
                         <div class="row">
@@ -585,7 +393,8 @@ include "dbcon.php";
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Date Started</label>
-                                <input name="date_started" type="date" class="form-control" placeholder="Date Started" required />
+                                <input name="date_started" type="date" class="form-control" placeholder="Date Started"
+                                    required />
                             </div>
                         </div>
                         <div class="row">
@@ -599,13 +408,15 @@ include "dbcon.php";
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Absent without Pay</label>
-                                <input name="abs_wo_pay" type="text" class="form-control" placeholder="Absent without Pay" required />
+                                <input name="abs_wo_pay" type="text" class="form-control"
+                                    placeholder="Absent without Pay" required />
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-4">
                                 <label>Cause of Separation</label>
-                                <input name="cause_of_separation" type="text" class="form-control" placeholder="Cause of Separation" required />
+                                <input name="cause_of_separation" type="text" class="form-control"
+                                    placeholder="Cause of Separation" required />
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Salary</label>
@@ -619,29 +430,28 @@ include "dbcon.php";
                         <div class="row">
                             <div class="form-group col-md-4">
                                 <label>Station/Place</label>
-                                <input name="station_place" type="text" class="form-control" placeholder="Station/Place" required />
+                                <input name="station_place" type="text" class="form-control" placeholder="Station/Place"
+                                    required />
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Date Separated</label>
-                                <input name="date_separated" type="number" class="form-control" placeholder="Date Separated" required />
+                                <input name="date_separated" type="number" class="form-control"
+                                    placeholder="Date Separated" required />
                             </div>
                         </div>
-            
-                                     
-                <br>
+
+                        <br>
                         <hr>
                         <h4 class="text-center">COMPENSATION</h4>
                         <hr>
                         <div class="row">
                             <div class="form-group col-md-4">
                                 <label>Salary</label>
-                                <input name="salary" type="number" class="form-control" placeholder="Salary"
-                                    required />
+                                <input name="salary" type="number" class="form-control" placeholder="Salary" required />
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Pera</label>
-                                <input name="pera" type="number" class="form-control" placeholder="Pera"
-                                    required />
+                                <input name="pera" type="number" class="form-control" placeholder="Pera" required />
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Clothing Allowance</label>
@@ -652,40 +462,343 @@ include "dbcon.php";
                         <div class="row">
                             <div class="form-group col-md-4">
                                 <label>RT Allowance</label>
-                                <input name="rt_allowance" type="number" class="form-control" placeholder="Representative and Transportation Allowance" required />
+                                <input name="rt_allowance" type="number" class="form-control"
+                                    placeholder="Representative and Transportation Allowance" required />
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Issued Date</label>
-                                <input name="issued_date" type="date" class="form-control" placeholder="Issued Date" required />
+                                <input name="issued_date" type="date" class="form-control" placeholder="Issued Date"
+                                    required />
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Cash Gift</label>
-                                <input name="cash_gift" type="number" class="form-control" placeholder="Cash Gift" required />
+                                <input name="cash_gift" type="number" class="form-control" placeholder="Cash Gift"
+                                    required />
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-4">
                                 <label>Mid_Year Bonus</label>
-                                <input name="mid_year" type="number" class="form-control" placeholder="Mid_Year" required />
+                                <input name="mid_year" type="number" class="form-control" placeholder="Mid_Year"
+                                    required />
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Productivity Enhancement Incentive</label>
-                                <input name="productivity_incentive" type="number" class="form-control" placeholder="Productivity Enhancement Incentive" required />
+                                <input name="productivity_incentive" type="number" class="form-control"
+                                    placeholder="Productivity Enhancement Incentive" required />
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Year End Bonus</label>
-                                <input name="year_end_bonus" type="number" class="form-control" placeholder="Year End Bonus" required />
+                                <input name="year_end_bonus" type="number" class="form-control"
+                                    placeholder="Year End Bonus" required />
                             </div>
                         </div>
-                </div>
-            </div>                        
-                <div class="modal-footer">
-                    <!--  <input type="hidden" id="pos_id" name="id"> -->
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" name="basic-infobtn">Save Changes</button>
-                </div>
+                        <div class="modal-footer">
+                            <!--  <input type="hidden" id="pos_id" name="id"> -->
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" name="basic-infobtn">Create</button>
+                        </div>
 
-                </form>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Edit Employee Info -->
+        <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary" style="border-radius: 3px;">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Employee</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="basic-info.php" method="POST" enctype="multipart/form-data">
+                            <h4 class="text-center">BASIC INFORMATION</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="form-group col-md-4 mb-2">
+                                    <label>Department</label>
+                                    <select name="dept" class="form-control" required>
+                                        <option value="none" selected="" disabled="">
+                                            Department
+                                        </option>
+                                        <option value="HRM">Human Resource Management</option>
+                                        <option value="IT">Information Technology</option>
+                                        <option value="MKT">Marketing</option>
+                                        <option value="ACT">Accounting</option>
+                                        <option value="ENGR">Engineering</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4 mb-2">
+                                    <label>Employee Number</label>
+                                    <input name="emp_no" type="number" class="form-control"
+                                        placeholder="Employee Number" required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Last Name</label>
+                                    <input name="lastname" type="text" class="form-control" placeholder="Lastname"
+                                        required />
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>First Name</label>
+                                    <input name="firstname" type="text" class="form-control" placeholder="Firstname"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Middle Name</label>
+                                    <div class="form-group">
+                                        <input name="middlename" type="text" class="form-control"
+                                            placeholder="Middlename" required />
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>Name Extension</label>
+                                    <input name="name_extension" type="text" class="form-control"
+                                        placeholder="Extension Name" required />
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Email </label>
+                                    <input name="email_address" type="email" class="form-control"
+                                        placeholder="Email Address" required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Mobile Number</label>
+                                    <input name="mobile_no" id="mobile" type="tel" class="form-control"
+                                        placeholder="Mobile no." required pattern="\d{11}" required />
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>Birthdate</label>
+                                    <input name="dob" id="finish" type="date" class="form-control"
+                                        placeholder="Date of Birth" required />
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Civil Status</label>
+                                    <select name="civil_status" class="form-control" required>
+                                        <option value="none" selected="" disabled="">
+                                            Civil Status
+                                        </option>
+                                        <option value="Single">Single</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Widowed">Widowed</option>
+                                        <option value="Separated">Separated</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Sex</label>
+                                    <select name="sex" class="form-control" required>
+                                        <option value="none" selected="" disabled="">
+                                            Sex
+                                        </option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Blood Type</label>
+                                    <select name="blood_type" class="form-control" required>
+                                        <option value="none" selected="" disabled="">
+                                            Blood Type
+                                        </option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                        <option value="Unknown">Unknown</option>
+
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Address</label>
+                                    <input name="address" type="text" class="form-control" placeholder="Address"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Place of Birth</label>
+                                    <input name="pob" type="text" class="form-control" placeholder="Place of Birth"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Upload Profile Picture</label>
+                                    <input class="form-control" type="file" id="formFile" name="image" required>
+                                </div>
+
+                            </div>
+                            <br>
+                            <hr>
+                            <h4 class="text-center">SERVICE RECORDS</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>GSIS Number</label>
+                                    <input name="gsis" type="text" class="form-control" placeholder="GSIS Number"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Pag-Ibig Number</label>
+                                    <input name="pag_ibig" type="text" class="form-control" placeholder="PAGIBIG Number"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>PhilHealth Number</label>
+                                    <input name="philhealth" type="text" class="form-control"
+                                        placeholder="PhilHealth Number" required />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>SSS Number</label>
+                                    <input name="sss" type="text" class="form-control" placeholder="SSS Number"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>TIN Number</label>
+                                    <input name="tin" type="text" class="form-control" placeholder="TIN Number"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Date Started</label>
+                                    <input name="date_started" type="date" class="form-control"
+                                        placeholder="Date Started" required />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Status</label>
+                                    <input name="status" type="text" class="form-control" placeholder="Status"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Branch</label>
+                                    <input name="branch" type="text" class="form-control" placeholder="Branch"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Absent without Pay</label>
+                                    <input name="abs_wo_pay" type="text" class="form-control"
+                                        placeholder="Absent without Pay" required />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Cause of Separation</label>
+                                    <input name="cause_of_separation" type="text" class="form-control"
+                                        placeholder="Cause of Separation" required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Salary</label>
+                                    <input name="salary" type="number" class="form-control" placeholder="Salary"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>To Date</label>
+                                    <input name="to_date" type="date" class="form-control" placeholder="To Date"
+                                        required />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Station/Place</label>
+                                    <input name="station_place" type="text" class="form-control"
+                                        placeholder="Station/Place" required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Date Separated</label>
+                                    <input name="date_separated" type="number" class="form-control"
+                                        placeholder="Date Separated" required />
+                                </div>
+                            </div>
+
+
+                            <br>
+                            <hr>
+                            <h4 class="text-center">COMPENSATION</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Salary</label>
+                                    <input name="salary" type="number" class="form-control" placeholder="Salary"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Pera</label>
+                                    <input name="pera" type="number" class="form-control" placeholder="Pera" required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Clothing Allowance</label>
+                                    <input name="clothing" type="number" class="form-control"
+                                        placeholder="Clothing Allowance" required />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>RT Allowance</label>
+                                    <input name="rt_allowance" type="number" class="form-control"
+                                        placeholder="Representative and Transportation Allowance" required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Issued Date</label>
+                                    <input name="issued_date" type="date" class="form-control" placeholder="Issued Date"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Cash Gift</label>
+                                    <input name="cash_gift" type="number" class="form-control" placeholder="Cash Gift"
+                                        required />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Mid_Year Bonus</label>
+                                    <input name="mid_year" type="number" class="form-control" placeholder="Mid_Year"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Productivity Enhancement Incentive</label>
+                                    <input name="productivity_incentive" type="number" class="form-control"
+                                        placeholder="Productivity Enhancement Incentive" required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Year End Bonus</label>
+                                    <input name="year_end_bonus" type="number" class="form-control"
+                                        placeholder="Year End Bonus" required />
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <!--  <input type="hidden" id="pos_id" name="id"> -->
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" name="basic-infobtn">Save Changes</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
