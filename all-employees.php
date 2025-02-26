@@ -193,10 +193,9 @@ include "dbcon.php";
                                             <td><?php echo htmlspecialchars($sex); ?></td>
                                             <td>
                                                 <div style="text-align: center;">
-                                                    <a href="#edit" data-toggle="modal" class="btn btn-primary"
-                                                        style="margin-right: 8px;">
-                                                        <i class="fa fa-pencil"></i>
-                                                    </a>
+                                                <a href="edit-employee.php?employee_no=<?php echo $employee_no; ?>" class="btn btn-primary" style="margin-right: 8px;">
+    <i class="fa fa-pencil"></i>
+</a>
                                                     <a href="employeedetails.php?employee_no=<?php echo $employee_no; ?>"
                                                         class="btn btn-success" title="View" style="margin-right: 8px;">
                                                         <i class="fa fa-eye"></i>

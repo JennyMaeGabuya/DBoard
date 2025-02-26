@@ -1,348 +1,456 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
-  header('location:../index.php');
-  exit();
+    header('location:../index.php');
+    exit();
 }
 
 include "dbcon.php";
+
+// Initialize variables with default values
+$firstname = $middlename = $lastname = $name_extension = $email_address = $mobile_no = $dob = $address = $pob = $civil_status = $sex = $blood_type = $image = '';
+$gsis_no = $pag_ibig_no = $philhealth_no = $tin_no = $sss_no = $salary = $station_place = $branch = $abs_wo_pay = $cause_of_separation = '';
+$compensation_salary = $pera = $clothing = $cash_gift = $mid_year = $productivity_incentive = $rt_allowance = $year_end_bonus = $issued_date = '';
+
+// Fetch employee data if employee_no is set
+if (isset($_GET['employee_no'])) {
+    $employee_no = $_GET['employee_no'];
+    $query = "SELECT
+        e.*, s.*, g.*, c.*,
+        c.salary AS compensation_salary
+    FROM
+        employee e
+    LEFT JOIN
+        government_info g ON e.employee_no = g.employee_no
+    LEFT JOIN
+        service_records s ON e.employee_no = s.employee_no
+    LEFT JOIN
+        compensation c ON e.employee_no = c.employee_no
+    WHERE
+        e.employee_no = ?";
+
+    $stmt = $con->prepare($query);
+    $stmt->bind_param("s", $employee_no);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        // Extract data from the $row array
+        $firstname = $row['firstname'];
+        $middlename = $row['middlename'];
+        $lastname = $row['lastname'];
+        $name_extension = $row['name_extension'];
+        $email_address = $row['email_address'];
+        $mobile_no = $row['mobile_no'];
+        $dob = $row['dob'];
+        $address = $row['address'];
+        $pob = $row['pob'];
+        $civil_status = $row['civil_status'];
+        $sex = $row['sex'];
+        $blood_type = $row['blood_type'];
+        $image = $row['image'];
+        $gsis_no = $row['gsis_no'];
+        $pag_ibig_no = $row['pag_ibig_no'];
+        $philhealth_no = $row['philhealth_no'];
+        $tin_no = $row['tin_no'];
+        $sss_no = $row['sss_no'];
+        $salary = $row['salary'];
+        $station_place = $row['station_place'];
+        $branch = $row['branch'];
+        $abs_wo_pay = $row['abs_wo_pay'];
+        $cause_of_separation = $row['cause_of_separation'];
+        $compensation_salary = $row['compensation_salary'];
+        $pera = $row['pera'];
+        $clothing = $row['clothing'];
+        $cash_gift = $row['cash_gift'];
+        $mid_year = $row['mid_year'];
+        $productivity_incentive = $row['productivity_incentive'];
+        $rt_allowance = $row['rt_allowance'];
+        $year_end_bonus = $row['year_end_bonus'];
+        $issued_date = $row['issued_date'];
+    } else {
+        die("No employee data found.");
+    }
+} else {
+    // Redirect if no employee number is provided
+    header('location: all-employees.php');
+    exit();
+}
 ?>
 
-<!DOCTYPE html>
-<html class="no-js" lang="en">
-
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="x-ua-compatible" content="ie=edge" />
-  <title>Edit Employee | ERMS</title>
-  <meta name="description" content="" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="shortcut icon" type="image/x-icon" href="img/mk-logo.ico" />
-  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet" />
-  <link rel="stylesheet" href="css/bootstrap.min.css" />
-  <link rel="stylesheet" href="css/font-awesome.min.css" />
-  <link rel="stylesheet" href="css/owl.carousel.css" />
-  <link rel="stylesheet" href="css/owl.theme.css" />
-  <link rel="stylesheet" href="css/owl.transitions.css" />
-  <link rel="stylesheet" href="css/animate.css" />
-  <link rel="stylesheet" href="css/normalize.css" />
-  <link rel="stylesheet" href="css/meanmenu.min.css" />
-  <link rel="stylesheet" href="css/main.css" />
-  <link rel="stylesheet" href="css/educate-custon-icon.css" />
-  <link rel="stylesheet" href="css/morrisjs/morris.css" />
-  <link rel="stylesheet" href="css/scrollbar/jquery.mCustomScrollbar.min.css" />
-  <link rel="stylesheet" href="css/metisMenu/metisMenu.min.css" />
-  <link rel="stylesheet" href="css/metisMenu/metisMenu-vertical.css" />
-  <link rel="stylesheet" href="css/calendar/fullcalendar.min.css" />
-  <link rel="stylesheet" href="css/calendar/fullcalendar.print.min.css" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="css/responsive.css" />
-  <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Edit Employees | ERMS</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" type="image/x-icon" href="img/mk-logo.ico" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" href="css/owl.carousel.css" />
+    <link rel="stylesheet" href="css/owl.theme.css" />
+    <link rel="stylesheet" href="css/owl.transitions.css" />
+    <link rel="stylesheet" href="css/animate.css" />
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/meanmenu.min.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/educate-custon-icon.css" />
+    <link rel="stylesheet" href="css/morrisjs/morris.css" />
+    <link rel="stylesheet" href="css/scrollbar/jquery.mCustomScrollbar.min.css" />
+    <link rel="stylesheet" href="css/metisMenu/metisMenu.min.css" />
+    <link rel="stylesheet" href="css/metisMenu/metisMenu-vertical.css" />
+    <link rel="stylesheet" href="css/calendar/fullcalendar.min.css" />
+    <link rel="stylesheet" href="css/calendar/fullcalendar.print.min.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <link rel="stylesheet" href="//cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 
 <body>
 
-  <!--Sidebar-part-->
-  <?php include 'includes/sidebar.php'; ?>
+    <!-- Sidebar -->
+    <?php include 'includes/sidebar.php'; ?>
 
-  <!--Header-part-->
-  <?php include 'includes/header.php'; ?>
+    <!-- Header -->
+    <?php include 'includes/header.php'; ?>
 
-  <!-- Mobile Menu end -->
-  <div class="breadcome-area">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="breadcome-list single-page-breadcome">
+    <!-- Breadcrumb -->
+    <div class="breadcome-area">
+        <div class="container-fluid">
             <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <div class="breadcome-heading">
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <ul class="breadcome-menu" style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
-                        <li>
-                          <a href="dashboard.php">
-                            <i class="fa fa-home"></i> Home
-                          </a>
-                          <span class="bread-slash">/</span>
-                          <a href="all-employees.php"> Employees </a>
-                          <span class="bread-slash">/</span>
-                          <span class="bread-blod">Edit Employee</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Single pro tab review Start-->
-    <div class="single-pro-review-area mt-t-30 mg-b-15">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="product-payment-inner-st">
-              <ul id="myTabedu1" class="tab-review-design">
-                <li class="active">
-                  <a href="#description">Edit Basic Information</a>
-                </li>
-                <li><a href="#reviews"> Edit Acount Information</a></li>
-                <li><a href="#INFORMATION">Edit Social Information</a></li>
-              </ul>
-              <div id="myTabContent" class="tab-content custom-product-edit">
-                <div
-                  class="product-tab-list tab-pane fade active in"
-                  id="description">
-                  <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      <div class="review-content-section">
-                        <div id="dropzone1" class="pro-ad">
-                          <form
-                            action="#"
-                            class="dropzone dropzone-custom needsclick add-professors"
-                            id="demo1-upload">
-                            <div class="row">
-                              <div
-                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                  <input
-                                    name="number"
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Fly Zend"
-                                    value="Fly Zend" />
-                                </div>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="E104, catn-2, UK."
-                                    value="E104, catn-2, UK." />
-                                </div>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="12/10/1993"
-                                    value="12/10/1993" />
-                                </div>
-                                <div class="form-group">
-                                  <input
-                                    type="number"
-                                    class="form-control"
-                                    placeholder="1213"
-                                    value="1213" />
-                                </div>
-                                <div class="form-group">
-                                  <input
-                                    type="number"
-                                    class="form-control"
-                                    placeholder="01962067309"
-                                    value="01962067309" />
-                                </div>
-                                <div class="form-group alert-up-pd">
-                                  <div
-                                    class="dz-message needsclick download-custom">
-                                    <i
-                                      class="fa fa-download edudropnone"
-                                      aria-hidden="true"></i>
-                                    <h2 class="edudropnone">
-                                      Drop image here or click to upload.
-                                    </h2>
-                                    <p class="edudropnone">
-                                      <span class="note needsclick">(This is just a demo dropzone.
-                                        Selected image is
-                                        <strong>not</strong> actually
-                                        uploaded.)</span>
-                                    </p>
-                                    <input
-                                      name="imageico"
-                                      class="hd-pro-img"
-                                      type="text" />
-                                  </div>
-                                </div>
-                              </div>
-                              <div
-                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="CSE"
-                                    value="CSE" />
-                                </div>
-                                <div
-                                  class="form-group edit-ta-resize res-mg-t-15">
-                                  <textarea name="description">
-Lorem ipsum dolor sit amet of, consectetur adipiscing elitable. Vestibulum tincidunt est vitae ultrices accumsan.</textarea>
-                                </div>
-                                <div class="form-group">
-                                  <select class="form-control">
-                                    <option>Male</option>
-                                    <option>Male</option>
-                                    <option>Female</option>
-                                  </select>
-                                </div>
-                                <div class="form-group">
-                                  <select class="form-control">
-                                    <option>Nepal</option>
-                                    <option>India</option>
-                                    <option>Pakistan</option>
-                                    <option>Amerika</option>
-                                    <option>China</option>
-                                    <option>Dubai</option>
-                                    <option>Nepal</option>
-                                  </select>
-                                </div>
-                                <div class="form-group">
-                                  <select class="form-control">
-                                    <option>Maharastra</option>
-                                    <option>Gujarat</option>
-                                    <option>Maharastra</option>
-                                    <option>Rajastan</option>
-                                    <option>Maharastra</option>
-                                    <option>Rajastan</option>
-                                    <option>Gujarat</option>
-                                  </select>
-                                </div>
-                                <div class="form-group">
-                                  <select class="form-control">
-                                    <option>Baroda</option>
-                                    <option>Surat</option>
-                                    <option>Baroda</option>
-                                    <option>Navsari</option>
-                                    <option>Baroda</option>
-                                    <option>Surat</option>
-                                  </select>
-                                </div>
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="www.uttara.com"
-                                    value="www.uttara.com" />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-lg-12">
-                                <div class="payment-adress">
-                                  <button
-                                    type="submit"
-                                    class="btn btn-primary waves-effect waves-light">
-                                    Submit
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="product-tab-list tab-pane fade" id="reviews">
-                  <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      <div class="review-content-section">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="breadcome-list single-page-breadcome">
                         <div class="row">
-                          <div
-                            class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="devit-card-custom">
-                              <div class="form-group">
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Email"
-                                  value="Admin@gmail.com" />
-                              </div>
-                              <div class="form-group">
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  placeholder="Phone"
-                                  value="01962067309" />
-                              </div>
-                              <div class="form-group">
-                                <input
-                                  type="password"
-                                  class="form-control"
-                                  placeholder="Password"
-                                  value="#123#123" />
-                              </div>
-                              <div class="form-group">
-                                <input
-                                  type="password"
-                                  class="form-control"
-                                  placeholder="Confirm Password"
-                                  value="#123#123" />
-                              </div>
-                              <a
-                                href="#!"
-                                class="btn btn-primary waves-effect waves-light">Submit</a>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="breadcome-heading">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <ul class="breadcome-menu" style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
+                                                <li>
+                                                    <a href="dashboard.php">
+                                                        <i class="fa fa-home"></i> Home
+                                                    </a>
+                                                    <span class="bread-slash">/</span>
+                                                    <a href="all-employees.php"> Employees </a>
+                                                    <span class="bread-slash">/</span>
+                                                    <span class="bread-blod">Edit Employee</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
                         </div>
-                      </div>
                     </div>
-                  </div>
                 </div>
-                <div class="product-tab-list tab-pane fade" id="INFORMATION">
-                  <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      <div class="review-content-section">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <div class="devit-card-custom">
-                              <div class="form-group">
-                                <input
-                                  type="url"
-                                  class="form-control"
-                                  placeholder="Facebook URL"
-                                  value="http://www.facebook.com" />
-                              </div>
-                              <div class="form-group">
-                                <input
-                                  type="url"
-                                  class="form-control"
-                                  placeholder="Twitter URL"
-                                  value="http://www.twitter.com" />
-                              </div>
-                              <div class="form-group">
-                                <input
-                                  type="url"
-                                  class="form-control"
-                                  placeholder="Google Plus"
-                                  value="http://www.google-plus.com" />
-                              </div>
-                              <div class="form-group">
-                                <input
-                                  type="url"
-                                  class="form-control"
-                                  placeholder="Linkedin URL"
-                                  value="http://www.Linkedin.com" />
-                              </div>
-                              <button
-                                type="submit"
-                                class="btn btn-primary waves-effect waves-light">
-                                Submit
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
 
-    <!--Footer-part-->
+    <!-- Edit Employee Form -->
+    <div class="single-pro-review-area mt-t-30 mg-b-15">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="product-payment-inner-st">
+                    <hr>
+                            <h4 class="text-center">BASIC INFORMATION</h4>
+                            <hr>
+                        <br>
+                        <form method="POST" action="update-employee.php" enctype="multipart/form-data">
+                            <input type="hidden" name="employee_no" value="<?php echo htmlspecialchars($employee['employee_no']); ?>" />
+                            <div class="row">
+                                <div class="form-group col-md-4 mb-2">
+                                    <label>Department</label>
+                                    <select name="dept" class="form-control" required>
+                                        <option value="none" selected="" disabled="">
+                                            Department
+                                        </option>
+                                        <option value="HRM">Human Resource Management</option>
+                                        <option value="IT">Information Technology</option>
+                                        <option value="MKT">Marketing</option>
+                                        <option value="ACT">Accounting</option>
+                                        <option value="ENGR">Engineering</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4 mb-2">
+                                    <label>Employee Number</label>
+                                    <input name="emp_no" type="number" class="form-control"
+                                        placeholder="Employee Number" required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Last Name</label>
+                                    <input name="lastname" type="text" class="form-control" placeholder="Lastname"
+                                        required />
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>First Name</label>
+                                    <input name="firstname" type="text" class="form-control" placeholder="Firstname"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Middle Name</label>
+                                    <div class="form-group">
+                                        <input name="middlename" type="text" class="form-control"
+                                            placeholder="Middlename" required />
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>Name Extension</label>
+                                    <input name="name_extension" type="text" class="form-control"
+                                        placeholder="Extension Name" required />
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Email </label>
+                                    <input name="email_address" type="email" class="form-control"
+                                        placeholder="Email Address" required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Mobile Number</label>
+                                    <input name="mobile_no" id="mobile" type="tel" class="form-control"
+                                        placeholder="Mobile no." required pattern="\d{11}" required />
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>Birthdate</label>
+                                    <input name="dob" id="finish" type="date" class="form-control"
+                                        placeholder="Date of Birth" required />
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Civil Status</label>
+                                    <select name="civil_status" class="form-control" required>
+                                        <option value="none" selected="" disabled="">
+                                            Civil Status
+                                        </option>
+                                        <option value="Single">Single</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Widowed">Widowed</option>
+                                        <option value="Separated">Separated</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Sex</label>
+                                    <select name="sex" class="form-control" required>
+                                        <option value="none" selected="" disabled="">
+                                            Sex
+                                        </option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Blood Type</label>
+                                    <select name="blood_type" class="form-control" required>
+                                        <option value="none" selected="" disabled="">
+                                            Blood Type
+                                        </option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                        <option value="Unknown">Unknown</option>
+
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Address</label>
+                                    <input name="address" type="text" class="form-control" placeholder="Address"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Place of Birth</label>
+                                    <input name="pob" type="text" class="form-control" placeholder="Place of Birth"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Upload Profile Picture</label>
+                                    <input class="form-control" type="file" id="formFile" name="image" required>
+                                </div>
+
+                            </div>
+                            <br>
+                            <hr>
+                            <h4 class="text-center">SERVICE RECORDS</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>GSIS Number</label>
+                                    <input name="gsis" type="text" class="form-control" placeholder="GSIS Number"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Pag-Ibig Number</label>
+                                    <input name="pag_ibig" type="text" class="form-control" placeholder="PAGIBIG Number"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>PhilHealth Number</label>
+                                    <input name="philhealth" type="text" class="form-control"
+                                        placeholder="PhilHealth Number" required />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>SSS Number</label>
+                                    <input name="sss" type="text" class="form-control" placeholder="SSS Number"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>TIN Number</label>
+                                    <input name="tin" type="text" class="form-control" placeholder="TIN Number"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Date Started</label>
+                                    <input name="date_started" type="date" class="form-control"
+                                        placeholder="Date Started" required />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Status</label>
+                                    <input name="status" type="text" class="form-control" placeholder="Status"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Branch</label>
+                                    <input name="branch" type="text" class="form-control" placeholder="Branch"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Absent without Pay</label>
+                                    <input name="abs_wo_pay" type="text" class="form-control"
+                                        placeholder="Absent without Pay" required />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Cause of Separation</label>
+                                    <input name="cause_of_separation" type="text" class="form-control"
+                                        placeholder="Cause of Separation" required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Salary</label>
+                                    <input name="salary" type="number" class="form-control" placeholder="Salary"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>To Date</label>
+                                    <input name="to_date" type="date" class="form-control" placeholder="To Date"
+                                        required />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Station/Place</label>
+                                    <input name="station_place" type="text" class="form-control"
+                                        placeholder="Station/Place" required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Date Separated</label>
+                                    <input name="date_separated" type="number" class="form-control"
+                                        placeholder="Date Separated" required />
+                                </div>
+                            </div>
+
+
+                            <br>
+                            <hr>
+                            <h4 class="text-center">COMPENSATION</h4>
+                            <hr>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Salary</label>
+                                    <input name="salary" type="number" class="form-control" placeholder="Salary"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Pera</label>
+                                    <input name="pera" type="number" class="form-control" placeholder="Pera" required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Clothing Allowance</label>
+                                    <input name="clothing" type="number" class="form-control"
+                                        placeholder="Clothing Allowance" required />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>RT Allowance</label>
+                                    <input name="rt_allowance" type="number" class="form-control"
+                                        placeholder="Representative and Transportation Allowance" required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Issued Date</label>
+                                    <input name="issued_date" type="date" class="form-control" placeholder="Issued Date"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Cash Gift</label>
+                                    <input name="cash_gift" type="number" class="form-control" placeholder="Cash Gift"
+                                        required />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Mid_Year Bonus</label>
+                                    <input name="mid_year" type="number" class="form-control" placeholder="Mid_Year"
+                                        required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Productivity Enhancement Incentive</label>
+                                    <input name="productivity_incentive" type="number" class="form-control"
+                                        placeholder="Productivity Enhancement Incentive" required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Year End Bonus</label>
+                                    <input name="year_end_bonus" type="number" class="form-control"
+                                        placeholder="Year End Bonus" required />
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" onclick="window.location.href='all-employees.php'">Cancel</button>
+                                <button type="submit" class="btn btn-primary" name="update-employee-btn">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
     <?php include 'includes/footer.php'; ?>
+
+    <script src="js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+</body>
+</html>
