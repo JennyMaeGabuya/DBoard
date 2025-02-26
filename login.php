@@ -8,12 +8,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validate input
     if (empty($username) || empty($password)) {
-        echo "<script>alert('Username and password are required!'); window.location.href='index.php';</script>";
+        $_SESSION['error'] = "Username and password are required!";
+        header("Location: index.php");
         exit();
     }
 
     // Prepare statement to prevent SQL injection
-    $stmt = $con->prepare("SELECT id, employee_no, username, password FROM admin WHERE username = ? OR email = ?");
+    $stmt = $con->prepare("SELECT id, employee_no, username, email, password FROM admin WHERE username = ? OR email = ?");
     $stmt->bind_param("ss", $username, $username);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -21,23 +22,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if user exists
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        
+
         // Verify password (Assuming passwords are hashed in the database)
         if (password_verify($password, $row['password'])) {
             $_SESSION['user_id'] = $row['employee_no'];
             $_SESSION['username'] = $row['username'];
-            header("Location: dashboard.php");
+            $_SESSION['success'] = "Login successful!";
+
+            header("Location: dashboard.php"); // Redirect to the dashboard after successful login
             exit();
         } else {
-            echo "<script>alert('Invalid password!'); window.location.href='index.php';</script>";
-            exit();
+            $_SESSION['error'] = "Invalid account! Try again.";
         }
     } else {
-        echo "<script>alert('No user found!'); window.location.href='index.php';</script>";
-        exit();
+        $_SESSION['error'] = "No user found with that username or email!";
     }
 
     $stmt->close();
     $con->close();
+
+    header("Location: index.php"); // Redirect back to login page if login fails
+    exit();
 }
 ?>
