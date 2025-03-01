@@ -116,25 +116,25 @@ $pdf->Cell(20);
 $pdf->AddDashedRow('Salary', 'P ' . number_format($certificate['salary'], 2));
 
 $pdf->Cell(20);
-$pdf->AddDashedRow('PERA', 'P ' . number_format($certificate['pera'], 2));
+$pdf->AddDashedRow('PERA', '' . number_format($certificate['pera'], 2));
 
 $pdf->Cell(20);
-$pdf->AddDashedRow('Representation and Transportation Allowance', 'P ' . number_format($certificate['rta'], 2));
+$pdf->AddDashedRow('Representation and Transportation Allowance', '' . number_format($certificate['rta'], 2));
 
 $pdf->Cell(20);
-$pdf->AddDashedRow('Clothing', 'P ' . number_format($certificate['clothing'], 2));
+$pdf->AddDashedRow('Clothing', '' . number_format($certificate['clothing'], 2));
 
 $pdf->Cell(20);
-$pdf->AddDashedRow('Mid-Year Bonus', 'P ' . number_format($certificate['mid_year_bonus'], 2));
+$pdf->AddDashedRow('Mid-Year Bonus', '' . number_format($certificate['mid_year_bonus'], 2));
 
 $pdf->Cell(20);
-$pdf->AddDashedRow('Year-End Bonus', 'P ' . number_format($certificate['year_end_bonus'], 2));
+$pdf->AddDashedRow('Year-End Bonus', '' . number_format($certificate['year_end_bonus'], 2));
 
 $pdf->Cell(20);
-$pdf->AddDashedRow('Cash Gift', 'P ' . number_format($certificate['cash_gift'], 2));
+$pdf->AddDashedRow('Cash Gift', '' . number_format($certificate['cash_gift'], 2));
 
 $pdf->Cell(20);
-$pdf->AddDashedRow('Productivity Enhancement Incentive', 'P ' . number_format($certificate['productivity_enhancement'], 2));
+$pdf->AddDashedRow('Productivity Enhancement Incentive', '' . number_format($certificate['productivity_enhancement'], 2));
 
 // Add a Single Underline for the Subtotal
 $pdf->Cell(130);
