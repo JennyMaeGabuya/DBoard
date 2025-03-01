@@ -544,6 +544,7 @@ FROM employee WHERE employee.employee_no = ?";
             </div>
         </div>
     </div>
+
     <!--SERVICE RECORDS FORM MODAL-->
     <div class="modal fade" id="addservice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -689,6 +690,7 @@ FROM employee WHERE employee.employee_no = ?";
         <?php unset($_SESSION['display']);
         unset($_SESSION['success']); ?>
     <?php endif; ?>
+
     <script>
         function printDiv(divName) {
             var printContents = document.getElementById(divName).innerHTML;

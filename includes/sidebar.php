@@ -54,8 +54,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
               <span class="mini-click-non">Event</span>
             </a>
           </li>
-          <li class="<?= ($current_page == 'organization.php') ? 'active' : ''; ?>">
-            <a href="organization.php">
+          <li class="<?= ($current_page == 'org-chart.php') ? 'active' : ''; ?>">
+            <a href="org-chart.php">
               <span class="educate-icon educate-department icon-wrap sub-icon-mg"></span>
               <span class="mini-click-non">Organization</span>
             </a>
@@ -85,9 +85,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <ul class="submenu-angle">
               <li class="<?= ($current_page == 'certifications.php') ? 'active' : ''; ?>">
                 <a href="certifications.php"><span class="mini-sub-pro">Certificate Info</span></a>
-              </li>
-              <li class="<?= ($current_page == 'issue-certificate.php') ? 'active' : ''; ?>">
-                <a href="issue-certificate.php"><span class="mini-sub-pro">Issue Certificate</span></a>
               </li>
               <li class="<?= ($current_page == 'cert-history.php') ? 'active' : ''; ?>">
                 <a href="cert-history.php"><span class="mini-sub-pro">History</span></a>

@@ -1,151 +1,49 @@
 <?php
 require('../fpdf/fpdf.php');
-include('dbcon.php');
+include('../dbcon.php');
 
-// Create new class extending fpdf class for multi-cell tables
-class PDF_MC_Table extends FPDF
-{
-    var $widths;
-    var $aligns;
-    var $lineHeight;
+// Ensure an ID is provided
+$certificate_id = isset($_GET['id']) ? $_GET['id'] : null;
 
-    function SetWidths($w)
-    {
-        $this->widths = $w;
-    }
-
-    function SetAligns($a)
-    {
-        $this->aligns = $a;
-    }
-
-    function SetLineHeight($h)
-    {
-        $this->lineHeight = $h;
-    }
-
-    function Row($data, $fill = false)
-    {
-        $nb = 0;
-        for ($i = 0; $i < count($data); $i++) {
-            $nb = max($nb, $this->NbLines($this->widths[$i], $data[$i]));
-        }
-        $h = $this->lineHeight * $nb;
-        $this->CheckPageBreak($h);
-        for ($i = 0; $i < count($data); $i++) {
-            $w = $this->widths[$i];
-            $a = isset($this->aligns[$i]) ? $this->aligns[$i] : 'L';
-            $x = $this->GetX();
-            $y = $this->GetY();
-            $this->Rect($x, $y, $w, $h);
-            $this->MultiCell($w, $this->lineHeight, $data[$i], 0, $a);
-            $this->SetXY($x + $w, $y);
-        }
-        $this->Ln($h);
-    }
-
-    function CheckPageBreak($h)
-    {
-        if ($this->GetY() + $h > $this->PageBreakTrigger)
-            $this->AddPage($this->CurOrientation);
-    }
-
-    function NbLines($w, $txt)
-    {
-        $cw = &$this->CurrentFont['cw'];
-        if ($w == 0) $w = $this->w - $this->rMargin - $this->x;
-        $wmax = ($w - 2 * $this->cMargin) * 1000 / $this->FontSize;
-        $s = str_replace("\r", '', $txt);
-        $nb = strlen($s);
-        if ($nb > 0 and $s[$nb - 1] == "\n") $nb--;
-        $sep = -1;
-        $i = 0;
-        $j = 0;
-        $l = 0;
-        $nl = 1;
-        while ($i < $nb) {
-            $c = $s[$i];
-            if ($c == "\n") {
-                $i++;
-                $sep = -1;
-                $j = $i;
-                $l = 0;
-                $nl++;
-                continue;
-            }
-            if ($c == ' ') $sep = $i;
-            $l += $cw[$c];
-            if ($l > $wmax) {
-                if ($sep == -1) {
-                    if ($i == $j) $i++;
-                } else $i = $sep + 1;
-                $sep = -1;
-                $j = $i;
-                $l = 0;
-                $nl++;
-            } else $i++;
-        }
-        return $nl;
-    }
+if (!$certificate_id) {
+    die("Error: No certificate selected for generation.");
 }
 
-class PDF extends PDF_MC_Table
+// Fetch the issued certificate details from the `appointed_cert_issuance` table
+$query = "SELECT * FROM appointed_cert_issuance WHERE id = ?";
+$stmt = $con->prepare($query);
+$stmt->bind_param("i", $certificate_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$certificate = $result->fetch_assoc();
+
+if (!$certificate) {
+    die("Error: No certificate found.");
+}
+
+// Create PDF instance
+class PDF extends FPDF
 {
-    private $fyAdded = false;
     function Header()
     {
-        // Insert the logo image with specific positioning and size
         $this->Image('../img/mk-logo.png', 32, 17, 26);
-
-        // Insert the logo image with specific positioning and size
         $this->Image('../img/Bagong-Pilipinas.png', 157, 18, 30);
-
         $this->Ln(5);
-        // Set font and size for the first line
         $this->SetFont('Arial', '', 12);
-        // Adjust spacing before the text
-        $this->Cell(10); // Horizontal space
         $this->Cell(0, 10, 'Republic of the Philippines', 0, 1, 'C');
-
-        // Set font and size for the second line
-        $this->SetFont('Arial', '', 12);
-        // Adjust spacing before the text
-        $this->Cell(10); // Horizontal space
         $this->Cell(0, 0.5, 'Province of Batangas', 0, 1, 'C');
-
-        // Set font and color for the third line
         $this->SetFont('Arial', 'B', 12);
-        // Adjust spacing before the text
-        $this->Cell(10); // Horizontal space
         $this->Cell(0, 10, 'MUNICIPALITY OF MATAASNAKAHOY', 0, 1, 'C');
-
-        // Set font and size for the fourth line
         $this->SetFont('Arial', '', 11);
-        $this->SetTextColor(0, 0, 0);
-        // Adjust spacing before the text
-        $this->Cell(10); // Horizontal space
         $this->Cell(0, 0.5, 'Tel. No.: (043) 784-1088', 0, 1, 'C');
-
-        // Set font and size for the fifth line
         $this->SetFont('Arial', 'B', 12);
-        // Adjust spacing before the text
-        $this->Cell(10); // Horizontal space
         $this->Cell(0, 10, 'hrmo_lgumataasnakahoy@yahoo.com', 0, 1, 'C');
-
-        // Set font and color for the eighth line
         $this->SetFont('Arial', 'B', 12);
         $this->SetTextColor(221, 0, 42);
-        // Adjust the horizontal space (X position) to add margin
-        $this->Cell(8); // Adds space/margin to the left
         $this->Cell(0, 13, 'OFFICE OF THE MUNICIPAL HUMAN RESOURCE MANAGEMENT', 0, 1, 'C');
-
-        // Set font and color for the eighth line
         $this->SetFont('Arial', 'BI', 16);
         $this->SetTextColor(0, 0, 0);
-        // Adjust the horizontal space (X position) to add margin
-        $this->Cell(8); // Adds space/margin to the left
         $this->Cell(0, 10, 'CERTIFICATE OF EMPLOYMENT AND COMPENSATION', 0, 1, 'C');
-
         $this->Ln(5);
     }
 
@@ -188,101 +86,89 @@ class PDF extends PDF_MC_Table
         $this->SetY(max($newY, $this->GetY()));
     }
 
-    // DisplayText function
-    function DisplayText($data)
-    {
-        $this->SetFont('Times', '', 12); // Set font
-        $this->SetY(75); // Adjust starting position
-
-        // Title
-        $this->Cell(10);
-        $this->Cell(0, 10, 'TO WHOM IT MAY CONCERN:', 0, 1, 'L');
-
-        $this->Cell(10);
-
-        // Justified text with bold inline formatting
-        $this->SetFont('Times', '', 12);
-        $text1 = 'THIS IS TO CERTIFY that as per records available in this office ';
-        $text2 = 'Ms. VICKY K. MANIGBAS,';
-        $text3 = ' is a regular employee of this municipality since December 21, 2000 and presently holding position as Administrative Officer II (Budget Officer I) in the Office of the Municipal Budget, this municipality. Her annual compensation is as follows:';
-
-        // Combine text with inline bold formatting
-        $this->MultiCell(0, 5, $text1 . $this->SetFont('Times', 'B', 12) . $text2 . $this->SetFont('Times', '', 12) . $text3, 0, 'J');
-
-        $this->Ln(7);
-        $this->Cell(20);
-        $this->AddDashedRow('Salary', 'P 847,188.00');
-        $this->Cell(20);
-        $this->AddDashedRow('PERA', '24,000.00');
-        $this->Cell(20);
-        $this->AddDashedRow('Representation and Transportation Allowance', '153,000.00', 0, 'J');
-        $this->Cell(20);
-        $this->AddDashedRow('Clothing', '7,000.00');
-        $this->Cell(20);
-        $this->AddDashedRow('Mid-Year Bonus', '70,599.00');
-        $this->Cell(20);
-        $this->AddDashedRow('Year-End Bonus', '70,599.00');
-        $this->Cell(20);
-        $this->AddDashedRow('Cash Gift', '5,000.00');
-        $this->Cell(20);
-        $this->AddDashedRow('Productivity Enhancement Incentive', '5,000.00');
-
-        // Add a Single Underline for the Subtotal
-        $this->Cell(130);
-        $this->Cell(30, 1, '', 'T', 1, 'R');
-
-        $this->Ln(1);
-        // Add Total (with Double Underline)
-        $this->Cell(30);
-        $this->SetFont('Times', 'B', 12);
-        $this->Cell(90, 5, 'TOTAL', 0, 0, 'L');
-        $this->Cell(40, 5, 'P 1,182,386.00', 0, 1, 'R');
-
-        // Double Underline for Total
-        $this->Cell(130);
-        $this->Cell(30, 1, '', 'T', 1, 'R');
-        $this->Cell(130);
-        $this->Cell(30, 1, '', 'T', 1, 'R');
-
-        $this->Ln(10);
-        $this->SetFont('Times', '', 12);
-        // Closing statement
-        $this->Cell(10);
-        $this->MultiCell(0, 5, 'Issued this 30th day of January 2025 upon request of Hon. Malabag for whatever purpose it may lawfully serve.', 0, 'J');
-
-        $this->Ln(20);
-        // Signature
-        $this->Cell(10);
-        $this->SetFont('TImes', 'B', 12);
-        $this->MultiCell(0, 5, 'GALLY D. TIPAN', 0, 'J');
-        $this->Cell(10);
-        $this->SetFont('Times', '', 12);
-        $this->MultiCell(0, 5, 'Mun. Human Res. Mgt. Officer', 0, 'J');
-    }
-
     function Footer()
     {
-        // Set the position at 13mm from the bottom
         $this->SetY(-13);
-
-        // Add the image
         $this->Image('../img/JMi.png', 15, 240, 185);
     }
 }
 
-// Determine the action based on the URL parameter
-$action = isset($_GET['action']) ? $_GET['action'] : '';
-
+// Create PDF
 $pdf = new PDF('P', 'mm', 'A4');
 $pdf->AddPage();
+$pdf->SetFont('Times', '', 12);
 
-$pdf->DisplayText([]);
+// Certificate Details
+$pdf->Ln(5);
+$pdf->Cell(10);
+$pdf->Cell(0, 10, 'TO WHOM IT MAY CONCERN:', 0, 1, 'L');
 
-// Handle the action
-if ($action === 'download') {
-    // Output the PDF as a download
-    $pdf->Output('D', 'CoEC-appointed.pdf');
-} else {
-    // Default output to the browser
-    $pdf->Output();
-}
+$pdf->Cell(10);
+$pdf->MultiCell(0, 5, 'THIS IS TO CERTIFY that as per records available in this office, ' .
+    $certificate['fullname'] . ' is a regular employee of this municipality since ' .
+    date("F d, Y", strtotime($certificate['start_date'])) .
+    ' and presently holding the position of ' . $certificate['position'] .
+    ' in the ' . $certificate['office_appointed'] . ' department. Their annual compensation is as follows:', 0, 'J');
+
+$pdf->Ln(7);
+$pdf->SetFont('Times', '', 12);
+$pdf->Cell(20);
+$pdf->AddDashedRow('Salary', 'P ' . number_format($certificate['salary'], 2));
+
+$pdf->Cell(20);
+$pdf->AddDashedRow('PERA', 'P ' . number_format($certificate['pera'], 2));
+
+$pdf->Cell(20);
+$pdf->AddDashedRow('Representation and Transportation Allowance', 'P ' . number_format($certificate['rta'], 2));
+
+$pdf->Cell(20);
+$pdf->AddDashedRow('Clothing', 'P ' . number_format($certificate['clothing'], 2));
+
+$pdf->Cell(20);
+$pdf->AddDashedRow('Mid-Year Bonus', 'P ' . number_format($certificate['mid_year_bonus'], 2));
+
+$pdf->Cell(20);
+$pdf->AddDashedRow('Year-End Bonus', 'P ' . number_format($certificate['year_end_bonus'], 2));
+
+$pdf->Cell(20);
+$pdf->AddDashedRow('Cash Gift', 'P ' . number_format($certificate['cash_gift'], 2));
+
+$pdf->Cell(20);
+$pdf->AddDashedRow('Productivity Enhancement Incentive', 'P ' . number_format($certificate['productivity_enhancement'], 2));
+
+// Add a Single Underline for the Subtotal
+$pdf->Cell(130);
+$pdf->Cell(30, 1, '', 'T', 1, 'R');
+
+$pdf->Ln(1);
+// Add Total (with Double Underline)
+$pdf->Cell(30);
+$pdf->SetFont('Times', 'B', 12);
+$pdf->Cell(90, 5, 'TOTAL', 0, 0, 'L');
+
+$total = $certificate['salary'] + $certificate['pera'] + $certificate['rta'] + $certificate['clothing'] +
+    $certificate['mid_year_bonus'] + $certificate['year_end_bonus'] + $certificate['cash_gift'] +
+    $certificate['productivity_enhancement'];
+
+$pdf->Cell(40, 5, 'P ' . number_format($total, 2), 0, 1, 'R');
+
+// Double Underline for Total
+$pdf->Cell(130);
+$pdf->Cell(30, 1, '', 'T', 1, 'R');
+$pdf->Cell(130);
+$pdf->Cell(30, 1, '', 'T', 1, 'R');
+
+$pdf->Ln(10);
+$pdf->SetFont('Times', '', 12);
+$pdf->Cell(10);
+$pdf->MultiCell(0, 5, 'Issued this ' . date("jS \of F Y") . ' upon request of ' . strtoupper($certificate['fullname']) . ' for whatever purpose it may serve.', 0, 'J');
+
+$pdf->Ln(20);
+$pdf->Cell(10);
+$pdf->SetFont('Times', 'B', 12);
+$pdf->MultiCell(0, 5, 'GALLY D. TIPAN', 0, 'J');
+$pdf->Cell(10);
+$pdf->SetFont('Times', '', 12);
+$pdf->MultiCell(0, 5, 'Mun. Human Res. Mgt. Officer', 0, 'J');
+
+$pdf->Output();
