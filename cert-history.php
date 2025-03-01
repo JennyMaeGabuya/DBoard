@@ -38,6 +38,8 @@ include "dbcon.php";
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
   <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+  <link rel="stylesheet" href="//cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -52,266 +54,123 @@ include "dbcon.php";
   <div class="breadcome-area">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="col-lg-12">
           <div class="breadcome-list single-page-breadcome">
             <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <div class="breadcome-heading">
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <ul class="breadcome-menu" style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
-                        <li>
-                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+              <div class="col-lg-12">
+                <ul class="breadcome-menu" style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
+                  <li>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-<a href="dashboard.php">
-    <i class="fas fa-home"></i> <strong>Home</strong>
-</a>
-<span class="bread-slash"> / </span>
-<a href="certificates.php">
-    <i class="fas fa-certificate"></i> <strong>Certificates</strong>
-</a>
-<span class="bread-slash"> / </span>
-<a href="issue-certificates.php">
-    <i class="fas fa-file-signature"></i> <strong>Issue Certificate</strong>
-</a>
-<span class="bread-slash"> / </span>
-<a href="history.php">
-    <i class="fas fa-history"></i> <strong>History</strong>
-</a>
+                    <a href="dashboard.php">
+                      <i class="fas fa-home"></i> <strong>Home</strong>
+                    </a>
+                    <span class="bread-slash"> / </span>
+                    <a href="certifications.php">
+                      <i class="fas fa-certificate"></i> <strong>Certificates</strong>
+                    </a>
+                    <span class="bread-slash"> / </span>
+                    <a>
+                      <i class="fas fa-history"></i> <strong>History</strong>
+                    </a>
 
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Single pro tab review Start-->
-    <div class="single-pro-review-area mt-t-30 mg-b-15">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="product-payment-inner-st">
-              <ul id="myTabedu1" class="tab-review-design">
-                <li class="active">
-                  <a href="#description">Courses Details</a>
-                </li>
-                <li><a href="#reviews"> Acount Information</a></li>
-                <li><a href="#INFORMATION">Social Information</a></li>
-              </ul>
-              <div id="myTabContent" class="tab-content custom-product-edit">
-                <div
-                  class="product-tab-list tab-pane fade active in"
-                  id="description">
-                  <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      <div class="review-content-section">
-                        <div id="dropzone1" class="pro-ad addcoursepro">
-                          <form
-                            action="/upload"
-                            class="dropzone dropzone-custom needsclick addcourse"
-                            id="demo1-upload">
-                            <div class="row">
-                              <div
-                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                  <input
-                                    name="coursename"
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Course Name" />
-                                </div>
-                                <div class="form-group">
-                                  <input
-                                    name="finish"
-                                    id="finish"
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Course Start Date" />
-                                </div>
-                                <div class="form-group">
-                                  <input
-                                    name="duration"
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Course Duration" />
-                                </div>
-                                <div class="form-group">
-                                  <input
-                                    name="price"
-                                    type="number"
-                                    class="form-control"
-                                    placeholder="Course Price" />
-                                </div>
-                                <div class="form-group alert-up-pd">
-                                  <div
-                                    class="dz-message needsclick download-custom">
-                                    <i
-                                      class="fa fa-download edudropnone"
-                                      aria-hidden="true"></i>
-                                    <h2 class="edudropnone">
-                                      Drop image here or click to upload.
-                                    </h2>
-                                    <p class="edudropnone">
-                                      <span class="note needsclick">(This is just a demo dropzone.
-                                        Selected image is
-                                        <strong>not</strong> actually
-                                        uploaded.)</span>
-                                    </p>
-                                    <input
-                                      name="imageico"
-                                      class="hd-pro-img"
-                                      type="text" />
-                                  </div>
-                                </div>
-                              </div>
-                              <div
-                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group res-mg-t-15">
-                                  <input
-                                    name="department"
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Department" />
-                                </div>
-                                <div class="form-group">
-                                  <textarea
-                                    name="description"
-                                    placeholder="Description"></textarea>
-                                </div>
-                                <div class="form-group">
-                                  <input
-                                    name="crprofessor"
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Professor" />
-                                </div>
-                                <div class="form-group">
-                                  <input
-                                    id="year"
-                                    name="year"
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Year" />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-lg-12">
-                                <div class="payment-adress">
-                                  <button
-                                    type="submit"
-                                    class="btn btn-primary waves-effect waves-light">
-                                    Submit
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+  <div class="product-status mg-b-15">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="product-status-wrap drp-lst">
+            <h4>Issued Certificates</h4>
 
-                <div class="product-tab-list tab-pane fade" id="reviews">
-                  <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      <div class="review-content-section">
-                        <div class="row">
-                          <div
-                            class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="devit-card-custom">
-                              <div class="form-group">
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Email" />
-                              </div>
-                              <div class="form-group">
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  placeholder="Phone" />
-                              </div>
-                              <div class="form-group">
-                                <input
-                                  type="password"
-                                  class="form-control"
-                                  placeholder="Password" />
-                              </div>
-                              <div class="form-group">
-                                <input
-                                  type="password"
-                                  class="form-control"
-                                  placeholder="Confirm Password" />
-                              </div>
-                              <a
-                                href="#"
-                                class="btn btn-primary waves-effect waves-light">Submit</a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="product-tab-list tab-pane fade" id="INFORMATION">
-                  <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      <div class="review-content-section">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <div class="devit-card-custom">
-                              <div class="form-group">
-                                <input
-                                  type="url"
-                                  class="form-control"
-                                  placeholder="Facebook URL" />
-                              </div>
-                              <div class="form-group">
-                                <input
-                                  type="url"
-                                  class="form-control"
-                                  placeholder="Twitter URL" />
-                              </div>
-                              <div class="form-group">
-                                <input
-                                  type="url"
-                                  class="form-control"
-                                  placeholder="Google Plus" />
-                              </div>
-                              <div class="form-group">
-                                <input
-                                  type="url"
-                                  class="form-control"
-                                  placeholder="Linkedin URL" />
-                              </div>
-                              <button
-                                type="submit"
-                                class="btn btn-primary waves-effect waves-light">
-                                Submit
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
+            <div class="widget-box">
+              <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
+              <script>
+                $(function() {
+                  new DataTable('#certHistoryTable', {
+                    responsive: true,
+                    autoWidth: false,
+                    language: {
+                      lengthMenu: "Show _MENU_ entries"
+                    },
+                  });
+                });
+              </script>
             </div>
+
+            <div class="asset-inner">
+              <table id="certHistoryTable" class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Certificate Type</th>
+                    <th>Full Name</th>
+                    <th>Position</th>
+                    <th>Office / Department</th>
+                    <th>Start Date</th>
+                    <th>Date Issued</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  $stmt = $con->prepare("
+                                    SELECT id, 'Appointed' AS cert_type, fullname, position, office_appointed AS department, start_date, date_issued 
+                                    FROM appointed_cert_issuance 
+                                    UNION ALL 
+                                    SELECT id, 'Elected' AS cert_type, fullname, position, 'N/A' AS department, start_date, date_issued 
+                                    FROM elected_cert_issuance 
+                                    ORDER BY date_issued DESC
+                                ");
+
+                  $stmt->execute();
+                  $result = $stmt->get_result();
+                  $count = 1;
+
+                  while ($row = $result->fetch_assoc()) {
+                  ?>
+                    <tr>
+                      <td style="text-align: center;"><?php echo $count; ?></td>
+                      <td style="text-align: center;">
+                        <span style="padding: 5px 10px; border-radius: 20px; color: white; background-color: <?php echo ($row['cert_type'] == 'Appointed') ? '#007bff' : '#28a745'; ?>;">
+                          <?php echo htmlspecialchars($row['cert_type']); ?>
+                        </span>
+                      </td>
+
+                      <td><?php echo htmlspecialchars($row['fullname']); ?></td>
+                      <td><?php echo htmlspecialchars($row['position']); ?></td>
+                      <td><?php echo htmlspecialchars($row['department']); ?></td>
+                      <td><?php echo date("F d, Y", strtotime($row['start_date'])); ?></td>
+                      <td><?php echo date("F d, Y", strtotime($row['date_issued'])); ?></td>
+                      <td>
+                        <div style="text-align: center;">
+                          <a href="reports/<?php echo strtolower($row['cert_type']); ?>.php?id=<?php echo $row['id']; ?>" class="btn btn-danger" title="View Certificate" target="_blank">
+                            <i class="fa fa-file-pdf"></i>
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                  <?php
+                    $count++;
+                  }
+                  ?>
+                </tbody>
+              </table>
+            </div>
+
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!--Footer-part-->
-    <?php include 'includes/footer.php'; ?>
+  <!--Footer-part-->
+  <?php include 'includes/footer.php'; ?>
