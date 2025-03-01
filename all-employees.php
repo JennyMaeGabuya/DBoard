@@ -65,15 +65,15 @@ include "dbcon.php";
                                 <ul class="breadcome-menu"
                                     style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
                                     <li>
-                                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-<a href="dashboard.php">
-    <i class="fas fa-home"></i> <strong>Home</strong>
-</a>
-<span class="bread-slash"> / </span>
-<a href="all-employees.php">
-    <i class="fas fa-users"></i> <strong>Employees</strong>
-</a>
+                                        <a href="dashboard.php">
+                                            <i class="fas fa-home"></i> <strong>Home</strong>
+                                        </a>
+                                        <span class="bread-slash"> / </span>
+                                        <a href="all-employees.php">
+                                            <i class="fas fa-users"></i> <strong>Employees</strong>
+                                        </a>
 
                                     </li>
                                 </ul>
@@ -193,9 +193,9 @@ include "dbcon.php";
                                             <td><?php echo htmlspecialchars($sex); ?></td>
                                             <td>
                                                 <div style="text-align: center;">
-                                                <a href="edit-employee.php?employee_no=<?php echo $employee_no; ?>" class="btn btn-primary" style="margin-right: 8px;">
-    <i class="fa fa-pencil"></i>
-</a>
+                                                    <a href="edit-employee.php?employee_no=<?php echo $employee_no; ?>" class="btn btn-primary" style="margin-right: 8px;">
+                                                        <i class="fa fa-pencil"></i>
+                                                    </a>
                                                     <a href="employeedetails.php?employee_no=<?php echo $employee_no; ?>"
                                                         class="btn btn-success" title="View" style="margin-right: 8px;">
                                                         <i class="fa fa-eye"></i>
@@ -280,10 +280,8 @@ include "dbcon.php";
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-primary" style="border-radius: 3px;">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New Employee</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="exampleModalLabel">Add New Employee</h4>
                 </div>
                 <div class="modal-body">
                     <form method="POST" action="basic-info.php" method="POST" enctype="multipart/form-data">
@@ -497,7 +495,6 @@ include "dbcon.php";
                             </div>
                         </div>
 
-
                         <br>
                         <hr>
                         <h4 class="text-center">COMPENSATION</h4>
@@ -550,19 +547,20 @@ include "dbcon.php";
                                 <input name="year_end_bonus" type="number" class="form-control"
                                     placeholder="Year End Bonus" required />
                             </div>
-                        
-                </div>
-            </div>
-            <div class="modal-footer">
-                <!--  <input type="hidden" id="pos_id" name="id"> -->
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" name="basic-infobtn">Save Changes</button>
-            </div>
 
-            </form>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <!--  <input type="hidden" id="pos_id" name="id"> -->
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" name="basic-infobtn">Save Changes</button>
+                </div>
+
+                </form>
+            </div>
         </div>
     </div>
-    </div>
+
     <script>
         document.getElementById('mobile').addEventListener('input', function(e) {
             const value = e.target.value;
@@ -571,6 +569,7 @@ include "dbcon.php";
             }
         });
     </script>
+
     <?php if (isset($_SESSION['display'])): ?>
         <script>
             Swal.fire({
