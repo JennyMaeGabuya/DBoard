@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 20, 2025 at 03:18 PM
+-- Generation Time: Mar 01, 2025 at 11:43 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -48,6 +48,39 @@ INSERT INTO `admin` (`id`, `employee_no`, `username`, `password`, `email`, `role
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `appointed_cert_issuance`
+--
+
+CREATE TABLE `appointed_cert_issuance` (
+  `id` int(11) NOT NULL,
+  `fullname` varchar(255) NOT NULL,
+  `start_date` date NOT NULL,
+  `position` varchar(255) NOT NULL,
+  `office_appointed` varchar(255) NOT NULL,
+  `salary` decimal(10,2) NOT NULL,
+  `pera` decimal(10,2) NOT NULL,
+  `rta` decimal(10,2) NOT NULL,
+  `clothing` decimal(10,2) NOT NULL,
+  `mid_year_bonus` decimal(10,2) NOT NULL,
+  `year_end_bonus` decimal(10,2) NOT NULL,
+  `cash_gift` decimal(10,2) NOT NULL,
+  `productivity_enhancement` decimal(10,2) NOT NULL,
+  `date_issued` date NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `appointed_cert_issuance`
+--
+
+INSERT INTO `appointed_cert_issuance` (`id`, `fullname`, `start_date`, `position`, `office_appointed`, `salary`, `pera`, `rta`, `clothing`, `mid_year_bonus`, `year_end_bonus`, `cash_gift`, `productivity_enhancement`, `date_issued`, `created_at`, `updated_at`) VALUES
+(1, 'Jenny', '2025-02-01', 'Admin Aide', 'HR Office', 545345.00, 435435.00, 2323.00, 2323.00, 3232.00, 121565.00, 3213.00, 343454.00, '0000-00-00', '2025-03-01 10:05:50', '2025-03-01 10:05:50'),
+(2, 'Jenny  Mae', '2025-02-11', 'Admin Aide II', 'Budget Office', 43545.00, 54645.00, 654654.00, 54645.00, 6565.00, 5654.00, 54654.00, 6646.00, '2025-03-01', '2025-03-01 10:20:58', '2025-03-01 10:20:58');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `compensation`
 --
 
@@ -67,6 +100,45 @@ CREATE TABLE `compensation` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `compensation`
+--
+
+INSERT INTO `compensation` (`id`, `employee_no`, `salary`, `pera`, `rt_allowance`, `allowance`, `clothing`, `mid_year`, `year_end_bonus`, `cash_gift`, `productivity_incentive`, `issued_date`, `created_at`, `updated_at`) VALUES
+(1, 'HRM-ADMIN', 545345.00, 435435.00, 443543.00, 435435.00, 43543543.00, 5435435.00, 99999999.99, 99999999.99, 5435435.00, '2025-03-01', '2025-02-28 16:00:00', '2025-02-28 16:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `elected_cert_issuance`
+--
+
+CREATE TABLE `elected_cert_issuance` (
+  `id` int(11) NOT NULL,
+  `fullname` varchar(255) NOT NULL,
+  `start_date` date NOT NULL,
+  `position` varchar(255) NOT NULL,
+  `salary` decimal(10,2) NOT NULL,
+  `pera` decimal(10,2) NOT NULL,
+  `rta` decimal(10,2) NOT NULL,
+  `clothing` decimal(10,2) NOT NULL,
+  `mid_year_bonus` decimal(10,2) NOT NULL,
+  `year_end_bonus` decimal(10,2) NOT NULL,
+  `cash_gift` decimal(10,2) NOT NULL,
+  `productivity_enhancement` decimal(10,2) NOT NULL,
+  `date_issued` date NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `elected_cert_issuance`
+--
+
+INSERT INTO `elected_cert_issuance` (`id`, `fullname`, `start_date`, `position`, `salary`, `pera`, `rta`, `clothing`, `mid_year_bonus`, `year_end_bonus`, `cash_gift`, `productivity_enhancement`, `date_issued`, `created_at`, `updated_at`) VALUES
+(1, 'Jenny', '2025-02-02', 'Admin Aide', 545345.00, 324.00, 34234.00, 432432.00, 34234.00, 233432.00, 3234324.00, 34324.00, '2025-03-01', '2025-03-01 10:06:55', '2025-03-01 10:06:55'),
+(2, 'Elected Testing', '2025-02-09', 'Admin Officer II', 2321.00, 2321.00, 232134.00, 343.00, 43123.00, 12321.00, 3423.00, 424234.00, '2025-02-28', '2025-03-01 10:39:13', '2025-03-01 10:39:13');
 
 -- --------------------------------------------------------
 
@@ -99,16 +171,16 @@ CREATE TABLE `employee` (
 
 INSERT INTO `employee` (`employee_no`, `firstname`, `middlename`, `lastname`, `name_extension`, `dob`, `pob`, `sex`, `civil_status`, `address`, `blood_type`, `mobile_no`, `email_address`, `image`, `created_at`, `updated_at`) VALUES
 ('EMP001', 'Juan', 'Dela', 'Cruz', 'Jr.', '1985-03-25', 'Manila', 'Male', 'Married', '123 Mabini St., Manila', 'O+', 9171234567, 'juan.cruz@email.com', NULL, '2025-02-19 14:09:03', '2025-02-19 14:14:08'),
-('EMP002', 'Maria', 'Santos', 'Lopez', '', '1990-07-12', 'Quezon City', 'Female', 'Single', '456 Rizal Ave., QC', 'A+', 9281234567, 'maria.lopez@email.com', NULL, '2025-02-19 14:09:03', '2025-02-19 14:14:11'),
-('EMP003', 'Pedro', 'L.', 'Gonzalez', '', '1988-05-18', 'Cebu City', 'Male', 'Single', '789 Osmena Blvd., Cebu', 'B+', 9391234567, 'pedro.gonzalez@email.com', NULL, '2025-02-19 14:09:03', '2025-02-19 14:14:15'),
-('EMP004', 'Ana', 'Reyes', 'Fernandez', '', '1995-01-20', 'Davao City', 'Female', 'Married', '101 Bonifacio St., Davao', 'AB+', 9491234567, 'ana.fernandez@email.com', NULL, '2025-02-19 14:09:03', '2025-02-19 14:14:17'),
-('EMP005', 'Carlos', 'D.', 'Rivera', 'Sr.', '1982-09-05', 'Baguio City', 'Male', 'Married', '202 Marcos Hwy, Baguio', 'O-', 9591234567, 'carlos.rivera@email.com', NULL, '2025-02-19 14:09:03', '2025-02-19 14:14:21'),
-('EMP006', 'Elena', 'M.', 'Torres', '', '1993-11-15', 'Iloilo City', 'Female', 'Single', '303 Jaro St., Iloilo', 'A-', 9691234567, 'elena.torres@email.com', NULL, '2025-02-19 14:09:03', '2025-02-19 14:14:23'),
-('EMP007', 'Rafael', 'G.', 'Velasco', 'III', '1987-06-30', 'Batangas City', 'Male', 'Widowed', '404 Laurel Ave., Batangas', 'B-', 9791234567, 'rafael.velasco@email.com', NULL, '2025-02-19 14:09:03', '2025-02-19 14:14:26'),
+('EMP002', 'Noime', 'T.', 'Tipan', '', '1990-07-12', 'Quezon City', 'Female', 'Married', '456 Rizal Ave., QC', 'A+', 9281234567, 'maria.lopez@email.com', NULL, '2025-02-19 14:09:03', '2025-02-26 07:56:14'),
+('EMP003', 'Gelyn', 'M.', 'Katimbang', NULL, '1988-05-18', 'Cebu City', 'Female', 'Married', '789 Osmena Blvd., Cebu', 'B+', 9391234567, 'pedro.gonzalez@email.com', NULL, '2025-02-19 14:09:03', '2025-02-26 07:56:49'),
+('EMP004', 'Elmie', 'H.', 'Panganiban', '', '1995-01-20', 'Davao City', 'Female', 'Married', '101 Bonifacio St., Davao', 'AB+', 9491234567, 'ana.fernandez@email.com', NULL, '2025-02-19 14:09:03', '2025-02-26 07:57:13'),
+('EMP005', 'Marjorie', 'O.', 'Cabrera', NULL, '1982-09-05', 'Baguio City', 'Female', 'Single', '202 Marcos Hwy, Baguio', 'O-', 9591234567, 'carlos.rivera@email.com', NULL, '2025-02-19 14:09:03', '2025-02-26 07:57:50'),
+('EMP006', 'Lenard Joseph', 'V.', 'Ariola', '', '1993-11-15', 'Iloilo City', 'Male', 'Single', '303 Jaro St., Iloilo', 'A-', 9691234567, 'elena.torres@email.com', NULL, '2025-02-19 14:09:03', '2025-02-26 07:58:22'),
+('EMP007', 'Gilbert', 'O.', 'Gonzales', NULL, '1987-06-30', 'Batangas City', 'Male', 'Married', '404 Laurel Ave., Batangas', 'B-', 9791234567, 'rafael.velasco@email.com', NULL, '2025-02-19 14:09:03', '2025-02-26 07:58:49'),
 ('EMP008', 'Isabel', 'T.', 'Mendoza', '', '1998-02-25', 'Laguna', 'Female', 'Single', '505 Calamba Rd., Laguna', 'AB-', 9891234567, 'isabel.mendoza@email.com', NULL, '2025-02-19 14:09:03', '2025-02-19 14:14:28'),
 ('EMP009', 'Miguel', 'R.', 'Domingo', '', '1991-08-09', 'Pampanga', 'Male', 'Married', '606 Angeles St., Pampanga', 'O+', 9991234567, 'miguel.domingo@email.com', NULL, '2025-02-19 14:09:03', '2025-02-19 14:14:31'),
-('EMP010', 'Carmen', 'S.', 'Delos Reyes', '', '1984-12-01', 'Zamboanga City', 'Female', 'Separated', '707 Pilar St., Zamboanga', 'A+', 9091234567, 'carmen.reyes@email.com', NULL, '2025-02-19 14:09:03', '2025-02-19 14:14:34'),
-('HRM-ADMIN', 'GALLY', 'ADMIN', 'TIPAN', NULL, '1990-06-28', 'CUENCA, BATANGAS', 'Male', 'Single', 'CUENCA, BATANGAS', 'A+', 9123456789, 'admin@gmail.com', '2.jpg', '2025-02-17 06:33:54', '2025-02-20 14:16:46'),
+('EMP010', 'Janet', 'M.', 'Ilagan', '', '1984-12-01', 'Zamboanga City', 'Female', 'Married', '707 Pilar St., Zamboanga', 'A+', 9091234567, 'carmen.reyes@email.com', NULL, '2025-02-19 14:09:03', '2025-02-26 08:10:09'),
+('HRM-ADMIN', 'GALLY', 'DIMAYUGA', 'TIPAN', '', '1990-06-28', 'CUENCA, BATANGAS', 'Male', 'Single', 'CUENCA, BATANGAS', 'A+', 9123456789, 'admin@gmail.com', '2.jpg', '2025-02-17 06:33:54', '2025-02-27 00:12:13'),
 ('HRM004', 'GELYN', 'MATIBAG', 'KATIMBANG', NULL, '1981-06-28', 'DITA, CUENCA, BATANGAS', 'Female', 'Married', 'CUENCA, BATANGAS', 'B-', 9772866201, 'gmatibag10581@yahoo.com', NULL, '2025-02-17 06:27:21', '2025-02-17 06:31:42');
 
 -- --------------------------------------------------------
@@ -191,7 +263,7 @@ CREATE TABLE `service_records` (
 --
 
 INSERT INTO `service_records` (`id`, `employee_no`, `from_date`, `to_date`, `designation`, `status`, `salary`, `station_place`, `branch`, `abs_wo_pay`, `date_separated`, `cause_of_separation`, `created_at`, `updated_at`) VALUES
-(1, 'HRM-ADMIN', '2023-02-01', '2025-12-31', 'Admin Aide VI', 'Permanent', 1232323.00, 'Office of the HRM', 'M-Kahoy Bats.', 'None', NULL, NULL, '2025-02-19 13:41:42', '2025-02-20 01:43:44');
+(1, 'HRM-ADMIN', '0000-00-00', '2025-12-31', 'Admin Aide VI', '', 1232323.00, '', '', NULL, NULL, NULL, '2025-02-19 13:41:42', '2025-02-26 08:43:36');
 
 --
 -- Indexes for dumped tables
@@ -207,11 +279,23 @@ ALTER TABLE `admin`
   ADD KEY `employee_no` (`employee_no`);
 
 --
+-- Indexes for table `appointed_cert_issuance`
+--
+ALTER TABLE `appointed_cert_issuance`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `compensation`
 --
 ALTER TABLE `compensation`
   ADD PRIMARY KEY (`id`),
   ADD KEY `employee_no` (`employee_no`);
+
+--
+-- Indexes for table `elected_cert_issuance`
+--
+ALTER TABLE `elected_cert_issuance`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `employee`
@@ -257,10 +341,22 @@ ALTER TABLE `admin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `appointed_cert_issuance`
+--
+ALTER TABLE `appointed_cert_issuance`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `compensation`
 --
 ALTER TABLE `compensation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `elected_cert_issuance`
+--
+ALTER TABLE `elected_cert_issuance`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `government_info`
