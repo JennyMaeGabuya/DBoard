@@ -1,6 +1,6 @@
 <?php
 session_start();
-require('fpdf/fpdf.php');
+require('../fpdf/fpdf.php');
 include('dbcon.php');
 
 // Ensure an ID is provided
@@ -8,7 +8,6 @@ $empid = isset($_GET['id']) ? $_GET['id'] : null;
 
 if (!$empid) {
     die("Error: No Personal Data sheet selected for generation.");
-
 }
 
 // Fetch the employee details from the `employee` table
@@ -33,8 +32,8 @@ class PDF extends FPDF
 {
     function Header()
     {
-        $this->Image('img/mk-logo.png', 32, 17, 26);
-        $this->Image('img/Bagong-Pilipinas.png', 157, 18, 30);
+        $this->Image('../img/mk-logo.png', 32, 17, 26);
+        $this->Image('../img/Bagong-Pilipinas.png', 157, 18, 30);
         $this->Ln(5);
         $this->SetFont('Arial', '', 12);
         $this->Cell(0, 10, 'Republic of the Philippines', 0, 1, 'C');
@@ -44,143 +43,138 @@ class PDF extends FPDF
         $this->SetFont('Arial', '', 11);
         $this->Cell(0, 0.5, 'Tel. No.: (043) 784-1088', 0, 1, 'C');
         $this->SetFont('Arial', 'B', 12);
-        $this->Cell(0, 10, 'hrmo_lgumatasnakahoy@yahoo.com', 0, 1, 'C');
-        $this->SetFont('Arial', 'B', 12);
-        $this->SetTextColor(221, 0, 42);
-
+        $this->Cell(0, 10, 'hrmo_lgumataasnakahoy@yahoo.com', 0, 1, 'C');
         $this->Ln(5);
-    }
-
-    function Footer()
-    {
-        $this->SetY(-13);
-        $this->Image('img/JMi.png', 15, 240, 185);
     }
 
     function CreateTable($employee)
     {
         // Set font for the table
         $this->SetFont('Arial', 'B', 15);
-        $this->Ln(20);
+        $this->Ln(5);
         $this->SetFillColor(200, 200, 200);
         $this->Cell(0, 10, 'PERSONAL DATA SHEET', 1, 1, 'C', true);
         $this->Ln(0);
-    
-        $photoPath = $employee['image']; 
 
-// Check if the image path is empty
-if (empty($photoPath)) {
-    $photoPath = 'img/mk-logo.png'; // Path to the default image
-}
+        $photoPath = $employee['image'];
+
+        // Check if the image path is empty
+        if (empty($photoPath)) {
+            $photoPath = '../mk-logo.png'; // Path to the default image
+        }
         // Add Employee Photo
-       
-        $this->Image('img/profile/' . $photoPath, 10, $this->GetY(), 40, 40); 
+
+        $this->Image('../img/profile/' . $photoPath, 10, $this->GetY(), 40, 40);
         $this->Cell(40, 40, '', 1); // Empty cell to create space for the photo
-        $this->SetFont('Arial', '', 11);
+        $this->SetFont('Times', '', 11);
         $this->Cell(40, 10, 'SURNAME:', 1);
-        $this->SetFont('Arial', 'B', 11);
-        $this->Cell(0, 10, $employee['lastname'], 1); 
-  
+        $this->SetFont('Times', 'B', 11);
+        $this->Cell(0, 10, $employee['lastname'], 1);
+
         $this->Ln(); // Move to the next line
-    
 
         $this->Cell(40, 40, '', 0); // Empty cell for space     
         // First Name
-        $this->SetFont('Arial', '', 11);
+        $this->SetFont('Times', '', 11);
         $this->Cell(40, 10, 'FIRST NAME:', 1);
-        $this->SetFont('Arial', 'B', 11);
+        $this->SetFont('Times', 'B', 11);
         $this->Cell(0, 10, $employee['firstname'], 1); // Use 0 to take the remaining width
         $this->Ln(); // Move to the next line
-    
 
         // Middle Name
         $this->Cell(40, 40, '', 0); // Empty cell for space     
-        $this->SetFont('Arial', '', 11);
+        $this->SetFont('Times', '', 11);
         $this->Cell(40, 10, 'MIDDLE NAME:', 1);
-        $this->SetFont('Arial', 'B', 11);
+        $this->SetFont('Times', 'B', 11);
         $this->Cell(0, 10, $employee['middlename'], 1); // Use 0 to take the remaining width
         $this->Ln(); // Move to the next line
-    
+
         // Name Extension
         $this->Cell(40, 40, '', 0); // Empty cell for space     
-        $this->SetFont('Arial', '', 11);
+        $this->SetFont('Times', '', 11);
         $this->Cell(40, 10, 'NAME EXTENSION:', 1);
-        $this->SetFont('Arial', 'B', 11);
+        $this->SetFont('Times', 'B', 11);
         $this->Cell(0, 10, $employee['name_extension'], 1); // Use 0 to take the remaining width
         $this->Ln(); // Move to the next line
-    
+
         // Additional rows
-        $this->SetFont('Arial', '', 11);
+        $this->SetFont('Times', '', 11);
         $this->Cell(40, 10, 'Email:', 1);
-        $this->SetFont('Arial', 'B', 11);
+        $this->SetFont('Times', 'B', 11);
         $this->Cell(50, 10, $employee['email_address'], 1);
-        $this->SetFont('Arial', '', 11);
+        $this->SetFont('Times', '', 11);
         $this->Cell(50, 10, 'Contact No.:', 1);
-        $this->SetFont('Arial', 'B', 11);
+        $this->SetFont('Times', 'B', 11);
         $this->Cell(50, 10, $employee['mobile_no'], 1);
         $this->Ln();
-    
-        $this->SetFont('Arial', '', 11);
+
+        $this->SetFont('Times', '', 11);
         $this->Cell(40, 10, 'Address:', 1);
-        $this->SetFont('Arial', 'B', 11);
+        $this->SetFont('Times', 'B', 11);
         $this->Cell(150, 10, $employee['address'], 1);
         $this->Ln();
-    
-        $this->SetFont('Arial', '', 11);
+
+        $this->SetFont('Times', '', 11);
         $this->Cell(40, 10, 'Place of Birth:', 1);
-        $this->SetFont('Arial', 'B', 11);
+        $this->SetFont('Times', 'B', 11);
         $this->Cell(50, 10, $employee['pob'], 1);
-        $this->SetFont('Arial', '', 11);
+        $this->SetFont('Times', '', 11);
         $this->Cell(50, 10, 'Sex:', 1);
-        $this->SetFont('Arial', 'B', 11);
+        $this->SetFont('Times', 'B', 11);
         $this->Cell(50, 10, $employee['sex'], 1);
         $this->Ln();
-    
-        $this->SetFont('Arial', '', 11);
+
+        $this->SetFont('Times', '', 11);
         $this->Cell(40, 10, 'Birthday:', 1);
-        $this->SetFont('Arial', 'B', 11);
+        $this->SetFont('Times', 'B', 11);
         $this->Cell(50, 10, $employee['dob'], 1);
-        $this->SetFont('Arial', '', 11);
+        $this->SetFont('Times', '', 11);
         $this->Cell(50, 10, 'Blood Type:', 1);
-        $this->SetFont('Arial', 'B', 11);
+        $this->SetFont('Times', 'B', 11);
         $this->Cell(50, 10, $employee['blood_type'], 1);
         $this->Ln();
-    
+
         // Government Information Header
         $this->SetFillColor(200, 200, 200);
         $this->Cell(0, 10, 'GOVERNMENT INFORMATION', 1, 1, 'C', true);
         $this->Ln(0);
-    
+
         // Government Information Table
-        $this->SetFont('Arial', '', 11);
+        $this->SetFont('Times', '', 11);
         $this->Cell(40, 10, 'GSIS NO:', 1);
-        $this->SetFont('Arial', 'B', 11);
-        $this->Cell(50, 10, !empty($employee['gsis_no']) ? $employee['gsis_no'] : 'N/A', 1); 
-        $this->SetFont('Arial', '', 11);
+        $this->SetFont('Times', 'B', 11);
+        $this->Cell(50, 10, !empty($employee['gsis_no']) ? $employee['gsis_no'] : 'N/A', 1);
+        $this->SetFont('Times', '', 11);
         $this->Cell(50, 10, 'SSS NO:', 1);
-        $this->SetFont('Arial', 'B', 11);
-        $this->Cell(50, 10, !empty($employee['sss_no'])? $employee['sss_no']: 'N/A' , 1);
+        $this->SetFont('Times', 'B', 11);
+        $this->Cell(50, 10, !empty($employee['sss_no']) ? $employee['sss_no'] : 'N/A', 1);
         $this->Ln();
-    
-        $this->SetFont('Arial', '', 11);
+
+        $this->SetFont('Times', '', 11);
         $this->Cell(40, 10, 'PHILHEALTH NO:', 1);
-        $this->SetFont('Arial', 'B', 11);
-        $this->Cell(50, 10, !empty($employee['philhealth_no']) ? $employee['philhealth_no'] : 'N/A' , 1);
-        $this->SetFont('Arial', '', 11);
+        $this->SetFont('Times', 'B', 11);
+        $this->Cell(50, 10, !empty($employee['philhealth_no']) ? $employee['philhealth_no'] : 'N/A', 1);
+        $this->SetFont('Times', '', 11);
         $this->Cell(50, 10, 'PAG-IBIG NO:', 1);
-        $this->SetFont('Arial', 'B', 11);
-        $this->Cell(50, 10, !empty($employee['pag_ibig_no']) ? $employee['pag_ibig_no'] : 'N/A' , 1);
+        $this->SetFont('Times', 'B', 11);
+        $this->Cell(50, 10, !empty($employee['pag_ibig_no']) ? $employee['pag_ibig_no'] : 'N/A', 1);
         $this->Ln();
-    
-        $this->SetFont('Arial', '', 11);
+
+        $this->SetFont('Times', '', 11);
         $this->Cell(40, 10, 'TIN NO:', 1);
-        $this->SetFont('Arial', 'B', 11);
+        $this->SetFont('Times', 'B', 11);
         $this->Cell(50, 10, !empty($employee['tin_no']) ? $employee['tin_no'] : 'N/A', 1);
-        $this->SetFont('Arial', '', 11);
+        $this->SetFont('Times', '', 11);
         $this->Cell(50, 10, 'AGENCY EMPLOYEE NO:', 1);
-        $this->SetFont('Arial', 'B', 11);
+        $this->SetFont('Times', 'B', 11);
         $this->Cell(50, 10, !empty($employee['employee_no']), 1);
         $this->Ln();
+    }
+
+    function Footer()
+    {
+        $this->SetY(-13);
+        $this->Image('../img/JMi.png', 15, 240, 185);
     }
 }
 
@@ -194,4 +188,3 @@ $pdf->CreateTable($employee);
 
 // Output the PDF
 $pdf->Output();
-?>
