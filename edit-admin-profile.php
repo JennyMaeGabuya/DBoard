@@ -506,6 +506,12 @@ if ($result->num_rows > 0) {
         </div>
     </div>
     </div>
+    </div>
+    </div>
+    </div>
 
     <!-- Footer -->
     <?php include 'includes/footer.php'; ?>
+</body>
+
+</html>
