@@ -328,7 +328,7 @@ include "dbcon.php";
                             <div class="form-group col-md-4">
                                 <label>Name Extension</label>
                                 <input name="name_extension" type="text" class="form-control"
-                                    placeholder="Extension Name" required />
+                                    placeholder="Extension Name"  />
                             </div>
 
                         </div>

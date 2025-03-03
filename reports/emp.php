@@ -11,7 +11,24 @@ if (!$empid) {
 }
 
 // Fetch the employee details from the `employee` table
-$query = "SELECT * FROM employee JOIN government_info ON government_info.employee_no = employee.employee_no WHERE employee.employee_no = ?";
+$query = "SELECT e.employee_no as employee_no, 
+e.firstname,
+e.lastname as lastname,
+e.middlename as middlename,
+e.name_extension as name_extension,
+e.dob as dob,
+e.pob as pob, 
+e.sex as sex,
+e.civil_status as civil_status,
+e.address as address, 
+e.blood_type as blood_type,
+e.mobile_no as mobile_no,
+e.email_address as email,
+e.image as pic,
+ g.tin_no as tin_no, g.sss_no as sss_no,
+ g.philhealth_no as philhealth_no, g. pag_ibig_no as pag_ibig_no, g.gsis_no as gsis_no FROM employee e
+LEFT JOIN government_info g ON e.employee_no=g.employee_no 
+WHERE e.employee_no = ?";
 $stmt = $con->prepare($query);
 $stmt->bind_param("s", $empid);
 $stmt->execute();
@@ -50,13 +67,13 @@ class PDF extends FPDF
     function CreateTable($employee)
     {
         // Set font for the table
-        $this->SetFont('Arial', 'B', 15);
+        $this->SetFont('Arial', 'B', 20);
         $this->Ln(5);
         $this->SetFillColor(200, 200, 200);
         $this->Cell(0, 10, 'PERSONAL DATA SHEET', 1, 1, 'C', true);
         $this->Ln(0);
 
-        $photoPath = $employee['image'];
+        $photoPath = $employee['pic'];
 
         // Check if the image path is empty
         if (empty($photoPath)) {
@@ -66,72 +83,79 @@ class PDF extends FPDF
 
         $this->Image('../img/profile/' . $photoPath, 10, $this->GetY(), 40, 40);
         $this->Cell(40, 40, '', 1); // Empty cell to create space for the photo
-        $this->SetFont('Times', '', 11);
-        $this->Cell(40, 10, 'SURNAME:', 1);
-        $this->SetFont('Times', 'B', 11);
+        $this->SetFont('Times', '', 12);
+        $this->Cell(43, 10, 'SURNAME:', 1);
+        $this->SetFont('Times', 'B', 12);
         $this->Cell(0, 10, $employee['lastname'], 1);
 
         $this->Ln(); // Move to the next line
 
         $this->Cell(40, 40, '', 0); // Empty cell for space     
         // First Name
-        $this->SetFont('Times', '', 11);
-        $this->Cell(40, 10, 'FIRST NAME:', 1);
-        $this->SetFont('Times', 'B', 11);
+        $this->SetFont('Times', '', 12);
+        $this->Cell(43, 10, 'FIRST NAME:', 1);
+        $this->SetFont('Times', 'B', 12);
         $this->Cell(0, 10, $employee['firstname'], 1); // Use 0 to take the remaining width
         $this->Ln(); // Move to the next line
 
         // Middle Name
         $this->Cell(40, 40, '', 0); // Empty cell for space     
-        $this->SetFont('Times', '', 11);
-        $this->Cell(40, 10, 'MIDDLE NAME:', 1);
-        $this->SetFont('Times', 'B', 11);
+        $this->SetFont('Times', '', 12);
+        $this->Cell(43, 10, 'MIDDLE NAME:', 1);
+        $this->SetFont('Times', 'B', 12);
         $this->Cell(0, 10, $employee['middlename'], 1); // Use 0 to take the remaining width
         $this->Ln(); // Move to the next line
 
         // Name Extension
         $this->Cell(40, 40, '', 0); // Empty cell for space     
-        $this->SetFont('Times', '', 11);
-        $this->Cell(40, 10, 'NAME EXTENSION:', 1);
-        $this->SetFont('Times', 'B', 11);
+        $this->SetFont('Times', '', 12);
+        $this->Cell(43, 10, 'NAME EXTENSION:', 1);
+        $this->SetFont('Times', 'B', 12);
         $this->Cell(0, 10, $employee['name_extension'], 1); // Use 0 to take the remaining width
         $this->Ln(); // Move to the next line
 
         // Additional rows
-        $this->SetFont('Times', '', 11);
-        $this->Cell(40, 10, 'Email:', 1);
-        $this->SetFont('Times', 'B', 11);
-        $this->Cell(50, 10, $employee['email_address'], 1);
-        $this->SetFont('Times', '', 11);
-        $this->Cell(50, 10, 'Contact No.:', 1);
-        $this->SetFont('Times', 'B', 11);
-        $this->Cell(50, 10, $employee['mobile_no'], 1);
+        $this->SetFont('Times', '', 12);
+        $this->Cell(40, 10, 'Contact No.:', 1);
+        $this->SetFont('Times', 'B', 12);
+        $this->Cell(43, 10, $employee['mobile_no'], 1);
+        $this->SetFont('Times', '', 12);
+        $this->Cell(20, 10, 'Email:', 1);
+        $this->SetFont('Times', 'B', 12);
+        $this->Cell(87, 10, $employee['email'], 1);
+
         $this->Ln();
 
-        $this->SetFont('Times', '', 11);
+        $this->SetFont('Times', '', 12);
         $this->Cell(40, 10, 'Address:', 1);
-        $this->SetFont('Times', 'B', 11);
+        $this->SetFont('Times', 'B', 12);
         $this->Cell(150, 10, $employee['address'], 1);
         $this->Ln();
 
-        $this->SetFont('Times', '', 11);
+        $this->SetFont('Times', '', 12);
         $this->Cell(40, 10, 'Place of Birth:', 1);
-        $this->SetFont('Times', 'B', 11);
-        $this->Cell(50, 10, $employee['pob'], 1);
-        $this->SetFont('Times', '', 11);
-        $this->Cell(50, 10, 'Sex:', 1);
-        $this->SetFont('Times', 'B', 11);
-        $this->Cell(50, 10, $employee['sex'], 1);
+        $this->SetFont('Times', 'B', 12);
+        $this->Cell(150, 10, $employee['pob'], 1);
+        $this->SetFont('Times', '', 12);
+        $this->Ln();
+        $this->Cell(40, 10, 'Sex:', 1);
+        $this->SetFont('Times', 'B', 12);
+        $this->Cell(43, 10, $employee['sex'], 1);
+
+        $dob = $employee['dob'];
+        $date = new DateTime($dob);
+        $birthday = $date->format('F j, Y'); 
+        $this->SetFont('Times', '', 12);
+        $this->Cell(20, 10, 'Birthday:', 1);
+        $this->SetFont('Times', 'B', 12);
+        $this->Cell(87, 10, $birthday, 1);
         $this->Ln();
 
-        $this->SetFont('Times', '', 11);
-        $this->Cell(40, 10, 'Birthday:', 1);
-        $this->SetFont('Times', 'B', 11);
-        $this->Cell(50, 10, $employee['dob'], 1);
-        $this->SetFont('Times', '', 11);
-        $this->Cell(50, 10, 'Blood Type:', 1);
-        $this->SetFont('Times', 'B', 11);
-        $this->Cell(50, 10, $employee['blood_type'], 1);
+      
+        $this->SetFont('Times', '', 12);
+        $this->Cell(40, 10, 'Blood Type:', 1);
+        $this->SetFont('Times', 'B', 12);
+        $this->Cell(150, 10, $employee['blood_type'], 1);
         $this->Ln();
 
         // Government Information Header
@@ -140,34 +164,34 @@ class PDF extends FPDF
         $this->Ln(0);
 
         // Government Information Table
-        $this->SetFont('Times', '', 11);
+        $this->SetFont('Times', '', 12);
         $this->Cell(40, 10, 'GSIS NO:', 1);
-        $this->SetFont('Times', 'B', 11);
+        $this->SetFont('Times', 'B', 12);
         $this->Cell(50, 10, !empty($employee['gsis_no']) ? $employee['gsis_no'] : 'N/A', 1);
-        $this->SetFont('Times', '', 11);
+        $this->SetFont('Times', '', 12);
         $this->Cell(50, 10, 'SSS NO:', 1);
-        $this->SetFont('Times', 'B', 11);
+        $this->SetFont('Times', 'B', 12);
         $this->Cell(50, 10, !empty($employee['sss_no']) ? $employee['sss_no'] : 'N/A', 1);
         $this->Ln();
 
-        $this->SetFont('Times', '', 11);
+        $this->SetFont('Times', '', 12);
         $this->Cell(40, 10, 'PHILHEALTH NO:', 1);
-        $this->SetFont('Times', 'B', 11);
+        $this->SetFont('Times', 'B', 12);
         $this->Cell(50, 10, !empty($employee['philhealth_no']) ? $employee['philhealth_no'] : 'N/A', 1);
-        $this->SetFont('Times', '', 11);
+        $this->SetFont('Times', '', 12);
         $this->Cell(50, 10, 'PAG-IBIG NO:', 1);
-        $this->SetFont('Times', 'B', 11);
+        $this->SetFont('Times', 'B', 12);
         $this->Cell(50, 10, !empty($employee['pag_ibig_no']) ? $employee['pag_ibig_no'] : 'N/A', 1);
         $this->Ln();
 
-        $this->SetFont('Times', '', 11);
+        $this->SetFont('Times', '', 12);
         $this->Cell(40, 10, 'TIN NO:', 1);
-        $this->SetFont('Times', 'B', 11);
+        $this->SetFont('Times', 'B', 12);
         $this->Cell(50, 10, !empty($employee['tin_no']) ? $employee['tin_no'] : 'N/A', 1);
-        $this->SetFont('Times', '', 11);
+        $this->SetFont('Times', '', 11.5);
         $this->Cell(50, 10, 'AGENCY EMPLOYEE NO:', 1);
         $this->SetFont('Times', 'B', 11);
-        $this->Cell(50, 10, !empty($employee['employee_no']), 1);
+        $this->Cell(50, 10, $employee['employee_no'], 1);
         $this->Ln();
     }
 
