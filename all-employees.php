@@ -106,9 +106,6 @@ include "dbcon.php";
                                     <a href="csv-employees.php" class="btn btn-success btn-border btn-round btn-sm">
                                         <i class="fa fa-file-excel-o"></i> Export
                                     </a>
-                                    <a href="" class="btn btn-danger btn-border btn-round btn-sm">
-                                        <i class="fa fa-print"></i> Print
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -446,9 +443,9 @@ include "dbcon.php";
                                 <label>TIN Number</label>
                                 <input name="tin" type="text" class="form-control" placeholder="TIN Number" required />
                             </div>
-                          
+
                         </div>
-                <!--        <div class="row">
+                        <!--        <div class="row">
                         <div class="form-group col-md-4">
                                 <label>Date Started</label>
                                 <input name="date_started" type="date" class="form-control" placeholder="Date Started"
