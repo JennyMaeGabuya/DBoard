@@ -115,7 +115,6 @@ include "dbcon.php";
                     <th>Full Name</th>
                     <th>Position</th>
                     <th>Office / Department</th>
-                    <th>Start Date</th>
                     <th>Date Issued</th>
                     <th>Action</th>
                   </tr>
@@ -148,7 +147,6 @@ include "dbcon.php";
                       <td><?php echo htmlspecialchars($row['fullname']); ?></td>
                       <td><?php echo htmlspecialchars($row['position']); ?></td>
                       <td><?php echo htmlspecialchars($row['department']); ?></td>
-                      <td><?php echo date("F d, Y", strtotime($row['start_date'])); ?></td>
                       <td><?php echo date("F d, Y", strtotime($row['date_issued'])); ?></td>
                       <td>
                         <div style="text-align: center;">
