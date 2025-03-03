@@ -23,7 +23,8 @@ if (!$employee) {
     $_SESSION['display'] = 'No Employee found';
     $_SESSION['title'] = 'Something went wrong';
     $_SESSION['success'] = 'error';
-    header('location:employeedetails.php');
+    $previous_page = $_SERVER['HTTP_REFERER'];
+    header("Location: $previous_page");
     exit();
 }
 
