@@ -284,6 +284,9 @@ FROM employee WHERE employee.employee_no = ?";
                                             <i class="fa fa-print"></i> Print
                                         </button>
 
+                                        <a href="emp.php?id=<?php echo $employee_no?>"  class="btn btn-primary btn-border btn-round btn-sm">
+                                            <i class="fa fa-file"></i> pdf
+                                        </a>
                                         <a href="#addcomp" data-toggle="modal" class="btn btn-primary btn-border btn-round btn-sm">
                                             <i class="fa fa-file"></i> Compensation
                                         </a>

@@ -418,7 +418,7 @@ include "dbcon.php";
                         </div>
                         <br>
                         <hr>
-                        <h4 class="text-center">SERVICE RECORDS</h4>
+                        <h4 class="text-center">GOVERNMENT RECORDS</h4>
                         <hr>
                         <div class="row">
                             <div class="form-group col-md-4">
@@ -446,13 +446,14 @@ include "dbcon.php";
                                 <label>TIN Number</label>
                                 <input name="tin" type="text" class="form-control" placeholder="TIN Number" required />
                             </div>
-                            <div class="form-group col-md-4">
+                          
+                        </div>
+                <!--        <div class="row">
+                        <div class="form-group col-md-4">
                                 <label>Date Started</label>
                                 <input name="date_started" type="date" class="form-control" placeholder="Date Started"
                                     required />
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="form-group col-md-4">
                                 <label>Status</label>
                                 <input name="status" type="text" class="form-control" placeholder="Status" required />
@@ -548,7 +549,7 @@ include "dbcon.php";
                                     placeholder="Year End Bonus" required />
                             </div>
 
-                        </div>
+                        </div> -->
                 </div>
                 <div class="modal-footer">
                     <!--  <input type="hidden" id="pos_id" name="id"> -->
