@@ -148,31 +148,31 @@ if (empty($photoPath)) {
         $this->SetFont('Arial', '', 11);
         $this->Cell(40, 10, 'GSIS NO:', 1);
         $this->SetFont('Arial', 'B', 11);
-        $this->Cell(50, 10, $employee['gsis_no'], 1);
+        $this->Cell(50, 10, !empty($employee['gsis_no']) ? $employee['gsis_no'] : 'N/A', 1); 
         $this->SetFont('Arial', '', 11);
         $this->Cell(50, 10, 'SSS NO:', 1);
         $this->SetFont('Arial', 'B', 11);
-        $this->Cell(50, 10, $employee['sss_no'], 1);
+        $this->Cell(50, 10, !empty($employee['sss_no'])? $employee['sss_no']: 'N/A' , 1);
         $this->Ln();
     
         $this->SetFont('Arial', '', 11);
         $this->Cell(40, 10, 'PHILHEALTH NO:', 1);
         $this->SetFont('Arial', 'B', 11);
-        $this->Cell(50, 10, $employee['philhealth_no'], 1);
+        $this->Cell(50, 10, !empty($employee['philhealth_no']) ? $employee['philhealth_no'] : 'N/A' , 1);
         $this->SetFont('Arial', '', 11);
         $this->Cell(50, 10, 'PAG-IBIG NO:', 1);
         $this->SetFont('Arial', 'B', 11);
-        $this->Cell(50, 10, $employee['pag_ibig_no'], 1);
+        $this->Cell(50, 10, !empty($employee['pag_ibig_no']) ? $employee['pag_ibig_no'] : 'N/A' , 1);
         $this->Ln();
     
         $this->SetFont('Arial', '', 11);
         $this->Cell(40, 10, 'TIN NO:', 1);
         $this->SetFont('Arial', 'B', 11);
-        $this->Cell(50, 10, $employee['tin_no'], 1);
+        $this->Cell(50, 10, !empty($employee['tin_no']) ? $employee['tin_no'] : 'N/A', 1);
         $this->SetFont('Arial', '', 11);
         $this->Cell(50, 10, 'AGENCY EMPLOYEE NO:', 1);
         $this->SetFont('Arial', 'B', 11);
-        $this->Cell(50, 10, $employee['employee_no'], 1);
+        $this->Cell(50, 10, !empty($employee['employee_no']), 1);
         $this->Ln();
     }
 }
