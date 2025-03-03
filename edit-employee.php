@@ -54,11 +54,16 @@ if (isset($_GET['employee_no'])) {
         $pag_ibig_no = $row['pag_ibig_no'];
         $philhealth_no = $row['philhealth_no'];
         $tin_no = $row['tin_no'];
+        $from_date = $row['from_date'];
+        $status = $row['status'];
         $sss_no = $row['sss_no'];
+        $designation = $row['designation'];
+        $to_date = $row['to_date'];
         $salary = $row['salary'];
         $station_place = $row['station_place'];
         $branch = $row['branch'];
         $abs_wo_pay = $row['abs_wo_pay'];
+        $date_separated = isset($row['date_separated']) ? $row['date_separated'] : ''; // Initialize if not set
         $cause_of_separation = $row['cause_of_separation'];
         $compensation_salary = $row['compensation_salary'];
         $pera = $row['pera'];
@@ -69,6 +74,7 @@ if (isset($_GET['employee_no'])) {
         $rt_allowance = $row['rt_allowance'];
         $year_end_bonus = $row['year_end_bonus'];
         $issued_date = $row['issued_date'];
+        $allowance = $row['allowance'];
     } else {
         die("No employee data found.");
     }
@@ -79,6 +85,8 @@ if (isset($_GET['employee_no'])) {
 }
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
@@ -164,7 +172,8 @@ if (isset($_GET['employee_no'])) {
                             <hr>
                         <br>
                         <form method="POST" action="update-employee.php" enctype="multipart/form-data">
-                            <input type="hidden" name="employee_no" value="<?php echo htmlspecialchars($employee['employee_no']); ?>" />
+                        <input type="hidden" name="employee_no" value="<?php echo htmlspecialchars($employee_no); ?>" />
+                        <input type="hidden" name="update_type" value="basic_info" />
                             <div class="row">
                                 <div class="form-group col-md-4 mb-2">
                                     <label>Department</label>
@@ -182,12 +191,12 @@ if (isset($_GET['employee_no'])) {
                                 <div class="form-group col-md-4 mb-2">
                                     <label>Employee Number</label>
                                     <input name="emp_no" type="number" class="form-control"
-                                        placeholder="Employee Number" required />
+                                        placeholder="Employee Number" value="<?php echo htmlspecialchars($employee_no); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Last Name</label>
                                     <input name="lastname" type="text" class="form-control" placeholder="Lastname"
-                                        required />
+                                        value="<?php echo htmlspecialchars($lastname); ?>" />
                                 </div>
 
                             </div>
@@ -196,20 +205,20 @@ if (isset($_GET['employee_no'])) {
                                 <div class="form-group col-md-4">
                                     <label>First Name</label>
                                     <input name="firstname" type="text" class="form-control" placeholder="Firstname"
-                                        required />
+                                        value="<?php echo htmlspecialchars($firstname); ?>"  />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Middle Name</label>
                                     <div class="form-group">
                                         <input name="middlename" type="text" class="form-control"
-                                            placeholder="Middlename" required />
+                                            placeholder="Middlename" value="<?php echo htmlspecialchars($middlename); ?>" />
                                     </div>
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label>Name Extension</label>
                                     <input name="name_extension" type="text" class="form-control"
-                                        placeholder="Extension Name" required />
+                                        placeholder="Extension Name" value="<?php echo htmlspecialchars($name_extension); ?>"  />
                                 </div>
 
                             </div>
@@ -218,18 +227,18 @@ if (isset($_GET['employee_no'])) {
                                 <div class="form-group col-md-4">
                                     <label>Email </label>
                                     <input name="email_address" type="email" class="form-control"
-                                        placeholder="Email Address" required />
+                                        placeholder="Email Address" value="<?php echo htmlspecialchars($email_address); ?>"  />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Mobile Number</label>
                                     <input name="mobile_no" id="mobile" type="tel" class="form-control"
-                                        placeholder="Mobile no." required pattern="\d{11}" required />
+                                        placeholder="Mobile no." value="<?php echo htmlspecialchars($mobile_no); ?>" required pattern="\d{11    }" />
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label>Birthdate</label>
                                     <input name="dob" id="finish" type="date" class="form-control"
-                                        placeholder="Date of Birth" required />
+                                        placeholder="Date of Birth" value="<?php echo htmlspecialchars($dob); ?>"  />
                                 </div>
 
                             </div>
@@ -237,42 +246,43 @@ if (isset($_GET['employee_no'])) {
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label>Civil Status</label>
-                                    <select name="civil_status" class="form-control" required>
+                                    <select name="civil_status" class="form-control" >
                                         <option value="none" selected="" disabled="">
                                             Civil Status
                                         </option>
-                                        <option value="Single">Single</option>
-                                        <option value="Married">Married</option>
-                                        <option value="Widowed">Widowed</option>
-                                        <option value="Separated">Separated</option>
+                                        <option value="Single" <?php echo ($civil_status == 'Single') ? 'selected' : ''; ?>>Single</option>
+                                        <option value="Married" <?php echo ($civil_status == 'Married') ? 'selected' : ''; ?>>Married</option>
+                                        <option value="Widowed" <?php echo ($civil_status == 'Widowed') ? 'selected' : ''; ?>>Widowed</option>
+                                        <option value="Separated" <?php echo ($civil_status == 'Separated') ? 'selected' : ''; ?>>Separated</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Sex</label>
-                                    <select name="sex" class="form-control" required>
+                                    <select name="sex" class="form-control" >
                                         <option value="none" selected="" disabled="">
                                             Sex
                                         </option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
+                                        <option value="Male" <?php echo ($sex == 'Male') ? 'selected' : ''; ?>>Male
+                                        </option>
+                                        <option value="Female" <?php echo ($sex == 'Female') ? 'selected' : ''; ?>>
+                                            Female</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Blood Type</label>
-                                    <select name="blood_type" class="form-control" required>
+                                    <select name="blood_type" class="form-control" >
                                         <option value="none" selected="" disabled="">
                                             Blood Type
                                         </option>
-                                        <option value="A+">A+</option>
-                                        <option value="A-">A-</option>
-                                        <option value="B+">B+</option>
-                                        <option value="B-">B-</option>
-                                        <option value="AB+">AB+</option>
-                                        <option value="AB-">AB-</option>
-                                        <option value="O+">O+</option>
-                                        <option value="O-">O-</option>
-                                        <option value="Unknown">Unknown</option>
-
+                                        <option value="A+" <?php echo ($blood_type == 'A+') ? 'selected' : ''; ?>>A+</option>
+                                        <option value="A-" <?php echo ($blood_type == 'A-') ? 'selected' : ''; ?>>A-</option>
+                                        <option value="B+" <?php echo ($blood_type == 'B+') ? 'selected' : ''; ?>>B+</option>
+                                        <option value="B-" <?php echo ($blood_type == 'B-') ? 'selected' : ''; ?>>B-</option>
+                                        <option value="AB+" <?php echo ($blood_type == 'AB+') ? 'selected' : ''; ?>>AB+</option>
+                                        <option value="AB-" <?php echo ($blood_type == 'AB-') ? 'selected' : ''; ?>>AB-</option>
+                                        <option value="O+" <?php echo ($blood_type == 'O+') ? 'selected' : ''; ?>>O+</option>
+                                        <option value="O-" <?php echo ($blood_type == 'O-') ? 'selected' : ''; ?>>O-</option>
+                                        <option value="Unknown" <?php echo ($blood_type == 'Unknown') ? 'selected' : ''; ?>>Unknown</option>
                                     </select>
                                 </div>
 
@@ -282,16 +292,16 @@ if (isset($_GET['employee_no'])) {
                                 <div class="form-group col-md-4">
                                     <label>Address</label>
                                     <input name="address" type="text" class="form-control" placeholder="Address"
-                                        required />
+                                        value="<?php echo htmlspecialchars($address); ?>"  />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Place of Birth</label>
                                     <input name="pob" type="text" class="form-control" placeholder="Place of Birth"
-                                        required />
+                                        value="<?php echo htmlspecialchars($pob); ?>"  />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Upload Profile Picture</label>
-                                    <input class="form-control" type="file" id="formFile" name="image" required>
+                                    <input class="form-control" type="file" id="formFile" name="image" >
                                 </div>
 
                             </div>
@@ -303,83 +313,82 @@ if (isset($_GET['employee_no'])) {
                                 <div class="form-group col-md-4">
                                     <label>GSIS Number</label>
                                     <input name="gsis" type="text" class="form-control" placeholder="GSIS Number"
-                                        required />
+                                        value="<?php echo htmlspecialchars($gsis_no); ?>"  />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Pag-Ibig Number</label>
                                     <input name="pag_ibig" type="text" class="form-control" placeholder="PAGIBIG Number"
-                                        required />
+                                        value="<?php echo htmlspecialchars($pag_ibig_no); ?>"  />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>PhilHealth Number</label>
                                     <input name="philhealth" type="text" class="form-control"
-                                        placeholder="PhilHealth Number" required />
+                                        placeholder="PhilHealth Number" value="<?php echo htmlspecialchars($philhealth_no); ?>"  />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label>SSS Number</label>
                                     <input name="sss" type="text" class="form-control" placeholder="SSS Number"
-                                        required />
+                                        value="<?php echo htmlspecialchars($sss_no); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>TIN Number</label>
                                     <input name="tin" type="text" class="form-control" placeholder="TIN Number"
-                                        required />
+                                        value="<?php echo htmlspecialchars($tin_no); ?>"  />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Date Started</label>
                                     <input name="date_started" type="date" class="form-control"
-                                        placeholder="Date Started" required />
+                                        placeholder="Date Started"  />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label>Status</label>
                                     <input name="status" type="text" class="form-control" placeholder="Status"
-                                        required />
+                                        value="<?php echo htmlspecialchars($status); ?>"  />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Branch</label>
                                     <input name="branch" type="text" class="form-control" placeholder="Branch"
-                                        required />
+                                        value="<?php echo htmlspecialchars($branch); ?>"/>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Absent without Pay</label>
                                     <input name="abs_wo_pay" type="text" class="form-control"
-                                        placeholder="Absent without Pay" required />
+                                        placeholder="Absent without Pay" value="<?php echo htmlspecialchars($abs_wo_pay); ?>" />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label>Cause of Separation</label>
                                     <input name="cause_of_separation" type="text" class="form-control"
-                                        placeholder="Cause of Separation" required />
+                                        placeholder="Cause of Separation" value="<?php echo htmlspecialchars($cause_of_separation); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Salary</label>
                                     <input name="salary" type="number" class="form-control" placeholder="Salary"
-                                        required />
+                                        value="<?php echo htmlspecialchars($salary); ?>"  />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>To Date</label>
                                     <input name="to_date" type="date" class="form-control" placeholder="To Date"
-                                        required />
+                                         />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label>Station/Place</label>
                                     <input name="station_place" type="text" class="form-control"
-                                        placeholder="Station/Place" required />
+                                        placeholder="Station/Place" value="<?php echo htmlspecialchars($station_place); ?>"  />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Date Separated</label>
-                                    <input name="date_separated" type="number" class="form-control"
-                                        placeholder="Date Separated" required />
+                                    <input name="date_separated" type="date" class="form-control"
+                                    placeholder="Date Separated" value="<?php echo htmlspecialchars($date_separated); ?>" />
                                 </div>
                             </div>
-
 
                             <br>
                             <hr>
@@ -388,51 +397,52 @@ if (isset($_GET['employee_no'])) {
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label>Salary</label>
-                                    <input name="salary" type="number" class="form-control" placeholder="Salary"
-                                        required />
+                                    <input name="compensation_salary" type="number" class="form-control" placeholder="Salary"
+                                        value="<?php echo htmlspecialchars($compensation_salary); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Pera</label>
-                                    <input name="pera" type="number" class="form-control" placeholder="Pera" required />
+                                    <input name="pera" type="number" class="form-control" placeholder="Pera" 
+                                        value="<?php echo htmlspecialchars($pera); ?>"  />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Clothing Allowance</label>
                                     <input name="clothing" type="number" class="form-control"
-                                        placeholder="Clothing Allowance" required />
+                                        placeholder="Clothing Allowance" value="<?php echo htmlspecialchars($clothing); ?>"  />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label>RT Allowance</label>
                                     <input name="rt_allowance" type="number" class="form-control"
-                                        placeholder="Representative and Transportation Allowance" required />
+                                        placeholder="Representative and Transportation Allowance" value="<?php echo htmlspecialchars($rt_allowance); ?>"  />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Issued Date</label>
                                     <input name="issued_date" type="date" class="form-control" placeholder="Issued Date"
-                                        required />
+                                        value="<?php echo htmlspecialchars($issued_date); ?>"  />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Cash Gift</label>
                                     <input name="cash_gift" type="number" class="form-control" placeholder="Cash Gift"
-                                        required />
+                                        value="<?php echo htmlspecialchars($cash_gift); ?>"  />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-4">
-                                    <label>Mid_Year Bonus</label>
-                                    <input name="mid_year" type="number" class="form-control" placeholder="Mid_Year"
-                                        required />
+                                    <label>Mid-Year Bonus</label>
+                                    <input name="mid_year" type="number" class="form-control" placeholder="Mid-Year Bonus"
+                                        value="<?php echo htmlspecialchars($mid_year); ?>"  />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Productivity Enhancement Incentive</label>
                                     <input name="productivity_incentive" type="number" class="form-control"
-                                        placeholder="Productivity Enhancement Incentive" required />
+                                        placeholder="Productivity Enhancement Incentive" value="<?php echo htmlspecialchars($productivity_incentive); ?>"  />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Year End Bonus</label>
                                     <input name="year_end_bonus" type="number" class="form-control"
-                                        placeholder="Year End Bonus" required />
+                                        placeholder="Year End Bonus" value="<?php echo htmlspecialchars($year_end_bonus); ?>"/>
                                 </div>
                             </div>
 
