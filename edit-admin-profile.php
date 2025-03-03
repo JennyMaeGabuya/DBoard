@@ -119,15 +119,48 @@ if ($result->num_rows > 0) {
     <!-- Header -->
     <?php include 'includes/header.php'; ?>
 
-    <!-- Single pro tab review Start-->
-    <div class="single-pro-review-area mt-t-30 mg-b-15">
+     <!-- Breadcrumb -->
+     <div class="breadcome-area">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                    <div class="profile-info-inner">
-                        <div class="profile-img">
-                            <img src="<?php echo htmlspecialchars($image); ?>" alt="User  Image" />
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="breadcome-list single-page-breadcome">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="breadcome-heading">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <ul class="breadcome-menu" style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
+                                                <li>
+                                                    <a href="dashboard.php">
+                                                        <i class="fa fa-home"></i> Home
+                                                    </a>
+                                                    <span class="bread-slash">/</span>
+                                                    <a href="all-employees.php"> My Profile </a>
+                                                    <span class="bread-slash">/</span>
+                                                    <span class="bread-blod">Edit Admin Profile</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Single pro tab review Start-->
+    <div class="single-pro-review-area mt-t-30 mg-b-15">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <div class="profile-info-inner">
+                            <div class="profile-img">
+                                <img src="<?php echo htmlspecialchars($user_image); ?>" alt="User  Image" />
+                            </div>
 
                         <div class="profile-details-hr">
                             <div class="row">
