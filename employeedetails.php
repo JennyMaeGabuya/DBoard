@@ -284,7 +284,7 @@ FROM employee WHERE employee.employee_no = ?";
                                             <i class="fa fa-print"></i> Print
                                         </button>
 
-                                        <a href="emp.php?id=<?php echo $employee_no?>"  class="btn btn-primary btn-border btn-round btn-sm">
+                                        <a href="emp.php?id=<?php echo $employee_no ?>" class="btn btn-primary btn-border btn-round btn-sm">
                                             <i class="fa fa-file"></i> pdf
                                         </a>
                                         <a href="#addcomp" data-toggle="modal" class="btn btn-primary btn-border btn-round btn-sm">
@@ -413,10 +413,8 @@ FROM employee WHERE employee.employee_no = ?";
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-primary" style="border-radius: 3px;">
-                    <h5 class="modal-title" id="exampleModalLabel">COMPENSATION RECORDS</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="exampleModalLabel">COMPENSATION RECORDS</h4>
                 </div>
 
                 <div class="modal-body">
@@ -553,10 +551,8 @@ FROM employee WHERE employee.employee_no = ?";
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-primary" style="border-radius: 3px;">
-                    <h5 class="modal-title" id="exampleModalLabel">SERVICE RECORDS</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="exampleModalLabel">SERVICE RECORDS</h4>
                 </div>
 
                 <div class="modal-body">
