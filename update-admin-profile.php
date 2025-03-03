@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Bind parameters
-        $stmt->bind_param("sssssssssssss", 
+        $stmt->bind_param("ssssssssssssss", 
             $firstname, $middlename, $lastname, $name_extension,
             $email_address, $mobile_no, $dob, $address,
             $pob, $civil_status, $sex, $blood_type,
