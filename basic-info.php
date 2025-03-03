@@ -11,8 +11,8 @@ if (!isset($_SESSION['user_id'])) {
 include "dbcon.php";
 
 if (isset($_POST['basic-infobtn'])) {
-    $emp_no= $_POST['emp_no'];
-   $dept= $_POST['dept'];
+    $emp_no = $_POST['emp_no'];
+    $dept = $_POST['dept'];
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
     $middlename = $_POST['middlename'];
@@ -25,18 +25,18 @@ if (isset($_POST['basic-infobtn'])) {
     $civil_status = $_POST['civil_status'];
     $sex = $_POST['sex'];
     $blood_type = $_POST['blood_type'];
-    $employee_no =$dept . $emp_no;
+    $employee_no = $dept . $emp_no;
     $created_at = date('Y-m-d');
-            $updated_at = date('Y-m-d');
+    $updated_at = date('Y-m-d');
     //government records
-    $gsis= $_POST['gsis'];
-    $pag_ibig= $_POST['pag_ibig'];
-    $sss= $_POST['sss'];
-    $philhealth= $_POST['philhealth'];
-    $tin= $_POST['tin'];
+    $gsis = $_POST['gsis'];
+    $pag_ibig = $_POST['pag_ibig'];
+    $sss = $_POST['sss'];
+    $philhealth = $_POST['philhealth'];
+    $tin = $_POST['tin'];
 
     //service records
-   /* $date_started= $_POST['date_started'];
+    /* $date_started= $_POST['date_started'];
     $salary= $_POST['salary'];
     $abs_wo_pay= $_POST['abs_wo_pay'];
     $date_ended= $_POST['date_ended'];
@@ -80,7 +80,6 @@ if (isset($_POST['basic-infobtn'])) {
 
         // Move the uploaded file to the designated directory
         if (move_uploaded_file($image['tmp_name'], $imagePath)) {
-        
 
             // Check if the employee name already exists
             $checkNameQuery = "SELECT * FROM employee WHERE firstname = ? AND middlename = ? AND lastname = ?";
@@ -101,23 +100,23 @@ if (isset($_POST['basic-infobtn'])) {
                 $stmt = $con->prepare($insertQuery);
                 $stmt->bind_param("sssssssssssissss", $employee_no, $firstname, $middlename, $lastname, $name_extension, $dob, $pob, $sex, $civil_status, $address, $blood_type, $mobile_no, $email_address, $image['name'], $created_at, $updated_at);
 
-                if ($stmt->execute()) { 
+                if ($stmt->execute()) {
                     // Now insert the government records
                     $govInsertQuery = "INSERT INTO `government_info` (`employee_no`, `gsis_no`, `pag_ibig_no`, `philhealth_no`, `sss_no`, `tin_no`, `created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                     $govStmt = $con->prepare($govInsertQuery);
                     $govStmt->bind_param("ssssssss", $employee_no, $gsis, $pag_ibig, $philhealth, $sss, $tin, $created_at, $updated_at);
-                
+
                     // Execute the government records insertion
                     if ($govStmt->execute()) {
                         $_SESSION['display'] = 'Successfully added a new employee and government records!';
-                        $_SESSION['title'] = 'Good Job';
+                        $_SESSION['title'] = 'Success';
                         $_SESSION['success'] = 'success';
                     } else {
                         $_SESSION['display'] = 'Failed to insert government records!';
                         $_SESSION['title'] = 'Error';
                         $_SESSION['success'] = 'error';
                     }
-                
+
                     header("Location: add-employee.php");
                     exit();
                 } else {
