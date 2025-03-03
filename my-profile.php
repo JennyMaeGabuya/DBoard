@@ -49,7 +49,7 @@ if ($result->num_rows > 0) {
     $email_address = $row['email_address'];
     $mobile_no = $row['mobile_no'];
     $dob = $row['dob'];
-    $address = $row['address'];
+    $address = $row['address']; 
     $pob = $row['pob'];
     $civil_status = $row['civil_status'];
     $sex = $row['sex'];
