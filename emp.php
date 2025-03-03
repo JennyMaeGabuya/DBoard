@@ -1,4 +1,5 @@
 <?php
+session_start();
 require('fpdf/fpdf.php');
 include('dbcon.php');
 
@@ -6,7 +7,8 @@ include('dbcon.php');
 $empid = isset($_GET['id']) ? $_GET['id'] : null;
 
 if (!$empid) {
-    die("Error: No certificate selected for generation.");
+    die("Error: No Personal Data sheet selected for generation.");
+
 }
 
 // Fetch the employee details from the `employee` table
@@ -18,7 +20,11 @@ $result = $stmt->get_result();
 $employee = $result->fetch_assoc();
 
 if (!$employee) {
-    die("Error: No employee found.");
+    $_SESSION['display'] = 'No Employee found';
+    $_SESSION['title'] = 'Something went wrong';
+    $_SESSION['success'] = 'error';
+    header('location:employeedetails.php');
+    exit();
 }
 
 // Create PDF instance
