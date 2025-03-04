@@ -579,20 +579,20 @@ FROM employee WHERE employee.employee_no = ?";
                                     placeholder="Employee Number" value="<?php echo $employee_no; ?>" readonly />
                             </div>
                             <div class="form-group col-md-4">
-                                <label>Date Started</label>
+                                <label>From</label>
                                 <input
                                     name="date_started"
                                     type="date"
                                     class="form-control"
-                                    placeholder="Salary" value="<?php echo $date_started; ?>" />
+                                    placeholder="Salary"  />
                             </div>
                             <div class="form-group col-md-4">
-                                <label>Date Ended</label>
+                                <label>To</label>
                                 <input
                                     name="date_ended"
                                     type="date"
                                     class="form-control"
-                                    placeholder="Pera" value="<?php echo $date_ended; ?>" required />
+                                    placeholder="Pera"  required />
                             </div>
 
                         </div>
@@ -604,7 +604,7 @@ FROM employee WHERE employee.employee_no = ?";
                                     <input
                                         name="designation"
                                         type="text"
-                                        class="form-control" value="<?php echo $designation; ?>"
+                                        class="form-control" 
                                         required />
                                 </div>
                             </div>
@@ -615,7 +615,7 @@ FROM employee WHERE employee.employee_no = ?";
                                     name="status"
                                     type="text"
                                     class="form-control"
-                                    value="<?php echo $status; ?>" required />
+                                     required />
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Salary</label>
@@ -623,7 +623,7 @@ FROM employee WHERE employee.employee_no = ?";
                                     name="servicesalary"
                                     type="number"
                                     class="form-control"
-                                    value="<?php echo $servicesalary; ?>" required />
+                                     required />
                             </div>
                         </div>
 
@@ -633,7 +633,7 @@ FROM employee WHERE employee.employee_no = ?";
                                 <input
                                     name="station"
                                     type="text"
-                                    class="form-control" value="<?php echo $station; ?>"
+                                    class="form-control" 
                                     required />
                             </div>
                             <div class="form-group col-md-4">
@@ -641,7 +641,7 @@ FROM employee WHERE employee.employee_no = ?";
                                 <input
                                     name="branch"
                                     type="text"
-                                    class="form-control" value="<?php echo $branch; ?>"
+                                    class="form-control" 
                                     required />
                             </div>
                             <div class="form-group col-md-4">
@@ -649,7 +649,7 @@ FROM employee WHERE employee.employee_no = ?";
                                 <input
                                     name="abs_wo_pay"
                                     type="text"
-                                    class="form-control" value="<?php echo $abs_wo_pay; ?>"
+                                    class="form-control" 
                                     required />
                             </div>
                         </div>
@@ -660,8 +660,8 @@ FROM employee WHERE employee.employee_no = ?";
                                 <input
                                     name="separated"
                                     type="date"
-                                    class="form-control" value="<?php echo $separated; ?>"
-                                    required />
+                                    class="form-control" 
+                                     />
                             </div>
 
                             <div class="form-group col-md-8">
@@ -669,8 +669,8 @@ FROM employee WHERE employee.employee_no = ?";
                                 <input
                                     name="separation"
                                     type="text"
-                                    class="form-control" value="<?php echo $separation; ?>"
-                                    required />
+                                    class="form-control" 
+                                     />
                             </div>
 
                         </div>
@@ -680,7 +680,7 @@ FROM employee WHERE employee.employee_no = ?";
                     <!--  <input type="hidden" id="pos_id" name="id"> -->
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" name="servicesavebtn">Save</button>
-                    <button type="submit" class="btn btn-warning" name="compviewbtn">View</button>
+                    <a href="service_records.php?empno=<?php echo $employee_no ?>" type="submit" class="btn btn-warning" name="compviewbtn">View</a>
                 </div>
 
                 </form>

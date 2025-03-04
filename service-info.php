@@ -30,42 +30,7 @@ if (isset($_POST['servicesavebtn'])) {
     $updated_at = date('Y-m-d');
 
 
-    // Check if the compensation record already exists
-    $checkQuery = "SELECT * FROM service_records WHERE employee_no = ?";
-    $checkStmt = $con->prepare($checkQuery);
-    $checkStmt->bind_param("s", $emp_no);
-    $checkStmt->execute();
-    $checkResult = $checkStmt->get_result();
 
-    if ($checkResult->num_rows > 0) {
-        // Record exists, update it
-        $updateService = "UPDATE service_records SET 
-            from_date = ?, 
-            to_date = ?, 
-            designation = ?, 
-            `status` = ?, 
-            salary = ?, 
-            station_place = ?, 
-            branch = ?, 
-            abs_wo_pay = ?, 
-            date_separated = ?, 
-            cause_of_separation = ?, 
-            updated_at = ? 
-            WHERE employee_no = ?";
-
-        $stmt = $con->prepare($updateService);
-        $stmt->bind_param("ssssisssssss", $date_started, $date_ended, $designation, $status, $salary, $station, $branch, $abs_wo_pay, $separated, $separation, $updated_at, $emp_no);
-
-        if ($stmt->execute()) {
-            $_SESSION['display'] = 'Service Records updated!';
-            $_SESSION['title'] = 'Good Job';
-            $_SESSION['success'] = 'success';
-        } else {
-            $_SESSION['display'] = 'Failed to update records!';
-            $_SESSION['title'] = 'Error';
-            $_SESSION['success'] = 'error';
-        }
-    } else {
         // Record does not exist, insert a new one
         $insertComp = "INSERT INTO service_records (employee_no, from_date, to_date, designation, `status`, salary, station_place, branch, abs_wo_pay , date_separated, cause_of_separation, created_at, updated_at ) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -81,7 +46,7 @@ if (isset($_POST['servicesavebtn'])) {
             $_SESSION['title'] = 'Error';
             $_SESSION['success'] = 'error';
         }
-    }
+    
 
     // Redirect to the appropriate page
     $previous_page = $_SERVER['HTTP_REFERER'];
