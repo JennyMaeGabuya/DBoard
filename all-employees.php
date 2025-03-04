@@ -144,7 +144,11 @@ include "dbcon.php";
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $query = "SELECT * FROM employee";
+                                    $query = "SELECT e.*
+                                            FROM employee e
+                                            LEFT JOIN hr_staffs h ON e.employee_no = h.employee_no AND LOWER(h.role) LIKE '%mayor%'
+                                            WHERE h.employee_no IS NULL;
+                                            ";
                                     $view_data = mysqli_query($con, $query);
                                     $count = 1;
 
