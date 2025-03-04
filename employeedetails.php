@@ -233,8 +233,10 @@ FROM employee WHERE employee.employee_no = ?";
                 padding: 10px;
             }
         }
-        th, td{
-height: 30px;
+
+        th,
+        td {
+            height: 30px;
         }
     </style>
 </head>
@@ -284,10 +286,9 @@ height: 30px;
                             <div class="card-header">
                                 <div class="card-head-row">
                                     <div class="card-tools">
-                                     
 
                                         <a href="reports/emp.php?id=<?php echo $employee_no ?>" class="btn btn-danger btn-border btn-round btn-sm" target="_blank">
-                                        <i class="fa-solid fa-file-pdf"></i>PDF
+                                            <i class="fa-solid fa-file-pdf"></i>PDF
                                         </a>
                                         <a href="#addcomp" data-toggle="modal" class="btn btn-primary btn-border btn-round btn-sm">
                                             <i class="fa fa-file"></i> Compensation
@@ -295,11 +296,12 @@ height: 30px;
                                         <a href="#addservice" data-toggle="modal" class="btn btn-success btn-border btn-round btn-sm">
                                             <i class="fa fa-file"></i> Service Records
                                         </a>
+
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="card-body m-5" >
+                            <div class="card-body m-5">
                                 <div class="header-container">
                                     <div class="text-center">
                                         <img src="img/mk-logo.png" class="logo" alt="Logo Left" style="height: 100px;width: 100px;">
@@ -331,27 +333,27 @@ height: 30px;
                                                 <th rowspan="3">
                                                     <img src="<?php echo htmlspecialchars($imageUrl); ?>" alt="" class="avatar-img rounded-circle" style="height: 150px; width: 150px;margin-left:10px;">
                                                 </th>
-                                                <th colspan="1" >SURNAME</th>
-                                                <td colspan="2" ><?php echo $lastname; ?></td>
+                                                <th colspan="1">SURNAME</th>
+                                                <td colspan="2"><?php echo $lastname; ?></td>
                                             </tr>
-                                            <tr >
+                                            <tr>
                                                 <th>FIRST NAME</th>
                                                 <td colspan="2"><?php echo $firstname; ?></td>
-                                           
+
 
                                             </tr>
-                                            <tr >
+                                            <tr>
                                                 <th colspan="1">MIDDLE NAME <br> NAME EXTENSION</th>
                                                 <td colspan="2"><?php echo $middlename; ?> <br> <?php echo $name_extension; ?></td>
                                             </tr>
-                                          
-                                           
+
+
                                             <tr>
-                                            <th>Contact No.:</th>
-                                            <td><?php echo $mobile_no; ?></td>
+                                                <th>Contact No.:</th>
+                                                <td><?php echo $mobile_no; ?></td>
                                                 <th>Email</th>
                                                 <td><?php echo $email_address; ?></td>
-                                         
+
                                             </tr>
                                             <tr>
 
@@ -361,18 +363,18 @@ height: 30px;
                                             <tr>
                                                 <th>Place of Birth:</th>
                                                 <td colspan="3"><?php echo $pob; ?></td>
-                                               
+
                                             </tr>
                                             <tr>
-                                            <th>Sex:</th>
-                                            <td><?php echo $sex; ?></td>
+                                                <th>Sex:</th>
+                                                <td><?php echo $sex; ?></td>
                                                 <th>Birthday:</th>
                                                 <td><?php echo $bday; ?></td>
-                                          
+
                                             </tr>
                                             <tr>
-                                            <th>Blood Type</th>
-                                            <td colspan="3"><?php echo $blood_type; ?></td>
+                                                <th>Blood Type</th>
+                                                <td colspan="3"><?php echo $blood_type; ?></td>
                                             </tr>
                                             <tr>
                                                 <th colspan="4" style="text-align: center; background-color: #ccc;line-height:0.5px;">
@@ -698,5 +700,3 @@ height: 30px;
         <?php unset($_SESSION['display']);
         unset($_SESSION['success']); ?>
     <?php endif; ?>
-
-   

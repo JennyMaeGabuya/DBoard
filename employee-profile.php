@@ -61,19 +61,19 @@ include "dbcon.php";
                     <div class="col-lg-12">
                       <ul class="breadcome-menu" style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
                         <li>
-                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-<a href="dashboard.php">
-    <i class="fas fa-home"></i> <strong>Home</strong>
-</a>
-<span class="bread-slash"> / </span>
-<a href="all-employees.php">
-    <i class="fas fa-users"></i> <strong>Employees</strong>
-</a>
-<span class="bread-slash"> / </span>
-<span class="bread-blod">
-<i class="fas fa-id-badge"></i> <strong>Employee Profile</strong>
-</span>
+                          <a href="dashboard.php">
+                            <i class="fas fa-home"></i> <strong>Home</strong>
+                          </a>
+                          <span class="bread-slash"> / </span>
+                          <a href="all-employees.php">
+                            <i class="fas fa-users"></i> <strong>Employees</strong>
+                          </a>
+                          <span class="bread-slash"> / </span>
+                          <span class="bread-blod">
+                            <i class="fas fa-id-badge"></i> <strong>Employee Profile</strong>
+                          </span>
 
                         </li>
                       </ul>

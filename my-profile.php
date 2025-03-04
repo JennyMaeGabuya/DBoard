@@ -49,7 +49,7 @@ if ($result->num_rows > 0) {
     $email_address = $row['email_address'];
     $mobile_no = $row['mobile_no'];
     $dob = $row['dob'];
-    $address = $row['address']; 
+    $address = $row['address'];
     $pob = $row['pob'];
     $civil_status = $row['civil_status'];
     $sex = $row['sex'];
@@ -140,15 +140,15 @@ if ($result->num_rows > 0) {
                                             <ul class="breadcome-menu"
                                                 style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
                                                 <li>
-                                                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                                                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-<a href="dashboard.php">
-    <i class="fas fa-home"></i> <strong>Home</strong>
-</a>
-<span class="bread-slash"> / </span>
-<a href="my-profile.php">
-    <i class="fas fa-user-circle"></i> <strong>My Profile</strong>
-</a>
+                                                    <a href="dashboard.php">
+                                                        <i class="fas fa-home"></i> <strong>Home</strong>
+                                                    </a>
+                                                    <span class="bread-slash"> / </span>
+                                                    <a href="my-profile.php">
+                                                        <i class="fas fa-user-circle"></i> <strong>My Profile</strong>
+                                                    </a>
 
                                                 </li>
                                             </ul>
@@ -359,14 +359,14 @@ if ($result->num_rows > 0) {
                                 </div>
 
                                 <!-- Service Records Form -->
-                                    <div id="reviews" class="tab-pane fade">
-                                        <div class="product-tab-list">
-                                            <div class="row">
-                                                <form id="service-records-form">
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="review-content-section">
-                                                            <div class="row">
-                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div id="reviews" class="tab-pane fade">
+                                    <div class="product-tab-list">
+                                        <div class="row">
+                                            <form id="service-records-form">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="review-content-section">
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                                 <div class="form-group">
                                                                     <label for="gsis_no">GSIS Number</label>
                                                                     <input type="text" class="form-control" id="gsis_no"
@@ -585,5 +585,3 @@ if ($result->num_rows > 0) {
 
     <!-- Footer Start-->
     <?php include 'includes/footer.php'; ?>
-</body>
-</html>

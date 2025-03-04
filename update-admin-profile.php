@@ -64,11 +64,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Bind parameters
-        $stmt->bind_param("ssssssssssssss", 
-            $firstname, $middlename, $lastname, $name_extension,
-            $email_address, $mobile_no, $dob, $address,
-            $pob, $civil_status, $sex, $blood_type,
-            $image_name, $employee_no
+        $stmt->bind_param(
+            "ssssssssssssss",
+            $firstname,
+            $middlename,
+            $lastname,
+            $name_extension,
+            $email_address,
+            $mobile_no,
+            $dob,
+            $address,
+            $pob,
+            $civil_status,
+            $sex,
+            $blood_type,
+            $image_name,
+            $employee_no
         );
 
         // Execute the statement
@@ -103,9 +114,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Bind parameters
-        $stmt->bind_param("ssssss", 
-            $gsis_no, $pag_ibig_no, $philhealth_no, 
-            $tin_no, $sss_no, $employee_no
+        $stmt->bind_param(
+            "ssssss",
+            $gsis_no,
+            $pag_ibig_no,
+            $philhealth_no,
+            $tin_no,
+            $sss_no,
+            $employee_no
         );
 
         // Execute the statement
@@ -144,10 +160,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Bind parameters
-        $stmt->bind_param("sssssssss", 
-            $from_date, $designation, $to_date, 
-            $status, $salary, $station_place, 
-            $branch, $abs_wo_pay, $employee_no
+        $stmt->bind_param(
+            "sssssssss",
+            $from_date,
+            $designation,
+            $to_date,
+            $status,
+            $salary,
+            $station_place,
+            $branch,
+            $abs_wo_pay,
+            $employee_no
         );
 
         // Execute the statement
@@ -188,11 +211,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Bind parameters
-        $stmt->bind_param("ssssssssss", 
-            $compensation_salary, $pera, $clothing, 
-            $rt_allowance, $issued_date, 
-            $cash_gift, $mid_year, 
-            $productivity_incentive, $year_end_bonus, 
+        $stmt->bind_param(
+            "ssssssssss",
+            $compensation_salary,
+            $pera,
+            $clothing,
+            $rt_allowance,
+            $issued_date,
+            $cash_gift,
+            $mid_year,
+            $productivity_incentive,
+            $year_end_bonus,
             $employee_no
         );
 
@@ -206,4 +235,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
-?>
