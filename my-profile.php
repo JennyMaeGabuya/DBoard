@@ -244,45 +244,45 @@ if ($result->num_rows > 0) {
                                                                         <label for="firstname">Firstname</label>
                                                                         <input id="firstname" name="firstname" type="text"
                                                                             class="form-control" placeholder="Firstname"
-                                                                            value="<?php echo $firstname; ?>" readonly />
+                                                                            value="<?php echo $firstname; ?>"  />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="middlename">Middlename</label>
                                                                         <input id="middlename" name="middlename" type="text"
                                                                             class="form-control" placeholder="Middlename"
-                                                                            value="<?php echo $middlename; ?>" readonly />
+                                                                            value="<?php echo $middlename; ?>"  />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="lastname">Lastname</label>
                                                                         <input id="lastname" name="lastname" type="text"
                                                                             class="form-control" placeholder="Lastname"
-                                                                            value="<?php echo $lastname; ?>" readonly />
+                                                                            value="<?php echo $lastname; ?>"  />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="name_extension">Extension Name</label>
                                                                         <input id="name_extension" name="name_extension"
                                                                             type="text" class="form-control"
                                                                             placeholder="Extension Name"
-                                                                            value="<?php echo $name_extension; ?>" readonly />
+                                                                            value="<?php echo $name_extension; ?>"  />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="email_address">Email Address</label>
                                                                         <input id="email_address" name="email_address"
                                                                             type="email" class="form-control"
                                                                             placeholder="Email Address"
-                                                                            value="<?php echo $email_address; ?>" readonly />
+                                                                            value="<?php echo $email_address; ?>" />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="mobileno">Mobile no.</label>
                                                                         <input id="mobileno" name="mobileno" type="tel"
                                                                             class="form-control" placeholder="Mobile no."
-                                                                            value="<?php echo $mobile_no; ?>" readonly />
+                                                                            value="<?php echo $mobile_no; ?>"  />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="dob">Date of Birth</label>
                                                                         <input id="dob" name="dob" type="date"
                                                                             class="form-control" value="<?php echo $dob; ?>"
-                                                                            readonly />
+                                                                            />
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -290,19 +290,19 @@ if ($result->num_rows > 0) {
                                                                         <label for="address">Address</label>
                                                                         <input id="address" name="address" type="text"
                                                                             class="form-control" placeholder="Address"
-                                                                            value="<?php echo $address; ?>" readonly />
+                                                                            value="<?php echo $address; ?>"  />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="pob">Place of Birth</label>
                                                                         <input id="pob" name="pob" type="text"
                                                                             class="form-control" placeholder="Place of Birth"
-                                                                            value="<?php echo $pob; ?>" readonly />
+                                                                            value="<?php echo $pob; ?>" />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="civil_status">Civil Status</label>
                                                                         <select id="civil_status" name="civil_status"
-                                                                            class="form-control" disabled>
-                                                                            <option value="none" disabled>Civil Status
+                                                                            class="form-control" >
+                                                                            <option value="none" >Civil Status
                                                                             </option>
                                                                             <option value="Single"
                                                                                 <?php echo ($civil_status == 'Single') ? 'selected' : ''; ?>>
@@ -320,8 +320,8 @@ if ($result->num_rows > 0) {
                                                                     <div class="form-group">
                                                                         <label for="sex">Sex</label>
                                                                         <select id="sex" name="sex" class="form-control"
-                                                                            disabled>
-                                                                            <option value="none" disabled>Sex</option>
+                                                                            >
+                                                                            <option value="none" >Sex</option>
                                                                             <option value="Male"
                                                                                 <?php echo ($sex == 'Male') ? 'selected' : ''; ?>>Male</option>
                                                                             <option value="Female"
@@ -333,13 +333,13 @@ if ($result->num_rows > 0) {
                                                                         <label for="blood_type">Blood Type</label>
                                                                         <input id="blood_type" name="blood_type" type="text"
                                                                             class="form-control" placeholder="Blood Type"
-                                                                            value="<?php echo $blood_type; ?>" readonly />
+                                                                            value="<?php echo $blood_type; ?>" />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="formFile" class="form-label">Upload
                                                                             profile picture</label>
                                                                         <input class="form-control" type="file"
-                                                                            id="formFile" name="image" disabled>
+                                                                            id="formFile" name="image" >
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -371,52 +371,52 @@ if ($result->num_rows > 0) {
                                                                     <label for="gsis_no">GSIS Number</label>
                                                                     <input type="text" class="form-control" id="gsis_no"
                                                                         name="gsis_no" placeholder="GSIS No."
-                                                                        value="<?php echo $gsis_no; ?>" readonly>
+                                                                        value="<?php echo $gsis_no; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="pag_ibig_no">Pag-Ibig Number</label>
                                                                     <input type="text" class="form-control"
                                                                         id="pag_ibig_no" name="pag_ibig_no"
                                                                         placeholder="Pag-Ibig No."
-                                                                        value="<?php echo $pag_ibig_no; ?>" readonly>
+                                                                        value="<?php echo $pag_ibig_no; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="philhealth_no">PhilHealth Number</label>
                                                                     <input type="text" class="form-control"
                                                                         id="philhealth_no" name="philhealth_no"
                                                                         placeholder="PhilHealth No."
-                                                                        value="<?php echo $philhealth_no; ?>" readonly>
+                                                                        value="<?php echo $philhealth_no; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="from_date">Date Started</label>
                                                                     <input type="text" class="form-control" id="from_date"
                                                                         name="from_date" placeholder="SSS No."
-                                                                        value="<?php echo $from_date; ?>" readonly>
+                                                                        value="<?php echo $from_date; ?>" >
                                                                 </div>
 
                                                                 <div class="form-group">
                                                                     <label for="status">Status</label>
                                                                     <input type="text" class="form-control" id="status"
                                                                         name="status" placeholder="Status"
-                                                                        value="<?php echo $status; ?>" readonly>
+                                                                        value="<?php echo $status; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="branch">Branch</label>
                                                                     <input type="text" class="form-control" id="branch"
                                                                         name="branch" placeholder="Branch"
-                                                                        value="<?php echo $branch; ?>" readonly>
+                                                                        value="<?php echo $branch; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="abs_wo_pay">Absent without Pay</label>
                                                                     <input type="text" class="form-control" id="abs_wo_pay"
                                                                         name="abs_wo_pay" placeholder="Absent without Pay"
-                                                                        value="<?php echo $abs_wo_pay; ?>" readonly>
+                                                                        value="<?php echo $abs_wo_pay; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="cause_of_separation">Cause of Separation</label>
                                                                     <input type="text" class="form-control" id="cause_of_separation"
                                                                         name="cause_of_separation" placeholder="Cause of Separation"
-                                                                        value="<?php echo $cause_of_separation; ?>" readonly>
+                                                                        value="<?php echo $cause_of_separation; ?>" >
                                                                 </div>
 
                                                             </div>
@@ -425,43 +425,43 @@ if ($result->num_rows > 0) {
                                                                     <label for="tin_no">TIN Number</label>
                                                                     <input type="text" class="form-control" id="tin_no"
                                                                         name="tin_no" placeholder="TIN No."
-                                                                        value="<?php echo $tin_no; ?>" readonly>
+                                                                        value="<?php echo $tin_no; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="sss_no">SSS Number</label>
                                                                     <input type="text" class="form-control" id="sss_no"
                                                                         name="sss_no" placeholder="SSS No."
-                                                                        value="<?php echo $sss_no; ?>" readonly>
+                                                                        value="<?php echo $sss_no; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="salary">Salary</label>
                                                                     <input type="text" class="form-control" id="salary"
                                                                         name="salary" placeholder="Salary"
-                                                                        value="<?php echo $salary; ?>" readonly>
+                                                                        value="<?php echo $salary; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="designation">Designation</label>
                                                                     <input type="text" class="form-control" id="designation"
                                                                         name="designation" placeholder="Designation"
-                                                                        value="<?php echo $designation; ?>" readonly>
+                                                                        value="<?php echo $designation; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="to_date">To Date</label>
                                                                     <input type="text" class="form-control" id="to_date"
                                                                         name="to_date" placeholder="To_date"
-                                                                        value="<?php echo $to_date; ?>" readonly>
+                                                                        value="<?php echo $to_date; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="station_place">Station/Place</label>
                                                                     <input type="text" class="form-control" id="station_place"
                                                                         name="station_place" placeholder="Station/Place"
-                                                                        value="<?php echo $station_place; ?>" readonly>
+                                                                        value="<?php echo $station_place; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="date_separated">Date Separated</label>
                                                                     <input type="text" class="form-control" id="date_separated"
                                                                         name="date_separated" placeholder="Date Separated"
-                                                                        value="<?php echo $date_separated; ?>" readonly>
+                                                                        value="<?php echo $date_separated; ?>" >
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -493,20 +493,20 @@ if ($result->num_rows > 0) {
                                                                     <input type="number" class="form-control"
                                                                         id="compensation_salary" name="compensation_salary"
                                                                         placeholder="Salary"
-                                                                        value="<?php echo $compensation_salary; ?>" readonly>
+                                                                        value="<?php echo $compensation_salary; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="pera">PERA</label>
                                                                     <input type="number" class="form-control" id="pera"
                                                                         name="pera" placeholder="PERA"
-                                                                        value="<?php echo $pera; ?>" readonly>
+                                                                        value="<?php echo $pera; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="clothing">Clothing Allowance</label>
                                                                     <input type="number" class="form-control"
                                                                         id="clothing" name="clothing"
                                                                         placeholder="Clothing "
-                                                                        value="<?php echo $clothing; ?>" readonly>
+                                                                        value="<?php echo $clothing; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="rt_allowancee">Representation and Transportation Allowance</label>
@@ -514,7 +514,7 @@ if ($result->num_rows > 0) {
                                                                         id="rt_allowance"
                                                                         name="rt_allowance"
                                                                         placeholder="RT Allowance"
-                                                                        value="<?php echo $rt_allowance; ?>" readonly>
+                                                                        value="<?php echo $rt_allowance; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="issued_date">Issued Date</label>
@@ -522,7 +522,7 @@ if ($result->num_rows > 0) {
                                                                         id="issued_date"
                                                                         name="issued_date"
                                                                         placeholder="Issued Date"
-                                                                        value="<?php echo $issued_date; ?>" readonly>
+                                                                        value="<?php echo $issued_date; ?>" >
                                                                 </div>
 
                                                             </div>
@@ -532,14 +532,14 @@ if ($result->num_rows > 0) {
                                                                     <input type="number" class="form-control"
                                                                         id="cash_gift" name="cash_gift"
                                                                         placeholder="Cash Gift"
-                                                                        value="<?php echo $cash_gift; ?>" readonly>
+                                                                        value="<?php echo $cash_gift; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="mid_year">Mid-Year </label>
                                                                     <input type="number" class="form-control"
                                                                         id="mid_year" name="mid_year"
                                                                         placeholder="Mid-Year "
-                                                                        value="<?php echo $mid_year; ?>" readonly>
+                                                                        value="<?php echo $mid_year; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="productivity_incentive">Productivity Enhancement
@@ -549,7 +549,7 @@ if ($result->num_rows > 0) {
                                                                         name="productivity_incentive"
                                                                         placeholder="Productivity Enhancement
                                                                         Incentive"
-                                                                        value="<?php echo $productivity_incentive; ?>" readonly>
+                                                                        value="<?php echo $productivity_incentive; ?>" >
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="year_end_bonus">Year End Bonus</label>
@@ -557,7 +557,7 @@ if ($result->num_rows > 0) {
                                                                         id="year_end_bonus"
                                                                         name="year_end_bonus"
                                                                         placeholder="Year End Bonus"
-                                                                        value="<?php echo $year_end_bonus; ?>" readonly>
+                                                                        value="<?php echo $year_end_bonus; ?>" >
                                                                 </div>
 
                                                             </div>

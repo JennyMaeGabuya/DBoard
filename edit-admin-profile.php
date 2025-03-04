@@ -240,7 +240,7 @@ if ($result->num_rows > 0) {
                                                                     <div class="form-group">
                                                                         <label for="firstname">Firstname</label>
                                                                         <input id="firstname" name="firstname"
-                                                                            type="text" class="form-control"
+                                                                            type="text" class="form-control" 
                                                                             value="<?php echo $firstname; ?>"
                                                                             required />
                                                                     </div>
