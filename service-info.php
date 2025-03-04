@@ -11,24 +11,24 @@ if (!isset($_SESSION['user_id'])) {
 include "dbcon.php";
 
 if (isset($_POST['servicesavebtn'])) {
-    $emp_no= $_POST['emp_no'];
-  
+    $emp_no = $_POST['emp_no'];
+
     //service records
-$date_started= $_POST['date_started'];
-    $salary= $_POST['servicesalary'];
-    $abs_wo_pay= $_POST['abs_wo_pay'];
-    $date_ended= $_POST['date_ended'];
-    $station= $_POST['station'];
-    $separated= $_POST['separated'];
-    $designation= $_POST['designation'];
-    $status= $_POST['status'];
-    $branch= $_POST['branch'];
-    $separation= $_POST['separation'];
+    $date_started = $_POST['date_started'];
+    $salary = $_POST['servicesalary'];
+    $abs_wo_pay = $_POST['abs_wo_pay'];
+    $date_ended = $_POST['date_ended'];
+    $station = $_POST['station'];
+    $separated = $_POST['separated'];
+    $designation = $_POST['designation'];
+    $status = $_POST['status'];
+    $branch = $_POST['branch'];
+    $separation = $_POST['separation'];
 
     // Compensation data
     $created_at = date('Y-m-d');
     $updated_at = date('Y-m-d');
-  
+
 
     // Check if the compensation record already exists
     $checkQuery = "SELECT * FROM service_records WHERE employee_no = ?";

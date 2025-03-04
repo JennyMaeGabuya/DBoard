@@ -36,13 +36,6 @@ include('dbcon.php');
 </head>
 
 <body>
-  <!--[if lt IE 8]>
-      <p class="browserupgrade">
-        You are using an <strong>outdated</strong> browser. Please
-        <a href="http://browsehappy.com/">upgrade your browser</a> to improve
-        your experience.
-      </p>
-    <![endif]-->
   <div class="error-pagewrap">
     <div class="error-page-int">
       <div class="text-center ps-recovered">
@@ -87,3 +80,8 @@ include('dbcon.php');
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</body>
+
+</html>

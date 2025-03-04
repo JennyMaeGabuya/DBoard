@@ -87,6 +87,7 @@ if (isset($_GET['employee_no'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
@@ -167,13 +168,13 @@ if (isset($_GET['employee_no'])) {
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="product-payment-inner-st">
-                    <hr>
-                            <h4 class="text-center">BASIC INFORMATION</h4>
-                            <hr>
+                        <hr>
+                        <h4 class="text-center">BASIC INFORMATION</h4>
+                        <hr>
                         <br>
                         <form method="POST" action="update-employee.php" enctype="multipart/form-data">
-                        <input type="hidden" name="employee_no" value="<?php echo htmlspecialchars($employee_no); ?>" />
-                        <input type="hidden" name="update_type" value="basic_info" />
+                            <input type="hidden" name="employee_no" value="<?php echo htmlspecialchars($employee_no); ?>" />
+                            <input type="hidden" name="update_type" value="basic_info" />
                             <div class="row">
                                 <div class="form-group col-md-4 mb-2">
                                     <label>Department</label>
@@ -205,7 +206,7 @@ if (isset($_GET['employee_no'])) {
                                 <div class="form-group col-md-4">
                                     <label>First Name</label>
                                     <input name="firstname" type="text" class="form-control" placeholder="Firstname"
-                                        value="<?php echo htmlspecialchars($firstname); ?>"  />
+                                        value="<?php echo htmlspecialchars($firstname); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Middle Name</label>
@@ -218,7 +219,7 @@ if (isset($_GET['employee_no'])) {
                                 <div class="form-group col-md-4">
                                     <label>Name Extension</label>
                                     <input name="name_extension" type="text" class="form-control"
-                                        placeholder="Extension Name" value="<?php echo htmlspecialchars($name_extension); ?>"  />
+                                        placeholder="Extension Name" value="<?php echo htmlspecialchars($name_extension); ?>" />
                                 </div>
 
                             </div>
@@ -227,7 +228,7 @@ if (isset($_GET['employee_no'])) {
                                 <div class="form-group col-md-4">
                                     <label>Email </label>
                                     <input name="email_address" type="email" class="form-control"
-                                        placeholder="Email Address" value="<?php echo htmlspecialchars($email_address); ?>"  />
+                                        placeholder="Email Address" value="<?php echo htmlspecialchars($email_address); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Mobile Number</label>
@@ -238,7 +239,7 @@ if (isset($_GET['employee_no'])) {
                                 <div class="form-group col-md-4">
                                     <label>Birthdate</label>
                                     <input name="dob" id="finish" type="date" class="form-control"
-                                        placeholder="Date of Birth" value="<?php echo htmlspecialchars($dob); ?>"  />
+                                        placeholder="Date of Birth" value="<?php echo htmlspecialchars($dob); ?>" />
                                 </div>
 
                             </div>
@@ -246,7 +247,7 @@ if (isset($_GET['employee_no'])) {
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label>Civil Status</label>
-                                    <select name="civil_status" class="form-control" >
+                                    <select name="civil_status" class="form-control">
                                         <option value="none" selected="" disabled="">
                                             Civil Status
                                         </option>
@@ -258,7 +259,7 @@ if (isset($_GET['employee_no'])) {
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Sex</label>
-                                    <select name="sex" class="form-control" >
+                                    <select name="sex" class="form-control">
                                         <option value="none" selected="" disabled="">
                                             Sex
                                         </option>
@@ -270,7 +271,7 @@ if (isset($_GET['employee_no'])) {
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Blood Type</label>
-                                    <select name="blood_type" class="form-control" >
+                                    <select name="blood_type" class="form-control">
                                         <option value="none" selected="" disabled="">
                                             Blood Type
                                         </option>
@@ -292,16 +293,16 @@ if (isset($_GET['employee_no'])) {
                                 <div class="form-group col-md-4">
                                     <label>Address</label>
                                     <input name="address" type="text" class="form-control" placeholder="Address"
-                                        value="<?php echo htmlspecialchars($address); ?>"  />
+                                        value="<?php echo htmlspecialchars($address); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Place of Birth</label>
                                     <input name="pob" type="text" class="form-control" placeholder="Place of Birth"
-                                        value="<?php echo htmlspecialchars($pob); ?>"  />
+                                        value="<?php echo htmlspecialchars($pob); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Upload Profile Picture</label>
-                                    <input class="form-control" type="file" id="formFile" name="image" >
+                                    <input class="form-control" type="file" id="formFile" name="image">
                                 </div>
 
                             </div>
@@ -313,17 +314,17 @@ if (isset($_GET['employee_no'])) {
                                 <div class="form-group col-md-4">
                                     <label>GSIS Number</label>
                                     <input name="gsis" type="text" class="form-control" placeholder="GSIS Number"
-                                        value="<?php echo htmlspecialchars($gsis_no); ?>"  />
+                                        value="<?php echo htmlspecialchars($gsis_no); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Pag-Ibig Number</label>
                                     <input name="pag_ibig" type="text" class="form-control" placeholder="PAGIBIG Number"
-                                        value="<?php echo htmlspecialchars($pag_ibig_no); ?>"  />
+                                        value="<?php echo htmlspecialchars($pag_ibig_no); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>PhilHealth Number</label>
                                     <input name="philhealth" type="text" class="form-control"
-                                        placeholder="PhilHealth Number" value="<?php echo htmlspecialchars($philhealth_no); ?>"  />
+                                        placeholder="PhilHealth Number" value="<?php echo htmlspecialchars($philhealth_no); ?>" />
                                 </div>
                             </div>
                             <div class="row">
@@ -335,24 +336,24 @@ if (isset($_GET['employee_no'])) {
                                 <div class="form-group col-md-4">
                                     <label>TIN Number</label>
                                     <input name="tin" type="text" class="form-control" placeholder="TIN Number"
-                                        value="<?php echo htmlspecialchars($tin_no); ?>"  />
+                                        value="<?php echo htmlspecialchars($tin_no); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Date Started</label>
                                     <input name="date_started" type="date" class="form-control"
-                                        placeholder="Date Started"  />
+                                        placeholder="Date Started" />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label>Status</label>
                                     <input name="status" type="text" class="form-control" placeholder="Status"
-                                        value="<?php echo htmlspecialchars($status); ?>"  />
+                                        value="<?php echo htmlspecialchars($status); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Branch</label>
                                     <input name="branch" type="text" class="form-control" placeholder="Branch"
-                                        value="<?php echo htmlspecialchars($branch); ?>"/>
+                                        value="<?php echo htmlspecialchars($branch); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Absent without Pay</label>
@@ -369,24 +370,23 @@ if (isset($_GET['employee_no'])) {
                                 <div class="form-group col-md-4">
                                     <label>Salary</label>
                                     <input name="salary" type="number" class="form-control" placeholder="Salary"
-                                        value="<?php echo htmlspecialchars($salary); ?>"  />
+                                        value="<?php echo htmlspecialchars($salary); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>To Date</label>
-                                    <input name="to_date" type="date" class="form-control" placeholder="To Date"
-                                         />
+                                    <input name="to_date" type="date" class="form-control" placeholder="To Date" />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label>Station/Place</label>
                                     <input name="station_place" type="text" class="form-control"
-                                        placeholder="Station/Place" value="<?php echo htmlspecialchars($station_place); ?>"  />
+                                        placeholder="Station/Place" value="<?php echo htmlspecialchars($station_place); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Date Separated</label>
                                     <input name="date_separated" type="date" class="form-control"
-                                    placeholder="Date Separated" value="<?php echo htmlspecialchars($date_separated); ?>" />
+                                        placeholder="Date Separated" value="<?php echo htmlspecialchars($date_separated); ?>" />
                                 </div>
                             </div>
 
@@ -402,47 +402,47 @@ if (isset($_GET['employee_no'])) {
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Pera</label>
-                                    <input name="pera" type="number" class="form-control" placeholder="Pera" 
-                                        value="<?php echo htmlspecialchars($pera); ?>"  />
+                                    <input name="pera" type="number" class="form-control" placeholder="Pera"
+                                        value="<?php echo htmlspecialchars($pera); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Clothing Allowance</label>
                                     <input name="clothing" type="number" class="form-control"
-                                        placeholder="Clothing Allowance" value="<?php echo htmlspecialchars($clothing); ?>"  />
+                                        placeholder="Clothing Allowance" value="<?php echo htmlspecialchars($clothing); ?>" />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label>RT Allowance</label>
                                     <input name="rt_allowance" type="number" class="form-control"
-                                        placeholder="Representative and Transportation Allowance" value="<?php echo htmlspecialchars($rt_allowance); ?>"  />
+                                        placeholder="Representative and Transportation Allowance" value="<?php echo htmlspecialchars($rt_allowance); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Issued Date</label>
                                     <input name="issued_date" type="date" class="form-control" placeholder="Issued Date"
-                                        value="<?php echo htmlspecialchars($issued_date); ?>"  />
+                                        value="<?php echo htmlspecialchars($issued_date); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Cash Gift</label>
                                     <input name="cash_gift" type="number" class="form-control" placeholder="Cash Gift"
-                                        value="<?php echo htmlspecialchars($cash_gift); ?>"  />
+                                        value="<?php echo htmlspecialchars($cash_gift); ?>" />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label>Mid-Year Bonus</label>
                                     <input name="mid_year" type="number" class="form-control" placeholder="Mid-Year Bonus"
-                                        value="<?php echo htmlspecialchars($mid_year); ?>"  />
+                                        value="<?php echo htmlspecialchars($mid_year); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Productivity Enhancement Incentive</label>
                                     <input name="productivity_incentive" type="number" class="form-control"
-                                        placeholder="Productivity Enhancement Incentive" value="<?php echo htmlspecialchars($productivity_incentive); ?>"  />
+                                        placeholder="Productivity Enhancement Incentive" value="<?php echo htmlspecialchars($productivity_incentive); ?>" />
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Year End Bonus</label>
                                     <input name="year_end_bonus" type="number" class="form-control"
-                                        placeholder="Year End Bonus" value="<?php echo htmlspecialchars($year_end_bonus); ?>"/>
+                                        placeholder="Year End Bonus" value="<?php echo htmlspecialchars($year_end_bonus); ?>" />
                                 </div>
                             </div>
 
@@ -459,8 +459,3 @@ if (isset($_GET['employee_no'])) {
 
     <!-- Footer -->
     <?php include 'includes/footer.php'; ?>
-
-    <script src="js/vendor/jquery-3.6.0.min.js"></script>
-    <script src="js/vendor/bootstrap.min.js"></script>
-</body>
-</html>

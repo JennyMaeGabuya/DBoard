@@ -60,15 +60,15 @@ include "dbcon.php";
                             <div class="col-lg-12">
                                 <ul class="breadcome-menu" style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
                                     <li>
-                                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-<a href="dashboard.php">
-    <i class="fas fa-home"></i> <strong>Home</strong>
-</a>
-<span class="bread-slash"> / </span>
-<a href="organization.php">
-    <i class="fas fa-building"></i> <strong>Organization</strong>
-</a>
+                                        <a href="dashboard.php">
+                                            <i class="fas fa-home"></i> <strong>Home</strong>
+                                        </a>
+                                        <span class="bread-slash"> / </span>
+                                        <a href="organization.php">
+                                            <i class="fas fa-building"></i> <strong>Organization</strong>
+                                        </a>
 
                                     </li>
                                 </ul>
@@ -91,14 +91,8 @@ include "dbcon.php";
                         <div class="row">
                             <div class="col-md-6 text-right">
                                 <div class="button-container">
-                                    <a href="add-office-member.php" class="btn btn-primary btn-border btn-round btn-sm">
-                                        <i class="fa fa-plus"></i> Add
-                                    </a>
-                                    <a href="#" class="btn btn-success btn-border btn-round btn-sm">
-                                        <i class="fa fa-file-excel-o"></i> Export
-                                    </a>
-                                    <a href="organization-chart.php" class="btn btn-danger btn-border btn-round btn-sm" target="_blank">
-                                        <i class="fa fa-file-pdf-o"></i> PDF
+                                    <a href="organization-chart.php" class="btn btn-warning btn-border btn-round btn-sm" target="_blank">
+                                        <i class="fa fa-file"></i> View Chart
                                     </a>
                                 </div>
                             </div>
@@ -158,7 +152,8 @@ include "dbcon.php";
                                             e.created_at,
                                             e.updated_at
                                         FROM employee e
-                                        JOIN hr_staffs h ON e.employee_no = h.employee_no");
+                                        JOIN hr_staffs h ON e.employee_no = h.employee_no
+                                        WHERE LOWER(h.role) NOT LIKE '%mayor%'");
 
                                     $stmt->execute();
                                     $result = $stmt->get_result();

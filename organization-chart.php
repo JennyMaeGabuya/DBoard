@@ -27,20 +27,18 @@ class PDF extends FPDF
         $this->Ln(15);
     }
 
-    function addPosition($x, $y, $name, $title, $connect_to = null)
+    function addPosition($x, $y, $name, $title, $image, $connect_to = null)
     {
-        // Profile Picture
-        $this->Image('img/mk-logo.png', $x - 10, $y, 20);
+        $profile_image = !empty($image) ? 'img/profile/' . $image : 'img/mk-logo.png';
+        $this->Image($profile_image, $x - 10, $y, 20);
 
-        // Name & Title
         $this->SetXY($x - 30, $y + 20);
-        $this->SetFont('Times', '', 12);
+        $this->SetFont('Times', 'B', 12);
         $this->Cell(60, 5, $name, 0, 1, 'C');
         $this->SetX($x - 30);
-        $this->SetFont('Times', 'B', 11);
+        $this->SetFont('Times', '', 11);
         $this->Cell(60, 5, $title, 0, 1, 'C');
 
-        // Draw Connection Line if Required
         if ($connect_to !== null) {
             $this->Line($x, $y + 30, $x, $connect_to);
         }
@@ -52,46 +50,53 @@ $pdf->AddPage();
 
 // Initial Y position after the header
 $start_y = 55;
-
-// Center X
 $x_center = 105;
 
-// Mayor
-$pdf->addPosition($x_center, $start_y, 'Hon. JANET M. ILAGAN', 'MUNICIPAL MAYOR', $start_y + 45);
+// Fetch staff data from the database
+$query = "SELECT e.firstname, e.middlename, e.lastname, e.name_extension, e.image, h.role 
+          FROM employee e 
+          JOIN hr_staffs h ON e.employee_no = h.employee_no 
+          ORDER BY FIELD(h.role, 'Municipal Mayor') DESC";
+$result = mysqli_query($con, $query);
 
-// Second Level (MHRMO)
-$pdf->addPosition($x_center, $start_y + 45, 'GALLY D. TIPAN', 'MHRMO', $start_y + 85);
+$staff = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $full_name = $row['firstname'] . ' ' . ($row['middlename'] ? substr($row['middlename'], 0, 1) . '. ' : '') . $row['lastname'];
+    if (!empty($row['name_extension'])) {
+        $full_name .= ' ' . $row['name_extension'];
+    }
+    if ($row['role'] == 'Municipal Mayor') {
+        $staff[] = [
+            'name' => 'Hon. ' . strtoupper($full_name),
+            'title' => strtoupper($row['role']),
+            'image' => $row['image']
+        ];
+    } else {
+        $staff[] = [
+            'name' => strtoupper($full_name),
+            'title' => strtoupper($row['role']),
+            'image' => $row['image']
+        ];
+    }
+}
 
-// Third Level (Admin Officer)
-$pdf->addPosition($x_center, $start_y + 85, 'NOIME T. TIPAN', 'ADMIN OFFICER IV', $start_y + 125);
+// Assign positions dynamically while keeping the same layout
+$pdf->addPosition($x_center, $start_y, $staff[0]['name'] ?? 'N/A', $staff[0]['title'] ?? 'MUNICIPAL MAYOR', $staff[0]['image'] ?? '', $start_y + 45);
+$pdf->addPosition($x_center, $start_y + 45, $staff[1]['name'] ?? 'N/A', $staff[1]['title'] ?? 'MHRMO', $staff[1]['image'] ?? '', $start_y + 85);
+$pdf->addPosition($x_center, $start_y + 85, $staff[2]['name'] ?? 'N/A', $staff[2]['title'] ?? 'ADMIN OFFICER IV', $staff[2]['image'] ?? '', $start_y + 125);
 
-// Increase Gap Between Fourth Level Staff
-$spacing = 60;
+$spacing = 65;
 $fourth_positions = [-$spacing, 0, $spacing];
-$fourth_names = ['GELYN M. KATIMBANG', 'ELMIE H. PANGANIBAN', 'MARJORIE O. CABRERA SR.'];
-$fourth_titles = ['ADMIN OFFICER II', 'ADMIN AIDE VI', 'ADMIN AIDE IV'];
-
-// Horizontal Connection for Fourth Level
 $pdf->Line($x_center - $spacing, $start_y + 125, $x_center + $spacing, $start_y + 125);
-
-// Fourth Level (3 persons)
 for ($i = 0; $i < 3; $i++) {
-    $pdf->addPosition($x_center + $fourth_positions[$i], $start_y + 125, $fourth_names[$i], $fourth_titles[$i], $start_y + 167);
+    $pdf->addPosition($x_center + $fourth_positions[$i], $start_y + 125, $staff[$i + 3]['name'] ?? 'N/A', $staff[$i + 3]['title'] ?? 'N/A', $staff[$i + 3]['image'] ?? '', $start_y + 167);
 }
 
-// Increase Gap Between Fifth Level Staff
-$spacing = 60;
+$spacing = 65;
 $fifth_positions = [-$spacing / 2, $spacing / 2];
-$fifth_names = ['LENARD JOSEPH V. ARIOLA', 'GILBERT O. GONZALES'];
-$fifth_titles = ['JOB ORDER', 'ADMIN AIDE I'];
-
-// 🔗 Horizontal Connection for Fifth Level
 $pdf->Line($x_center - $spacing / 1, $start_y + 167, $x_center + $spacing / 1, $start_y + 167);
-
-// Fifth Level (2 persons)
 for ($i = 0; $i < 2; $i++) {
-    $pdf->addPosition($x_center + $fifth_positions[$i], $start_y + 167, $fifth_names[$i], $fifth_titles[$i]);
+    $pdf->addPosition($x_center + $fifth_positions[$i], $start_y + 167, $staff[$i + 6]['name'] ?? 'N/A', $staff[$i + 6]['title'] ?? 'N/A', $staff[$i + 6]['image'] ?? '');
 }
 
-// Output PDF
 $pdf->Output();
