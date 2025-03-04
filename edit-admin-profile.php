@@ -110,7 +110,6 @@ if ($result->num_rows > 0) {
     <link rel="stylesheet" href="css/responsive.css" />
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
-
 <body>
 
     <!-- Sidebar -->
@@ -140,7 +139,7 @@ if ($result->num_rows > 0) {
                                                         <i class="fa fa-home"></i> Home
                                                     </a>
                                                     <span class="bread-slash">/</span>
-                                                    <a href="all-employees.php"> My Profile </a>
+                                                    <a href="my-profile.php"> My Profile </a>
                                                     <span class="bread-slash">/</span>
                                                     <span class="bread-blod">Edit Admin Profile</span>
                                                 </li>
@@ -158,7 +157,7 @@ if ($result->num_rows > 0) {
 
     <!-- Single pro tab review Start-->
     <div class="single-pro-review-area mt-t-30 mg-b-15">
-        < class="container-fluid">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     <div class="profile-info-inner">
@@ -433,6 +432,9 @@ if ($result->num_rows > 0) {
                     </div>
                     </div>
                                                         </div>
+                                                        </div>
+                                                        </div>
+                                                        
                     <div class="row">
                                                             <div class="col-lg-12">
                                                                 <div class="payment-adress"></div>
@@ -480,6 +482,8 @@ if ($result->num_rows > 0) {
                         <input type="number" class="form-control" id="issued_date" name="issued_date"
                             value="<?php echo $issued_date; ?>">
                     </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div class="form-group">
                         <label for="cash_gift">Cash Gift</label>
                         <input type="number" class="form-control" id="cash_gift" name="cash_gift"
@@ -500,7 +504,14 @@ if ($result->num_rows > 0) {
                         <input type="number" class="form-control" id="year_end_bonus" name="year_end_bonus"
                             value="<?php echo $year_end_bonus; ?>">
                     </div>
+                    </div>
+                    <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="payment-adress"></div>
                     <button type="submit" class="btn btn-primary">Update Compensation</button>
+                    </div>
+                    </div>
+                    </div>
                 </form>
             </div>
         </div>
