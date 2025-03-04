@@ -163,6 +163,7 @@ FROM employee WHERE employee.employee_no = ?";
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
         .card {
@@ -178,7 +179,7 @@ FROM employee WHERE employee.employee_no = ?";
             border: 1px solid #ccc;
             border-radius: 5px;
             width: 8.27in;
-            height: 11in;
+            height: 13in;
             position: relative;
             overflow: hidden;
         }
@@ -232,6 +233,9 @@ FROM employee WHERE employee.employee_no = ?";
                 padding: 10px;
             }
         }
+        th, td{
+height: 30px;
+        }
     </style>
 </head>
 
@@ -280,12 +284,10 @@ FROM employee WHERE employee.employee_no = ?";
                             <div class="card-header">
                                 <div class="card-head-row">
                                     <div class="card-tools">
-                                        <button class="btn btn-danger btn-border btn-round btn-sm" onclick="printDiv('printThis')">
-                                            <i class="fa fa-print"></i> Print
-                                        </button>
+                                     
 
-                                        <a href="reports/emp.php?id=<?php echo $employee_no ?>" class="btn btn-primary btn-border btn-round btn-sm" target="_blank">
-                                            <i class="fa fa-file"></i> PDF
+                                        <a href="reports/emp.php?id=<?php echo $employee_no ?>" class="btn btn-danger btn-border btn-round btn-sm" target="_blank">
+                                        <i class="fa-solid fa-file-pdf"></i>PDF
                                         </a>
                                         <a href="#addcomp" data-toggle="modal" class="btn btn-primary btn-border btn-round btn-sm">
                                             <i class="fa fa-file"></i> Compensation
@@ -297,7 +299,7 @@ FROM employee WHERE employee.employee_no = ?";
                                 </div>
                             </div>
 
-                            <div class="card-body m-5" id="printThis">
+                            <div class="card-body m-5" >
                                 <div class="header-container">
                                     <div class="text-center">
                                         <img src="img/mk-logo.png" class="logo" alt="Logo Left" style="height: 100px;width: 100px;">
@@ -329,24 +331,27 @@ FROM employee WHERE employee.employee_no = ?";
                                                 <th rowspan="3">
                                                     <img src="<?php echo htmlspecialchars($imageUrl); ?>" alt="" class="avatar-img rounded-circle" style="height: 150px; width: 150px;margin-left:10px;">
                                                 </th>
-                                                <th colspan="1">SURNAME</th>
-                                                <td><?php echo $lastname; ?></td>
+                                                <th colspan="1" >SURNAME</th>
+                                                <td colspan="2" ><?php echo $lastname; ?></td>
                                             </tr>
-                                            <tr>
+                                            <tr >
                                                 <th>FIRST NAME</th>
-                                                <td><?php echo $firstname; ?></td>
-                                                <th> NAME EXTENSION <br><?php echo $name_extension; ?></th>
+                                                <td colspan="2"><?php echo $firstname; ?></td>
+                                           
 
                                             </tr>
-                                            <tr>
-                                                <th colspan="1">MIDDLE NAME</th>
-                                                <td><?php echo $middlename; ?></td>
+                                            <tr >
+                                                <th colspan="1">MIDDLE NAME <br> NAME EXTENSION</th>
+                                                <td colspan="2"><?php echo $middlename; ?> <br> <?php echo $name_extension; ?></td>
                                             </tr>
+                                          
+                                           
                                             <tr>
+                                            <th>Contact No.:</th>
+                                            <td><?php echo $mobile_no; ?></td>
                                                 <th>Email</th>
                                                 <td><?php echo $email_address; ?></td>
-                                                <th>Contact No.:</th>
-                                                <td><?php echo $mobile_no; ?></td>
+                                         
                                             </tr>
                                             <tr>
 
@@ -355,15 +360,19 @@ FROM employee WHERE employee.employee_no = ?";
                                             </tr>
                                             <tr>
                                                 <th>Place of Birth:</th>
-                                                <td><?php echo $pob; ?></td>
-                                                <th>Sex:</th>
-                                                <td><?php echo $sex; ?></td>
+                                                <td colspan="3"><?php echo $pob; ?></td>
+                                               
                                             </tr>
                                             <tr>
+                                            <th>Sex:</th>
+                                            <td><?php echo $sex; ?></td>
                                                 <th>Birthday:</th>
                                                 <td><?php echo $bday; ?></td>
-                                                <th>Blood Type</th>
-                                                <td><?php echo $blood_type; ?></td>
+                                          
+                                            </tr>
+                                            <tr>
+                                            <th>Blood Type</th>
+                                            <td colspan="3"><?php echo $blood_type; ?></td>
                                             </tr>
                                             <tr>
                                                 <th colspan="4" style="text-align: center; background-color: #ccc;line-height:0.5px;">
@@ -690,20 +699,4 @@ FROM employee WHERE employee.employee_no = ?";
         unset($_SESSION['success']); ?>
     <?php endif; ?>
 
-    <script>
-        function printDiv(divName) {
-            var printContents = document.getElementById(divName).innerHTML;
-            var originalContents = document.body.innerHTML;
-
-            document.body.innerHTML = printContents;
-
-            window.print();
-
-            document.body.innerHTML = originalContents;
-
-            window.onafterprint = function() {
-                newWindow.close();
-                location.reload();
-            };
-        }
-    </script>
+   
