@@ -125,8 +125,13 @@ FROM service_records WHERE employee_no = ?";
       <div class="row">
         <div class="col-lg-12">
           <div class="product-status-wrap drp-lst">
-            <h4>Service Records</h4>
-
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h4>Service Records</h4>
+    <a href="reports/emp.php?id=<?php echo $employee_no ?>" class="btn btn-danger btn-border btn-round btn-sm" target="_blank">
+        <i class="fa-solid fa-file-pdf"></i> PDF
+    </a>
+    
+</div>
             <div class="widget-box">
               <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
               <script>
@@ -190,9 +195,12 @@ FROM service_records WHERE employee_no = ?";
                       <!--<td><?php echo date("F d, Y", strtotime($row['date_issued'])); ?></td>-->
                       <td>
                         <div style="text-align: center;">
-                          <a href="reports/<?php echo strtolower($row['cert_type']); ?>.php?id=<?php echo $row['id']; ?>" class="btn btn-danger" title="View Certificate" target="_blank">
-                            <i class="fa fa-file-pdf"></i>
+                          <a href="editservice_record.php?empno=<?php echo $row['employee_no']; ?>& id="<?php echo $row['id']; ?> class="btn btn-danger" title="Edit" >
+                            <i class="fa fa-pencil"></i>
                           </a>
+                          <a href="#addservice" data-toggle="modal" class="btn btn-success btn-border btn-round btn-sm">
+                                            <i class="fa fa-file"></i> Service Records
+                                        </a>
                         </div>
                       </td>
                     </tr>
@@ -210,5 +218,135 @@ FROM service_records WHERE employee_no = ?";
     </div>
   </div>
 
+     <!-- EDIT SERVICE RECORDS FORM MODAL-->
+     <div class="modal fade" id="addservice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary" style="border-radius: 3px;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="exampleModalLabel">SERVICE RECORDS</h4>
+                </div>
+
+                <div class="modal-body">
+                    <form method="POST" action="service-info.php" method="POST" enctype="multipart/form-data">
+
+                        <div class="row">
+                            <div class="form-group col-md-4 mb-2">
+                                <label>Employee Number</label>
+                                <input
+                                    name="emp_no"
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Employee Number" value="<?php echo $employee_no; ?>" readonly />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>From</label>
+                                <input
+                                    name="date_started"
+                                    type="date"
+                                    class="form-control"
+                                    placeholder="Salary"  />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>To</label>
+                                <input
+                                    name="date_ended"
+                                    type="date"
+                                    class="form-control"
+                                    placeholder="Pera"  required />
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label>Designation</label>
+                                <div class="form-group">
+                                    <input
+                                        name="designation"
+                                        type="text"
+                                        class="form-control" 
+                                        required />
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label>Status</label>
+                                <input
+                                    name="status"
+                                    type="text"
+                                    class="form-control"
+                                     required />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Salary</label>
+                                <input
+                                    name="servicesalary"
+                                    type="number"
+                                    class="form-control"
+                                     required />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label>Station Place</label>
+                                <input
+                                    name="station"
+                                    type="text"
+                                    class="form-control" 
+                                    required />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Branch</label>
+                                <input
+                                    name="branch"
+                                    type="text"
+                                    class="form-control" 
+                                    required />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Absent without Pay</label>
+                                <input
+                                    name="abs_wo_pay"
+                                    type="text"
+                                    class="form-control" 
+                                    required />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label>Date Separated</label>
+                                <input
+                                    name="separated"
+                                    type="date"
+                                    class="form-control" 
+                                     />
+                            </div>
+
+                            <div class="form-group col-md-8">
+                                <label>Cause of Separation</label>
+                                <input
+                                    name="separation"
+                                    type="text"
+                                    class="form-control" 
+                                     />
+                            </div>
+
+                        </div>
+                </div>
+
+                <div class="modal-footer">
+                    <!--  <input type="hidden" id="pos_id" name="id"> -->
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" name="servicesavebtn">Save</button>
+                    <a href="service_records.php?empno=<?php echo $employee_no ?>" type="submit" class="btn btn-warning" name="compviewbtn">View</a>
+                </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
   <!--Footer-part-->
   <?php include 'includes/footer.php'; ?>
