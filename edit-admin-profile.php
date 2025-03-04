@@ -60,6 +60,7 @@ if ($result->num_rows > 0) {
     $designation = $row['designation'];
     $status = $row['status'];
     $salary = $row['salary'];
+    $to_date = $row['to_date'];
     $station_place = $row['station_place'];
     $branch = $row['branch'];
     $abs_wo_pay = $row['abs_wo_pay'];
@@ -241,7 +242,7 @@ if ($result->num_rows > 0) {
                                                                     <div class="form-group">
                                                                         <label for="firstname">Firstname</label>
                                                                         <input id="firstname" name="firstname"
-                                                                            type="text" class="form-control" 
+                                                                            type="text" class="form-control"
                                                                             value="<?php echo $firstname; ?>"
                                                                             required />
                                                                     </div>
@@ -339,11 +340,10 @@ if ($result->num_rows > 0) {
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-lg-12">
-                                                                    <div class="payment-adress"></div>
+                                                                    <div class="payment-adress "></div>
                                                                     <button type="submit" class="btn btn-primary">Update
                                                                         Profile</button>
                                                                 </div>
-
                                             </form>
                                         </div>
                                     </div>
@@ -370,14 +370,42 @@ if ($result->num_rows > 0) {
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="pag_ibig_no">Pag-Ibig Number</label>
-                                                    <input type="text" class="form-control" id="pag_ibig_no" name="pag_ibig_no"
-                                                        value="<?php echo $pag_ibig_no; ?>">
+                                                    <input type="text" class="form-control" id="pag_ibig_no"
+                                                        name="pag_ibig_no" value="<?php echo $pag_ibig_no; ?>">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="philhealth_no">PhilHealth Number</label>
-                                                    <input type="text" class="form-control" id="philhealth_no" name="philhealth_no"
-                                                        value="<?php echo $philhealth_no; ?>">
+                                                    <input type="text" class="form-control" id="philhealth_no"
+                                                        name="philhealth_no" value="<?php echo $philhealth_no; ?>">
                                                 </div>
+                                                <div class="form-group">
+                                                    <label for="from_date">Date Started</label>
+                                                    <input type="text" class="form-control" id="from_date"
+                                                        name="from_date" value="<?php echo $from_date; ?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="status">Status</label>
+                                                    <input type="text" class="form-control" id="status" name="status"
+                                                        value="<?php echo $status; ?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="branch">Branch</label>
+                                                    <input type="text" class="form-control" id="branch" name="branch"
+                                                        value="<?php echo $branch; ?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="abs_wo_pay">Absent without Pay</label>
+                                                    <input type="text" class="form-control" id="abs_wo_pay"
+                                                        name="abs_wo_pay" value="<?php echo $abs_wo_pay; ?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="cause_of_separation">Cause of Separation</label>
+                                                    <input type="text" class="form-control" id="cause_of_separation"
+                                                        name="cause_of_separation"
+                                                        value="<?php echo $cause_of_separation; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                 <div class="form-group">
                                                     <label for="tin_no">TIN Number</label>
                                                     <input type="text" class="form-control" id="tin_no" name="tin_no"
@@ -389,47 +417,29 @@ if ($result->num_rows > 0) {
                                                         value="<?php echo $sss_no; ?>">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="from_date">Date Started</label>
-                                                    <input type="text" class="form-control" id="from_date" name="from_date"
-                                                        value="<?php echo $from_date; ?>">
+                                                    <label for="salary">Salary</label>
+                                                    <input type="number" class="form-control" id="salary" name="salary"
+                                                        value="<?php echo $salary; ?>">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="designation">Designation</label>
-                                                    <input type="text" class="form-control" id="designation" name="designation"
-                                                        value="<?php echo $designation; ?>">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                <div class="form-group">
-                                                    <label for="status">Status</label>
-                                                    <input type="text" class="form-control" id="status" name="status"
-                                                        value="<?php echo $status; ?>">
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="branch">Branch</label>
-                                                    <input type="text" class="form-control" id="branch" name="branch"
-                                                        value="<?php echo $branch; ?>">
+                                                    <input type="text" class="form-control" id="designation"
+                                                        name="designation" value="<?php echo $designation; ?>">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="abs_wo_pay">Absent without Pay</label>
-                                                    <input type="text" class="form-control" id="abs_wo_pay" name="abs_wo_pay"
-                                                        value="<?php echo $abs_wo_pay; ?>">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="cause_of_separation">Cause of Separation</label>
-                                                    <input type="text" class="form-control" id="cause_of_separation" name="cause_of_separation"
-                                                        value="<?php echo $cause_of_separation; ?>">
+                                                    <label for="To Date">To Date</label>
+                                                    <input type="text" class="form-control" id="to_date" name="to_date"
+                                                        value="<?php echo $to_date; ?>">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="station_place">Station/Place</label>
-                                                    <input type="text" class="form-control" id="station_place" name="station_place"
-                                                        value="<?php echo $station_place; ?>">
+                                                    <input type="text" class="form-control" id="station_place"
+                                                        name="station_place" value="<?php echo $station_place; ?>">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="date_separated">Date Separated</label>
-                                                    <input type="text" class="form-control" id="date_separated" name="date_separated"
-                                                        value="<?php echo $date_separated; ?>">
+                                                    <input type="text" class="form-control" id="date_separated"
+                                                        name="date_separated" value="<?php echo $date_separated; ?>">
                                                 </div>
                                             </div>
                                         </div>
@@ -461,55 +471,61 @@ if ($result->num_rows > 0) {
                                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                 <div class="form-group">
                                                     <label for="compensation_salary">Salary</label>
-                                                    <input type="number" class="form-control" id="compensation_salary" name="compensation_salary"
+                                                    <input type="number" class="form-control" id="compensation_salary"
+                                                        name="compensation_salary"
                                                         value="<?php echo $compensation_salary; ?>">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="pera">PERA</label>
-                                                    <input type="number" class="form-control" id="pera" name="pera" value="<?php echo $pera; ?>">
+                                                    <input type="number" class="form-control" id="pera" name="pera"
+                                                        value="<?php echo $pera; ?>">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="clothing">Clothing Allowance</label>
-                                                    <input type="number" class="form-control" id="clothing" name="clothing"
-                                                        value="<?php echo $clothing; ?>">
+                                                    <input type="number" class="form-control" id="clothing"
+                                                        name="clothing" value="<?php echo $clothing; ?>">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="rt_allowance">Representation and Transportation Allowance</label>
-                                                    <input type="number" class="form-control" id="rt_allowance" name="rt_allowance"
-                                                        value="<?php echo $rt_allowance; ?>">
+                                                    <label for="rt_allowance">Representation and Transportation
+                                                        Allowance</label>
+                                                    <input type="number" class="form-control" id="rt_allowance"
+                                                        name="rt_allowance" value="<?php echo $rt_allowance; ?>">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="issued_date">Issued Date</label>
-                                                    <input type="number" class="form-control" id="issued_date" name="issued_date"
-                                                        value="<?php echo $issued_date; ?>">
+                                                    <input type="number" class="form-control" id="issued_date"
+                                                        name="issued_date" value="<?php echo $issued_date; ?>">
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                 <div class="form-group">
                                                     <label for="cash_gift">Cash Gift</label>
-                                                    <input type="number" class="form-control" id="cash_gift" name="cash_gift"
-                                                        value="<?php echo $cash_gift; ?>">
+                                                    <input type="number" class="form-control" id="cash_gift"
+                                                        name="cash_gift" value="<?php echo $cash_gift; ?>">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="mid_year">Mid-Year</label>
-                                                    <input type="number" class="form-control" id="mid_year" name="mid_year"
-                                                        value="<?php echo $mid_year; ?>">
+                                                    <input type="number" class="form-control" id="mid_year"
+                                                        name="mid_year" value="<?php echo $mid_year; ?>">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="productivity_incentive">Productivity Enhancement Incentive</label>
-                                                    <input type="number" class="form-control" id="productivity_incentive"
-                                                        name="productivity_incentive" value="<?php echo $productivity_incentive; ?>">
+                                                    <label for="productivity_incentive">Productivity Enhancement
+                                                        Incentive</label>
+                                                    <input type="number" class="form-control"
+                                                        id="productivity_incentive" name="productivity_incentive"
+                                                        value="<?php echo $productivity_incentive; ?>">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="year_end_bonus">Year End Bonus</label>
-                                                    <input type="number" class="form-control" id="year_end_bonus" name="year_end_bonus"
-                                                        value="<?php echo $year_end_bonus; ?>">
+                                                    <input type="number" class="form-control" id="year_end_bonus"
+                                                        name="year_end_bonus" value="<?php echo $year_end_bonus; ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div class="payment-adress"></div>
-                                                    <button type="submit" class="btn btn-primary">Update Compensation</button>
+                                                    <button type="submit" class="btn btn-primary">Update
+                                                        Compensation</button>
                                                 </div>
                                             </div>
                                         </div>
