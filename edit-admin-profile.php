@@ -295,12 +295,13 @@ if ($result->num_rows > 0) {
                                                                 </div>
                                                             </div>
                                                             <div class="row">
-                                                                  <div class="col-lg-12">
+                                                                <div class="col-lg-12">
                                                                     <div class="payment-adress text-center">
-                                                                        <!-- Added text-center class here -->
                                                                         <button type="submit"
                                                                             class="btn btn-primary">Update
                                                                             Profile</button>
+                                                                        <a href="my-profile.php" class="btn btn-primary"
+                                                                            style="margin-left: 10px;">Back</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
