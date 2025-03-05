@@ -108,7 +108,7 @@ $pdf->MultiCell(0, 5, 'THIS IS TO CERTIFY that as per records available in this 
     $certificate['fullname'] . ' was duly elected as a member of the '
     . $certificate['position'] . ' on ' .
     date("F d, Y", strtotime($certificate['start_date'])) .
-    ' , to present for National and Local election. Their annual compensation is as follows:', 0, 'J');
+    ' to present for National and Local election. Their annual compensation is as follows:', 0, 'J');
 
 $pdf->Ln(7);
 $pdf->SetFont('Times', '', 12);

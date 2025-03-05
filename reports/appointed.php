@@ -162,6 +162,7 @@ $pdf->Ln(10);
 $pdf->SetFont('Times', '', 12);
 $pdf->Cell(10);
 $salutation = ($certificate['sex'] === 'Male') ? 'Mr.' : 'Ms.';
+
 $pdf->MultiCell(0, 5, 'Issued this ' . date("jS \of F Y") .
     ' upon request of ' . $salutation . ' ' . strtoupper($certificate['lastname']) .
     ' for whatever purpose it may lawfully serve.', 0, 'J');
