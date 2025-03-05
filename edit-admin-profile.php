@@ -305,6 +305,9 @@ if ($result->num_rows > 0) {
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
@@ -313,5 +316,7 @@ if ($result->num_rows > 0) {
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <?php include 'includes/footer.php'; ?>
+    <?php include 'includes/footer.php'; ?>
