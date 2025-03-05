@@ -8,39 +8,39 @@ if (!isset($_SESSION['user_id'])) {
 include "dbcon.php";
 
 if (isset($_GET['empno'])) {
-    $employee_no = $_GET['empno'];
+  $employee_no = $_GET['empno'];
 
 
-    // Prepare the SQL statement
-    $query = "SELECT * 
+  // Prepare the SQL statement
+  $query = "SELECT * 
 FROM service_records WHERE employee_no = ?";
-    $stmt = $con->prepare($query);
+  $stmt = $con->prepare($query);
 
-    // Bind the parameter
-    $stmt->bind_param("s", $employee_no); // "s" means string
+  // Bind the parameter
+  $stmt->bind_param("s", $employee_no); // "s" means string
 
-    // Execute the statement
-    $stmt->execute();
+  // Execute the statement
+  $stmt->execute();
 
-    // Get the result
-    $result = $stmt->get_result();
+  // Get the result
+  $result = $stmt->get_result();
 
-    if ($row = $result->fetch_assoc()) {
-        $employee_no = $row['employee_no'];
-        $from = $row['from_date'];
-        $to = $row['to_date'];
-        $designation = $row['designation'];
-        $status = $row['status'];
-        $salary = $row['salary'];
-        $station_place = $row['station_place'];
-        $branch = $row['branch'];
-        $abs_wo_pay = $row['abs_wo_pay'];
-        $date = $row['date_separated'];
-        $cause = $row['cause_of_separation'];
-    }
+  if ($row = $result->fetch_assoc()) {
+    $employee_no = $row['employee_no'];
+    $from = $row['from_date'];
+    $to = $row['to_date'];
+    $designation = $row['designation'];
+    $status = $row['status'];
+    $salary = $row['salary'];
+    $station_place = $row['station_place'];
+    $branch = $row['branch'];
+    $abs_wo_pay = $row['abs_wo_pay'];
+    $date = $row['date_separated'];
+    $cause = $row['cause_of_separation'];
+  }
 
-    // Close the statement
-    $stmt->close();
+  // Close the statement
+  $stmt->close();
 }
 ?>
 
@@ -76,6 +76,8 @@ FROM service_records WHERE employee_no = ?";
   <script src="js/vendor/modernizr-2.8.3.min.js"></script>
   <link rel="stylesheet" href="//cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -94,9 +96,11 @@ FROM service_records WHERE employee_no = ?";
           <div class="breadcome-list single-page-breadcome">
             <div class="row">
               <div class="col-lg-12">
-                <ul class="breadcome-menu" style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
+                <ul class="breadcome-menu"
+                  style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
                   <li>
-                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                    <link rel="stylesheet"
+                      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
                     <a href="dashboard.php">
                       <i class="fas fa-home"></i> <strong>Home</strong>
@@ -125,17 +129,18 @@ FROM service_records WHERE employee_no = ?";
       <div class="row">
         <div class="col-lg-12">
           <div class="product-status-wrap drp-lst">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-    <h4>Service Records</h4>
-    <a href="reports/emp.php?id=<?php echo $employee_no ?>" class="btn btn-danger btn-border btn-round btn-sm" target="_blank">
-        <i class="fa-solid fa-file-pdf"></i> PDF
-    </a>
-    
-</div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h4>Service Records</h4>
+              <a href="reports/emp.php?id=<?php echo $employee_no ?>" class="btn btn-danger btn-border btn-round btn-sm"
+                target="_blank">
+                <i class="fa-solid fa-file-pdf"></i> PDF
+              </a>
+
+            </div>
             <div class="widget-box">
               <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
               <script>
-                $(function() {
+                $(function () {
                   new DataTable('#certHistoryTable', {
                     responsive: true,
                     autoWidth: false,
@@ -173,13 +178,13 @@ FROM service_records WHERE employee_no = ?";
                                     FROM service_records WHERE employee_no = ?
                                     ORDER BY to_date DESC
                                 ");
-                 $stmt->bind_param("s", $employee_no);
+                  $stmt->bind_param("s", $employee_no);
                   $stmt->execute();
                   $result = $stmt->get_result();
                   $count = 1;
 
                   while ($row = $result->fetch_assoc()) {
-                  ?>
+                    ?>
                     <tr>
                       <td style="text-align: center;"><?php echo $count; ?></td>
                       <td><?php echo htmlspecialchars($row['from_date']); ?></td>
@@ -195,16 +200,15 @@ FROM service_records WHERE employee_no = ?";
                       <!--<td><?php echo date("F d, Y", strtotime($row['date_issued'])); ?></td>-->
                       <td>
                         <div style="text-align: center;">
-                          <a href="editservice_record.php?empno=<?php echo $row['employee_no']; ?>& id="<?php echo $row['id']; ?> class="btn btn-danger" title="Edit" >
+                        
+                          <a href="#editservice" data-toggle="modal" data-empid="<?php echo $row['id']; ?>"
+                            class="btn btn-success btn-border btn-round btn-sm">
                             <i class="fa fa-pencil"></i>
                           </a>
-                          <a href="#addservice" data-toggle="modal" class="btn btn-success btn-border btn-round btn-sm">
-                                            <i class="fa fa-file"></i> Service Records
-                                        </a>
                         </div>
                       </td>
                     </tr>
-                  <?php
+                    <?php
                     $count++;
                   }
                   ?>
@@ -218,135 +222,133 @@ FROM service_records WHERE employee_no = ?";
     </div>
   </div>
 
-     <!-- EDIT SERVICE RECORDS FORM MODAL-->
-     <div class="modal fade" id="addservice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-primary" style="border-radius: 3px;">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="exampleModalLabel">SERVICE RECORDS</h4>
+ <script>
+$(document).ready(function () {
+  $('.btn-success').on('click', function () {
+    var empid = $(this).data('empid'); // Get empid from the button's data attribute
+    var row = $(this).closest('tr'); // Get the closest row
+    var empno = '<?php echo $employee_no; ?>'; // Assuming employee_no is available in the PHP context
+    var from = row.find('td:nth-child(2)').text(); // From date
+    var to = row.find('td:nth-child(3)').text(); // To date
+    var designation = row.find('td:nth-child(4)').text(); // Designation
+    var status = row.find('td:nth-child(5)').text(); // Status
+    var salary = row.find('td:nth-child(6)').text(); // Salary
+    var station = row.find('td:nth-child(7)').text(); // Station
+    var branch = row.find('td:nth-child(8)').text(); // Branch
+    var abs = row.find('td:nth-child(9)').text(); // Absent without pay
+    var date = row.find('td:nth-child(10)').text(); // Date separated
+    var cause = row.find('td:nth-child(11)').text(); // Cause of separation
+
+    // Populate the modal fields
+    $('#editservice .modal-body').find('input[name="empid"]').val(empid); // Set empid
+    $('#editservice .modal-body').find('input[name="empno"]').val(empno); // Set empno
+    $('#editservice .modal-body').find('input[name="from"]').val(from); // Set from date
+    $('#editservice .modal-body').find('input[name="to"]').val(to); // Set to date
+    $('#editservice .modal-body').find('input[name="designation"]').val(designation); // Set designation
+    $('#editservice .modal-body').find('input[name="status"]').val(status); // Set status
+    $('#editservice .modal-body').find('input[name="salary"]').val(salary); // Set salary
+    $('#editservice .modal-body').find('input[name="station"]').val(station); // Set station
+    $('#editservice .modal-body').find('input[name="branch"]').val(branch); // Set branch
+    $('#editservice .modal-body').find('input[name="abs"]').val(abs); // Set absent without pay
+    $('#editservice .modal-body').find('input[name="date"]').val(date); // Set date separated
+    $('#editservice .modal-body').find('input[name="cause"]').val(cause); // Set cause of separation
+  });
+});
+</script>
+
+
+  <!-- EDIT SERVICE RECORDS FORM MODAL-->
+  <div class="modal fade" id="editservice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary" style="border-radius: 3px;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" id="exampleModalLabel">SERVICE RECORDS</h4>
+        </div>
+
+        <div class="modal-body">
+          <form method="POST" action="editservice_record.php" method="POST" enctype="multipart/form-data">
+
+
+            <input name="empid" type="hidden" value="empid" />
+
+            <div class="row">
+
+              <div class="form-group col-md-4 mb-2">
+                <label>Employee Number</label>
+                <input name="empno" type="text" class="form-control" placeholder="Employee Number"
+                readonly />
+              </div>
+              <div class="form-group col-md-4">
+                <label>From</label>
+                <input name="from" type="date" class="form-control" />
+              </div>
+              <div class="form-group col-md-4">
+                <label>To</label>
+                <input name="to" type="date" class="form-control" placeholder="Pera" required />
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label>Designation</label>
+                <div class="form-group">
+                  <input name="designation" type="text" class="form-control" required />
                 </div>
+              </div>
 
-                <div class="modal-body">
-                    <form method="POST" action="service-info.php" method="POST" enctype="multipart/form-data">
+              <div class="form-group col-md-4">
+                <label>Status</label>
+                <input name="status" type="text" class="form-control" required />
+              </div>
+              <div class="form-group col-md-4">
+                <label>Salary</label>
+                <input name="salary" type="number" class="form-control" value="<?php echo $salary; ?>" required />
+              </div>
+            </div>
 
-                        <div class="row">
-                            <div class="form-group col-md-4 mb-2">
-                                <label>Employee Number</label>
-                                <input
-                                    name="emp_no"
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Employee Number" value="<?php echo $employee_no; ?>" readonly />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>From</label>
-                                <input
-                                    name="date_started"
-                                    type="date"
-                                    class="form-control"
-                                    placeholder="Salary"  />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>To</label>
-                                <input
-                                    name="date_ended"
-                                    type="date"
-                                    class="form-control"
-                                    placeholder="Pera"  required />
-                            </div>
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label>Station Place</label>
+                <input name="station" type="text" class="form-control" required />
+              </div>
+              <div class="form-group col-md-4">
+                <label>Branch</label>
+                <input name="branch" type="text" class="form-control" required />
+              </div>
+              <div class="form-group col-md-4">
+                <label>Absent without Pay</label>
+                <input name="abs" type="text" class="form-control" required />
+              </div>
+            </div>
 
-                        </div>
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label>Date Separated</label>
+                <input name="date" type="date" class="form-control" />
+              </div>
 
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label>Designation</label>
-                                <div class="form-group">
-                                    <input
-                                        name="designation"
-                                        type="text"
-                                        class="form-control" 
-                                        required />
-                                </div>
-                            </div>
+              <div class="form-group col-md-8">
+                <label>Cause of Separation</label>
+                <input name="cause" type="text" class="form-control" />
+              </div>
 
-                            <div class="form-group col-md-4">
-                                <label>Status</label>
-                                <input
-                                    name="status"
-                                    type="text"
-                                    class="form-control"
-                                     required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Salary</label>
-                                <input
-                                    name="servicesalary"
-                                    type="number"
-                                    class="form-control"
-                                     required />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label>Station Place</label>
-                                <input
-                                    name="station"
-                                    type="text"
-                                    class="form-control" 
-                                    required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Branch</label>
-                                <input
-                                    name="branch"
-                                    type="text"
-                                    class="form-control" 
-                                    required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Absent without Pay</label>
-                                <input
-                                    name="abs_wo_pay"
-                                    type="text"
-                                    class="form-control" 
-                                    required />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label>Date Separated</label>
-                                <input
-                                    name="separated"
-                                    type="date"
-                                    class="form-control" 
-                                     />
-                            </div>
-
-                            <div class="form-group col-md-8">
-                                <label>Cause of Separation</label>
-                                <input
-                                    name="separation"
-                                    type="text"
-                                    class="form-control" 
-                                     />
-                            </div>
-
-                        </div>
-                </div>
-
-                <div class="modal-footer">
-                    <!--  <input type="hidden" id="pos_id" name="id"> -->
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" name="servicesavebtn">Save</button>
-                    <a href="service_records.php?empno=<?php echo $employee_no ?>" type="submit" class="btn btn-warning" name="compviewbtn">View</a>
-                </div>
-
-                </form>
             </div>
         </div>
+
+        <div class="modal-footer">
+          <!--  <input type="hidden" id="pos_id" name="id"> -->
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" name="serviceupdatebtn">Update</button>
+        
+        </div>
+
+        </form>
+      </div>
     </div>
+  </div>
+
   <!--Footer-part-->
   <?php include 'includes/footer.php'; ?>
