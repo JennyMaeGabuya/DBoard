@@ -131,7 +131,7 @@ FROM service_records WHERE employee_no = ?";
           <div class="product-status-wrap drp-lst">
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <h4>Service Records</h4>
-              <a href="reports/emp.php?id=<?php echo $employee_no ?>" class="btn btn-danger btn-border btn-round btn-sm"
+              <a href="reports/serviceRecords.php?id=<?php echo $employee_no ?>" class="btn btn-danger btn-border btn-round btn-sm"
                 target="_blank">
                 <i class="fa-solid fa-file-pdf"></i> PDF
               </a>
