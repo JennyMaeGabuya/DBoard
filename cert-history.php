@@ -122,12 +122,37 @@ include "dbcon.php";
                 <tbody>
                   <?php
                   $stmt = $con->prepare("
-                                    SELECT id, 'Appointed' AS cert_type, fullname, position, office_appointed AS department, start_date, date_issued 
+                                    SELECT 
+                                        id, 
+                                        'Appointed' AS cert_type, 
+                                        firstname, 
+                                        middlename, 
+                                        lastname, 
+                                        CONCAT_WS(' ', firstname, middlename, lastname) AS fullname, 
+                                        sex, 
+                                        position, 
+                                        office_appointed AS department, 
+                                        start_date, 
+                                        date_issued 
                                     FROM appointed_cert_issuance 
+
                                     UNION ALL 
-                                    SELECT id, 'Elected' AS cert_type, fullname, position, 'N/A' AS department, start_date, date_issued 
+
+                                    SELECT 
+                                        id, 
+                                        'Elected' AS cert_type, 
+                                        firstname, 
+                                        middlename, 
+                                        lastname, 
+                                        CONCAT_WS(' ', firstname, middlename, lastname) AS fullname, 
+                                        sex,
+                                        position, 
+                                        'N/A' AS department, 
+                                        start_date, 
+                                        date_issued 
                                     FROM elected_cert_issuance 
-                                    ORDER BY date_issued DESC
+
+                                    ORDER BY date_issued DESC;
                                 ");
 
                   $stmt->execute();

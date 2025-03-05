@@ -10,7 +10,7 @@ if (!$certificate_id) {
 }
 
 // Fetch the issued certificate details from the `appointed_cert_issuance` table
-$query = "SELECT * FROM elected_cert_issuance WHERE id = ?";
+$query = "SELECT *, CONCAT_WS(' ', firstname, middlename, lastname) AS fullname FROM elected_cert_issuance WHERE id = ?";
 $stmt = $con->prepare($query);
 $stmt->bind_param("i", $certificate_id);
 $stmt->execute();
@@ -161,7 +161,11 @@ $pdf->Cell(30, 1, '', 'T', 1, 'R');
 $pdf->Ln(10);
 $pdf->SetFont('Times', '', 12);
 $pdf->Cell(10);
-$pdf->MultiCell(0, 5, 'Issued this ' . date("jS \of F Y") . ' upon request of ' . strtoupper($certificate['fullname']) . ' for whatever purpose it may serve.', 0, 'J');
+$salutation = ($certificate['sex'] === 'Male') ? 'Mr.' : 'Ms.';
+
+$pdf->MultiCell(0, 5, 'Issued this ' . date("jS \of F Y") . 
+    ' upon request of ' . $salutation . ' ' . strtoupper($certificate['lastname']) . 
+    ' for whatever purpose it may lawfully serve.', 0, 'J');
 
 $pdf->Ln(20);
 $pdf->Cell(10);
