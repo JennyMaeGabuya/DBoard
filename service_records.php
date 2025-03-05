@@ -349,6 +349,17 @@ $(document).ready(function () {
       </div>
     </div>
   </div>
-
+  <?php if (isset($_SESSION['display'])) : ?>
+        <script>
+            Swal.fire({
+                title: '<?php echo $_SESSION['title']; ?>',
+                text: '<?php echo $_SESSION['display']; ?>',
+                icon: '<?php echo $_SESSION['success']; ?>',
+                confirmButtonText: 'OK'
+            });
+        </script>
+        <?php unset($_SESSION['display']);
+        unset($_SESSION['success']); ?>
+    <?php endif; ?>
   <!--Footer-part-->
   <?php include 'includes/footer.php'; ?>
