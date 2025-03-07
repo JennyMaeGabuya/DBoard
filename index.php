@@ -96,16 +96,17 @@ include('dbcon.php');
             position: absolute;
             top: 10px;
             right: 15px;
-            background: transparent !important;
-            color: red !important;
+            background: transparent;
+            color: red;
             font-size: 20px;
             font-weight: bold;
             cursor: pointer;
             transition: color 0.3s ease-in-out;
+            border: none;
         }
 
         .close-btn:hover {
-            background-color: rgba(255, 0, 0, 0.18) !important;
+            background-color: rgba(255, 0, 0, 0.18);
             border-radius: 20px;
         }
 
@@ -126,21 +127,20 @@ include('dbcon.php');
             display: block !important;
         }
 
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            background: red;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
+        .slick-prev,
+        .slick-next {
+            color: black !important;
+            z-index: 1000;
         }
 
-        .close-btn:hover {
-            background: darkred;
+        .slick-prev::before,
+        .slick-next::before {
+            color: black !important;
+        }
+
+        .slick-prev:hover::before,
+        .slick-next:hover::before {
+            color: darkgray !important;
         }
     </style>
 </head>
