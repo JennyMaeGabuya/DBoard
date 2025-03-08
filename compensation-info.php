@@ -11,10 +11,10 @@ if (!isset($_SESSION['user_id'])) {
 include "dbcon.php";
 
 if (isset($_POST['compsavebtn'])) {
-    $emp_no= $_POST['emp_no'];
-  
+    $emp_no = $_POST['emp_no'];
+
     //service records
-   /* $date_started= $_POST['date_started'];
+    /* $date_started= $_POST['date_started'];
     $salary= $_POST['salary'];
     $abs_wo_pay= $_POST['abs_wo_pay'];
     $date_ended= $_POST['date_ended'];
@@ -96,3 +96,4 @@ if (isset($_POST['compsavebtn'])) {
     header("Location: $previous_page");
     exit();
 }
+?>
