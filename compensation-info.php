@@ -67,7 +67,7 @@ if (isset($_POST['compsavebtn'])) {
 
         if ($stmt->execute()) {
             $_SESSION['display'] = 'Compensation records updated!';
-            $_SESSION['title'] = 'Good Job';
+            $_SESSION['title'] = 'Success';
             $_SESSION['success'] = 'success';
         } else {
             $_SESSION['display'] = 'Failed to update records!';
@@ -82,7 +82,7 @@ if (isset($_POST['compsavebtn'])) {
 
         if ($stmt->execute()) {
             $_SESSION['display'] = 'Compensation records added!';
-            $_SESSION['title'] = 'Good Job';
+            $_SESSION['title'] = 'Success';
             $_SESSION['success'] = 'success';
         } else {
             $_SESSION['display'] = 'Failed to insert records!';

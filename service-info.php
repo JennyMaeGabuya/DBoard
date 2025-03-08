@@ -39,7 +39,7 @@ if (isset($_POST['servicesavebtn'])) {
 
         if ($stmt->execute()) {
             $_SESSION['display'] = 'Compensation records added!';
-            $_SESSION['title'] = 'Good Job';
+            $_SESSION['title'] = 'Success';
             $_SESSION['success'] = 'success';
         } else {
             $_SESSION['display'] = 'Failed to insert records!';
