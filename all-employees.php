@@ -194,15 +194,15 @@ include "dbcon.php";
                                             <td><?php echo htmlspecialchars($sex); ?></td>
                                             <td>
                                                 <div style="text-align: center;">
-                                                    <a href="edit-employee.php?employee_no=<?php echo $employee_no; ?>" class="btn btn-primary" style="margin-right: 8px;">
+                                                    <a href="edit-employee.php?employee_no=<?php echo $employee_no; ?>" class="btn btn-primary" style="margin-right: 5px;">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
                                                     <a href="employeedetails.php?employee_no=<?php echo $employee_no; ?>"
-                                                        class="btn btn-success" title="View" style="margin-right: 8px;">
+                                                        class="btn btn-success" title="View" style="margin-right: 5px;">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
                                                     <a href="#" class="btn btn-danger delete-btn" data-id="<?php echo $employee_no; ?>" title="Delete">
-                                                        <i class="fa fa-trash-o"></i>
+                                                        <i class="fa fa-trash"></i>
                                                     </a>
                                                 </div>
                                             </td>

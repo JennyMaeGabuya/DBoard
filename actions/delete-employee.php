@@ -5,7 +5,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-include "dbcon.php"; // Adjust path if needed
+include "dbcon.php";
 
 if (isset($_GET['employee_no'])) {
     $employee_no = $_GET['employee_no'];
