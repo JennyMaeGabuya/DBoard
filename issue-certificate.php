@@ -16,6 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $type = $_POST['type'] ?? null;
 $fullname = $_POST['fullname'] ?? null;
+$lastname = $_POST['lastname'] ?? null;
+$sex = $_POST['sex'] ?? null;
 $start_date = $_POST['start_date'] ?? null;
 $position = $_POST['position'] ?? null;
 $salary = $_POST['salary'] ?? null;
@@ -29,7 +31,7 @@ $productivity_enhancement = $_POST['productivity_enhancement'] ?? null;
 $date_issued = $_POST['date_issued'] ?? null;
 
 // Validate required fields
-if (!$type || !$fullname || !$start_date || !$position || !$salary || !$pera || !$rta || !$clothing || !$mid_year_bonus || !$year_end_bonus || !$cash_gift || !$productivity_enhancement || !$date_issued) {
+if (empty($type) || empty($fullname) || empty($lastname) || empty($sex) || empty($start_date) || empty($position) || empty($salary) || empty($pera) || empty($rta) || empty($clothing) || empty($mid_year_bonus) || empty($year_end_bonus) || empty($cash_gift) || empty($productivity_enhancement) || empty($date_issued)) {
   echo json_encode(["status" => "error", "message" => "All fields are required."]);
   exit();
 }
@@ -41,15 +43,15 @@ if ($type === 'appointed') {
     exit();
   }
 
-  $query = "INSERT INTO appointed_cert_issuance (fullname, start_date, position, office_appointed, salary, pera, rta, clothing, mid_year_bonus, year_end_bonus, cash_gift, productivity_enhancement, date_issued) 
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  $query = "INSERT INTO appointed_cert_issuance (fullname, lastname, sex, start_date, position, office_appointed, salary, pera, rta, clothing, mid_year_bonus, year_end_bonus, cash_gift, productivity_enhancement, date_issued) 
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   $stmt = $con->prepare($query);
-  $stmt->bind_param("ssssdddddddds", $fullname, $start_date, $position, $office_appointed, $salary, $pera, $rta, $clothing, $mid_year_bonus, $year_end_bonus, $cash_gift, $productivity_enhancement, $date_issued);
+  $stmt->bind_param("ssssssdddddddds", $fullname, $lastname, $sex, $start_date, $position, $office_appointed, $salary, $pera, $rta, $clothing, $mid_year_bonus, $year_end_bonus, $cash_gift, $productivity_enhancement, $date_issued);
 } else {
-  $query = "INSERT INTO elected_cert_issuance (fullname, start_date, position, salary, pera, rta, clothing, mid_year_bonus, year_end_bonus, cash_gift, productivity_enhancement, date_issued) 
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  $query = "INSERT INTO elected_cert_issuance (fullname, lastname, sex, start_date, position, salary, pera, rta, clothing, mid_year_bonus, year_end_bonus, cash_gift, productivity_enhancement, date_issued) 
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   $stmt = $con->prepare($query);
-  $stmt->bind_param("sssdddddddds", $fullname, $start_date, $position, $salary, $pera, $rta, $clothing, $mid_year_bonus, $year_end_bonus, $cash_gift, $productivity_enhancement, $date_issued);
+  $stmt->bind_param("sssssdddddddds", $fullname, $lastname, $sex, $start_date, $position, $salary, $pera, $rta, $clothing, $mid_year_bonus, $year_end_bonus, $cash_gift, $productivity_enhancement, $date_issued);
 }
 
 // Execute and retrieve the ID

@@ -164,16 +164,25 @@ include "dbcon.php";
               <hr>
               <div class="row">
                 <div class="form-group col-md-6 mb-2">
-                  <label>Full Name</label>
+                  <label>Fullname</label>
                   <input type="text" class="form-control" name="fullname" required>
+                </div>
+                <div class="form-group col-md-6 mb-2">
+                  <label>Surname <em>(please specify)</em></label>
+                  <input type="text" class="form-control" name="lastname" required>
+                </div>
+                <div class="form-group col-md-6 mb-2">
+                  <label>Sex</label>
+                  <select name="sex" class="form-control" required>
+                    <option value="" selected disabled>Select Sex</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
                 </div>
                 <div class="form-group col-md-6 mb-2">
                   <label>Start Date</label>
                   <input type="date" class="form-control" name="start_date" required>
                 </div>
-              </div>
-
-              <div class="row">
                 <div class="form-group col-md-6 mb-2">
                   <label>Position</label>
                   <input type="text" class="form-control" name="position" required>
@@ -202,9 +211,6 @@ include "dbcon.php";
                   <label>Representation and Transpo Allowance</label>
                   <input type="number" step="0.01" class="form-control" name="rta" required>
                 </div>
-              </div>
-
-              <div class="row">
                 <div class="form-group col-md-4">
                   <label>Clothing</label>
                   <input type="number" step="0.01" class="form-control" name="clothing" required>
@@ -217,9 +223,6 @@ include "dbcon.php";
                   <label>Year-End Bonus</label>
                   <input type="number" step="0.01" class="form-control" name="year_end_bonus" required>
                 </div>
-              </div>
-
-              <div class="row">
                 <div class="form-group col-md-4">
                   <label>Cash Gift</label>
                   <input type="number" step="0.01" class="form-control" name="cash_gift" required>
@@ -230,8 +233,16 @@ include "dbcon.php";
                 </div>
                 <div class="form-group col-md-4">
                   <label>Date Issued</label>
-                  <input type="date" class="form-control" name="date_issued" required>
+                  <input type="date" class="form-control" name="date_issued" required id="adateIssued">
                 </div>
+
+                <script>
+                  document.addEventListener("DOMContentLoaded", function() {
+                    let today = new Date().toISOString().split("T")[0];
+                    document.getElementById("adateIssued").value = today;
+                  });
+                </script>
+
               </div>
 
               <div class="modal-footer">
@@ -258,15 +269,27 @@ include "dbcon.php";
               <h4 class="text-center">BASIC INFORMATION</h4>
               <hr>
               <div class="row">
-                <div class="form-group col-md-4">
-                  <label>Full Name</label>
+                <div class="form-group col-md-6 mb-2">
+                  <label>Fullname</label>
                   <input type="text" class="form-control" name="fullname" required>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6 mb-2">
+                  <label>Surname <em>(please specify)</em></label>
+                  <input type="text" class="form-control" name="lastname" required>
+                </div>
+                <div class="form-group col-md-6 mb-2">
+                  <label>Sex</label>
+                  <select name="sex" class="form-control" required>
+                    <option value="" selected disabled>Select Sex</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-6">
                   <label>Start Date</label>
                   <input type="date" class="form-control" name="start_date" required>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                   <label>Position</label>
                   <input type="text" class="form-control" name="position" required>
                 </div>
@@ -290,9 +313,6 @@ include "dbcon.php";
                   <label>Representation and Transpo Allowance</label>
                   <input type="number" step="0.01" class="form-control" name="rta" required>
                 </div>
-              </div>
-
-              <div class="row">
                 <div class="form-group col-md-4">
                   <label>Clothing</label>
                   <input type="number" step="0.01" class="form-control" name="clothing" required>
@@ -305,9 +325,6 @@ include "dbcon.php";
                   <label>Year-End Bonus</label>
                   <input type="number" step="0.01" class="form-control" name="year_end_bonus" required>
                 </div>
-              </div>
-
-              <div class="row">
                 <div class="form-group col-md-4">
                   <label>Cash Gift</label>
                   <input type="number" step="0.01" class="form-control" name="cash_gift" required>
@@ -318,8 +335,16 @@ include "dbcon.php";
                 </div>
                 <div class="form-group col-md-4">
                   <label>Date Issued</label>
-                  <input type="date" class="form-control" name="date_issued" required>
+                  <input type="date" class="form-control" name="date_issued" required id="edateIssued">
                 </div>
+
+                <script>
+                  document.addEventListener("DOMContentLoaded", function() {
+                    let today = new Date().toISOString().split("T")[0];
+                    document.getElementById("edateIssued").value = today;
+                  });
+                </script>
+
               </div>
 
               <div class="modal-footer">
@@ -374,6 +399,9 @@ include "dbcon.php";
                     let reportType = type === "appointed" ? "appointed" : "elected";
                     window.open(`reports/${reportType}.php?id=${response.id}`, "_blank");
                   }
+
+                  // Clear the form inputs
+                  form.trigger("reset");
                 });
               } else {
                 Swal.fire({
