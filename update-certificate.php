@@ -74,7 +74,7 @@ if ($type === "appointed") {
 
     $stmt = $con->prepare($query);
     $stmt->bind_param(
-        "ssssddddddddsdi",
+        "sssssdddddddssi",
         $fullname, $lastname, $sex, $start_date, $position,
         $salary, $pera, $rta, $clothing, $mid_year_bonus, $year_end_bonus,
         $cash_gift, $productivity_enhancement, $date_issued, $id
