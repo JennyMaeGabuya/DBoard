@@ -290,77 +290,71 @@ if ($result->num_rows > 0) {
                                                                         <label for="firstname">Firstname</label>
                                                                         <input id="firstname" name="firstname" type="text"
                                                                             class="form-control" placeholder="Firstname"
-                                                                            value="<?php echo $firstname; ?>" />
+                                                                            value="<?php echo $firstname; ?>" readonly />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="middlename">Middlename</label>
                                                                         <input id="middlename" name="middlename" type="text"
                                                                             class="form-control" placeholder="Middlename"
-                                                                            value="<?php echo $middlename; ?>" />
+                                                                            value="<?php echo $middlename; ?>" readonly />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="lastname">Lastname</label>
                                                                         <input id="lastname" name="lastname" type="text"
                                                                             class="form-control" placeholder="Lastname"
-                                                                            value="<?php echo $lastname; ?>" />
+                                                                            value="<?php echo $lastname; ?>" readonly />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="name_extension">Extension Name</label>
                                                                         <input id="name_extension" name="name_extension"
                                                                             type="text" class="form-control"
                                                                             placeholder="Extension Name"
-                                                                            value="<?php echo $name_extension; ?>" />
+                                                                            value="<?php echo $name_extension; ?>" readonly />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="email_address">Email Address</label>
                                                                         <input id="email_address" name="email_address"
                                                                             type="email" class="form-control"
                                                                             placeholder="Email Address"
-                                                                            value="<?php echo $email_address; ?>" />
+                                                                            value="<?php echo $email_address; ?>" readonly />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="mobileno">Mobile no.</label>
                                                                         <input id="mobileno" name="mobileno" type="tel"
                                                                             class="form-control" placeholder="Mobile no."
-                                                                            value="<?php echo $mobile_no; ?>" />
+                                                                            value="<?php echo $mobile_no; ?>" readonly />
                                                                     </div>
-
                                                                 </div>
+
                                                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                                     <div class="form-group">
                                                                         <label for="designation">Designation</label>
                                                                         <input type="text" class="form-control" id="designation"
                                                                             name="designation" placeholder="Designation"
-                                                                            value="<?php echo $designation; ?>">
+                                                                            value="<?php echo $designation; ?>" readonly />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="address">Address</label>
                                                                         <input id="address" name="address" type="text"
                                                                             class="form-control" placeholder="Address"
-                                                                            value="<?php echo $address; ?>" />
+                                                                            value="<?php echo $address; ?>" readonly />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="pob">Place of Birth</label>
                                                                         <input id="pob" name="pob" type="text"
                                                                             class="form-control" placeholder="Place of Birth"
-                                                                            value="<?php echo $pob; ?>" />
+                                                                            value="<?php echo $pob; ?>" readonly />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="dob">Date of Birth</label>
                                                                         <input id="dob" name="dob" type="date"
-                                                                            class="form-control" value="<?php echo $dob; ?>" />
+                                                                            class="form-control" value="<?php echo $dob; ?>" readonly />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="station_place">Station/Place</label>
                                                                         <input type="text" class="form-control" id="station_place"
                                                                             name="station_place" placeholder="Station/Place"
-                                                                            value="<?php echo $station_place; ?>">
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="formFile" class="form-label">Upload
-                                                                            profile picture</label>
-                                                                        <input class="form-control" type="file"
-                                                                            id="formFile" name="image">
+                                                                            value="<?php echo $station_place; ?>" readonly />
                                                                     </div>
                                                                 </div>
                                                             </div>
