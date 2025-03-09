@@ -131,8 +131,6 @@
                                                 </ul>
                                             </li>
 
-                                            <!-- INALIS KO MUNA -->
-
                                         </ul>
                                     </div>
                                 </div>

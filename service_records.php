@@ -96,27 +96,106 @@ FROM service_records WHERE employee_no = ?";
           <div class="breadcome-list single-page-breadcome">
             <div class="row">
               <div class="col-lg-12">
-                <ul class="breadcome-menu"
-                  style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
-                  <li>
-                    <link rel="stylesheet"
-                      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                <div class="breadcome-heading">
+                  <div class="row">
+                    <div class="col-lg-12" style="display: flex; justify-content: space-between; align-items: center;">
+                      <!-- Left Side: Home Breadcrumb -->
+                      <ul class="breadcome-menu" style="display: flex; align-items: center; padding: 0; margin: 0;">
+                        <li>
+                          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                          <a href="dashboard.php">
+                            <i class="fas fa-home"></i> Home
+                          </a>
+                          <span class="bread-slash"> / </span>
+                          <a href="all-employees.php">
+                            Employees
+                          </a>
+                          <span class="bread-slash"> / </span>
+                          <a href="#">
+                            <strong>Service Records</strong>
+                          </a>
+                        </li>
+                      </ul>
 
-                    <a href="dashboard.php">
-                      <i class="fas fa-home"></i> <strong>Home</strong>
-                    </a>
-                    <span class="bread-slash"> / </span>
-                    <a href="all_employee.php">
-                      <i class="fas fa-certificate"></i> <strong>Employee</strong>
-                    </a>
-                    <span class="bread-slash"> / </span>
-                    <a>
-                      <i class="fas fa-history"></i> <strong>Service Records</strong>
-                    </a>
-
-                  </li>
-                </ul>
+                      <!-- Right Side: Time, Date, and User Location -->
+                      <div class="pst-container">
+                        <span id="user-location">Detecting location...</span> |
+                        <span id="pst-date"></span> - <span id="pst-time"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+
+              <style>
+                .pst-container {
+                  font-size: 14px;
+                  color: black;
+                  text-align: right;
+                  white-space: nowrap;
+                }
+
+                @media screen and (max-width: 768px) {
+                  .col-lg-12 {
+                    flex-direction: column;
+                    text-align: center;
+                  }
+
+                  .pst-container {
+                    font-size: 13px;
+                    padding-top: 5px;
+                    text-align: center;
+                  }
+                }
+              </style>
+
+              <script>
+                function updatePSTDateTime() {
+                  const optionsDate = {
+                    timeZone: 'Asia/Manila',
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  };
+
+                  const optionsTime = {
+                    timeZone: 'Asia/Manila',
+                    hour12: true,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                  };
+
+                  const now = new Date();
+                  document.getElementById('pst-date').textContent = now.toLocaleDateString('en-US', optionsDate);
+                  document.getElementById('pst-time').textContent = now.toLocaleTimeString('en-US', optionsTime);
+                }
+
+                function fetchUserLocation() {
+                  if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(position => {
+                      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`)
+                        .then(response => response.json())
+                        .then(data => {
+                          document.getElementById('user-location').textContent = data.address.city || data.address.town || "Unknown Location";
+                        })
+                        .catch(() => {
+                          document.getElementById('user-location').textContent = "Location Unavailable";
+                        });
+                    }, () => {
+                      document.getElementById('user-location').textContent = "Location Access Denied";
+                    });
+                  } else {
+                    document.getElementById('user-location').textContent = "Geolocation Not Supported";
+                  }
+                }
+
+                setInterval(updatePSTDateTime, 1000);
+                updatePSTDateTime();
+                fetchUserLocation();
+              </script>
+
             </div>
           </div>
         </div>
@@ -140,7 +219,7 @@ FROM service_records WHERE employee_no = ?";
             <div class="widget-box">
               <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
               <script>
-                $(function () {
+                $(function() {
                   new DataTable('#certHistoryTable', {
                     responsive: true,
                     autoWidth: false,
@@ -184,7 +263,7 @@ FROM service_records WHERE employee_no = ?";
                   $count = 1;
 
                   while ($row = $result->fetch_assoc()) {
-                    ?>
+                  ?>
                     <tr>
                       <td style="text-align: center;"><?php echo $count; ?></td>
                       <td><?php echo htmlspecialchars($row['from_date']); ?></td>
@@ -200,7 +279,7 @@ FROM service_records WHERE employee_no = ?";
                       <!--<td><?php echo date("F d, Y", strtotime($row['date_issued'])); ?></td>-->
                       <td>
                         <div style="text-align: center;">
-                        
+
                           <a href="#editservice" data-toggle="modal" data-empid="<?php echo $row['id']; ?>"
                             class="btn btn-success btn-border btn-round btn-sm">
                             <i class="fa fa-pencil"></i>
@@ -208,7 +287,7 @@ FROM service_records WHERE employee_no = ?";
                         </div>
                       </td>
                     </tr>
-                    <?php
+                  <?php
                     $count++;
                   }
                   ?>
@@ -222,40 +301,39 @@ FROM service_records WHERE employee_no = ?";
     </div>
   </div>
 
- <script>
-$(document).ready(function () {
-  $('.btn-success').on('click', function () {
-    var empid = $(this).data('empid'); // Get empid from the button's data attribute
-    var row = $(this).closest('tr'); // Get the closest row
-    var empno = '<?php echo $employee_no; ?>'; // Assuming employee_no is available in the PHP context
-    var from = row.find('td:nth-child(2)').text(); // From date
-    var to = row.find('td:nth-child(3)').text(); // To date
-    var designation = row.find('td:nth-child(4)').text(); // Designation
-    var status = row.find('td:nth-child(5)').text(); // Status
-    var salary = row.find('td:nth-child(6)').text(); // Salary
-    var station = row.find('td:nth-child(7)').text(); // Station
-    var branch = row.find('td:nth-child(8)').text(); // Branch
-    var abs = row.find('td:nth-child(9)').text(); // Absent without pay
-    var date = row.find('td:nth-child(10)').text(); // Date separated
-    var cause = row.find('td:nth-child(11)').text(); // Cause of separation
+  <script>
+    $(document).ready(function() {
+      $('.btn-success').on('click', function() {
+        var empid = $(this).data('empid'); // Get empid from the button's data attribute
+        var row = $(this).closest('tr'); // Get the closest row
+        var empno = '<?php echo $employee_no; ?>'; // Assuming employee_no is available in the PHP context
+        var from = row.find('td:nth-child(2)').text(); // From date
+        var to = row.find('td:nth-child(3)').text(); // To date
+        var designation = row.find('td:nth-child(4)').text(); // Designation
+        var status = row.find('td:nth-child(5)').text(); // Status
+        var salary = row.find('td:nth-child(6)').text(); // Salary
+        var station = row.find('td:nth-child(7)').text(); // Station
+        var branch = row.find('td:nth-child(8)').text(); // Branch
+        var abs = row.find('td:nth-child(9)').text(); // Absent without pay
+        var date = row.find('td:nth-child(10)').text(); // Date separated
+        var cause = row.find('td:nth-child(11)').text(); // Cause of separation
 
-    // Populate the modal fields
-    $('#editservice .modal-body').find('input[name="empid"]').val(empid); // Set empid
-    $('#editservice .modal-body').find('input[name="empno"]').val(empno); // Set empno
-    $('#editservice .modal-body').find('input[name="from"]').val(from); // Set from date
-    $('#editservice .modal-body').find('input[name="to"]').val(to); // Set to date
-    $('#editservice .modal-body').find('input[name="designation"]').val(designation); // Set designation
-    $('#editservice .modal-body').find('input[name="status"]').val(status); // Set status
-    $('#editservice .modal-body').find('input[name="salary"]').val(salary); // Set salary
-    $('#editservice .modal-body').find('input[name="station"]').val(station); // Set station
-    $('#editservice .modal-body').find('input[name="branch"]').val(branch); // Set branch
-    $('#editservice .modal-body').find('input[name="abs"]').val(abs); // Set absent without pay
-    $('#editservice .modal-body').find('input[name="date"]').val(date); // Set date separated
-    $('#editservice .modal-body').find('input[name="cause"]').val(cause); // Set cause of separation
-  });
-});
-</script>
-
+        // Populate the modal fields
+        $('#editservice .modal-body').find('input[name="empid"]').val(empid); // Set empid
+        $('#editservice .modal-body').find('input[name="empno"]').val(empno); // Set empno
+        $('#editservice .modal-body').find('input[name="from"]').val(from); // Set from date
+        $('#editservice .modal-body').find('input[name="to"]').val(to); // Set to date
+        $('#editservice .modal-body').find('input[name="designation"]').val(designation); // Set designation
+        $('#editservice .modal-body').find('input[name="status"]').val(status); // Set status
+        $('#editservice .modal-body').find('input[name="salary"]').val(salary); // Set salary
+        $('#editservice .modal-body').find('input[name="station"]').val(station); // Set station
+        $('#editservice .modal-body').find('input[name="branch"]').val(branch); // Set branch
+        $('#editservice .modal-body').find('input[name="abs"]').val(abs); // Set absent without pay
+        $('#editservice .modal-body').find('input[name="date"]').val(date); // Set date separated
+        $('#editservice .modal-body').find('input[name="cause"]').val(cause); // Set cause of separation
+      });
+    });
+  </script>
 
   <!-- EDIT SERVICE RECORDS FORM MODAL-->
   <div class="modal fade" id="editservice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -270,7 +348,6 @@ $(document).ready(function () {
         <div class="modal-body">
           <form method="POST" action="editservice_record.php" method="POST" enctype="multipart/form-data">
 
-
             <input name="empid" type="hidden" value="empid" />
 
             <div class="row">
@@ -278,7 +355,7 @@ $(document).ready(function () {
               <div class="form-group col-md-4 mb-2">
                 <label>Employee Number</label>
                 <input name="empno" type="text" class="form-control" placeholder="Employee Number"
-                readonly />
+                  readonly />
               </div>
               <div class="form-group col-md-4">
                 <label>From</label>
@@ -342,24 +419,26 @@ $(document).ready(function () {
           <!--  <input type="hidden" id="pos_id" name="id"> -->
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary" name="serviceupdatebtn">Update</button>
-        
+
         </div>
 
         </form>
       </div>
     </div>
   </div>
+
   <?php if (isset($_SESSION['display'])) : ?>
-        <script>
-            Swal.fire({
-                title: '<?php echo $_SESSION['title']; ?>',
-                text: '<?php echo $_SESSION['display']; ?>',
-                icon: '<?php echo $_SESSION['success']; ?>',
-                confirmButtonText: 'OK'
-            });
-        </script>
-        <?php unset($_SESSION['display']);
-        unset($_SESSION['success']); ?>
-    <?php endif; ?>
+    <script>
+      Swal.fire({
+        title: '<?php echo $_SESSION['title']; ?>',
+        text: '<?php echo $_SESSION['display']; ?>',
+        icon: '<?php echo $_SESSION['success']; ?>',
+        confirmButtonText: 'OK'
+      });
+    </script>
+    <?php unset($_SESSION['display']);
+    unset($_SESSION['success']); ?>
+  <?php endif; ?>
+
   <!--Footer-part-->
   <?php include 'includes/footer.php'; ?>

@@ -55,12 +55,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </a>
           </li>
           <li class="<?= ($current_page == 'organization.php') ? 'active' : ''; ?>">
-            <a href="organization.php">
-              <span class="educate-icon educate-department icon-wrap sub-icon-mg"></span>
+            <a href="./organization.php">
+              <i class="fas fa-sitemap"></i>
               <span class="mini-click-non">Organization</span>
             </a>
           </li>
-          <li class="<?= ($current_page == 'all-employees.php' || $current_page == 'add-employee.php' || $current_page == 'edit-employee.php' || $current_page == 'employee-profile.php') ? 'active' : ''; ?>">
+          <li class="<?= ($current_page == 'all-employees.php' || $current_page == 'add-employee.php' || $current_page == 'edit-employee.php' || $current_page == 'employee-profile.php' || $current_page == 'service_records.php') ? 'active' : ''; ?>">
             <a class="has-arrow" href="#">
               <span class="educate-icon educate-professor icon-wrap"></span>
               <span class="mini-click-non">Employee</span>
@@ -69,27 +69,30 @@ $current_page = basename($_SERVER['PHP_SELF']);
               <li class="<?= ($current_page == 'all-employees.php') ? 'active' : ''; ?>">
                 <a href="all-employees.php"><span class="mini-sub-pro">All Employees</span></a>
               </li>
-              <li class="<?= ($current_page == 'add-employee.php') ? 'active' : ''; ?>">
-                <a href="add-employee.php"><span class="mini-sub-pro">Add Employees</span></a>
-              </li>
-              <li class="<?= ($current_page == 'employee-profile.php') ? 'active' : ''; ?>">
-                <a href="employee-profile.php"><span class="mini-sub-pro">Employees Profile</span></a>
+              <li class="<?= ($current_page == 'employeedetails.php') ? 'active' : ''; ?>">
+                <a href="#"><span class="mini-sub-pro">Employees Details</span></a>
               </li>
             </ul>
           </li>
           <li class="<?= ($current_page == 'certifications.php' || $current_page == 'add-course.php' || $current_page == 'edit-course.php' || $current_page == 'course-info.php' || $current_page == 'course-payment.php') ? 'active' : ''; ?>">
             <a class="has-arrow" href="#">
-              <span class="educate-icon educate-course icon-wrap"></span>
+              <i class="fas fa-file-contract"></i>
               <span class="mini-click-non">Certifications</span>
             </a>
             <ul class="submenu-angle">
               <li class="<?= ($current_page == 'certifications.php') ? 'active' : ''; ?>">
-                <a href="certifications.php"><span class="mini-sub-pro">Certificate Info</span></a>
+                <a href="certifications.php"><span class="mini-sub-pro">Issue Certificate</span></a>
               </li>
               <li class="<?= ($current_page == 'cert-history.php') ? 'active' : ''; ?>">
                 <a href="cert-history.php"><span class="mini-sub-pro">History</span></a>
               </li>
             </ul>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fas fa-download"></i>
+              <span class="mini-click-non">CSC Downloads</span>
+            </a>
           </li>
           <li>
             <a href="./logout.php">

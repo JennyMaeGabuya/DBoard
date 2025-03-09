@@ -136,25 +136,107 @@ if (isset($_GET['employee_no'])) {
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="breadcome-list single-page-breadcome">
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="col-lg-12">
                                 <div class="breadcome-heading">
                                     <div class="row">
-                                        <div class="col-lg-12">
-                                            <ul class="breadcome-menu" style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
+                                        <div class="col-lg-12" style="display: flex; justify-content: space-between; align-items: center;">
+                                            <!-- Left Side: Home Breadcrumb -->
+                                            <ul class="breadcome-menu" style="display: flex; align-items: center; padding: 0; margin: 0;">
                                                 <li>
+                                                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                                                     <a href="dashboard.php">
-                                                        <i class="fa fa-home"></i> Home
+                                                        <i class="fas fa-home"></i> Home
                                                     </a>
-                                                    <span class="bread-slash">/</span>
-                                                    <a href="all-employees.php"> Employees </a>
-                                                    <span class="bread-slash">/</span>
-                                                    <span class="bread-blod">Edit Employee</span>
+                                                    <span class="bread-slash"> / </span>
+                                                    <a href="all-employees.php">
+                                                        Employees
+                                                    </a>
+                                                    <span class="bread-slash"> / </span>
+                                                    <a href="#">
+                                                        <strong>Edit Employee</strong>
+                                                    </a>
                                                 </li>
                                             </ul>
+
+                                            <!-- Right Side: Time, Date, and User Location -->
+                                            <div class="pst-container">
+                                                <span id="user-location">Detecting location...</span> |
+                                                <span id="pst-date"></span> - <span id="pst-time"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <style>
+                                .pst-container {
+                                    font-size: 14px;
+                                    color: black;
+                                    text-align: right;
+                                    white-space: nowrap;
+                                }
+
+                                @media screen and (max-width: 768px) {
+                                    .col-lg-12 {
+                                        flex-direction: column;
+                                        text-align: center;
+                                    }
+
+                                    .pst-container {
+                                        font-size: 13px;
+                                        padding-top: 5px;
+                                        text-align: center;
+                                    }
+                                }
+                            </style>
+
+                            <script>
+                                function updatePSTDateTime() {
+                                    const optionsDate = {
+                                        timeZone: 'Asia/Manila',
+                                        weekday: 'long',
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric'
+                                    };
+
+                                    const optionsTime = {
+                                        timeZone: 'Asia/Manila',
+                                        hour12: true,
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        second: '2-digit'
+                                    };
+
+                                    const now = new Date();
+                                    document.getElementById('pst-date').textContent = now.toLocaleDateString('en-US', optionsDate);
+                                    document.getElementById('pst-time').textContent = now.toLocaleTimeString('en-US', optionsTime);
+                                }
+
+                                function fetchUserLocation() {
+                                    if (navigator.geolocation) {
+                                        navigator.geolocation.getCurrentPosition(position => {
+                                            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`)
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    document.getElementById('user-location').textContent = data.address.city || data.address.town || "Unknown Location";
+                                                })
+                                                .catch(() => {
+                                                    document.getElementById('user-location').textContent = "Location Unavailable";
+                                                });
+                                        }, () => {
+                                            document.getElementById('user-location').textContent = "Location Access Denied";
+                                        });
+                                    } else {
+                                        document.getElementById('user-location').textContent = "Geolocation Not Supported";
+                                    }
+                                }
+
+                                setInterval(updatePSTDateTime, 1000);
+                                updatePSTDateTime();
+                                fetchUserLocation();
+                            </script>
+
                         </div>
                     </div>
                 </div>

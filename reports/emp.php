@@ -93,7 +93,7 @@ class PDF extends FPDF
         $this->Cell(40, 40, '', 0); // Empty cell for space     
         // First Name
         $this->SetFont('Times', '', 12);
-        $this->Cell(43, 10, 'FIRST NAME:', 1);
+        $this->Cell(43, 10, 'FIRST NAME', 1);
         $this->SetFont('Times', 'B', 12);
         $this->Cell(0, 10, $employee['firstname'], 1); // Use 0 to take the remaining width
         $this->Ln(); // Move to the next line
@@ -101,7 +101,7 @@ class PDF extends FPDF
         // Middle Name
         $this->Cell(40, 40, '', 0); // Empty cell for space     
         $this->SetFont('Times', '', 12);
-        $this->Cell(43, 10, 'MIDDLE NAME:', 1);
+        $this->Cell(43, 10, 'MIDDLE NAME', 1);
         $this->SetFont('Times', 'B', 12);
         $this->Cell(0, 10, $employee['middlename'], 1); // Use 0 to take the remaining width
         $this->Ln(); // Move to the next line
@@ -109,51 +109,59 @@ class PDF extends FPDF
         // Name Extension
         $this->Cell(40, 40, '', 0); // Empty cell for space     
         $this->SetFont('Times', '', 12);
-        $this->Cell(43, 10, 'NAME EXTENSION:', 1);
+        $this->Cell(43, 10, 'NAME EXTENSION', 1);
         $this->SetFont('Times', 'B', 12);
-        $this->Cell(0, 10, $employee['name_extension'], 1); // Use 0 to take the remaining width
+
+        // Check if name extension is empty and set the appropriate font style
+        if (!empty($employee['name_extension'])) {
+            $this->Cell(0, 10, $employee['name_extension'], 1);
+        } else {
+            $this->SetFont('Times', 'BI', 12); // Italicize "N/A"
+            $this->Cell(0, 10, 'N/A', 1);
+        }
+
         $this->Ln(); // Move to the next line
 
         // Additional rows
         $this->SetFont('Times', '', 12);
-        $this->Cell(40, 10, 'Contact No.:', 1);
+        $this->Cell(40, 10, 'CONTACT NO', 1);
         $this->SetFont('Times', 'B', 12);
         $this->Cell(43, 10, $employee['mobile_no'], 1);
-        $this->SetFont('Times', '', 12);
-        $this->Cell(20, 10, 'Email:', 1);
-        $this->SetFont('Times', 'B', 12);
-        $this->Cell(87, 10, $employee['email'], 1);
 
+        $this->SetFont('Times', '', 12);
+        $this->Cell(27, 10, 'EMAIL ADD', 1);
+        $this->SetFont('Times', 'B', 12);
+        $this->Cell(80, 10, $employee['email'], 1);
         $this->Ln();
 
         $this->SetFont('Times', '', 12);
-        $this->Cell(40, 10, 'Address:', 1);
+        $this->Cell(40, 10, 'ADDRESS', 1);
         $this->SetFont('Times', 'B', 12);
         $this->Cell(150, 10, $employee['address'], 1);
         $this->Ln();
 
         $this->SetFont('Times', '', 12);
-        $this->Cell(40, 10, 'Place of Birth:', 1);
+        $this->Cell(40, 10, 'PLACE OF BIRTH', 1);
         $this->SetFont('Times', 'B', 12);
         $this->Cell(150, 10, $employee['pob'], 1);
         $this->SetFont('Times', '', 12);
         $this->Ln();
-        $this->Cell(40, 10, 'Sex:', 1);
+
+        $this->Cell(40, 10, 'SEX', 1);
         $this->SetFont('Times', 'B', 12);
         $this->Cell(43, 10, $employee['sex'], 1);
 
         $dob = $employee['dob'];
         $date = new DateTime($dob);
-        $birthday = $date->format('F j, Y'); 
+        $birthday = $date->format('F j, Y');
         $this->SetFont('Times', '', 12);
-        $this->Cell(20, 10, 'Birthday:', 1);
+        $this->Cell(27, 10, 'BIRTHDATE', 1);
         $this->SetFont('Times', 'B', 12);
-        $this->Cell(87, 10, $birthday, 1);
+        $this->Cell(80, 10, $birthday, 1);
         $this->Ln();
 
-      
         $this->SetFont('Times', '', 12);
-        $this->Cell(40, 10, 'Blood Type:', 1);
+        $this->Cell(40, 10, 'BLOOD TYPE', 1);
         $this->SetFont('Times', 'B', 12);
         $this->Cell(150, 10, $employee['blood_type'], 1);
         $this->Ln();
@@ -168,6 +176,7 @@ class PDF extends FPDF
         $this->Cell(40, 10, 'GSIS NO:', 1);
         $this->SetFont('Times', 'B', 12);
         $this->Cell(50, 10, !empty($employee['gsis_no']) ? $employee['gsis_no'] : 'N/A', 1);
+
         $this->SetFont('Times', '', 12);
         $this->Cell(50, 10, 'SSS NO:', 1);
         $this->SetFont('Times', 'B', 12);
@@ -178,6 +187,7 @@ class PDF extends FPDF
         $this->Cell(40, 10, 'PHILHEALTH NO:', 1);
         $this->SetFont('Times', 'B', 12);
         $this->Cell(50, 10, !empty($employee['philhealth_no']) ? $employee['philhealth_no'] : 'N/A', 1);
+
         $this->SetFont('Times', '', 12);
         $this->Cell(50, 10, 'PAG-IBIG NO:', 1);
         $this->SetFont('Times', 'B', 12);
@@ -188,6 +198,7 @@ class PDF extends FPDF
         $this->Cell(40, 10, 'TIN NO:', 1);
         $this->SetFont('Times', 'B', 12);
         $this->Cell(50, 10, !empty($employee['tin_no']) ? $employee['tin_no'] : 'N/A', 1);
+
         $this->SetFont('Times', '', 11.5);
         $this->Cell(50, 10, 'AGENCY EMPLOYEE NO:', 1);
         $this->SetFont('Times', 'B', 11);

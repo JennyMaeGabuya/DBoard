@@ -229,18 +229,106 @@ FROM employee WHERE employee.employee_no = ?";
                     <div class="breadcome-list single-page-breadcome">
                         <div class="row">
                             <div class="col-lg-12">
-                                <ul class="breadcome-menu" style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
-                                    <li>
-                                        <a href="dashboard.php">
-                                            <i class="fa fa-home"></i> Home
-                                        </a>
-                                        <span class="bread-slash">/</span>
-                                        <a href="all-employees.php">Employees</a>
-                                        <span class="bread-slash">/</span>
-                                        <span class="bread-blod">View Report</span>
-                                    </li>
-                                </ul>
+                                <div class="breadcome-heading">
+                                    <div class="row">
+                                        <div class="col-lg-12" style="display: flex; justify-content: space-between; align-items: center;">
+                                            <!-- Left Side: Home Breadcrumb -->
+                                            <ul class="breadcome-menu" style="display: flex; align-items: center; padding: 0; margin: 0;">
+                                                <li>
+                                                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                                                    <a href="dashboard.php">
+                                                        <i class="fas fa-home"></i> Home
+                                                    </a>
+                                                    <span class="bread-slash"> / </span>
+                                                    <a href="all-employees.php">
+                                                        Employees
+                                                    </a>
+                                                    <span class="bread-slash"> / </span>
+                                                    <a href="dashboard.php">
+                                                        <strong>View Details</strong>
+                                                    </a>
+                                                </li>
+                                            </ul>
+
+                                            <!-- Right Side: Time, Date, and User Location -->
+                                            <div class="pst-container">
+                                                <span id="user-location">Detecting location...</span> |
+                                                <span id="pst-date"></span> - <span id="pst-time"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
+                            <style>
+                                .pst-container {
+                                    font-size: 14px;
+                                    color: black;
+                                    text-align: right;
+                                    white-space: nowrap;
+                                }
+
+                                @media screen and (max-width: 768px) {
+                                    .col-lg-12 {
+                                        flex-direction: column;
+                                        text-align: center;
+                                    }
+
+                                    .pst-container {
+                                        font-size: 13px;
+                                        padding-top: 5px;
+                                        text-align: center;
+                                    }
+                                }
+                            </style>
+
+                            <script>
+                                function updatePSTDateTime() {
+                                    const optionsDate = {
+                                        timeZone: 'Asia/Manila',
+                                        weekday: 'long',
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric'
+                                    };
+
+                                    const optionsTime = {
+                                        timeZone: 'Asia/Manila',
+                                        hour12: true,
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        second: '2-digit'
+                                    };
+
+                                    const now = new Date();
+                                    document.getElementById('pst-date').textContent = now.toLocaleDateString('en-US', optionsDate);
+                                    document.getElementById('pst-time').textContent = now.toLocaleTimeString('en-US', optionsTime);
+                                }
+
+                                function fetchUserLocation() {
+                                    if (navigator.geolocation) {
+                                        navigator.geolocation.getCurrentPosition(position => {
+                                            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`)
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    document.getElementById('user-location').textContent = data.address.city || data.address.town || "Unknown Location";
+                                                })
+                                                .catch(() => {
+                                                    document.getElementById('user-location').textContent = "Location Unavailable";
+                                                });
+                                        }, () => {
+                                            document.getElementById('user-location').textContent = "Location Access Denied";
+                                        });
+                                    } else {
+                                        document.getElementById('user-location').textContent = "Geolocation Not Supported";
+                                    }
+                                }
+
+                                setInterval(updatePSTDateTime, 1000);
+                                updatePSTDateTime();
+                                fetchUserLocation();
+                            </script>
+
                         </div>
                     </div>
                 </div>
@@ -261,9 +349,9 @@ FROM employee WHERE employee.employee_no = ?";
                                     <div class="card-tools">
 
                                         <a href="reports/emp.php?id=<?php echo $employee_no ?>" class="btn btn-danger btn-border btn-round btn-sm" target="_blank">
-                                            <i class="fa-solid fa-file-pdf"></i>PDF
+                                            <i class="fa-solid fa-file-pdf"></i> PDF
                                         </a>
-                                       
+
                                         <a href="#addservice" data-toggle="modal" class="btn btn-success btn-border btn-round btn-sm">
                                             <i class="fa fa-file"></i> Service Records
                                         </a>
@@ -389,8 +477,6 @@ FROM employee WHERE employee.employee_no = ?";
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>
 
- 
-
     <!--SERVICE RECORDS FORM MODAL-->
     <div class="modal fade" id="addservice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -418,7 +504,7 @@ FROM employee WHERE employee.employee_no = ?";
                                     name="date_started"
                                     type="date"
                                     class="form-control"
-                                    placeholder="Salary"  />
+                                    placeholder="Salary" />
                             </div>
                             <div class="form-group col-md-4">
                                 <label>To</label>
@@ -426,7 +512,7 @@ FROM employee WHERE employee.employee_no = ?";
                                     name="date_ended"
                                     type="date"
                                     class="form-control"
-                                    placeholder="Pera"  required />
+                                    placeholder="Pera" required />
                             </div>
 
                         </div>
@@ -438,7 +524,7 @@ FROM employee WHERE employee.employee_no = ?";
                                     <input
                                         name="designation"
                                         type="text"
-                                        class="form-control" 
+                                        class="form-control"
                                         required />
                                 </div>
                             </div>
@@ -449,7 +535,7 @@ FROM employee WHERE employee.employee_no = ?";
                                     name="status"
                                     type="text"
                                     class="form-control"
-                                     required />
+                                    required />
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Salary</label>
@@ -457,7 +543,7 @@ FROM employee WHERE employee.employee_no = ?";
                                     name="servicesalary"
                                     type="number"
                                     class="form-control"
-                                     required />
+                                    required />
                             </div>
                         </div>
 
@@ -467,7 +553,7 @@ FROM employee WHERE employee.employee_no = ?";
                                 <input
                                     name="station"
                                     type="text"
-                                    class="form-control" 
+                                    class="form-control"
                                     required />
                             </div>
                             <div class="form-group col-md-4">
@@ -475,7 +561,7 @@ FROM employee WHERE employee.employee_no = ?";
                                 <input
                                     name="branch"
                                     type="text"
-                                    class="form-control" 
+                                    class="form-control"
                                     required />
                             </div>
                             <div class="form-group col-md-4">
@@ -483,7 +569,7 @@ FROM employee WHERE employee.employee_no = ?";
                                 <input
                                     name="abs_wo_pay"
                                     type="text"
-                                    class="form-control" 
+                                    class="form-control"
                                     required />
                             </div>
                         </div>
@@ -494,8 +580,7 @@ FROM employee WHERE employee.employee_no = ?";
                                 <input
                                     name="separated"
                                     type="date"
-                                    class="form-control" 
-                                     />
+                                    class="form-control" />
                             </div>
 
                             <div class="form-group col-md-8">
@@ -503,8 +588,7 @@ FROM employee WHERE employee.employee_no = ?";
                                 <input
                                     name="separation"
                                     type="text"
-                                    class="form-control" 
-                                     />
+                                    class="form-control" />
                             </div>
 
                         </div>

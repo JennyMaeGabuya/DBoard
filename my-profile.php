@@ -55,7 +55,6 @@ if ($result->num_rows > 0) {
     $user_image = !empty($image) ? 'img/profile/' . $image : 'img/mk-logo.png';
     $designation = $row['designation'];
     $station_place = $row['station_place'];
-   
 } else {
     die("No user data found.");
 }
@@ -91,7 +90,6 @@ if ($result->num_rows > 0) {
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="css/responsive.css" />
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-    
 </head>
 
 <body>
@@ -109,29 +107,103 @@ if ($result->num_rows > 0) {
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="breadcome-list single-page-breadcome">
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="col-lg-12">
                                 <div class="breadcome-heading">
                                     <div class="row">
-                                        <div class="col-lg-12">
-                                            <ul class="breadcome-menu"
-                                                style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
+                                        <div class="col-lg-12" style="display: flex; justify-content: space-between; align-items: center;">
+                                            <!-- Left Side: Home Breadcrumb -->
+                                            <ul class="breadcome-menu" style="display: flex; align-items: center; padding: 0; margin: 0;">
                                                 <li>
                                                     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
                                                     <a href="dashboard.php">
-                                                        <i class="fas fa-home"></i> <strong>Home</strong>
+                                                        <i class="fas fa-home"></i> Home
                                                     </a>
                                                     <span class="bread-slash"> / </span>
-                                                    <a href="my-profile.php">
-                                                        <i class="fas fa-user-circle"></i> <strong>My Profile</strong>
+                                                    <a href="#">
+                                                        <strong>My Profile</strong>
                                                     </a>
-
                                                 </li>
                                             </ul>
+
+                                            <!-- Right Side: Time, Date, and User Location -->
+                                            <div class="pst-container">
+                                                <span id="user-location">Detecting location...</span> |
+                                                <span id="pst-date"></span> - <span id="pst-time"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <style>
+                                .pst-container {
+                                    font-size: 14px;
+                                    color: black;
+                                    text-align: right;
+                                    white-space: nowrap;
+                                }
+
+                                @media screen and (max-width: 768px) {
+                                    .col-lg-12 {
+                                        flex-direction: column;
+                                        text-align: center;
+                                    }
+
+                                    .pst-container {
+                                        font-size: 13px;
+                                        padding-top: 5px;
+                                        text-align: center;
+                                    }
+                                }
+                            </style>
+
+                            <script>
+                                function updatePSTDateTime() {
+                                    const optionsDate = {
+                                        timeZone: 'Asia/Manila',
+                                        weekday: 'long',
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric'
+                                    };
+
+                                    const optionsTime = {
+                                        timeZone: 'Asia/Manila',
+                                        hour12: true,
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        second: '2-digit'
+                                    };
+
+                                    const now = new Date();
+                                    document.getElementById('pst-date').textContent = now.toLocaleDateString('en-US', optionsDate);
+                                    document.getElementById('pst-time').textContent = now.toLocaleTimeString('en-US', optionsTime);
+                                }
+
+                                function fetchUserLocation() {
+                                    if (navigator.geolocation) {
+                                        navigator.geolocation.getCurrentPosition(position => {
+                                            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`)
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    document.getElementById('user-location').textContent = data.address.city || data.address.town || "Unknown Location";
+                                                })
+                                                .catch(() => {
+                                                    document.getElementById('user-location').textContent = "Location Unavailable";
+                                                });
+                                        }, () => {
+                                            document.getElementById('user-location').textContent = "Location Access Denied";
+                                        });
+                                    } else {
+                                        document.getElementById('user-location').textContent = "Geolocation Not Supported";
+                                    }
+                                }
+
+                                setInterval(updatePSTDateTime, 1000);
+                                updatePSTDateTime();
+                                fetchUserLocation();
+                            </script>
+
                         </div>
                     </div>
                 </div>
@@ -218,26 +290,26 @@ if ($result->num_rows > 0) {
                                                                         <label for="firstname">Firstname</label>
                                                                         <input id="firstname" name="firstname" type="text"
                                                                             class="form-control" placeholder="Firstname"
-                                                                            value="<?php echo $firstname; ?>"  />
+                                                                            value="<?php echo $firstname; ?>" />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="middlename">Middlename</label>
                                                                         <input id="middlename" name="middlename" type="text"
                                                                             class="form-control" placeholder="Middlename"
-                                                                            value="<?php echo $middlename; ?>"  />
+                                                                            value="<?php echo $middlename; ?>" />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="lastname">Lastname</label>
                                                                         <input id="lastname" name="lastname" type="text"
                                                                             class="form-control" placeholder="Lastname"
-                                                                            value="<?php echo $lastname; ?>"  />
+                                                                            value="<?php echo $lastname; ?>" />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="name_extension">Extension Name</label>
                                                                         <input id="name_extension" name="name_extension"
                                                                             type="text" class="form-control"
                                                                             placeholder="Extension Name"
-                                                                            value="<?php echo $name_extension; ?>"  />
+                                                                            value="<?php echo $name_extension; ?>" />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="email_address">Email Address</label>
@@ -250,46 +322,45 @@ if ($result->num_rows > 0) {
                                                                         <label for="mobileno">Mobile no.</label>
                                                                         <input id="mobileno" name="mobileno" type="tel"
                                                                             class="form-control" placeholder="Mobile no."
-                                                                            value="<?php echo $mobile_no; ?>"  />
+                                                                            value="<?php echo $mobile_no; ?>" />
                                                                     </div>
-                                                                    
+
                                                                 </div>
                                                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                                <div class="form-group">
-                                                                    <label for="designation">Designation</label>
-                                                                    <input type="text" class="form-control" id="designation"
-                                                                        name="designation" placeholder="Designation"
-                                                                        value="<?php echo $designation; ?>" >
-                                                                </div>
+                                                                    <div class="form-group">
+                                                                        <label for="designation">Designation</label>
+                                                                        <input type="text" class="form-control" id="designation"
+                                                                            name="designation" placeholder="Designation"
+                                                                            value="<?php echo $designation; ?>">
+                                                                    </div>
                                                                     <div class="form-group">
                                                                         <label for="address">Address</label>
                                                                         <input id="address" name="address" type="text"
                                                                             class="form-control" placeholder="Address"
-                                                                            value="<?php echo $address; ?>"  />
+                                                                            value="<?php echo $address; ?>" />
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="pob">Place of Birth</label>
                                                                         <input id="pob" name="pob" type="text"
                                                                             class="form-control" placeholder="Place of Birth"
                                                                             value="<?php echo $pob; ?>" />
-                                                                    </div>  
+                                                                    </div>
                                                                     <div class="form-group">
                                                                         <label for="dob">Date of Birth</label>
                                                                         <input id="dob" name="dob" type="date"
-                                                                            class="form-control" value="<?php echo $dob; ?>"
-                                                                            />
+                                                                            class="form-control" value="<?php echo $dob; ?>" />
                                                                     </div>
-                                                                <div class="form-group">
-                                                                    <label for="station_place">Station/Place</label>
-                                                                    <input type="text" class="form-control" id="station_place"
-                                                                        name="station_place" placeholder="Station/Place"
-                                                                        value="<?php echo $station_place; ?>" >
-                                                                </div>
+                                                                    <div class="form-group">
+                                                                        <label for="station_place">Station/Place</label>
+                                                                        <input type="text" class="form-control" id="station_place"
+                                                                            name="station_place" placeholder="Station/Place"
+                                                                            value="<?php echo $station_place; ?>">
+                                                                    </div>
                                                                     <div class="form-group">
                                                                         <label for="formFile" class="form-label">Upload
                                                                             profile picture</label>
                                                                         <input class="form-control" type="file"
-                                                                            id="formFile" name="image" >
+                                                                            id="formFile" name="image">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -307,7 +378,13 @@ if ($result->num_rows > 0) {
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                                
     <!-- Footer Start-->
     <?php include 'includes/footer.php'; ?>
