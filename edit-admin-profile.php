@@ -7,13 +7,108 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Include the database connection file
 include_once "dbcon.php";
 
-// Set the user_id logged in as the employee_no
+// Set the user_id logged in as employee_no
 $employee_no = $_SESSION['user_id'];
+$update_success = false; // Variable to track successful updates
 
-// Fetch user data from the database using the specified employee_no
+// Handle form submission inside this file
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $update_type = $_POST['update_type'];
+
+    if ($update_type === 'basic_info') {
+        $firstname = $_POST['firstname'];
+        $middlename = $_POST['middlename'];
+        $lastname = $_POST['lastname'];
+        $name_extension = $_POST['name_extension'];
+        $email_address = $_POST['email_address'];
+        $mobile_no = $_POST['mobileno'];
+        $designation = $_POST['designation'];
+        $address = $_POST['address'];
+        $pob = $_POST['pob'];
+        $dob = $_POST['dob'];
+        $station_place = $_POST['station_place'];
+
+        // Get existing image
+        $query = "SELECT image FROM employee WHERE employee_no = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param("s", $employee_no);
+        $stmt->execute();
+        $stmt->bind_result($existing_image);
+        $stmt->fetch();
+        $stmt->close();
+
+        // Handle image upload (keep existing if no new image uploaded)
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
+            $image = $_FILES['image'];
+            $image_name = basename($image['name']);
+            $target_dir = "img/profile/";
+            $target_file = $target_dir . $image_name;
+
+            // Validate file type
+            $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
+            $file_extension = strtolower(pathinfo($image_name, PATHINFO_EXTENSION));
+            if (!in_array($file_extension, $allowed_types)) {
+                echo "<script>Swal.fire('Error!', 'Invalid file type. Only JPG, JPEG, PNG, and GIF allowed.', 'error');</script>";
+                exit();
+            }
+
+            // Validate file size (limit 2MB)
+            if ($image['size'] > 2 * 1024 * 1024) {
+                echo "<script>Swal.fire('Error!', 'File size exceeds 2MB limit.', 'error');</script>";
+                exit();
+            }
+
+            // Move uploaded file
+            if (!move_uploaded_file($image['tmp_name'], $target_file)) {
+                echo "<script>Swal.fire('Error!', 'File upload failed.', 'error');</script>";
+                exit();
+            }
+        } else {
+            $image_name = $existing_image; // Keep existing image if no new upload
+        }
+
+        // Update employee table
+        $query = "UPDATE employee e
+                  JOIN admin a ON e.employee_no = a.employee_no
+                  SET e.firstname = ?, e.middlename = ?, e.lastname = ?, e.name_extension = ?, 
+                      e.email_address = ?, e.mobile_no = ?, e.address = ?, 
+                      e.pob = ?, e.dob = ?, e.image = ?
+                  WHERE e.employee_no = ?";
+
+        $stmt = $con->prepare($query);
+        $stmt->bind_param(
+            "sssssssssss",
+            $firstname,
+            $middlename,
+            $lastname,
+            $name_extension,
+            $email_address,
+            $mobile_no,
+            $address,
+            $pob,
+            $dob,
+            $image_name,
+            $employee_no
+        );
+
+        if (!$stmt->execute()) {
+            die("Error updating employee record: " . $stmt->error);
+        }
+
+        // Update service records
+        $service_query = "UPDATE service_records SET designation = ?, station_place = ? WHERE employee_no = ?";
+        $service_stmt = $con->prepare($service_query);
+        $service_stmt->bind_param("sss", $designation, $station_place, $employee_no);
+        $service_stmt->execute();
+
+        // ✅ Set update success flag
+        $update_success = true;
+    }
+}
+
+// Fetch user data (AFTER update) for the form fields
 $query = "SELECT
     e.*, s.*, g.*, c.*,
     c.salary AS compensation_salary
@@ -37,7 +132,6 @@ $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    // Extract data from the $row array
     $firstname = $row['firstname'];
     $middlename = $row['middlename'];
     $lastname = $row['lastname'];
@@ -86,6 +180,9 @@ if ($result->num_rows > 0) {
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="css/responsive.css" />
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -96,7 +193,6 @@ if ($result->num_rows > 0) {
     <!-- Header -->
     <?php include 'includes/header.php'; ?>
 
-    <!-- Breadcrumb -->
     <!-- Mobile Menu end -->
     <div class="breadcome-area">
         <div class="container-fluid">
@@ -104,28 +200,106 @@ if ($result->num_rows > 0) {
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="breadcome-list single-page-breadcome">
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="col-lg-12">
                                 <div class="breadcome-heading">
                                     <div class="row">
-                                        <div class="col-lg-12">
-                                            <ul class="breadcome-menu"
-                                                style="display: flex; justify-content: flex-start; padding-left: 0; padding: 0;">
+                                        <div class="col-lg-12" style="display: flex; justify-content: space-between; align-items: center;">
+                                            <!-- Left Side: Home Breadcrumb -->
+                                            <ul class="breadcome-menu" style="display: flex; align-items: center; padding: 0; margin: 0;">
                                                 <li>
-                                                    <link rel="stylesheet"
-                                                        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                                                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                                                     <a href="dashboard.php">
-                                                        <i class="fa fa-home"></i> Home
+                                                        <i class="fas fa-home"></i> Home
                                                     </a>
                                                     <span class="bread-slash">/</span>
-                                                    <a href="my-profile.php"> My Profile </a>
-                                                    <span class="bread-slash">/</span>
-                                                    <span class="bread-blod">Edit Admin Profile</span>
+                                                    <a href="my-profile.php">
+                                                        My Profile
+                                                    </a><span class="bread-slash">/</span>
+                                                    <a href="#">
+                                                        <strong>Edit Admin Profile</strong>
+                                                    </a>
                                                 </li>
                                             </ul>
+
+                                            <!-- Right Side: Time, Date, and User Location -->
+                                            <div class="pst-container">
+                                                <span id="user-location">Detecting location...</span> |
+                                                <span id="pst-date"></span> - <span id="pst-time"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <style>
+                                .pst-container {
+                                    font-size: 14px;
+                                    color: black;
+                                    text-align: right;
+                                    white-space: nowrap;
+                                }
+
+                                @media screen and (max-width: 768px) {
+                                    .col-lg-12 {
+                                        flex-direction: column;
+                                        text-align: center;
+                                    }
+
+                                    .pst-container {
+                                        font-size: 13px;
+                                        padding-top: 5px;
+                                        text-align: center;
+                                    }
+                                }
+                            </style>
+
+                            <script>
+                                function updatePSTDateTime() {
+                                    const optionsDate = {
+                                        timeZone: 'Asia/Manila',
+                                        weekday: 'long',
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric'
+                                    };
+
+                                    const optionsTime = {
+                                        timeZone: 'Asia/Manila',
+                                        hour12: true,
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        second: '2-digit'
+                                    };
+
+                                    const now = new Date();
+                                    document.getElementById('pst-date').textContent = now.toLocaleDateString('en-US', optionsDate);
+                                    document.getElementById('pst-time').textContent = now.toLocaleTimeString('en-US', optionsTime);
+                                }
+
+                                function fetchUserLocation() {
+                                    if (navigator.geolocation) {
+                                        navigator.geolocation.getCurrentPosition(position => {
+                                            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`)
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    document.getElementById('user-location').textContent = data.address.city || data.address.town || "Unknown Location";
+                                                })
+                                                .catch(() => {
+                                                    document.getElementById('user-location').textContent = "Location Unavailable";
+                                                });
+                                        }, () => {
+                                            document.getElementById('user-location').textContent = "Location Access Denied";
+                                        });
+                                    } else {
+                                        document.getElementById('user-location').textContent = "Geolocation Not Supported";
+                                    }
+                                }
+
+                                setInterval(updatePSTDateTime, 1000);
+                                updatePSTDateTime();
+                                fetchUserLocation();
+                            </script>
+
                         </div>
                     </div>
                 </div>
@@ -140,7 +314,7 @@ if ($result->num_rows > 0) {
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     <div class="profile-info-inner">
                         <div class="profile-img">
-                            <img src="<?php echo htmlspecialchars($user_image); ?>" alt="User  Image" />
+                            <img id="profileImage" src="<?php echo htmlspecialchars($user_image); ?>" alt="User Image" />
                         </div>
 
                         <div class="profile-details-hr">
@@ -202,7 +376,7 @@ if ($result->num_rows > 0) {
 
                         <div class="tab-content custom-product-edit">
                             <div id="description" class="tab-pane fade active in">
-                                <form action="update-admin-profile.php" method="POST" enctype="multipart/form-data">
+                                <form action="edit-admin-profile.php" method="POST" enctype="multipart/form-data">
                                     <input type="hidden" name="update_type" value="basic_info">
 
                                     <div class="product-tab-list">
@@ -248,7 +422,7 @@ if ($result->num_rows > 0) {
                                                                             required />
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label for="mobileno">Mobile no.</label>
+                                                                        <label for="mobileno">Mobile No.</label>
                                                                         <input id="mobileno" name="mobileno" type="tel"
                                                                             class="form-control"
                                                                             value="<?php echo $mobile_no; ?>"
@@ -287,21 +461,28 @@ if ($result->num_rows > 0) {
                                                                             value="<?php echo $station_place; ?>">
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label for="formFile" class="form-label">Upload
-                                                                            profile picture</label>
-                                                                        <input class="form-control" type="file"
-                                                                            id="formFile" name="image">
+                                                                        <label for="formFile" class="form-label">Upload Profile Picture</label>
+                                                                        <input class="form-control" type="file" id="formFile" name="image" accept="image/*" onchange="previewImage(event)">
                                                                     </div>
+
+                                                                    <script>
+                                                                        function previewImage(event) {
+                                                                            var reader = new FileReader();
+                                                                            reader.onload = function() {
+                                                                                var output = document.getElementById('profileImage');
+                                                                                output.src = reader.result; // Update the image preview
+                                                                            };
+                                                                            reader.readAsDataURL(event.target.files[0]); // Convert to Base64
+                                                                        }
+                                                                    </script>
+
                                                                 </div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-lg-12">
-                                                                    <div class="payment-adress text-center">
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary">Update
-                                                                            Profile</button>
-                                                                        <a href="my-profile.php" class="btn btn-primary"
-                                                                            style="margin-left: 10px;">Back</a>
+                                                                    <div style="text-align: center;">
+                                                                        <a href="my-profile.php" class="btn btn-primary">Back</a>
+                                                                        <button type="submit" class="btn btn-success" style="margin-left: 5px;">Update Profile</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -318,5 +499,20 @@ if ($result->num_rows > 0) {
             </div>
         </div>
     </div>
+
+    <!-- SweetAlert -->
+    <?php if ($update_success): ?>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Your profile has been successfully updated.',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                window.location.href = 'my-profile.php';
+            });
+        </script>
+    <?php endif; ?>
 
     <?php include 'includes/footer.php'; ?>
