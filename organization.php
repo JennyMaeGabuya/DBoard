@@ -173,7 +173,7 @@ include "dbcon.php";
                             <div class="col-md-6 text-right">
                                 <div class="button-container">
                                     <a href="organization-chart.php" class="btn btn-warning btn-border btn-round btn-sm" target="_blank">
-                                        <i class="fa fa-file"></i> View Chart
+                                        <i class="fa fa-sitemap"></i> View Chart
                                     </a>
                                 </div>
                             </div>

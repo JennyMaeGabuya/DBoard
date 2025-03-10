@@ -178,10 +178,7 @@ include "dbcon.php";
                                 <div class="button-container">
                                     <a href="#add" data-toggle="modal"
                                         class="btn btn-primary btn-border btn-round btn-sm">
-                                        <i class="fa fa-plus"></i> Add
-                                    </a>
-                                    <a href="add-employee.php" class="btn btn-warning btn-border btn-round btn-sm">
-                                        <i class="fa fa-eye"></i> View
+                                        <i class="fa-solid fa-plus-circle"></i> Add
                                     </a>
                                     <a href="reports/csv-employees.php" class="btn btn-success btn-border btn-round btn-sm">
                                         <i class="fa fa-file-excel-o"></i> Export
@@ -274,7 +271,7 @@ include "dbcon.php";
                                             <td><?php echo htmlspecialchars($sex); ?></td>
                                             <td>
                                                 <div style="text-align: center;">
-                                                    <a href="edit-employee.php?employee_no=<?php echo $employee_no; ?>" class="btn btn-primary" style="margin-right: 5px;">
+                                                    <a href="edit-employee.php?employee_no=<?php echo $employee_no; ?>" class="btn btn-warning" style="margin-right: 5px;">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
                                                     <a href="employeedetails.php?employee_no=<?php echo $employee_no; ?>"

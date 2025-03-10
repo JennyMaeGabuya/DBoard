@@ -253,7 +253,7 @@ include "dbcon.php";
                       <td>
                         <div style="text-align: center;">
                           <!-- Edit Button -->
-                          <button class="btn btn-primary edit-btn" title="Edit Certificate" data-id="<?php echo $row['id']; ?>"
+                          <button class="btn btn-warning edit-btn" title="Edit Certificate" data-id="<?php echo $row['id']; ?>"
                             data-type="<?php echo strtolower($row['cert_type']); ?>" style="margin-right: 5px;">
                             <i class="fa fa-pencil"></i>
                           </button>
