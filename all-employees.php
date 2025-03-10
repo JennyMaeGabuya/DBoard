@@ -224,7 +224,8 @@ include "dbcon.php";
                                     $query = "SELECT e.*
                                             FROM employee e
                                             LEFT JOIN hr_staffs h ON e.employee_no = h.employee_no AND LOWER(h.role) LIKE '%mayor%'
-                                            WHERE h.employee_no IS NULL;
+                                            WHERE h.employee_no IS NULL
+                                            ORDER BY created_at DESC;
                                             ";
                                     $view_data = mysqli_query($con, $query);
                                     $count = 1;
@@ -283,9 +284,6 @@ include "dbcon.php";
                                                     </a>
                                                 </div>
                                             </td>
-
-                                            <!-- SweetAlert2 Library -->
-                                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
                                             <script>
                                                 document.addEventListener("DOMContentLoaded", function() {
@@ -350,9 +348,6 @@ include "dbcon.php";
         </div>
     </div>
 
-    <!--Footer-part-->
-    <?php include 'includes/footer.php'; ?>
-
     <!-- Modal ADD NEW employee -->
     <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -367,37 +362,23 @@ include "dbcon.php";
                         <hr>
                         <div class="row">
                             <div class="form-group col-md-4 mb-2">
-                                <label>Department</label>
-                                <select name="dept" class="form-control" required>
-                                    <option value="none" selected="" disabled="">
-                                        Department
-                                    </option>
-                                    <option value="HRM">Human Resource Management</option>
-                                    <option value="IT">Information Technology</option>
-                                    <option value="MKT">Marketing</option>
-                                    <option value="ACT">Accounting</option>
-                                    <option value="ENGR">Engineering</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4 mb-2">
-                                <label>Employee Number</label>
-                                <input name="emp_no" type="text" class="form-control" placeholder="Employee Number"
+                                <label>Agency Employee No</label>
+                                <input name="emp_no" type="text" class="form-control" placeholder="Employee No"
                                     required />
                             </div>
+
                             <div class="form-group col-md-4">
-                                <label>Last Name</label>
+                                <label>Surname</label>
                                 <input name="lastname" type="text" class="form-control" placeholder="Lastname"
                                     required />
                             </div>
 
-                        </div>
-
-                        <div class="row">
                             <div class="form-group col-md-4">
                                 <label>First Name</label>
                                 <input name="firstname" type="text" class="form-control" placeholder="Firstname"
                                     required />
                             </div>
+
                             <div class="form-group col-md-4">
                                 <label>Middle Name</label>
                                 <div class="form-group">
@@ -407,46 +388,59 @@ include "dbcon.php";
                             </div>
 
                             <div class="form-group col-md-4">
-                                <label>Name Extension</label>
+                                <label>Name Extension (Jr., Sr)</label>
                                 <input name="name_extension" type="text" class="form-control"
                                     placeholder="Extension Name" />
                             </div>
 
+                            <div class="form-group col-md-4">
+                                <label>Email Address</label>
+                                <input name="email_address" type="email" class="form-control"
+                                    placeholder="Email Address" required />
+                            </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group col-md-4">
-                                <label>Email </label>
-                                <input name="email_address" type="email" class="form-control"
-                                    placeholder="Email Address" required />
-                            </div>
-                            <div class="form-group col-md-4">
                                 <label>Mobile Number</label>
                                 <input name="mobile_no" id="mobile" type="tel" class="form-control"
-                                    placeholder="Mobile no." required pattern="\d{11}" required />
+                                    placeholder="Mobile No." required pattern="\d{11}" required />
                             </div>
 
                             <div class="form-group col-md-4">
-                                <label>Birthdate</label>
+                                <label>Date of Birth</label>
                                 <input name="dob" id="finish" type="date" class="form-control"
                                     placeholder="Date of Birth" required />
                             </div>
 
-                        </div>
-
-                        <div class="row">
                             <div class="form-group col-md-4">
                                 <label>Civil Status</label>
-                                <select name="civil_status" class="form-control" required>
-                                    <option value="none" selected="" disabled="">
-                                        Civil Status
-                                    </option>
+                                <select name="civil_status" id="civil_status" class="form-control" required onchange="checkOtherStatus()">
+                                    <option value="none" selected disabled>Civil Status</option>
                                     <option value="Single">Single</option>
                                     <option value="Married">Married</option>
                                     <option value="Widowed">Widowed</option>
                                     <option value="Separated">Separated</option>
+                                    <option value="Other">Other</option>
                                 </select>
+                                <input type="text" name="other_civil_status" id="other_civil_status" class="form-control" placeholder="Please specify..." style="display: none; margin-top: 5px;">
                             </div>
+
+                            <script>
+                                function checkOtherStatus() {
+                                    var select = document.getElementById("civil_status");
+                                    var otherInput = document.getElementById("other_civil_status");
+
+                                    if (select.value === "Other") {
+                                        otherInput.style.display = "block";
+                                        otherInput.setAttribute("required", "required");
+                                    } else {
+                                        otherInput.style.display = "none";
+                                        otherInput.removeAttribute("required");
+                                    }
+                                }
+                            </script>
+
                             <div class="form-group col-md-4">
                                 <label>Sex</label>
                                 <select name="sex" class="form-control" required>
@@ -457,6 +451,7 @@ include "dbcon.php";
                                     <option value="Female">Female</option>
                                 </select>
                             </div>
+
                             <div class="form-group col-md-4">
                                 <label>Blood Type</label>
                                 <select name="blood_type" class="form-control" required>
@@ -472,192 +467,93 @@ include "dbcon.php";
                                     <option value="O+">O+</option>
                                     <option value="O-">O-</option>
                                     <option value="Unknown">Unknown</option>
-
                                 </select>
                             </div>
 
-                        </div>
-
-                        <div class="row">
                             <div class="form-group col-md-4">
                                 <label>Address</label>
                                 <input name="address" type="text" class="form-control" placeholder="Address" required />
                             </div>
+
                             <div class="form-group col-md-4">
                                 <label>Place of Birth</label>
                                 <input name="pob" type="text" class="form-control" placeholder="Place of Birth"
                                     required />
                             </div>
+
                             <div class="form-group col-md-4">
                                 <label>Upload Profile Picture</label>
-                                <input class="form-control" type="file" id="formFile" name="image" required>
+                                <input class="form-control" type="file" id="formFile" name="image">
                             </div>
-
                         </div>
+
                         <br>
                         <hr>
                         <h4 class="text-center">GOVERNMENT RECORDS</h4>
                         <hr>
+
                         <div class="row">
                             <div class="form-group col-md-4">
-                                <label>GSIS Number</label>
-                                <input name="gsis" type="text" class="form-control" placeholder="GSIS Number"
+                                <label>GSIS ID No</label>
+                                <input name="gsis" type="text" class="form-control" placeholder="GSIS No"
                                     required />
                             </div>
+
                             <div class="form-group col-md-4">
-                                <label>Pag-Ibig Number</label>
-                                <input name="pag_ibig" type="text" class="form-control" placeholder="PAGIBIG Number"
+                                <label>PAGIBIG ID No</label>
+                                <input name="pag_ibig" type="text" class="form-control" placeholder="PAG-IBIG ID No"
                                     required />
                             </div>
+
                             <div class="form-group col-md-4">
-                                <label>PhilHealth Number</label>
+                                <label>PHILHEALTH No</label>
                                 <input name="philhealth" type="text" class="form-control"
                                     placeholder="PhilHealth Number" required />
                             </div>
-                        </div>
-                        <div class="row">
+
                             <div class="form-group col-md-4">
-                                <label>SSS Number</label>
-                                <input name="sss" type="text" class="form-control" placeholder="SSS Number" required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>TIN Number</label>
-                                <input name="tin" type="text" class="form-control" placeholder="TIN Number" required />
+                                <label>SSS No</label>
+                                <input name="sss" type="text" class="form-control" placeholder="SSS No" required />
                             </div>
 
-                        </div>
-                        <!--        <div class="row">
-                        <div class="form-group col-md-4">
-                                <label>Date Started</label>
-                                <input name="date_started" type="date" class="form-control" placeholder="Date Started"
-                                    required />
-                            </div>
                             <div class="form-group col-md-4">
-                                <label>Status</label>
-                                <input name="status" type="text" class="form-control" placeholder="Status" required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Branch</label>
-                                <input name="branch" type="text" class="form-control" placeholder="Branch" required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Absent without Pay</label>
-                                <input name="abs_wo_pay" type="text" class="form-control"
-                                    placeholder="Absent without Pay" required />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label>Cause of Separation</label>
-                                <input name="cause_of_separation" type="text" class="form-control"
-                                    placeholder="Cause of Separation" required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Salary</label>
-                                <input name="salary" type="number" class="form-control" placeholder="Salary" required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>To Date</label>
-                                <input name="to_date" type="date" class="form-control" placeholder="To Date" required />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label>Station/Place</label>
-                                <input name="station_place" type="text" class="form-control" placeholder="Station/Place"
-                                    required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Date Separated</label>
-                                <input name="date_separated" type="number" class="form-control"
-                                    placeholder="Date Separated" required />
+                                <label>TIN No</label>
+                                <input name="tin" type="text" class="form-control" placeholder="TIN No" required />
                             </div>
                         </div>
 
-                        <br>
-                        <hr>
-                        <h4 class="text-center">COMPENSATION</h4>
-                        <hr>
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label>Salary</label>
-                                <input name="salary" type="number" class="form-control" placeholder="Salary" required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Pera</label>
-                                <input name="pera" type="number" class="form-control" placeholder="Pera" required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Clothing Allowance</label>
-                                <input name="clothing" type="number" class="form-control"
-                                    placeholder="Clothing Allowance" required />
-                            </div>
+                        <div class="modal-footer">
+                            <!--  <input type="hidden" id="pos_id" name="id"> -->
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success" name="basic-infobtn">Add Employee</button>
                         </div>
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label>RT Allowance</label>
-                                <input name="rt_allowance" type="number" class="form-control"
-                                    placeholder="Representative and Transportation Allowance" required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Issued Date</label>
-                                <input name="issued_date" type="date" class="form-control" placeholder="Issued Date"
-                                    required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Cash Gift</label>
-                                <input name="cash_gift" type="number" class="form-control" placeholder="Cash Gift"
-                                    required />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label>Mid_Year Bonus</label>
-                                <input name="mid_year" type="number" class="form-control" placeholder="Mid_Year"
-                                    required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Productivity Enhancement Incentive</label>
-                                <input name="productivity_incentive" type="number" class="form-control"
-                                    placeholder="Productivity Enhancement Incentive" required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Year End Bonus</label>
-                                <input name="year_end_bonus" type="number" class="form-control"
-                                    placeholder="Year End Bonus" required />
-                            </div>
 
-                        </div> -->
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <!--  <input type="hidden" id="pos_id" name="id"> -->
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success" name="basic-infobtn">Add Employee</button>
-                </div>
-
-                </form>
             </div>
         </div>
-    </div>
 
-    <script>
-        document.getElementById('mobile').addEventListener('input', function(e) {
-            const value = e.target.value;
-            if (value.length > 11) {
-                e.target.value = value.slice(0, 11); // Limit input to 11 digits
-            }
-        });
-    </script>
-
-    <?php if (isset($_SESSION['display'])): ?>
         <script>
-            Swal.fire({
-                title: '<?php echo $_SESSION['title']; ?>',
-                text: '<?php echo $_SESSION['display']; ?>',
-                icon: '<?php echo $_SESSION['success']; ?>',
-                confirmButtonText: 'OK'
+            document.getElementById('mobile').addEventListener('input', function(e) {
+                const value = e.target.value;
+                if (value.length > 11) {
+                    e.target.value = value.slice(0, 11); // Limit input to 11 digits
+                }
             });
         </script>
-        <?php unset($_SESSION['display']);
-        unset($_SESSION['success']); ?>
-    <?php endif; ?>
+
+        <?php if (isset($_SESSION['display'])): ?>
+            <script>
+                Swal.fire({
+                    title: '<?php echo $_SESSION['title']; ?>',
+                    text: '<?php echo $_SESSION['display']; ?>',
+                    icon: '<?php echo $_SESSION['success']; ?>',
+                    confirmButtonText: 'OK'
+                });
+            </script>
+            <?php unset($_SESSION['display']);
+            unset($_SESSION['success']); ?>
+        <?php endif; ?>
+
+        <!--Footer-part-->
+        <?php include 'includes/footer.php'; ?>
