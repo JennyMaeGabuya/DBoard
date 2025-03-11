@@ -165,18 +165,23 @@ class PDF_MC_Table extends FPDF
 
     function CreateTable($employee, $con)
     {
-        $this->SetFont('Times', '', 11);
-        $name = strtoupper($employee['lastname']) . ', ' . strtoupper($employee['firstname']) . ' ' . strtoupper($employee['middlename']) . ' ' . strtoupper($employee['name_extension']);
+        $midd = !empty($employee['middlename']) ? substr($employee['middlename'], 0, 1) . "." : ""; //get only middle initial
 
-        $this->Cell(40, 10, 'NAME:  ' . $name, 0);
+        $this->SetFont('Times', '', 11);
+        
+        $name = strtoupper($employee['lastname']) . ', ' . strtoupper($employee['firstname']) . ' ' . strtoupper($midd) . ' ' . strtoupper($employee['name_extension']);
+
+        $this->Cell(15, 7, 'NAME:  ', 0);
+        $this->UnderlineText($this->GetX(), $this->GetY(), $name);
         $this->SetXY(107, $this->GetY());
-        $this->MultiCell(0, 10, '(If married woman, give also maiden name)', 0, 'J');
+        $this->MultiCell(0, 7, '(If married woman, give also maiden name)', 0, 'J');
 
         $dob = $employee['dob'];
         $date = new DateTime($dob);
         $birthday = $date->format('F j, Y');
 
-        $this->Cell(40, 8, 'BIRTHDATE:  ' . $birthday, 0);
+        $this->Cell(25, 8, 'BIRTHDATE:  ', 0);
+        $this->UnderlineText($this->GetX(), $this->GetY(), $birthday);
         $this->SetXY(107, $this->GetY());
         $this->MultiCell(0, 5, '(Date herein should be checked from birth or baptismal certificate or some other reliable documents)', 0, 'J');
         $this->Ln(5);
@@ -206,7 +211,7 @@ class PDF_MC_Table extends FPDF
         $this->Row(['From', 'To', 'Designation', 'Status', 'Station', 'Salary', 'Branch', 'Abs. W/o Pay', 'Date', 'Cause']);
 
         $this->SetFont('Times', '', 9);
-        $stmt = $con->prepare("SELECT * FROM service_records WHERE employee_no = ?");
+        $stmt = $con->prepare("SELECT * FROM service_records WHERE employee_no = ? order by to_date asc");
         $stmt->bind_param("s", $employee['employee_no']);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -253,6 +258,12 @@ while ($row = $result->fetch_assoc()) {
     }
 }
 
+
+$blockHeight = 50;
+
+// Ensure the block remains together
+$this->CheckPageBreak($blockHeight);
+
 $this->Cell(0, 5, "Prepared by: ", 0, 'J');
 $this->Ln(10);
 $this->SetFont('Times', 'B', 11);
@@ -269,11 +280,10 @@ $this->SetFont('Times', '', 11);
 $this->Cell(0, 5, "Municipal Mayor", 0, 1, 'L');
 
 $this->Ln(5); // Add spacing
-$this->UnderlineText($this->GetX(), $this->GetY(), "Not valid without seal");
-$this->Ln(5); // Move to next line
-$this->UnderlineText($this->GetX(), $this->GetY(), $today);
-$this->Ln(5); // Add spacing
-$this->Cell(0, 5, "Date ", 0, 'J');
+$this->Cell(0, 5, "Not valid without seal", 0, 1, 'L');
+$this->Cell(0, 5, $today, 0, 1, 'L');
+$this->Cell(0, 5, "Date", 0, 1, 'L');
+
     }
 }
 
