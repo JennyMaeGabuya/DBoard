@@ -137,6 +137,13 @@ class PDF_MC_Table extends FPDF
         return $nl;
     }
 
+    function UnderlineText($x, $y, $text)
+    {
+        $this->SetXY($x, $y);
+        $this->Write(5, $text);
+        $this->Line($x, $y + 5, $x + $this->GetStringWidth($text), $y + 5);
+    }
+    
     function Header()
     {
         $this->Image('../img/mk-logo.png', 32, 17, 26);
@@ -218,6 +225,55 @@ class PDF_MC_Table extends FPDF
                 $row['cause_of_separation']
             ]);
         }
+        $this->SetFont('Times', '', 11);
+        $this->MultiCell(0, 5, "Issued in compliane with Executive Order No. 54 dated August 10, 1954 and in accordance with Circular No.58 dated August 10, 1954 of the System.", 0, 'J');
+        $this->Ln(7);
+
+      
+
+        $prepstmt = $con->prepare("SELECT e.lastname, e.middlename, e.firstname, e.name_extension, hr.role FROM hr_staffs hr join employee e on hr.employee_no= e.employee_no WHERE role IN ('Municipal Mayor', 'Admin Officer IV')");
+$prepstmt->execute();
+$result = $prepstmt->get_result();
+
+// Get today's date
+$today = date('F j, Y');
+
+// Initialize variables
+$mayor_name = "";
+$admin_officer_name = "";
+
+
+while ($row = $result->fetch_assoc()) {
+    $middlename_initial = !empty($row['middlename']) ? substr($row['middlename'], 0, 1) . "." : ""; //get only middle initial
+
+    if ($row['role'] == 'Municipal Mayor') {
+        $mayor_name = $row['firstname'] . " " . $middlename_initial . " " . $row['lastname'] . " " . $row['name_extension'];
+    } elseif ($row['role'] == 'Admin Officer IV') {
+        $admin_officer_name = $row['firstname'] . " " . $middlename_initial . " " . $row['lastname'] . " " . $row['name_extension'];
+    }
+}
+
+$this->Cell(0, 5, "Prepared by: ", 0, 'J');
+$this->Ln(10);
+$this->SetFont('Times', 'B', 11);
+$this->Cell(0, 5, strtoupper($admin_officer_name), 0, 1, 'L');
+$this->SetFont('Times', '', 11);
+$this->Cell(0, 5, "Admin Officer IV", 0, 1, 'L');
+
+$this->Ln(5); // Add spacing
+$this->Cell(0, 5, "Certified correct: ", 0, 'J');
+$this->SetFont('Times', 'B', 11);
+$this->Ln(10); // Add spacing
+$this->Cell(0, 5, "Hon. ". strtoupper($mayor_name), 0, 1, 'L');
+$this->SetFont('Times', '', 11);
+$this->Cell(0, 5, "Municipal Mayor", 0, 1, 'L');
+
+$this->Ln(5); // Add spacing
+$this->UnderlineText($this->GetX(), $this->GetY(), "Not valid without seal");
+$this->Ln(5); // Move to next line
+$this->UnderlineText($this->GetX(), $this->GetY(), $today);
+$this->Ln(5); // Add spacing
+$this->Cell(0, 5, "Date ", 0, 'J');
     }
 }
 
