@@ -280,9 +280,11 @@ $this->SetFont('Times', '', 11);
 $this->Cell(0, 5, "Municipal Mayor", 0, 1, 'L');
 
 $this->Ln(5); // Add spacing
-$this->Cell(0, 5, "Not valid without seal", 0, 1, 'L');
-$this->Cell(0, 5, $today, 0, 1, 'L');
-$this->Cell(0, 5, "Date", 0, 1, 'L');
+$this->UnderlineText($this->GetX(), $this->GetY(), "Not valid without seal");
+$this->Ln(5); // Move to next line
+$this->UnderlineText($this->GetX(), $this->GetY(), $today);
+$this->Ln(5); // Add spacing
+$this->Cell(0, 5, "Date ", 0, 'J');
 
     }
 }
