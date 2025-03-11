@@ -375,9 +375,16 @@ FROM employee WHERE employee.employee_no = ?";
                                                         icon: 'warning',
                                                         title: 'No Service Records Found',
                                                         text: 'This employee does not have any service records.',
-                                                        confirmButtonColor: '#3085d6',
-                                                        confirmButtonText: 'OK'
-                                                    });
+                                                        showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Add Service Record',
+                cancelButtonText: 'Close'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "service_records.php?empno=<?php echo $employee_no ?>";
+                }
+            });
                                                     return false;
                                                 }
                                                 return true;
