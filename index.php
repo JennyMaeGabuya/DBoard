@@ -42,9 +42,14 @@ include('dbcon.php');
     <style>
         .spin-logo {
             max-width: 120px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             display: inline-block;
             animation: spin 5s linear infinite;
+        }
+
+        .error-pagewrap {
+            position: relative;
+            top: -15px;
         }
 
         @keyframes spin {
@@ -55,6 +60,11 @@ include('dbcon.php');
             100% {
                 transform: rotateY(360deg);
             }
+        }
+
+        .error-pagewrap {
+            margin-top: -15px;
+            /* Itaas ang logo */
         }
 
         /* Landing Page Modal */
@@ -73,7 +83,7 @@ include('dbcon.php');
 
         /* Landing Content */
         .landing-content {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.89);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             padding: 20px;
@@ -81,8 +91,8 @@ include('dbcon.php');
             text-align: center;
             width: 80%;
             max-width: 700px;
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.73);
         }
 
         /* Ensuring text remains readable */
@@ -142,6 +152,45 @@ include('dbcon.php');
         .slick-next:hover::before {
             color: darkgray !important;
         }
+
+        html, body {
+            background: url('img/kahoyhall.png') no-repeat center center fixed;
+            background-size: cover;
+            background-blend-mode: overlay;
+            background-color: rgba(0, 0, 0, 0.5);
+
+        }
+
+        h3,
+        p {
+            text-align: center;
+        }
+
+        content-error {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            /* Para nasa gitna */
+        }
+
+        .hpanel {
+            background: rgb(255, 255, 255);
+            /* Semi-transparent white */
+            backdrop-filter: blur(20px);
+            /* Glass effect */
+            -webkit-backdrop-filter: blur(20px);
+            padding: 5px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(240, 238, 238, 0.8);
+            /* Shadow effect */
+            max-width: 500px;
+            /* Limit ang laki */
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 2px 7px rgba(255, 255, 255, 0.63);
+            border: 2px solid rgba(168, 166, 166, 0.06);
+        }
     </style>
 </head>
 
@@ -167,8 +216,6 @@ include('dbcon.php');
         <div class="error-page-int">
             <div class="text-center m-b-md custom-login">
                 <img src="img/spin-logo.png" alt="Logo" class="spin-logo">
-                <h3>ADMIN LOGIN</h3>
-                <p>Employee Records Management System</p>
             </div>
 
             <div class="content-error">
@@ -176,30 +223,18 @@ include('dbcon.php');
                     <div class="panel-body">
                         <form action="login.php" method="POST" id="loginForm">
                             <div class="form-group">
-                                <label class="control-label" for="username">Username/Email</label>
-                                <input
-                                    type="text"
-                                    placeholder="Email"
-                                    title="Please enter your username"
-                                    required
-                                    name="username"
-                                    id="username"
-                                    class="form-control" />
+                                <h3>ADMIN LOGIN</h3>
+                                <p>Employee Records Management System</p>
+                                <input type="text" placeholder="Email" title="Please enter your username" required
+                                    name="username" id="username" class="form-control" />
                                 <span class="help-block small">Enter your username or email</span>
                             </div>
 
                             <div class="form-group" style="position: relative;">
-                                <label class="control-label" for="password">Password</label>
-                                <input
-                                    type="password"
-                                    title="Please enter your password"
-                                    placeholder="Password"
-                                    required
-                                    name="password"
-                                    id="password"
-                                    class="form-control" />
+                                <input type="password" title="Please enter your password" placeholder="Password"
+                                    required name="password" id="password" class="form-control" />
                                 <i class="fas fa-eye" id="togglePassword"
-                                    style="position: absolute; right: 10px; top: 55%; cursor: pointer; font-size: 1.3em;">
+                                    style="position: absolute; right: 10px; top: 30%; cursor: pointer; font-size: 1.3em;">
                                 </i>
                             </div>
 
@@ -212,23 +247,25 @@ include('dbcon.php');
                             <button id="loginButton" class="btn btn-success btn-block loginbtn" disabled>
                                 <i id="buttonIcon" class="fas fa-lock"></i> Login
                             </button>
+
+                            <div class="text-center login-footer">
+                                <div class="row-fluid">
+                                    <div id="footer" class="span12">
+                                        <?php echo date("Y"); ?> &copy; Municipality of Mataasnakahoy
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
 
-            <div class="text-center login-footer">
-                <div class="row-fluid">
-                    <div id="footer" class="span12">
-                        <?php echo date("Y"); ?> &copy; Municipality of Mataasnakahoy
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             // Initialize Slick Carousel
             if (typeof jQuery !== 'undefined') {
                 $('.slider').slick({
@@ -247,12 +284,12 @@ include('dbcon.php');
             }
 
             // Close Modal Function
-            window.closeModal = function() {
+            window.closeModal = function () {
                 document.getElementById('landingModal').style.display = 'none';
             };
 
             // Close Modal When Clicking Outside
-            document.getElementById('landingModal').addEventListener("click", function(event) {
+            document.getElementById('landingModal').addEventListener("click", function (event) {
                 const modalContent = document.querySelector(".landing-content");
                 if (!modalContent.contains(event.target)) {
                     closeModal();
@@ -268,7 +305,7 @@ include('dbcon.php');
                 rememberMeCheckbox.checked = true;
             }
 
-            document.getElementById("loginForm").addEventListener("submit", function() {
+            document.getElementById("loginForm").addEventListener("submit", function () {
                 if (rememberMeCheckbox.checked) {
                     localStorage.setItem("rememberedUsername", usernameField.value);
                 } else {
@@ -280,7 +317,7 @@ include('dbcon.php');
             const passwordField = document.getElementById("password");
             const togglePassword = document.getElementById("togglePassword");
 
-            togglePassword.addEventListener("click", function() {
+            togglePassword.addEventListener("click", function () {
                 const isPassword = passwordField.type === "password";
                 passwordField.type = isPassword ? "text" : "password";
                 togglePassword.classList.toggle("fa-eye-slash", isPassword);
