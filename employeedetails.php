@@ -99,6 +99,16 @@ FROM employee WHERE employee.employee_no = ?";
 
     // Close the service statement
     $govStmt->close();
+
+    // Check if service records exist
+    $serviceQuery = "SELECT COUNT(*) as count FROM service_records WHERE employee_no = ?";
+    $serviceStmt = $con->prepare($serviceQuery);
+    $serviceStmt->bind_param("s", $employee_no);
+    $serviceStmt->execute();
+    $serviceResult = $serviceStmt->get_result();
+    $serviceRow = $serviceResult->fetch_assoc();
+    $hasServiceRecords = $serviceRow['count'] > 0; // Boolean: true if records exist
+    $serviceStmt->close();
 }
 //fetch service records
 ?>
@@ -352,9 +362,27 @@ FROM employee WHERE employee.employee_no = ?";
                                             <i class="fa-solid fa-file-pdf"></i> PDF
                                         </a>
 
-                                        <a href="#addservice" data-toggle="modal" class="btn btn-success btn-border btn-round btn-sm">
+                                        <a href="service_records.php?empno=<?php echo $employee_no ?>"
+                                            class="btn btn-success btn-border btn-round btn-sm"
+                                            onclick="return checkServiceRecords(<?php echo $hasServiceRecords ? 'true' : 'false'; ?>)">
                                             <i class="fa fa-file"></i> Service Records
                                         </a>
+
+                                        <script>
+                                            function checkServiceRecords(hasRecords) {
+                                                if (!hasRecords) {
+                                                    Swal.fire({
+                                                        icon: 'warning',
+                                                        title: 'No Service Records Found',
+                                                        text: 'This employee does not have any service records.',
+                                                        confirmButtonColor: '#3085d6',
+                                                        confirmButtonText: 'OK'
+                                                    });
+                                                    return false;
+                                                }
+                                                return true;
+                                            }
+                                        </script>
 
                                     </div>
                                 </div>
@@ -476,145 +504,3 @@ FROM employee WHERE employee.employee_no = ?";
 
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>
-
-    <!--SERVICE RECORDS FORM MODAL-->
-    <div class="modal fade" id="addservice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-primary" style="border-radius: 3px;">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="exampleModalLabel">SERVICE RECORDS</h4>
-                </div>
-
-                <div class="modal-body">
-                    <form method="POST" action="service-info.php" method="POST" enctype="multipart/form-data">
-
-                        <div class="row">
-                            <div class="form-group col-md-4 mb-2">
-                                <label>Employee Number</label>
-                                <input
-                                    name="emp_no"
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Employee Number" value="<?php echo $employee_no; ?>" readonly />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>From</label>
-                                <input
-                                    name="date_started"
-                                    type="date"
-                                    class="form-control"
-                                    placeholder="Salary" />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>To</label>
-                                <input
-                                    name="date_ended"
-                                    type="date"
-                                    class="form-control"
-                                    placeholder="Pera" required />
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label>Designation</label>
-                                <div class="form-group">
-                                    <input
-                                        name="designation"
-                                        type="text"
-                                        class="form-control"
-                                        required />
-                                </div>
-                            </div>
-
-                            <div class="form-group col-md-4">
-                                <label>Status</label>
-                                <input
-                                    name="status"
-                                    type="text"
-                                    class="form-control"
-                                    required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Salary</label>
-                                <input
-                                    name="servicesalary"
-                                    type="number"
-                                    class="form-control"
-                                    required />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label>Station Place</label>
-                                <input
-                                    name="station"
-                                    type="text"
-                                    class="form-control"
-                                    required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Branch</label>
-                                <input
-                                    name="branch"
-                                    type="text"
-                                    class="form-control"
-                                    required />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>Absent without Pay</label>
-                                <input
-                                    name="abs_wo_pay"
-                                    type="text"
-                                    class="form-control"
-                                    required />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-4">
-                                <label>Date Separated</label>
-                                <input
-                                    name="separated"
-                                    type="date"
-                                    class="form-control" />
-                            </div>
-
-                            <div class="form-group col-md-8">
-                                <label>Cause of Separation</label>
-                                <input
-                                    name="separation"
-                                    type="text"
-                                    class="form-control" />
-                            </div>
-
-                        </div>
-                </div>
-
-                <div class="modal-footer">
-                    <!--  <input type="hidden" id="pos_id" name="id"> -->
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" name="servicesavebtn">Save</button>
-                    <a href="service_records.php?empno=<?php echo $employee_no ?>" type="submit" class="btn btn-warning" name="compviewbtn">View</a>
-                </div>
-
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <?php if (isset($_SESSION['display'])) : ?>
-        <script>
-            Swal.fire({
-                title: '<?php echo $_SESSION['title']; ?>',
-                text: '<?php echo $_SESSION['display']; ?>',
-                icon: '<?php echo $_SESSION['success']; ?>',
-                confirmButtonText: 'OK'
-            });
-        </script>
-        <?php unset($_SESSION['display']);
-        unset($_SESSION['success']); ?>
-    <?php endif; ?>

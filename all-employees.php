@@ -178,10 +178,10 @@ include "dbcon.php";
                                 <div class="button-container">
                                     <a href="#add" data-toggle="modal"
                                         class="btn btn-primary btn-border btn-round btn-sm">
-                                        <i class="fa-solid fa-plus-circle"></i> Add
+                                        <i class="fa-solid fa-plus-circle"></i> Add Employee
                                     </a>
                                     <a href="reports/csv-employees.php" class="btn btn-success btn-border btn-round btn-sm">
-                                        <i class="fa fa-file-excel-o"></i> Export
+                                        <i class="fa fa-file-excel-o"></i> Export CSV
                                     </a>
                                 </div>
                             </div>

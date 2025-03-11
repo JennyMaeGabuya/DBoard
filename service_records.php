@@ -206,16 +206,28 @@ FROM service_records WHERE employee_no = ?";
   <div class="product-status mg-b-15">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="product-status-wrap drp-lst">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <h4>Service Records</h4>
-              <a href="reports/serviceRecords.php?id=<?php echo $employee_no ?>" class="btn btn-danger btn-border btn-round btn-sm"
-                target="_blank">
-                <i class="fa-solid fa-file-pdf"></i> PDF
-              </a>
 
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <h4>Service Records</h4>
             </div>
+
+            <div class="row">
+              <div class="col-md-6 text-right">
+                <div class="button-container">
+                  <a href="#addservice" data-toggle="modal" class="btn btn-primary btn-border btn-round btn-sm">
+                    <i class="fa-solid fa-plus-circle"></i> Add Service Record
+                  </a>
+
+                  <a href="reports/serviceRecords.php?id=<?php echo $employee_no ?>" class="btn btn-danger btn-border btn-round btn-sm"
+                    target="_blank">
+                    <i class="fa-solid fa-file-pdf"></i> PDF
+                  </a>
+                </div>
+              </div>
+            </div>
+
             <div class="widget-box">
               <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
               <script>
@@ -255,7 +267,7 @@ FROM service_records WHERE employee_no = ?";
                   $stmt = $con->prepare("
                                     SELECT * 
                                     FROM service_records WHERE employee_no = ?
-                                    ORDER BY to_date DESC
+                                    ORDER BY id DESC
                                 ");
                   $stmt->bind_param("s", $employee_no);
                   $stmt->execute();
@@ -439,6 +451,134 @@ FROM service_records WHERE employee_no = ?";
     <?php unset($_SESSION['display']);
     unset($_SESSION['success']); ?>
   <?php endif; ?>
+
+  <!--SERVICE RECORDS FORM MODAL-->
+  <div class="modal fade" id="addservice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary" style="border-radius: 3px;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" id="exampleModalLabel">SERVICE RECORDS</h4>
+        </div>
+
+        <div class="modal-body">
+          <form method="POST" action="service-info.php" method="POST" enctype="multipart/form-data">
+
+            <div class="row">
+              <div class="form-group col-md-4 mb-2">
+                <label>Employee Number</label>
+                <input
+                  name="emp_no"
+                  type="text"
+                  class="form-control"
+                  placeholder="Employee Number" value="<?php echo $employee_no; ?>" readonly />
+              </div>
+              <div class="form-group col-md-4">
+                <label>From</label>
+                <input
+                  name="date_started"
+                  type="date"
+                  class="form-control"
+                  placeholder="Salary" />
+              </div>
+              <div class="form-group col-md-4">
+                <label>To</label>
+                <input
+                  name="date_ended"
+                  type="date"
+                  class="form-control"
+                  placeholder="Pera" required />
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label>Designation</label>
+                <div class="form-group">
+                  <input
+                    name="designation"
+                    type="text"
+                    class="form-control"
+                    required />
+                </div>
+              </div>
+
+              <div class="form-group col-md-4">
+                <label>Status</label>
+                <input
+                  name="status"
+                  type="text"
+                  class="form-control"
+                  required />
+              </div>
+              <div class="form-group col-md-4">
+                <label>Salary</label>
+                <input
+                  name="servicesalary"
+                  type="number"
+                  class="form-control"
+                  required />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label>Station Place</label>
+                <input
+                  name="station"
+                  type="text"
+                  class="form-control"
+                  required />
+              </div>
+              <div class="form-group col-md-4">
+                <label>Branch</label>
+                <input
+                  name="branch"
+                  type="text"
+                  class="form-control"
+                  required />
+              </div>
+              <div class="form-group col-md-4">
+                <label>Absent without Pay</label>
+                <input
+                  name="abs_wo_pay"
+                  type="text"
+                  class="form-control"
+                  required />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label>Date Separated</label>
+                <input
+                  name="separated"
+                  type="date"
+                  class="form-control" />
+              </div>
+
+              <div class="form-group col-md-8">
+                <label>Cause of Separation</label>
+                <input
+                  name="separation"
+                  type="text"
+                  class="form-control" />
+              </div>
+
+            </div>
+        </div>
+
+        <div class="modal-footer">
+          <!--  <input type="hidden" id="pos_id" name="id"> -->
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" name="servicesavebtn">Save</button>
+        </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
 
   <!--Footer-part-->
   <?php include 'includes/footer.php'; ?>
