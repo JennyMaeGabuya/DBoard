@@ -83,33 +83,41 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
     }
 
     .upload-section {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border: 2px dashed #3388f5;
-    padding: 70px;
-    text-align: center;
-    border-radius: 10px;
-    background-color: #f8f9fa;
-    cursor: pointer;
-    transition: background 0.3s;
-    margin-top: 40px;
-    position: relative;
-}
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px dashed #3388f5;
+        padding: 70px;
+        text-align: center;
+        border-radius: 10px;
+        background-color: #f8f9fa;
+        cursor: pointer;
+        transition: background 0.3s;
+        margin-top: 40px;
+        position: relative;
+        margin-bottom: 10px;
+    }
 
     .upload-section:hover {
         background-color: #eaf2ff;
     }
 
+    .upload-section span {
+        font-size: 18px;
+        font-weight: bold;
+        color: #3388f5;
+    }
+
+
     #uploadBtn {
     position: absolute;
     right: 20px;
-    top: 95%;
+    top: 91%;
     transform: translateY(-50%);
 }
 
     .file-list {
-        border: 2px dashed #3388f5;
+      border: 2px solid #3388f5;
         padding: 10px;
         text-align: center;
         border-radius: 10px;
@@ -146,14 +154,13 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
     }
 
     .delete-btn {
-        
-        color: white;
-        border: none;
-        padding: 5px 8px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background 0.3s;
-    }
+    background: none; /* Removes any background */
+    border: none; /* Removes border */
+    color: black; /* Black 'X' icon */
+    font-size: 16px; /* Adjust size */
+    cursor: pointer;
+    padding: 0; /* Removes padding */
+}
 
     h4 {
     text-align: center;
@@ -282,31 +289,34 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
     <div class="container">
     <h2 class="text-center mb-4">CSC Downloaded File</h2>
     <div class="row">
-            <div class="col-md-6">
-                <div class="upload-section" id="dropArea">Drag & Drop Files Here OR Click to Upload</div>
-                <input type="file" id="fileInput" hidden>
-                <button class="btn btn-primary mt-2" id="uploadBtn">Upload</button>
-                <p id="uploadStatus"></p>
+        <div class="col-md-6">
+            <div class="upload-section" id="dropArea">
+                <span>Drag & Drop Files Here OR Click to Upload</span>
             </div>
-            <div class="col-md-6">
-                <h4>Uploaded Files</h4>
-                <div class="file-list">
-                    <ul>
-                        <?php foreach ($files as $file): ?>
-                            <li>
-                                <?= $file; ?>
+            <input type="file" id="fileInput" hidden>
+            <button class="btn btn-primary" id="uploadBtn">Upload</button>
+            <p id="uploadStatus"></p>
+        </div>
+        <div class="col-md-6">
+            <h4>Uploaded Files</h4>
+            <div class="file-list">
+                <ul>
+                    <?php foreach ($files as $file): ?>
+                        <li>
+                            <?= $file; ?>
+                            <div>
                                 <a href="uploads/<?= $file; ?>" download>
                                     <i class="fa fa-download"></i>
                                 </a>
                                 <button class="delete-btn" data-file="<?= $file; ?>">❌</button>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
             </div>
         </div>
     </div>
-
+</div>
 
     <script>
         $('#dropArea').click(() => $('#fileInput').click());
