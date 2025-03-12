@@ -88,8 +88,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
               </li>
             </ul>
           </li>
-          <li>
-            <a href="#">
+          <li class="<?= ($current_page == 'downloaded-file.php') ? 'active' : ''; ?>">
+            <a href="./downloaded-file.php">
               <i class="fas fa-download"></i>
               <span class="mini-click-non">CSC Downloads</span>
             </a>
