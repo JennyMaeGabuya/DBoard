@@ -110,8 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // Fetch user data (AFTER update) for the form fields
 $query = "SELECT
-    e.*, s.*, g.*, c.*,
-    c.salary AS compensation_salary
+    e.*, s.*, g.*
 FROM
     employee e
 JOIN
@@ -120,8 +119,6 @@ LEFT JOIN
     government_info g ON e.employee_no = g.employee_no
 LEFT JOIN
     service_records s ON e.employee_no = s.employee_no
-LEFT JOIN
-    compensation c ON e.employee_no = c.employee_no
 WHERE
     e.employee_no = ?";
 

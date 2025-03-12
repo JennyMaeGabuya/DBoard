@@ -10,22 +10,18 @@ include "dbcon.php";
 // Initialize variables with default values
 $firstname = $middlename = $lastname = $name_extension = $email_address = $mobile_no = $dob = $address = $pob = $civil_status = $sex = $blood_type = $image = '';
 $gsis_no = $pag_ibig_no = $philhealth_no = $tin_no = $sss_no = $salary = $station_place = $branch = $abs_wo_pay = $cause_of_separation = '';
-$compensation_salary = $pera = $clothing = $cash_gift = $mid_year = $productivity_incentive = $rt_allowance = $year_end_bonus = $issued_date = '';
 
 // Fetch employee data if employee_no is set
 if (isset($_GET['employee_no'])) {
     $employee_no = $_GET['employee_no'];
     $query = "SELECT
-        e.*, s.*, g.*, c.*,
-        c.salary AS compensation_salary
+        e.*, s.*, g.*
     FROM
         employee e
     LEFT JOIN
         government_info g ON e.employee_no = g.employee_no
     LEFT JOIN
         service_records s ON e.employee_no = s.employee_no
-    LEFT JOIN
-        compensation c ON e.employee_no = c.employee_no
     WHERE
         e.employee_no = ?";
 
@@ -54,27 +50,6 @@ if (isset($_GET['employee_no'])) {
         $pag_ibig_no = $row['pag_ibig_no'];
         $philhealth_no = $row['philhealth_no'];
         $tin_no = $row['tin_no'];
-        $from_date = $row['from_date'];
-        $status = $row['status'];
-        $sss_no = $row['sss_no'];
-        $designation = $row['designation'];
-        $to_date = $row['to_date'];
-        $salary = $row['salary'];
-        $station_place = $row['station_place'];
-        $branch = $row['branch'];
-        $abs_wo_pay = $row['abs_wo_pay'];
-        $date_separated = isset($row['date_separated']) ? $row['date_separated'] : ''; // Initialize if not set
-        $cause_of_separation = $row['cause_of_separation'];
-        $compensation_salary = $row['compensation_salary'];
-        $pera = $row['pera'];
-        $clothing = $row['clothing'];
-        $cash_gift = $row['cash_gift'];
-        $mid_year = $row['mid_year'];
-        $productivity_incentive = $row['productivity_incentive'];
-        $rt_allowance = $row['rt_allowance'];
-        $year_end_bonus = $row['year_end_bonus'];
-        $issued_date = $row['issued_date'];
-        $allowance = $row['allowance'];
     } else {
         die("No employee data found.");
     }
@@ -387,145 +362,6 @@ if (isset($_GET['employee_no'])) {
                                     <input class="form-control" type="file" id="formFile" name="image">
                                 </div>
 
-                            </div>
-                            <br>
-                            <hr>
-                            <h4 class="text-center">SERVICE RECORDS</h4>
-                            <hr>
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>GSIS Number</label>
-                                    <input name="gsis" type="text" class="form-control" placeholder="GSIS Number"
-                                        value="<?php echo htmlspecialchars($gsis_no); ?>" />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Pag-Ibig Number</label>
-                                    <input name="pag_ibig" type="text" class="form-control" placeholder="PAGIBIG Number"
-                                        value="<?php echo htmlspecialchars($pag_ibig_no); ?>" />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>PhilHealth Number</label>
-                                    <input name="philhealth" type="text" class="form-control"
-                                        placeholder="PhilHealth Number" value="<?php echo htmlspecialchars($philhealth_no); ?>" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>SSS Number</label>
-                                    <input name="sss" type="text" class="form-control" placeholder="SSS Number"
-                                        value="<?php echo htmlspecialchars($sss_no); ?>" />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>TIN Number</label>
-                                    <input name="tin" type="text" class="form-control" placeholder="TIN Number"
-                                        value="<?php echo htmlspecialchars($tin_no); ?>" />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Date Started</label>
-                                    <input name="date_started" type="date" class="form-control"
-                                        placeholder="Date Started" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>Status</label>
-                                    <input name="status" type="text" class="form-control" placeholder="Status"
-                                        value="<?php echo htmlspecialchars($status); ?>" />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Branch</label>
-                                    <input name="branch" type="text" class="form-control" placeholder="Branch"
-                                        value="<?php echo htmlspecialchars($branch); ?>" />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Absent without Pay</label>
-                                    <input name="abs_wo_pay" type="text" class="form-control"
-                                        placeholder="Absent without Pay" value="<?php echo htmlspecialchars($abs_wo_pay); ?>" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>Cause of Separation</label>
-                                    <input name="cause_of_separation" type="text" class="form-control"
-                                        placeholder="Cause of Separation" value="<?php echo htmlspecialchars($cause_of_separation); ?>" />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Salary</label>
-                                    <input name="salary" type="number" class="form-control" placeholder="Salary"
-                                        value="<?php echo htmlspecialchars($salary); ?>" />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>To Date</label>
-                                    <input name="to_date" type="date" class="form-control" placeholder="To Date" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>Station/Place</label>
-                                    <input name="station_place" type="text" class="form-control"
-                                        placeholder="Station/Place" value="<?php echo htmlspecialchars($station_place); ?>" />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Date Separated</label>
-                                    <input name="date_separated" type="date" class="form-control"
-                                        placeholder="Date Separated" value="<?php echo htmlspecialchars($date_separated); ?>" />
-                                </div>
-                            </div>
-
-                            <br>
-                            <hr>
-                            <h4 class="text-center">COMPENSATION</h4>
-                            <hr>
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>Salary</label>
-                                    <input name="compensation_salary" type="number" class="form-control" placeholder="Salary"
-                                        value="<?php echo htmlspecialchars($compensation_salary); ?>" />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Pera</label>
-                                    <input name="pera" type="number" class="form-control" placeholder="Pera"
-                                        value="<?php echo htmlspecialchars($pera); ?>" />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Clothing Allowance</label>
-                                    <input name="clothing" type="number" class="form-control"
-                                        placeholder="Clothing Allowance" value="<?php echo htmlspecialchars($clothing); ?>" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>RT Allowance</label>
-                                    <input name="rt_allowance" type="number" class="form-control"
-                                        placeholder="Representative and Transportation Allowance" value="<?php echo htmlspecialchars($rt_allowance); ?>" />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Issued Date</label>
-                                    <input name="issued_date" type="date" class="form-control" placeholder="Issued Date"
-                                        value="<?php echo htmlspecialchars($issued_date); ?>" />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Cash Gift</label>
-                                    <input name="cash_gift" type="number" class="form-control" placeholder="Cash Gift"
-                                        value="<?php echo htmlspecialchars($cash_gift); ?>" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-4">
-                                    <label>Mid-Year Bonus</label>
-                                    <input name="mid_year" type="number" class="form-control" placeholder="Mid-Year Bonus"
-                                        value="<?php echo htmlspecialchars($mid_year); ?>" />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Productivity Enhancement Incentive</label>
-                                    <input name="productivity_incentive" type="number" class="form-control"
-                                        placeholder="Productivity Enhancement Incentive" value="<?php echo htmlspecialchars($productivity_incentive); ?>" />
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Year End Bonus</label>
-                                    <input name="year_end_bonus" type="number" class="form-control"
-                                        placeholder="Year End Bonus" value="<?php echo htmlspecialchars($year_end_bonus); ?>" />
-                                </div>
                             </div>
 
                             <div class="modal-footer">

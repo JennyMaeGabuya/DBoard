@@ -60,22 +60,6 @@ FROM employee WHERE employee.employee_no = ?";
     // Initialize variables to hold service data
     $date_started = $date_ended = $designation = $status = $servicesalary = $station = $branch = $abs_wo_pay = $separated = $separation = null;
 
-    // Fetch compensation data
-    if ($serviceRow = $serviceResult->fetch_assoc()) {
-        $date_started = $serviceRow['from_date'];
-        $date_ended = $serviceRow['to_date'];
-        $designation = $serviceRow['designation'];
-        $status = $serviceRow['status'];
-        $servicesalary = $serviceRow['salary'];
-        $station = $serviceRow['station_place'];
-        $branch = $serviceRow['branch'];
-        $abs_wo_pay = $serviceRow['abs_wo_pay'];
-        $separated = $serviceRow['date_separated'];
-        $separation = $serviceRow['cause_of_separation'];
-        // $created = $compRow['created_at'];
-        //$updated = $compRow['updated_at'];
-    }
-
     // Close the service statement
     $serviceStmt->close();
 
@@ -87,15 +71,6 @@ FROM employee WHERE employee.employee_no = ?";
 
     // Initialize variables to hold service data
     $gsis = $pag_ibig = $philhealth = $sss = $tin = null;
-
-    // Fetch compensation data
-    if ($govRow = $govResult->fetch_assoc()) {
-        $gsis = $govRow['gsis_no'];
-        $pag_ibig = $govRow['pag_ibig_no'];
-        $philhealth = $govRow['philhealth_no'];
-        $sss = $govRow['sss_no'];
-        $tin = $govRow['tin_no'];
-    }
 
     // Close the service statement
     $govStmt->close();
@@ -376,15 +351,15 @@ FROM employee WHERE employee.employee_no = ?";
                                                         title: 'No Service Records Found',
                                                         text: 'This employee does not have any service records.',
                                                         showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Add Service Record',
-                cancelButtonText: 'Close'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "service_records.php?empno=<?php echo $employee_no ?>";
-                }
-            });
+                                                        confirmButtonColor: '#3085d6',
+                                                        cancelButtonColor: '#d33',
+                                                        confirmButtonText: 'Add Service Record',
+                                                        cancelButtonText: 'Close'
+                                                    }).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                            window.location.href = "service_records.php?empno=<?php echo $employee_no ?>";
+                                                        }
+                                                    });
                                                     return false;
                                                 }
                                                 return true;

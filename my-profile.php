@@ -15,8 +15,7 @@ $employee_no = $_SESSION['user_id'];
 
 // Fetch user data from the database using the specified employee_no
 $query = "SELECT
-    e.*, s.*, g.*, c.*,
-    c.salary AS compensation_salary
+    e.*, s.*, g.*
 FROM
     employee e
 JOIN
@@ -25,8 +24,6 @@ LEFT JOIN
     government_info g ON e.employee_no = g.employee_no
 LEFT JOIN
     service_records s ON e.employee_no = s.employee_no
-LEFT JOIN
-    compensation c ON e.employee_no = c.employee_no
 WHERE
     e.employee_no = ?"; // Use employee_no to fetch data
 
