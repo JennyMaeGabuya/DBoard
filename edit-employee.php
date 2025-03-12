@@ -274,7 +274,8 @@ if (isset($_GET['employee_no'])) {
                                                                     <input name="emp_no" type="text"
                                                                         class="form-control"
                                                                         placeholder="Employee Number"
-                                                                        value="<?php echo htmlspecialchars($employee_no); ?>" readonly />
+                                                                        value="<?php echo htmlspecialchars($employee_no); ?>"
+                                                                        readonly />
                                                                 </div>
                                                                 <div class="form-group col-md-6">
                                                                     <label>Last Name</label>
@@ -305,8 +306,7 @@ if (isset($_GET['employee_no'])) {
                                                                 <div class="form-group col-md-2">
                                                                     <label>Name Extension</label>
                                                                     <input name="name_extension" type="text"
-                                                                        class="form-control"
-                                                                        placeholder="Ext"
+                                                                        class="form-control" placeholder="Ext"
                                                                         value="<?php echo htmlspecialchars($name_extension); ?>" />
                                                                 </div>
 
@@ -338,46 +338,51 @@ if (isset($_GET['employee_no'])) {
                                                                         value="<?php echo htmlspecialchars($dob); ?>" />
                                                                 </div>
 
-                                                          
+
 
                                                                 <div class="form-group col-md-3">
-                                <label>Civil Status</label>
-                                <select name="civil_status" id="civil_status" class="form-control" required onchange="checkOtherStatus()">
-    <option value="none" disabled <?php echo empty($civil_status) ? 'selected' : ''; ?>>Civil Status</option>
-    <option value="Single" <?php echo ($civil_status == 'Single') ? 'selected' : ''; ?>>Single</option>
-    <option value="Married" <?php echo ($civil_status == 'Married') ? 'selected' : ''; ?>>Married</option>
-    <option value="Widowed" <?php echo ($civil_status == 'Widowed') ? 'selected' : ''; ?>>Widowed</option>
-    <option value="Separated" <?php echo ($civil_status == 'Separated') ? 'selected' : ''; ?>>Separated</option>
-    <option value="Other" <?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? 'selected' : ''; ?>>Other</option>
-</select>
+                                                                    <label>Civil Status</label>
+                                                                    <select name="civil_status" id="civil_status"
+                                                                        class="form-control" required
+                                                                        onchange="checkOtherStatus()">
+                                                                        <option value="none" disabled <?php echo empty($civil_status) ? 'selected' : ''; ?>>
+                                                                            Civil Status</option>
+                                                                        <option value="Single" <?php echo ($civil_status == 'Single') ? 'selected' : ''; ?>>Single</option>
+                                                                        <option value="Married" <?php echo ($civil_status == 'Married') ? 'selected' : ''; ?>>Married</option>
+                                                                        <option value="Widowed" <?php echo ($civil_status == 'Widowed') ? 'selected' : ''; ?>>Widowed</option>
+                                                                        <option value="Separated" <?php echo ($civil_status == 'Separated') ? 'selected' : ''; ?>>Separated</option>
+                                                                        <option value="Other" <?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? 'selected' : ''; ?>>Other</option>
+                                                                    </select>
 
-<input type="text" name="other_civil_status" id="other_civil_status" class="form-control" 
-    placeholder="Please specify..." 
-    value="<?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? htmlspecialchars($civil_status) : ''; ?>" 
-    style="display: <?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? 'block' : 'none'; ?>; margin-top: 5px;">
+                                                                    <input type="text" name="other_civil_status"
+                                                                        id="other_civil_status" class="form-control"
+                                                                        placeholder="Please specify..."
+                                                                        value="<?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? htmlspecialchars($civil_status) : ''; ?>"
+                                                                        style="display: <?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? 'block' : 'none'; ?>; margin-top: 5px;">
 
-                              
-                            </div>
 
-                            <script>
-                                function checkOtherStatus() {
-                                    var select = document.getElementById("civil_status");
-                                    var otherInput = document.getElementById("other_civil_status");
+                                                                </div>
 
-                                    if (select.value === "Other") {
-                                        otherInput.style.display = "block";
-                                        otherInput.setAttribute("required", "required");
-                                    } else {
-                                        otherInput.style.display = "none";
-                                        otherInput.removeAttribute("required");
-                                    }
-                                }
-                            </script>
+                                                                <script>
+                                                                    function checkOtherStatus() {
+                                                                        var select = document.getElementById("civil_status");
+                                                                        var otherInput = document.getElementById("other_civil_status");
+
+                                                                        if (select.value === "Other") {
+                                                                            otherInput.style.display = "block";
+                                                                            otherInput.setAttribute("required", "required");
+                                                                        } else {
+                                                                            otherInput.style.display = "none";
+                                                                            otherInput.removeAttribute("required");
+                                                                        }
+                                                                    }
+                                                                </script>
                                                                 <div class="form-group col-md-3">
                                                                     <label>Sex</label>
                                                                     <select name="sex" class="form-control">
-                                                                        <option value="none" disabled <?php echo empty($sex) ? 'selected' : ''; ?>>Sex</option>
-                                                                            Sex
+                                                                        <option value="none" disabled <?php echo empty($sex) ? 'selected' : ''; ?>>Sex
+                                                                        </option>
+                                                                        Sex
                                                                         </option>
                                                                         <option value="Male" <?php echo ($sex == 'Male') ? 'selected' : ''; ?>>Male
                                                                         </option>
@@ -441,33 +446,43 @@ if (isset($_GET['employee_no'])) {
                                                                 <div class="form-group col-md-4">
                                                                     <label>GSIS ID No</label>
                                                                     <input name="gsis" type="text" class="form-control"
-                                                                        placeholder="GSIS No" value="<?php echo htmlspecialchars($gsis); ?>" required />
+                                                                        placeholder="GSIS No"
+                                                                        value="<?php echo htmlspecialchars($gsis); ?>"
+                                                                        required />
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>PAGIBIG ID No</label>
                                                                     <input name="pag_ibig" type="text"
                                                                         class="form-control"
-                                                                        placeholder="PAG-IBIG ID No" value="<?php echo htmlspecialchars($pag_ibig); ?>" required />
+                                                                        placeholder="PAG-IBIG ID No"
+                                                                        value="<?php echo htmlspecialchars($pag_ibig); ?>"
+                                                                        required />
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>PHILHEALTH No</label>
                                                                     <input name="philhealth" type="text"
                                                                         class="form-control"
-                                                                        placeholder="PhilHealth Number" value="<?php echo htmlspecialchars($philhealth); ?>" required />
+                                                                        placeholder="PhilHealth Number"
+                                                                        value="<?php echo htmlspecialchars($philhealth); ?>"
+                                                                        required />
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>SSS No</label>
                                                                     <input name="sss" type="text" class="form-control"
-                                                                        placeholder="SSS No" value="<?php echo htmlspecialchars($sss); ?>" required />
+                                                                        placeholder="SSS No"
+                                                                        value="<?php echo htmlspecialchars($sss); ?>"
+                                                                        required />
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>TIN No</label>
                                                                     <input name="tin" type="text" class="form-control"
-                                                                        placeholder="TIN No" value="<?php echo htmlspecialchars($tin); ?>" required />
+                                                                        placeholder="TIN No"
+                                                                        value="<?php echo htmlspecialchars($tin); ?>"
+                                                                        required />
                                                                 </div>
                                                             </div>
 
