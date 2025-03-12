@@ -23,6 +23,11 @@ if (isset($_POST['basic-infobtn'])) {
     $address = $_POST['address'];
     $pob = $_POST['pob'];
     $civil_status = $_POST['civil_status'];
+
+    if ($civil_status === "Other" && !empty($_POST['other_civil_status'])) {
+        $civil_status = trim($_POST['other_civil_status']);
+    }
+
     $sex = $_POST['sex'];
     $blood_type = $_POST['blood_type'];
     $employee_no = $dept . $emp_no;
