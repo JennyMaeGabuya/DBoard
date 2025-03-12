@@ -31,8 +31,8 @@ if (isset($_POST['basic-infobtn'])) {
     $sex = $_POST['sex'];
     $blood_type = $_POST['blood_type'];
     $employee_no = $dept . $emp_no;
-    $created_at = date('Y-m-d');
-    $updated_at = date('Y-m-d');
+    $created_at = date('Y-m-d H:i:s');
+    $updated_at = date('Y-m-d H:i:s');
 
     // Government records
     $gsis = $_POST['gsis'];
@@ -120,4 +120,3 @@ if (isset($_POST['basic-infobtn'])) {
         exit();
     }
 }
-?>
