@@ -1,8 +1,8 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header('location:../index.php');
-    exit();
+  header('location:../index.php');
+  exit();
 }
 
 include "dbcon.php";
@@ -10,31 +10,32 @@ $uploadDir = "uploads/";
 
 // Ensure the upload directory exists
 if (!is_dir($uploadDir)) {
-    mkdir($uploadDir, 0777, true);
+  mkdir($uploadDir, 0777, true);
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
-    $fileName = basename($_FILES['file']['name']);
-    $targetFilePath = $uploadDir . $fileName;
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
+  $uploadedFiles = [];
+  foreach ($_FILES['files']['name'] as $key => $name) {
+    $targetFilePath = $uploadDir . basename($name);
 
-    if (move_uploaded_file($_FILES['file']['tmp_name'], $targetFilePath)) {
-        echo json_encode(["success" => true, "file" => $fileName]);
-        exit;
-    } else {
-        echo json_encode(["success" => false, "error" => "File upload failed."]);
-        exit;
+    if (move_uploaded_file($_FILES['files']['tmp_name'][$key], $targetFilePath)) {
+      $uploadedFiles[] = $name;
     }
+  }
+
+  echo json_encode(["success" => true, "files" => $uploadedFiles]);
+  exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
-    $fileToDelete = $uploadDir . basename($_POST['delete']);
-    if (file_exists($fileToDelete)) {
-        unlink($fileToDelete);
-        echo json_encode(["success" => true]);
-    } else {
-        echo json_encode(["success" => false, "error" => "File not found."]);
-    }
-    exit;
+  $fileToDelete = $uploadDir . basename($_POST['delete']);
+  if (file_exists($fileToDelete)) {
+    unlink($fileToDelete);
+    echo json_encode(["success" => true]);
+  } else {
+    echo json_encode(["success" => false, "error" => "File not found."]);
+  }
+  exit;
 }
 
 $files = array_diff(scandir($uploadDir), ['.', '..']);
@@ -42,6 +43,7 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="x-ua-compatible" content="ie=edge" />
@@ -73,100 +75,104 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
   <style>
-        <style>
-    .csc-container {
-        background: #ffffff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
+    <style>.csc-container {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
     }
 
     .upload-section {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 2px dashed #3388f5;
-        padding: 70px;
-        text-align: center;
-        border-radius: 10px;
-        background-color: #f8f9fa;
-        cursor: pointer;
-        transition: background 0.3s;
-        margin-top: 40px;
-        position: relative;
-        margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed #3388f5;
+      padding: 70px;
+      text-align: center;
+      border-radius: 10px;
+      background-color: #f8f9fa;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 40px;
+      position: relative;
+      margin-bottom: 10px;
     }
 
     .upload-section:hover {
-        background-color: #eaf2ff;
+      background-color: #eaf2ff;
     }
 
     .upload-section span {
-        font-size: 18px;
-        font-weight: bold;
-        color: #3388f5;
+      font-size: 18px;
+      font-weight: bold;
+      color: #3388f5;
     }
 
 
     #uploadBtn {
-    position: absolute;
-    right: 20px;
-    top: 91%;
-    transform: translateY(-50%);
-}
+      position: absolute;
+      right: 20px;
+      top: 91%;
+      transform: translateY(-50%);
+    }
 
     .file-list {
       border: 2px solid #3388f5;
-        padding: 10px;
-        text-align: center;
-        border-radius: 10px;
-        background-color: #f8f9fa;
-        cursor: pointer;
-        transition: background 0.3s;
-        margin-top: 20px;
+      padding: 10px;
+      text-align: center;
+      border-radius: 10px;
+      background-color: #f8f9fa;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 20px;
     }
 
     .file-list ul {
-        list-style: none;
-        padding: 0;
+      list-style: none;
+      padding: 0;
     }
 
     .file-list ul li {
-        padding: 10px;
-        background: #fff;
-        border: 1px solid #ddd;
-        margin-bottom: 5px;
-        border-radius: 5px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+      padding: 10px;
+      background: #fff;
+      border: 1px solid #ddd;
+      margin-bottom: 5px;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .file-list ul li a {
-        text-decoration: none;
-        color: #3388f5;
-        font-weight: bold;
+      text-decoration: none;
+      color: #3388f5;
+      font-weight: bold;
     }
 
     .file-list ul li a:hover {
-        text-decoration: underline;
+      text-decoration: underline;
     }
 
     .delete-btn {
-    background: none; /* Removes any background */
-    border: none; /* Removes border */
-    color: black; /* Black 'X' icon */
-    font-size: 16px; /* Adjust size */
-    cursor: pointer;
-    padding: 0; /* Removes padding */
-}
+      background: none;
+      /* Removes any background */
+      border: none;
+      /* Removes border */
+      color: black;
+      /* Black 'X' icon */
+      font-size: 16px;
+      /* Adjust size */
+      cursor: pointer;
+      padding: 0;
+      /* Removes padding */
+    }
 
     h4 {
-    text-align: center;
-}
-</style>
-  </head>
+      text-align: center;
+    }
+  </style>
+</head>
 
 <body>
 
@@ -176,7 +182,7 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
   <!--Header-part-->
   <?php include 'includes/header.php'; ?>
   <!--Footer-part-->
-   <!-- Mobile Menu end -->
+  <!-- Mobile Menu end -->
   <div class="breadcome-area">
     <div class="container-fluid">
       <div class="row">
@@ -190,7 +196,8 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
                       <!-- Left Side: Home Breadcrumb -->
                       <ul class="breadcome-menu" style="display: flex; align-items: center; padding: 0; margin: 0;">
                         <li>
-                          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                          <link rel="stylesheet"
+                            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                           <a href="dashboard.php">
                             <i class="fas fa-home"></i> Home
                           </a>
@@ -287,22 +294,22 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
     </div>
 
     <div class="container">
-    <h2 class="text-center mb-4">CSC Downloaded File</h2>
-    <div class="row">
+      <h2 class="text-center mb-4">CSC Downloaded File</h2>
+      <div class="row">
         <div class="col-md-6">
-            <div class="upload-section" id="dropArea">
-                <span>Drag & Drop Files Here OR Click to Upload</span>
-            </div>
-            <input type="file" id="fileInput" hidden>
-            <button class="btn btn-primary" id="uploadBtn">Upload</button>
-            <p id="uploadStatus"></p>
+          <div class="upload-section" id="dropArea">
+            <span>Drag & Drop Files Here OR Click to Upload</span>
+          </div>
+          <input type="file" id="fileInput" multiple hidden>
+          <button class="btn btn-primary" id="uploadBtn">Upload</button>
+          <p id="uploadStatus"></p>
         </div>
         <div class="col-md-6">
-            <h4>Uploaded Files</h4>
-            <div class="file-list">
-                <ul>
-                    <?php foreach ($files as $file): ?>
-                        <li>
+          <h4>Uploaded Files</h4>
+          <div class="file-list">
+            <ul>
+              <?php foreach ($files as $file): ?>
+                <li>
                             <?= $file; ?>
                             <div>
                                 <a href="uploads/<?= $file; ?>" download>
@@ -311,54 +318,101 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
                                 <button class="delete-btn" data-file="<?= $file; ?>">❌</button>
                             </div>
                         </li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
+              <?php endforeach; ?>
+            </ul>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-
     <script>
-        $('#dropArea').click(() => $('#fileInput').click());
-        $('#fileInput').change(function () { uploadFile(this.files[0]); });
-        $('#uploadBtn').click(() => $('#fileInput').click());
+      $(document).ready(function () {
+        let dropArea = $("#dropArea");
+        let fileInput = $("#fileInput");
+        let uploadBtn = $("#uploadBtn");
 
-        function uploadFile(file) {
-            if (!file) return;
-            let formData = new FormData();
-            formData.append("file", file);
+        // Pag-drag over sa drop container
+        dropArea.on("dragover", function (e) {
+          e.preventDefault();
+          dropArea.css("background-color", "#eaf2ff");
+        });
 
-            $.ajax({
-                url: "downloaded-file.php",
-                type: "POST",
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function (response) {
-                    let result = JSON.parse(response);
-                    if (result.success) {
-                        location.reload();
-                    } else {
-                        $('#uploadStatus').text("Upload failed: " + result.error);
-                    }
-                }
-            });
+        dropArea.on("dragleave", function () {
+          dropArea.css("background-color", "#f8f9fa");
+        });
+
+        // Kapag ni-release sa drop container
+        dropArea.on("drop", function (e) {
+          e.preventDefault();
+          dropArea.css("background-color", "#f8f9fa");
+          let files = e.originalEvent.dataTransfer.files;
+          if (files.length > 0) {
+            fileInput.prop("files", files);
+            displayFileName(files[0]); // Ipakita ang filename
+          }
+        });
+
+        fileInput.change(function () {
+          displayFileNames(this.files);
+        });
+
+
+        function displayFileNames(files) {
+          let fileList = [];
+          for (let i = 0; i < files.length; i++) {
+            fileList.push(files[i].name);
+          }
+          $("#uploadStatus").html("Selected Files: " + fileList.join(", "));
+        }
+
+
+        uploadBtn.click(function () {
+          let files = fileInput.prop("files");
+          if (files.length === 0) {
+            alert("Select files first!");
+            return;
+          }
+          uploadFiles(files);
+        });
+
+        function uploadFiles(files) {
+          let formData = new FormData();
+          for (let i = 0; i < files.length; i++) {
+            formData.append("files[]", files[i]);
+          }
+
+          $.ajax({
+            url: "downloaded-file.php",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+              let result = JSON.parse(response);
+              if (result.success) {
+                location.reload();
+              } else {
+                $("#uploadStatus").text("Upload failed.");
+              }
+            }
+          });
         }
 
         $(document).on('click', '.delete-btn', function () {
-            let fileName = $(this).data('file');
-            if (confirm("Are you sure you want to delete this file?")) {
-                $.post("downloaded-file.php", { delete: fileName }, function (response) {
-                    let result = JSON.parse(response);
-                    if (result.success) {
-                        location.reload();
-                    } else {
-                        alert("Delete failed: " + result.error);
-                    }
-                });
-            }
+          let fileName = $(this).data('file');
+          if (confirm("Are you sure you want to delete this file?")) {
+            $.post("downloaded-file.php", { delete: fileName }, function (response) {
+              let result = JSON.parse(response);
+              if (result.success) {
+                location.reload();
+              } else {
+                alert("Delete failed.");
+              }
+            });
+          }
         });
+      });
     </script>
 </body>
+
 </html>
 <?php include 'includes/footer.php'; ?>
