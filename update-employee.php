@@ -1,145 +1,126 @@
 <?php
-session_start();
 
-// Redirect if the user is not logged in
+session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 if (!isset($_SESSION['user_id'])) {
     header('location:../index.php');
     exit();
 }
 
-// Include the database connection file
-include_once "dbcon.php";
+include "dbcon.php";
 
-// Check if the form is submitted
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Check if update_type is set
-    if (!isset($_POST['update_type'])) {
-        die("Update type not specified.");
-    }
+if (isset($_POST['update-employee-btn'])) {
+    $emp_no = $_POST['emp_no'];
 
-    // Get the update type
-    $update_type = $_POST['update_type'];
+    $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
+    $middlename = $_POST['middlename'];
+    $name_extension = $_POST['name_extension'];
+    $email_address = $_POST['email_address'];
+    $mobile_no = $_POST['mobile_no'];
+    $dob = $_POST['dob'];
+    $address = $_POST['address'];
+    $pob = $_POST['pob'];
+    $civil_status = $_POST['civil_status'];
+    $sex = $_POST['sex'];
+    $blood_type = $_POST['blood_type'];
+    $updated_at = date('Y-m-d');
 
-    // Get the employee number
-    $employee_no = $_POST['employee_no'];
+    // Government records
+    $gsis = $_POST['gsis'];
+    $pag_ibig = $_POST['pag_ibig'];
+    $sss = $_POST['sss'];
+    $philhealth = $_POST['philhealth'];
+    $tin = $_POST['tin'];
 
-    // Handle basic information update
-    if ($update_type === 'basic_info') {
-        // Get the posted data for basic information
-        $firstname = $_POST['firstname'];
-        $middlename = $_POST['middlename'];
-        $lastname = $_POST['lastname'];
-        $name_extension = $_POST['name_extension'];
-        $email_address = $_POST['email_address'];
-        $mobile_no = $_POST['mobile_no'];
-        $dob = $_POST['dob'];
-        $address = $_POST['address'];
-        $pob = $_POST['pob'];
-        $civil_status = $_POST['civil_status'];
-        $sex = $_POST['sex'];
-        $blood_type = $_POST['blood_type'];
+    // Retrieve the existing image name
+    $image_name = NULL;
+    $query = "SELECT `image` FROM `employee` WHERE `employee_no` = ?";
+    $stmt = $con->prepare($query);
+    $stmt->bind_param("s", $emp_no);
+    $stmt->execute();
+    $stmt->bind_result($existing_image);
+    $stmt->fetch();
+    $stmt->close();
 
-        // Handle file upload for the profile picture
-        $image_name = null; // Initialize image name
-        if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
-            $image = $_FILES['image'];
-            $image_name = basename($image['name']);
-            $target_dir = "img/profile/";
-            $target_file = $target_dir . $image_name;
+    $image_name = $existing_image; // Default to the existing image
 
-            // Move the uploaded file to the target directory
-            if (!move_uploaded_file($image['tmp_name'], $target_file)) {
-                echo "Error uploading file.";
-            }
-        }
+    // Check if a new image is uploaded
+    if (!empty($_FILES['image']['name']) && $_FILES['image']['error'] == 0) {
+        $image = $_FILES['image'];
 
-        // Prepare the update query for basic information
-        $query = "UPDATE employee SET 
-                  firstname = ?, middlename = ?, lastname = ?, name_extension = ?, 
-                  email_address = ?, mobile_no = ?, dob = ?, address = ?, 
-                  pob = ?, civil_status = ?, sex = ?, blood_type = ?, 
-                  image = ? 
-                  WHERE employee_no = ?";
-
-        // Prepare the statement
-        $stmt = $con->prepare($query);
-        if ($stmt === false) {
-            die("Error preparing statement: " . $con->error);
-        }
-
-        // Bind parameters
-        $stmt->bind_param(
-            "ssssssssssssss",
-            $firstname,
-            $middlename,
-            $lastname,
-            $name_extension,
-            $email_address,
-            $mobile_no,
-            $dob,
-            $address,
-            $pob,
-            $civil_status,
-            $sex,
-            $blood_type,
-            $image_name,
-            $employee_no
-        );
-
-        // Execute the statement
-        if ($stmt->execute()) {
-            // Redirect to the profile page after successful update
-            header('Location: all-employees.php?update=success');
+        // Validate the image type
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!in_array($image['type'], $allowedTypes)) {
+            $_SESSION['display'] = 'Invalid image type! Only JPG, PNG, and GIF are allowed.';
+            $_SESSION['title'] = 'Error';
+            $_SESSION['success'] = 'error';
+            header("Location: edit-employee.php");
             exit();
-        } else {
-            echo "Error updating record: " . $stmt->error;
-        }
-    }
-
-    // Handle government info update
-    elseif ($update_type === 'government_info') {
-        // Get government info data
-        $gsis_no = $_POST['gsis'];
-        $pag_ibig_no = $_POST['pag_ibig'];
-        $philhealth_no = $_POST['philhealth'];
-        $tin_no = $_POST['tin'];
-        $sss_no = $_POST['sss'];
-
-        // Prepare the update query for government info
-        $query = "UPDATE government_info SET 
-                  gsis_no = ?, pag_ibig_no = ?, philhealth_no = ?, 
-                  tin_no = ?, sss_no = ? 
-                  WHERE employee_no = ?";
-
-        // Prepare the statement
-        $stmt = $con->prepare($query);
-        if ($stmt === false) {
-            die("Error preparing statement: " . $con->error);
         }
 
-        // Bind parameters
-        $stmt->bind_param(
-            "ssssss",
-            $gsis_no,
-            $pag_ibig_no,
-            $philhealth_no,
-            $tin_no,
-            $sss_no,
-            $employee_no
-        );
+        // Define the upload directory
+        $uploadDir = 'img/profile/';
+        $image_name = basename($image['name']);
+        $imagePath = $uploadDir . $image_name;
 
-        // Execute the statement
-        if ($stmt->execute()) {
-            // Redirect to the profile page after successful update
-            header('Location: all-employees.php?update=success');
+        // Move the uploaded file
+        if (!move_uploaded_file($image['tmp_name'], $imagePath)) {
+            $_SESSION['display'] = 'Failed to upload image!';
+            $_SESSION['title'] = 'Error';
+            $_SESSION['success'] = 'error';
+            header("Location: edit-employee.php");
             exit();
-        } else {
-            echo "Error updating government info: " . $stmt->error;
         }
     }
-} else {
-    // Redirect if the form is accessed directly
-    header('location: all-employees.php');
+
+    // Update employee information
+    $updateQuery = "UPDATE `employee` 
+                    SET `firstname` = ?, `middlename` = ?, `lastname` = ?, `name_extension` = ?, `dob` = ?, `pob` = ?, 
+                        `sex` = ?, `civil_status` = ?, `address` = ?, `blood_type` = ?, `mobile_no` = ?, 
+                        `email_address` = ?, `image` = ?, `updated_at` = ?
+                    WHERE `employee_no` = ?";
+
+    $stmt = $con->prepare($updateQuery);
+    if (!$stmt) {
+        die("Prepare failed: " . $con->error);
+    }
+
+    $stmt->bind_param("sssssssssssssss", 
+        $firstname, $middlename, $lastname, $name_extension, $dob, $pob, 
+        $sex, $civil_status, $address, $blood_type, $mobile_no, $email_address, 
+        $image_name, $updated_at, $emp_no
+    );
+
+    if (!$stmt->execute()) {
+        die("Execution failed: " . $stmt->error);
+    }
+
+    // Update government records
+    $govUpdateQuery = "UPDATE `government_info` 
+                       SET `gsis_no` = ?, `pag_ibig_no` = ?, `philhealth_no` = ?, `sss_no` = ?, `tin_no` = ?, 
+                           `updated_at` = ?
+                       WHERE `employee_no` = ?";
+
+    $govStmt = $con->prepare($govUpdateQuery);
+    if (!$govStmt) {
+        die("Prepare failed: " . $con->error);
+    }
+
+    $govStmt->bind_param("sssssss", $gsis, $pag_ibig, $philhealth, $sss, $tin, $updated_at, $emp_no);
+
+    if (!$govStmt->execute()) {
+        die("Execution failed: " . $govStmt->error);
+    }
+
+    $_SESSION['display'] = 'Successfully updated employee information.';
+    $_SESSION['title'] = 'Success';
+    $_SESSION['success'] = 'success';
+
+    header("Location: edit-employee.php");
     exit();
 }
+
 ?>
