@@ -46,7 +46,7 @@ if (isset($_GET['employee_no'])) {
         $sex = $row['sex'];
         $blood_type = $row['blood_type'];
         $imagePath = $row['image'];
-        $imageUrl = empty($imagePath) ? 'img/mk-logo.png' : 'img/profile/' . $imagePath;
+        $imageUrl  = !empty($image) ? 'img/profile/' . $image : 'img/mk-logo.png';
         $gsis = $row['gsis_no'];
         $pag_ibig = $row['pag_ibig_no'];
         $philhealth = $row['philhealth_no'];
@@ -237,7 +237,7 @@ if (isset($_GET['employee_no'])) {
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                     <div class="profile-info-inner">
                                         <div class="profile-img">
-                                            <img src="<?php echo htmlspecialchars($imageUrl); ?>" alt="User  Image" />
+                                            <img id="profileImage" src="<?php echo htmlspecialchars($imageUrl); ?>" alt="User Image" />
                                         </div>
 
                                         <div class="profile-details-hr">
@@ -245,9 +245,20 @@ if (isset($_GET['employee_no'])) {
                                             <div class="row">
 
                                                 <div class="form-group col-md-12">
-                                                    <label>Upload Profile Picture</label>
-                                                    <input class="form-control" type="file" id="formFile" name="image">
+                                                    <label for="formFile" class="form-label">Upload Profile Picture</label>
+                                                    <input class="form-control" type="file" id="formFile" name="image" accept="image/*" onchange="previewImage(event)">
                                                 </div>
+
+                                                <script>
+                                                    function previewImage(event) {
+                                                        var reader = new FileReader();
+                                                        reader.onload = function() {
+                                                            var output = document.getElementById('profileImage');
+                                                            output.src = reader.result; // Update the image preview
+                                                        };
+                                                        reader.readAsDataURL(event.target.files[0]); // Convert to Base64
+                                                    }
+                                                </script>
 
                                             </div>
 

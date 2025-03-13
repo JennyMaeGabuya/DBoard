@@ -75,7 +75,7 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
   <style>
-    <style>.csc-container {
+    .csc-container {
       background: #ffffff;
       padding: 20px;
       border-radius: 10px;
@@ -156,16 +156,11 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
 
     .delete-btn {
       background: none;
-      /* Removes any background */
       border: none;
-      /* Removes border */
       color: black;
-      /* Black 'X' icon */
       font-size: 16px;
-      /* Adjust size */
       cursor: pointer;
       padding: 0;
-      /* Removes padding */
     }
 
     h4 {
@@ -181,7 +176,7 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
 
   <!--Header-part-->
   <?php include 'includes/header.php'; ?>
-  <!--Footer-part-->
+  
   <!-- Mobile Menu end -->
   <div class="breadcome-area">
     <div class="container-fluid">
@@ -310,14 +305,14 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
             <ul>
               <?php foreach ($files as $file): ?>
                 <li>
-                            <?= $file; ?>
-                            <div>
-                                <a href="uploads/<?= $file; ?>" download>
-                                    <i class="fa fa-download"></i>
-                                </a>
-                                <button class="delete-btn" data-file="<?= $file; ?>">❌</button>
-                            </div>
-                        </li>
+                  <?= $file; ?>
+                  <div>
+                    <a href="uploads/<?= $file; ?>" download>
+                      <i class="fa fa-download"></i>
+                    </a>
+                    <button class="delete-btn" data-file="<?= $file; ?>">❌</button>
+                  </div>
+                </li>
               <?php endforeach; ?>
             </ul>
           </div>
@@ -325,23 +320,23 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
       </div>
     </div>
     <script>
-      $(document).ready(function () {
+      $(document).ready(function() {
         let dropArea = $("#dropArea");
         let fileInput = $("#fileInput");
         let uploadBtn = $("#uploadBtn");
 
         // Pag-drag over sa drop container
-        dropArea.on("dragover", function (e) {
+        dropArea.on("dragover", function(e) {
           e.preventDefault();
           dropArea.css("background-color", "#eaf2ff");
         });
 
-        dropArea.on("dragleave", function () {
+        dropArea.on("dragleave", function() {
           dropArea.css("background-color", "#f8f9fa");
         });
 
         // Kapag ni-release sa drop container
-        dropArea.on("drop", function (e) {
+        dropArea.on("drop", function(e) {
           e.preventDefault();
           dropArea.css("background-color", "#f8f9fa");
           let files = e.originalEvent.dataTransfer.files;
@@ -351,7 +346,7 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
           }
         });
 
-        fileInput.change(function () {
+        fileInput.change(function() {
           displayFileNames(this.files);
         });
 
@@ -365,7 +360,7 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
         }
 
 
-        uploadBtn.click(function () {
+        uploadBtn.click(function() {
           let files = fileInput.prop("files");
           if (files.length === 0) {
             alert("Select files first!");
@@ -386,7 +381,7 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
             data: formData,
             contentType: false,
             processData: false,
-            success: function (response) {
+            success: function(response) {
               let result = JSON.parse(response);
               if (result.success) {
                 location.reload();
@@ -397,10 +392,12 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
           });
         }
 
-        $(document).on('click', '.delete-btn', function () {
+        $(document).on('click', '.delete-btn', function() {
           let fileName = $(this).data('file');
           if (confirm("Are you sure you want to delete this file?")) {
-            $.post("downloaded-file.php", { delete: fileName }, function (response) {
+            $.post("downloaded-file.php", {
+              delete: fileName
+            }, function(response) {
               let result = JSON.parse(response);
               if (result.success) {
                 location.reload();
