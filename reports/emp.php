@@ -147,23 +147,27 @@ class PDF extends FPDF
         $this->SetFont('Times', '', 12);
         $this->Ln();
 
-        $this->Cell(40, 10, 'SEX', 1);
+        $this->Cell(40, 10, 'CIVIL STATUS', 1);
         $this->SetFont('Times', 'B', 12);
-        $this->Cell(43, 10, $employee['sex'], 1);
+        $this->Cell(43, 10, $employee['civil_status'], 1);
+        $this->Cell(29, 10, 'SEX', 1);
+        $this->SetFont('Times', 'B', 12);
+        $this->Cell(78, 10, $employee['sex'], 1);
 
         $dob = $employee['dob'];
         $date = new DateTime($dob);
         $birthday = $date->format('F j, Y');
         $this->SetFont('Times', '', 12);
-        $this->Cell(27, 10, 'BIRTHDATE', 1);
-        $this->SetFont('Times', 'B', 12);
-        $this->Cell(80, 10, $birthday, 1);
         $this->Ln();
 
-        $this->SetFont('Times', '', 12);
-        $this->Cell(40, 10, 'BLOOD TYPE', 1);
+        $this->Cell(40, 10, 'BIRTHDATE', 1);
         $this->SetFont('Times', 'B', 12);
-        $this->Cell(150, 10, $employee['blood_type'], 1);
+        $this->Cell(43, 10, $birthday, 1);
+
+        $this->SetFont('Times', '', 12);
+        $this->Cell(29, 10, 'BLOOD TYPE', 1);
+        $this->SetFont('Times', 'B', 12);
+        $this->Cell(78, 10, $employee['blood_type'], 1);
         $this->Ln();
 
         // Government Information Header

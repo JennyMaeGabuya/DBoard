@@ -435,13 +435,16 @@ FROM employee WHERE employee.employee_no = ?";
 
                                             </tr>
                                             <tr>
+                                            <th>Civil Status:</th>
+                                            <td><?php echo $civil_status; ?></td>
                                                 <th>Sex:</th>
                                                 <td><?php echo $sex; ?></td>
-                                                <th>Birthday:</th>
-                                                <td><?php echo $bday; ?></td>
+                                              
 
                                             </tr>
                                             <tr>
+                                            <th>Birthday:</th>
+                                            <td><?php echo $bday; ?></td>
                                                 <th>Blood Type</th>
                                                 <td colspan="3"><?php echo $blood_type; ?></td>
                                             </tr>
