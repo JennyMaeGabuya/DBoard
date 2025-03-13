@@ -349,15 +349,10 @@ if (isset($_GET['employee_no'])) {
                                                                         value="<?php echo htmlspecialchars($dob); ?>" />
                                                                 </div>
 
-
-
                                                                 <div class="form-group col-md-3">
                                                                     <label>Civil Status</label>
-                                                                    <select name="civil_status" id="civil_status"
-                                                                        class="form-control" required
-                                                                        onchange="checkOtherStatus()">
-                                                                        <option value="none" disabled <?php echo empty($civil_status) ? 'selected' : ''; ?>>
-                                                                            Civil Status</option>
+                                                                    <select name="civil_status" id="civil_status" class="form-control" required onchange="checkOtherStatus()">
+                                                                        <option value="none" disabled <?php echo empty($civil_status) ? 'selected' : ''; ?>>Civil Status</option>
                                                                         <option value="Single" <?php echo ($civil_status == 'Single') ? 'selected' : ''; ?>>Single</option>
                                                                         <option value="Married" <?php echo ($civil_status == 'Married') ? 'selected' : ''; ?>>Married</option>
                                                                         <option value="Widowed" <?php echo ($civil_status == 'Widowed') ? 'selected' : ''; ?>>Widowed</option>
@@ -365,12 +360,25 @@ if (isset($_GET['employee_no'])) {
                                                                         <option value="Other" <?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? 'selected' : ''; ?>>Other</option>
                                                                     </select>
 
-                                                                    <input type="text" name="other_civil_status"
-                                                                        id="other_civil_status" class="form-control"
-                                                                        placeholder="Please specify..."
+                                                                    <input type="text" name="other_civil_status" id="other_civil_status" class="form-control" placeholder="Please specify..."
                                                                         value="<?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? htmlspecialchars($civil_status) : ''; ?>"
                                                                         style="display: <?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? 'block' : 'none'; ?>; margin-top: 5px;">
 
+                                                                    <script>
+                                                                        function checkOtherStatus() {
+                                                                            var civilStatus = document.getElementById("civil_status").value;
+                                                                            var otherInput = document.getElementById("other_civil_status");
+
+                                                                            if (civilStatus === "Other") {
+                                                                                otherInput.style.display = "block";
+                                                                                otherInput.setAttribute("required", "true");
+                                                                            } else {
+                                                                                otherInput.style.display = "none";
+                                                                                otherInput.removeAttribute("required");
+                                                                                otherInput.value = ""; // Clear the input if another option is selected
+                                                                            }
+                                                                        }
+                                                                    </script>
 
                                                                 </div>
 
