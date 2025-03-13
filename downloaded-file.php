@@ -166,6 +166,11 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
     h4 {
       text-align: center;
     }
+
+   .product-status-wrap {
+    min-height: 100vh;
+    background-color: white;
+   }
   </style>
 </head>
 
@@ -176,7 +181,7 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
 
   <!--Header-part-->
   <?php include 'includes/header.php'; ?>
-  
+
   <!-- Mobile Menu end -->
   <div class="breadcome-area">
     <div class="container-fluid">
@@ -287,128 +292,139 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
         </div>
       </div>
     </div>
-
-    <div class="container">
-      <h2 class="text-center mb-4">CSC Downloaded File</h2>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="upload-section" id="dropArea">
-            <span>Drag & Drop Files Here OR Click to Upload</span>
-          </div>
-          <input type="file" id="fileInput" multiple hidden>
-          <button class="btn btn-primary" id="uploadBtn">Upload</button>
-          <p id="uploadStatus"></p>
-        </div>
-        <div class="col-md-6">
-          <h4>Uploaded Files</h4>
-          <div class="file-list">
-            <ul>
-              <?php foreach ($files as $file): ?>
-                <li>
-                  <?= $file; ?>
-                  <div>
-                    <a href="uploads/<?= $file; ?>" download>
-                      <i class="fa fa-download"></i>
-                    </a>
-                    <button class="delete-btn" data-file="<?= $file; ?>">❌</button>
+    <div class="product-status mg-b-15">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="product-status-wrap drp-lst">
+              <div class="container">
+                <h2 class="text-center mb-4">CSC Downloaded File</h2>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="upload-section" id="dropArea">
+                      <span>Drag & Drop Files Here OR Click to Upload</span>
+                    </div>
+                    <input type="file" id="fileInput" multiple hidden>
+                    <button class="btn btn-primary" id="uploadBtn">Upload</button>
+                    <p id="uploadStatus"></p>
                   </div>
-                </li>
-              <?php endforeach; ?>
-            </ul>
+                  <div class="col-md-6">
+                    <h4>Uploaded Files</h4>
+                    <div class="file-list">
+                      <ul>
+                        <?php foreach ($files as $file): ?>
+                          <li>
+                            <?= $file; ?>
+                            <div>
+                              <a href="uploads/<?= $file; ?>" download>
+                                <i class="fa fa-download"></i>
+                              </a>
+                              <button class="delete-btn" data-file="<?= $file; ?>">❌</button>
+                            </div>
+                          </li>
+                        <?php endforeach; ?>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <script>
-      $(document).ready(function() {
-        let dropArea = $("#dropArea");
-        let fileInput = $("#fileInput");
-        let uploadBtn = $("#uploadBtn");
+  </div>
 
-        // Pag-drag over sa drop container
-        dropArea.on("dragover", function(e) {
-          e.preventDefault();
-          dropArea.css("background-color", "#eaf2ff");
-        });
+  <script>
+    $(document).ready(function () {
+      let dropArea = $("#dropArea");
+      let fileInput = $("#fileInput");
+      let uploadBtn = $("#uploadBtn");
 
-        dropArea.on("dragleave", function() {
-          dropArea.css("background-color", "#f8f9fa");
-        });
+      // Pag-drag over sa drop container
+      dropArea.on("dragover", function (e) {
+        e.preventDefault();
+        dropArea.css("background-color", "#eaf2ff");
+      });
 
-        // Kapag ni-release sa drop container
-        dropArea.on("drop", function(e) {
-          e.preventDefault();
-          dropArea.css("background-color", "#f8f9fa");
-          let files = e.originalEvent.dataTransfer.files;
-          if (files.length > 0) {
-            fileInput.prop("files", files);
-            displayFileName(files[0]); // Ipakita ang filename
-          }
-        });
+      dropArea.on("dragleave", function () {
+        dropArea.css("background-color", "#f8f9fa");
+      });
 
-        fileInput.change(function() {
-          displayFileNames(this.files);
-        });
+      // Kapag ni-release sa drop container
+      dropArea.on("drop", function (e) {
+        e.preventDefault();
+        dropArea.css("background-color", "#f8f9fa");
+        let files = e.originalEvent.dataTransfer.files;
+        if (files.length > 0) {
+          fileInput.prop("files", files);
+          displayFileName(files[0]); // Ipakita ang filename
+        }
+      });
+
+      fileInput.change(function () {
+        displayFileNames(this.files);
+      });
 
 
-        function displayFileNames(files) {
-          let fileList = [];
-          for (let i = 0; i < files.length; i++) {
-            fileList.push(files[i].name);
-          }
-          $("#uploadStatus").html("Selected Files: " + fileList.join(", "));
+      function displayFileNames(files) {
+        let fileList = [];
+        for (let i = 0; i < files.length; i++) {
+          fileList.push(files[i].name);
+        }
+        $("#uploadStatus").html("Selected Files: " + fileList.join(", "));
+      }
+
+
+      uploadBtn.click(function () {
+        let files = fileInput.prop("files");
+        if (files.length === 0) {
+          alert("Select files first!");
+          return;
+        }
+        uploadFiles(files);
+      });
+
+      function uploadFiles(files) {
+        let formData = new FormData();
+        for (let i = 0; i < files.length; i++) {
+          formData.append("files[]", files[i]);
         }
 
-
-        uploadBtn.click(function() {
-          let files = fileInput.prop("files");
-          if (files.length === 0) {
-            alert("Select files first!");
-            return;
+        $.ajax({
+          url: "downloaded-file.php",
+          type: "POST",
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function (response) {
+            let result = JSON.parse(response);
+            if (result.success) {
+              location.reload();
+            } else {
+              $("#uploadStatus").text("Upload failed.");
+            }
           }
-          uploadFiles(files);
         });
+      }
 
-        function uploadFiles(files) {
-          let formData = new FormData();
-          for (let i = 0; i < files.length; i++) {
-            formData.append("files[]", files[i]);
-          }
-
-          $.ajax({
-            url: "downloaded-file.php",
-            type: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(response) {
-              let result = JSON.parse(response);
-              if (result.success) {
-                location.reload();
-              } else {
-                $("#uploadStatus").text("Upload failed.");
-              }
+      $(document).on('click', '.delete-btn', function () {
+        let fileName = $(this).data('file');
+        if (confirm("Are you sure you want to delete this file?")) {
+          $.post("downloaded-file.php", {
+            delete: fileName
+          }, function (response) {
+            let result = JSON.parse(response);
+            if (result.success) {
+              location.reload();
+            } else {
+              alert("Delete failed.");
             }
           });
         }
-
-        $(document).on('click', '.delete-btn', function() {
-          let fileName = $(this).data('file');
-          if (confirm("Are you sure you want to delete this file?")) {
-            $.post("downloaded-file.php", {
-              delete: fileName
-            }, function(response) {
-              let result = JSON.parse(response);
-              if (result.success) {
-                location.reload();
-              } else {
-                alert("Delete failed.");
-              }
-            });
-          }
-        });
       });
-    </script>
+    });
+  </script>
 </body>
 
 </html>
