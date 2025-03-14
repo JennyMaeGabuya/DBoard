@@ -499,7 +499,6 @@ if (isset($_GET['employee_no'])) {
                                                 </div>
                                             </div>
 
-
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div style="text-align: center;">
@@ -518,7 +517,6 @@ if (isset($_GET['employee_no'])) {
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     <!-- Footer -->
