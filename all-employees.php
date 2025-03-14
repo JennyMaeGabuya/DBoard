@@ -534,19 +534,19 @@ include "dbcon.php";
         </div>
 
         <script>
-    document.getElementById('mobile').addEventListener('input', function(e) {
-        const value = e.target.value;
-        // Remove non-numeric characters
-        const numericValue = value.replace(/[^0-9]/g, '');
-        
-        // Limit input to 11 digits
-        if (numericValue.length > 11) {
-            e.target.value = numericValue.slice(0, 11);
-        } else {
-            e.target.value = numericValue;
-        }
-    });
-</script>
+            document.getElementById('mobile').addEventListener('input', function(e) {
+                const value = e.target.value;
+                // Remove non-numeric characters
+                const numericValue = value.replace(/[^0-9]/g, '');
+
+                // Limit input to 11 digits
+                if (numericValue.length > 11) {
+                    e.target.value = numericValue.slice(0, 11);
+                } else {
+                    e.target.value = numericValue;
+                }
+            });
+        </script>
 
         <?php if (isset($_SESSION['display'])): ?>
             <script>

@@ -229,47 +229,50 @@ if (isset($_GET['employee_no'])) {
     <div class="single-pro-review-area mt-t-30 mg-b-15">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                    <div class="profile-info-inner">
-                        <div class="profile-img">
-                            <img id="profileImage" src="<?php echo htmlspecialchars($imageUrl); ?>" alt="User Image" />
-                        </div>
 
-                        <div class="profile-details-hr">
+                <form method="POST" action="update-employee.php"
+                    enctype="multipart/form-data">
 
-                            <div class="row">
-
-                                <div class="form-group col-md-12">
-                                    <label for="formFile" class="form-label">Upload Profile Picture</label>
-                                    <input class="form-control" type="file" id="formFile" name="image" accept="image/*" onchange="previewImage(event)">
-                                </div>
-
-                                <script>
-                                    function previewImage(event) {
-                                        var reader = new FileReader();
-                                        reader.onload = function() {
-                                            var output = document.getElementById('profileImage');
-                                            output.src = reader.result; // Update the image preview
-                                        };
-                                        reader.readAsDataURL(event.target.files[0]); // Convert to Base64
-                                    }
-                                </script>
-
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <div class="profile-info-inner">
+                            <div class="profile-img">
+                                <img id="profileImage" src="<?php echo htmlspecialchars($imageUrl); ?>" alt="User Image" />
                             </div>
 
+                            <div class="profile-details-hr">
+
+                                <div class="row">
+
+                                    <div class="form-group col-md-12">
+                                        <label for="formFile" class="form-label">Upload Profile Picture</label>
+                                        <input class="form-control" type="file" id="formFile" name="image" accept="image/*" onchange="previewImage(event)">
+                                    </div>
+
+                                    <script>
+                                        function previewImage(event) {
+                                            var reader = new FileReader();
+                                            reader.onload = function() {
+                                                var output = document.getElementById('profileImage');
+                                                output.src = reader.result; // Update the image preview
+                                            };
+                                            reader.readAsDataURL(event.target.files[0]); // Convert to Base64
+                                        }
+                                    </script>
+
+                                </div>
+
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                    <div class="product-payment-inner-st res-mg-t-30 analysis-progrebar-ctn">
-                        <div class="tab-content custom-product-edit">
-                            <div id="description" class="tab-pane fade active in">
-                                <div class="product-tab-list">
-                                    <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                        <div class="product-payment-inner-st res-mg-t-30 analysis-progrebar-ctn">
+                            <div class="tab-content custom-product-edit">
+                                <div id="description" class="tab-pane fade active in">
+                                    <div class="product-tab-list">
+                                        <div class="row" style="margin: 10px 10px 0 10px;">
 
-                                        <form method="POST" action="update-employee.php"
-                                            enctype="multipart/form-data" style="margin: 15px;">
+                                            <!-- Form upload also included -->
                                             <h4 class="text-center" style="color: #006df0;">BASIC
                                                 INFORMATION</h4>
                                             <hr>
@@ -309,7 +312,7 @@ if (isset($_GET['employee_no'])) {
                                                 </div>
 
                                                 <div class="form-group col-md-2">
-                                                    <label>Name Extension</label>
+                                                    <label>Name Ext.</label>
                                                     <input name="name_extension" type="text"
                                                         class="form-control" placeholder="Ext"
                                                         value="<?php echo htmlspecialchars($name_extension); ?>" />
@@ -331,6 +334,22 @@ if (isset($_GET['employee_no'])) {
                                                         value="<?php echo htmlspecialchars($mobile_no); ?>"
                                                         required pattern="\d{11    }" />
                                                 </div>
+
+                                                <!-- Accept only numbers -->
+                                                <script>
+                                                    document.getElementById('mobile').addEventListener('input', function(e) {
+                                                        const value = e.target.value;
+                                                        // Remove non-numeric characters
+                                                        const numericValue = value.replace(/[^0-9]/g, '');
+
+                                                        // Limit input to 11 digits
+                                                        if (numericValue.length > 11) {
+                                                            e.target.value = numericValue.slice(0, 11);
+                                                        } else {
+                                                            e.target.value = numericValue;
+                                                        }
+                                                    });
+                                                </script>
 
 
                                             </div>
@@ -508,16 +527,16 @@ if (isset($_GET['employee_no'])) {
                                                     </div>
                                                 </div>
                                             </div>
-                                    </div>
+                                        </div>
 
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
     </div>
 
     <!-- Footer -->
