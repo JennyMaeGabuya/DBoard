@@ -372,37 +372,52 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
 }
 
 
-      uploadBtn.click(function () {
-        let files = fileInput.prop("files");
-        if (files.length === 0) {
-          alert("Select files first!");
-          return;
-        }
-        uploadFiles(files);
-      });
+uploadBtn.click(function () {
+    let files = fileInput.prop("files");
+    if (files.length === 0) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'No File Selected',
+            text: 'Please select a file before uploading.'
+        });
+        return;
+    }
+    uploadFiles(files);
+});
 
-      function uploadFiles(files) {
-        let formData = new FormData();
-        for (let i = 0; i < files.length; i++) {
-          formData.append("files[]", files[i]);
-        }
+function uploadFiles(files) {
+    let formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+        formData.append("files[]", files[i]);
+    }
 
-        $.ajax({
-          url: "downloaded-file.php",
-          type: "POST",
-          data: formData,
-          contentType: false,
-          processData: false,
-          success: function (response) {
+    $.ajax({
+        url: "downloaded-file.php",
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
             let result = JSON.parse(response);
             if (result.success) {
-              location.reload();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Upload Successful!',
+                    text: 'Your file has been uploaded successfully.',
+                    showConfirmButton: true
+                }).then(() => {
+                    location.reload();
+                });
             } else {
-              $("#uploadStatus").text("Upload failed.");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Upload Failed',
+                    text: 'An error occurred while uploading the file.'
+                });
             }
-          }
-        });
-      }
+        }
+    });
+}
 
       $(document).on('click', '.delete-btn', function () {
         let fileName = $(this).data('file');
