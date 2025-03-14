@@ -368,12 +368,8 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
 
 
       function displayFileNames(files) {
-        let fileList = [];
-        for (let i = 0; i < files.length; i++) {
-          fileList.push(files[i].name);
-        }
-        $("#uploadStatus").html("Selected Files: " + fileList.join(", "));
-      }
+    $("#uploadStatus").html(""); // Clears the text
+}
 
 
       uploadBtn.click(function () {
