@@ -503,7 +503,8 @@ if (isset($_GET['employee_no'])) {
                                                 <div class="col-lg-12">
                                                     <div style="text-align: center;">
                                                         <a href="all-employees.php" class="btn btn-danger">Cancel</a>
-                                                        <button type="submit" class="btn btn-success" style="margin-left: 5px;">Update Profile</button>
+                                                        <button type="submit" class="btn btn-success"
+                                                            name="update-employee-btn" style="margin-left: 5px;">Save Changes</button>
                                                     </div>
                                                 </div>
                                             </div>
