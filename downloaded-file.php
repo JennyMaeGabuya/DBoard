@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 include "dbcon.php";
-$uploadDir = "uploads/";
+$uploadDir = "img/uploads/";
 
 // Ensure the upload directory exists
 if (!is_dir($uploadDir)) {
@@ -316,7 +316,7 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
                           <li>
                             <?= $file; ?>
                             <div>
-                              <a href="uploads/<?= $file; ?>" download>
+                              <a href="img/uploads/<?= $file; ?>" download>
                                 <i class="fa fa-download"></i>
                               </a>
                               <button class="delete-btn" data-file="<?= $file; ?>">❌</button>

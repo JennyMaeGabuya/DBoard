@@ -51,7 +51,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
           <li class="<?= ($current_page == 'events.php') ? 'active' : ''; ?>">
             <a href="events.php">
               <span class="educate-icon educate-event icon-wrap sub-icon-mg"></span>
-              <span class="mini-click-non">Event</span>
+              <span class="mini-click-non">Events</span>
             </a>
           </li>
           <li class="<?= ($current_page == 'organization.php') ? 'active' : ''; ?>">
