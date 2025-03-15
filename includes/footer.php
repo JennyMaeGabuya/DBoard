@@ -102,9 +102,8 @@
 <script src="js/sparkline/jquery.sparkline.min.js"></script>
 <script src="js/sparkline/jquery.charts-sparkline.js"></script>
 <script src="js/sparkline/sparkline-active.js"></script>
-<script src="js/calendar/moment.min.js"></script>
-<script src="js/calendar/fullcalendar.min.js"></script>
-<script src="js/calendar/fullcalendar-active.js"></script>
+<script src="fullcalendar/lib/moment.min.js"></script>
+<script src="fullcalendar/fullcalendar.min.js"></script>
 <script src="js/plugins.js"></script>
 <script src="js/main.js"></script>
 </body>

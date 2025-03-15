@@ -66,8 +66,6 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
   <link rel="stylesheet" href="css/scrollbar/jquery.mCustomScrollbar.min.css" />
   <link rel="stylesheet" href="css/metisMenu/metisMenu.min.css" />
   <link rel="stylesheet" href="css/metisMenu/metisMenu-vertical.css" />
-  <link rel="stylesheet" href="css/calendar/fullcalendar.min.css" />
-  <link rel="stylesheet" href="css/calendar/fullcalendar.print.min.css" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
   <script src="js/vendor/modernizr-2.8.3.min.js"></script>
@@ -167,10 +165,10 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
       text-align: center;
     }
 
-   .product-status-wrap {
-    min-height: 100vh;
-    background-color: white;
-   }
+    .product-status-wrap {
+      min-height: 100vh;
+      background-color: white;
+    }
   </style>
 </head>
 
@@ -336,23 +334,23 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
   </div>
 
   <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
       let dropArea = $("#dropArea");
       let fileInput = $("#fileInput");
       let uploadBtn = $("#uploadBtn");
 
       // Pag-drag over sa drop container
-      dropArea.on("dragover", function (e) {
+      dropArea.on("dragover", function(e) {
         e.preventDefault();
         dropArea.css("background-color", "#eaf2ff");
       });
 
-      dropArea.on("dragleave", function () {
+      dropArea.on("dragleave", function() {
         dropArea.css("background-color", "#f8f9fa");
       });
 
       // Kapag ni-release sa drop container
-      dropArea.on("drop", function (e) {
+      dropArea.on("drop", function(e) {
         e.preventDefault();
         dropArea.css("background-color", "#f8f9fa");
         let files = e.originalEvent.dataTransfer.files;
@@ -362,69 +360,69 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
         }
       });
 
-      fileInput.change(function () {
+      fileInput.change(function() {
         displayFileNames(this.files);
       });
 
 
       function displayFileNames(files) {
-    $("#uploadStatus").html(""); // Clears the text
-}
+        $("#uploadStatus").html(""); // Clears the text
+      }
 
 
-uploadBtn.click(function () {
-    let files = fileInput.prop("files");
-    if (files.length === 0) {
-        Swal.fire({
+      uploadBtn.click(function() {
+        let files = fileInput.prop("files");
+        if (files.length === 0) {
+          Swal.fire({
             icon: 'warning',
             title: 'No File Selected',
             text: 'Please select a file before uploading.'
-        });
-        return;
-    }
-    uploadFiles(files);
-});
+          });
+          return;
+        }
+        uploadFiles(files);
+      });
 
-function uploadFiles(files) {
-    let formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-        formData.append("files[]", files[i]);
-    }
+      function uploadFiles(files) {
+        let formData = new FormData();
+        for (let i = 0; i < files.length; i++) {
+          formData.append("files[]", files[i]);
+        }
 
-    $.ajax({
-        url: "downloaded-file.php",
-        type: "POST",
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (response) {
+        $.ajax({
+          url: "downloaded-file.php",
+          type: "POST",
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function(response) {
             let result = JSON.parse(response);
             if (result.success) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Upload Successful!',
-                    text: 'Your file has been uploaded successfully.',
-                    showConfirmButton: true
-                }).then(() => {
-                    location.reload();
-                });
+              Swal.fire({
+                icon: 'success',
+                title: 'Upload Successful!',
+                text: 'Your file has been uploaded successfully.',
+                showConfirmButton: true
+              }).then(() => {
+                location.reload();
+              });
             } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Upload Failed',
-                    text: 'An error occurred while uploading the file.'
-                });
+              Swal.fire({
+                icon: 'error',
+                title: 'Upload Failed',
+                text: 'An error occurred while uploading the file.'
+              });
             }
-        }
-    });
-}
+          }
+        });
+      }
 
-      $(document).on('click', '.delete-btn', function () {
+      $(document).on('click', '.delete-btn', function() {
         let fileName = $(this).data('file');
         if (confirm("Are you sure you want to delete this file?")) {
           $.post("downloaded-file.php", {
             delete: fileName
-          }, function (response) {
+          }, function(response) {
             let result = JSON.parse(response);
             if (result.success) {
               location.reload();

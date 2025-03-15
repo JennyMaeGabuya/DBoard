@@ -9,20 +9,20 @@ if (!isset($_SESSION['user_id'])) {
 
 include "dbcon.php";
 
-$sql = "SELECT title, start_date, end_date FROM events";
-$result = $con->query($sql);
+$query = "SELECT id, title, start_date AS start, end_date AS end, description, color FROM events";
+$result = $con->query($query);
 
 $events = [];
-
 while ($row = $result->fetch_assoc()) {
     $events[] = [
-        'title' => $row['title'],
-        'start' => $row['start_date'],
-        'end'   => $row['end_date']
+        "id" => $row["id"],
+        "title" => $row["title"],
+        "start" => $row["start"],
+        "end" => $row["end"],
+        "description" => $row["description"],
+        "color" => $row["color"]
     ];
 }
 
-// Output as JSON
-header('Content-Type: application/json');
 echo json_encode($events);
 ?>

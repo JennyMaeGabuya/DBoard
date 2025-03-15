@@ -25,8 +25,6 @@ include('dbcon.php');
     <link rel="stylesheet" href="css/scrollbar/jquery.mCustomScrollbar.min.css" />
     <link rel="stylesheet" href="css/metisMenu/metisMenu.min.css" />
     <link rel="stylesheet" href="css/metisMenu/metisMenu-vertical.css" />
-    <link rel="stylesheet" href="css/calendar/fullcalendar.min.css" />
-    <link rel="stylesheet" href="css/calendar/fullcalendar.print.min.css" />
     <link rel="stylesheet" href="css/form/all-type-forms.css" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="css/responsive.css" />

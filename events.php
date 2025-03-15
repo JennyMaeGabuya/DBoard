@@ -8,103 +8,12 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 include "dbcon.php";
-
-class Calendar
-{
-    private $active_year, $active_month, $active_day;
-    private $events = [];
-
-    public function __construct($con, $date = null)
-    {
-        if (isset($_GET['date'])) {
-            $date = $_GET['date']; // Get date from URL
-        }
-
-        $this->active_year = $date ? date('Y', strtotime($date)) : date('Y');
-        $this->active_month = $date ? date('m', strtotime($date)) : date('m');
-        $this->active_day = $date ? date('d', strtotime($date)) : date('d');
-
-        // Load events from the database
-        $this->loadEventsFromDB($con);
-    }
-
-    private function loadEventsFromDB($con)
-    {
-        $sql = "SELECT title, start_date, end_date FROM events";
-        $result = $con->query($sql);
-
-        while ($row = $result->fetch_assoc()) {
-            $this->events[] = [$row['title'], $row['start_date'], 1, ''];
-        }
-    }
-
-    public function __toString()
-    {
-        $num_days = date('t', strtotime($this->active_year . '-' . $this->active_month . '-1'));
-        $days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        $first_day_of_week = array_search(date('D', strtotime($this->active_year . '-' . $this->active_month . '-1')), $days);
-
-        // Get previous and next month
-        $prev_month = date('Y-m', strtotime($this->active_year . '-' . $this->active_month . ' -1 month'));
-        $next_month = date('Y-m', strtotime($this->active_year . '-' . $this->active_month . ' +1 month'));
-
-        // Calendar Header with Navigation
-        $html = '<div class="calendar-container">';
-        $html .= '<div class="calendar">';
-
-        // Navigation buttons
-        $html .= '<div class="header">';
-        $html .= '<button onclick="navigateCalendar(\'' . $prev_month . '\')" class="nav-btn">&laquo;</button>';
-        $html .= '<div class="month-year">' . date('F Y', strtotime($this->active_year . '-' . $this->active_month . '-1')) . '</div>';
-        $html .= '<button onclick="navigateCalendar(\'' . $next_month . '\')" class="nav-btn">&raquo;</button>';
-        $html .= '</div>';
-
-        // View mode buttons
-        $html .= '<div class="view-options">';
-        $html .= '<button class="view-btn active" onclick="changeView(\'month\')">Month</button>';
-        $html .= '<button class="view-btn" onclick="changeView(\'week\')">Week</button>';
-        $html .= '<button class="view-btn" onclick="changeView(\'day\')">Day</button>';
-        $html .= '<button class="view-btn" onclick="changeView(\'list\')">List</button>';
-        $html .= '</div>';
-
-        // Calendar Days
-        $html .= '<div class="days">';
-        foreach ($days as $day) {
-            $html .= '<div class="day_name">' . $day . '</div>';
-        }
-
-        for ($i = 0; $i < $first_day_of_week; $i++) {
-            $html .= '<div class="day_num ignore"></div>';
-        }
-
-        for ($i = 1; $i <= $num_days; $i++) {
-            $html .= '<div class="day_num"><span>' . $i . '</span>';
-            foreach ($this->events as $event) {
-                if (date('Y-m-d', strtotime($this->active_year . '-' . $this->active_month . '-' . $i)) == date('Y-m-d', strtotime($event[1]))) {
-                    $event_classes = ['blue', 'green', 'orange', 'red', 'purple'];
-                    $random_color = $event_classes[array_rand($event_classes)];
-
-                    $html .= '<div class="event ' . $random_color . '">' . $event[0] . '</div>';
-                }
-            }
-            $html .= '</div>';
-        }
-
-        $html .= '</div>'; // Close .days
-        $html .= '</div>'; // Close .calendar
-        $html .= '</div>'; // Close .calendar-container
-
-        return $html;
-    }
-}
-
-$calendar = new Calendar($con);
 ?>
 
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Dashboard | Employee Records Management System</title>
+    <title>Events | Employee Records Management System</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="img/mk-logo.ico" />
@@ -126,188 +35,234 @@ $calendar = new Calendar($con);
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="css/responsive.css" />
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <link rel="stylesheet" href="fullcalendar/fullcalendar.min.css" />
+    <script src="fullcalendar/lib/jquery.min.js"></script>
+    <script src="fullcalendar/lib/moment.min.js"></script>
+    <script src="fullcalendar/fullcalendar.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
 
-    <style>
-        /* Elevated Container */
-        .calendar-container {
-            background: white;
-        }
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var selectedEvent = null;
 
-        /* Calendar Header */
-        .calendar .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgb(255, 255, 255);
-            padding: 10px;
-        }
+            var calendar = $('#calendar').fullCalendar({
+                editable: true,
+                events: "all-events.php",
+                displayEventTime: false,
+                selectable: true,
+                selectHelper: true,
 
-        .calendar .header .month-year {
-            font-size: 20px;
-            font-weight: bold;
-            color: black;
-            margin-top: 5px;
-        }
+                header: {
+                    left: 'prevYear,nextYear today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
 
-        /* Days Row */
-        .calendar .days {
-            display: flex;
-            flex-wrap: wrap;
-            background: white;
-        }
+                // Default view when the calendar loads
+                defaultView: 'month',
 
-        /* Day Labels */
-        .calendar .days .day_name {
-            width: calc(100% / 7);
-            text-align: center;
-            font-weight: bold;
-            padding: 5px;
-            color: black;
-        }
+                // Open modal when selecting a date
+                select: function(start, end) {
+                    selectedEvent = null;
+                    $("#eventId").val("");
+                    $("#eventTitle").val("");
+                    $("#eventDescription").val("");
 
-        /* Calendar Cells */
-        .calendar .days .day_num {
-            width: calc(100% / 7);
-            padding: 15px;
-            min-height: 100px;
-            position: relative;
-            text-align: center;
-            background: white;
-        }
+                    // Set the clicked date, but allow time to be editable
+                    let startDate = moment(start).format("YYYY-MM-DD") + "T12:00";
 
-        /* Number Styling */
-        .calendar .days .day_num span {
-            display: block;
-            font-size: 14px;
-            color: gray;
-        }
+                    $("#eventStart").val(startDate);
+                    $("#eventEnd").val("");
+                    $("#deleteEventBtn").hide();
+                    $("#eventModal").modal("show");
+                },
 
-        /* Event Styles */
-        .calendar .days .day_num .event {
-            margin-top: 5px;
-            padding: 4px 8px;
-            color: #fff;
-            font-size: 12px;
-            font-weight: bold;
-            display: inline-block;
-            max-width: 90%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+                // Open modal for editing when clicking an event
+                eventClick: function(event) {
+                    selectedEvent = event;
+                    $("#eventId").val(event.id);
+                    $("#eventTitle").val(event.title);
+                    $("#eventDescription").val(event.description);
+                    $("#eventStart").val(moment(event.start).format("YYYY-MM-DDTHH:mm"));
+                    $("#eventEnd").val(event.end ? moment(event.end).format("YYYY-MM-DDTHH:mm") : "");
+                    $("#eventColor").val(event.color);
 
-        /* Event Colors */
-        .calendar .days .day_num .event.blue {
-            background-color: #007bff;
-        }
+                    // Show delete button when editing an existing event
+                    $("#deleteEventBtn").show();
 
-        .calendar .days .day_num .event.green {
-            background-color: #28a745;
-        }
+                    $("#eventModal").modal("show");
+                },
 
-        .calendar .days .day_num .event.orange {
-            background-color: #fd7e14;
-        }
+                // Update event position on drag
+                eventDrop: function(event) {
+                    updateEvent(event);
+                }
+            });
 
-        .calendar .days .day_num .event.red {
-            background-color: #dc3545;
-        }
+            $("#eventStart").on("change", function() {
+                let startDate = $("#eventStart").val();
+                let endDate = $("#eventEnd").val();
 
-        .calendar .days .day_num .event.purple {
-            background-color: rgb(202, 0, 162);
-        }
+                if (endDate && endDate < startDate) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Invalid End Date",
+                        text: "End date cannot be before the start date.",
+                        confirmButtonText: "OK"
+                    });
+                    $("#eventEnd").val(startDate); // Reset end date to start date
+                }
+            });
 
-        .calendar .days .day_num:hover {
-            background: rgb(250, 250, 250);
-        }
+            $("#eventEnd").on("change", function() {
+                let startDate = $("#eventStart").val();
+                let endDate = $("#eventEnd").val();
 
-        /* Remove Box Shadow on Small Screens */
-        @media (max-width: 768px) {
-            .calendar-container {
-                box-shadow: none;
+                if (endDate < startDate) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Invalid End Date",
+                        text: "End date cannot be before the start date.",
+                        confirmButtonText: "OK"
+                    });
+                    $("#eventEnd").val(startDate); // Reset end date to start date
+                }
+            });
+
+            // Save event (Add or Update)
+            $("#saveEventBtn").click(function() {
+                let id = $("#eventId").val();
+                let title = $("#eventTitle").val();
+                let description = $("#eventDescription").val();
+                let start = $("#eventStart").val();
+                let end = $("#eventEnd").val();
+                let color = $("#eventColor").val();
+
+                if (!title || !start || !end) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Missing Fields",
+                        text: "Please fill in all required fields."
+                    });
+                    return;
+                }
+
+                if (new Date(end) < new Date(start)) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Invalid Date",
+                        text: "End date cannot be before the start date."
+                    });
+                    return;
+                }
+
+                let url = id ? "update-event.php" : "add-event.php";
+                let data = `id=${id}&title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}&start_date=${start}&end_date=${end}&color=${encodeURIComponent(color)}`;
+
+                fetch(url, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: data
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Success",
+                                text: data.message,
+                                confirmButtonText: "OK"
+                            });
+
+                            if (id) {
+                                selectedEvent.title = title;
+                                selectedEvent.description = description;
+                                selectedEvent.start = moment(start);
+                                selectedEvent.end = moment(end);
+                                selectedEvent.color = color;
+                                $('#calendar').fullCalendar('refetchEvents');
+                            } else {
+                                $('#calendar').fullCalendar('renderEvent', {
+                                    id: data.id,
+                                    title,
+                                    start,
+                                    end,
+                                    description,
+                                    color
+                                }, true);
+                            }
+                            $("#eventModal").modal("hide");
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: data.message
+                            });
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
+            });
+
+            // Delete event
+            $("#deleteEventBtn").click(function() {
+                let id = $("#eventId").val();
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "This action cannot be undone.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch("delete-event.php", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/x-www-form-urlencoded"
+                                },
+                                body: `id=${id}`
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.status === "success") {
+                                    $('#calendar').fullCalendar('removeEvents', id);
+                                    Swal.fire({
+                                        icon: "success",
+                                        title: "Deleted!",
+                                        text: data.message,
+                                        confirmButtonText: "OK"
+                                    });
+                                    $("#eventModal").modal("hide");
+                                } else {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Error",
+                                        text: data.message,
+                                        confirmButtonText: "OK"
+                                    });
+                                }
+                            })
+                            .catch(error => console.error("Error:", error));
+                    }
+                });
+            });
+
+            function displayMessage(message, type = "success") {
+                Swal.fire({
+                    icon: type,
+                    title: type === "success" ? "Success" : "Error",
+                    text: message,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false
+                });
             }
-        }
-
-        /* Calendar Navigation */
-        .nav-btn {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .nav-btn:hover {
-            background: #0056b3;
-        }
-
-        .view-options {
-            text-align: center;
-            margin: 10px 0;
-        }
-
-        .view-btn {
-            background: #ddd;
-            color: #333;
-            border: none;
-            padding: 8px 15px;
-            margin: 2px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .view-btn.active {
-            background: #007bff;
-            color: white;
-        }
-
-        .view-btn:hover {
-            background: #0056b3;
-            color: white;
-        }
-
-        /* Event Creation */
-        .add-event-container {
-            background: white;
-            padding: 15px;
-        }
-
-        /* Heading Styling */
-        .add-event-container h3 {
-            margin-bottom: 15px;
-            font-size: 20px;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 5px;
-        }
-
-        /* Form Input Styling */
-        .add-event-container .form-group {
-            margin-bottom: 15px;
-        }
-
-        .add-event-container .form-group label {
-            font-weight: bold;
-            color: #555;
-        }
-
-        /* Submit Button */
-        .add-event-container .btn-success {
-            border: none;
-            font-size: 14px;
-            font-weight: bold;
-            width: 100%;
-        }
-
-        .add-event-container .btn-success:hover {
-            background: rgb(0, 143, 79);
-        }
-    </style>
+        });
+    </script>
 </head>
 
 <body>
@@ -429,122 +384,58 @@ $calendar = new Calendar($con);
         </div>
     </div>
 
-    <div class="calendar-area">
+    <div class="calender-area mg-b-15">
         <div class="container-fluid">
             <div class="row">
-
-                <!-- Left Side: Calendar -->
-                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                    <div class="calendar-container">
-                        <?php echo $calendar; ?>
+                <div class="col-lg-12">
+                    <div class="calender-inner">
+                        <div id='calendar'></div>
                     </div>
                 </div>
-
-                <!-- Right Side: Event Form -->
-                <div class="col-md-4 add-event-container">
-                    <h3>Add New Event</h3>
-                    <form id="event-form" method="POST">
-                        <div class="form-group">
-                            <label>Event Title:</label>
-                            <input type="text" name="title" class="form-control" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Start Date:</label>
-                            <input type="datetime-local" name="start_date" class="form-control" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>End Date:</label>
-                            <input type="datetime-local" name="end_date" class="form-control" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Description</label>
-                            <textarea name="description" class="form-control" rows="3" required></textarea>
-                        </div>
-
-                        <button type="submit" class="btn btn-success">
-                            Add Event
-                        </button>
-                    </form>
-                </div>
-
             </div>
         </div>
     </div>
 
-    <script>
-        function navigateCalendar(month) {
-            window.location.href = window.location.pathname + '?date=' + month + '-01';
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            $('#calendar').fullCalendar({
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay,listWeek'
-                },
-                events: 'all-events.php',
-                editable: false,
-                eventLimit: true
-            });
-
-            function changeView(viewType) {
-                $('#calendar').fullCalendar('changeView', viewType);
-                document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
-                document.querySelector(`[data-view="${viewType}"]`).classList.add('active');
-            }
-
-            document.querySelectorAll('.view-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    changeView(this.dataset.view);
-                });
-            });
-        });
-
-        $(document).ready(function() {
-            $("#event-form").on("submit", function(e) {
-                e.preventDefault(); // Prevent full-page reload
-
-                $.ajax({
-                    url: "add-event.php",
-                    type: "POST",
-                    data: $(this).serialize(),
-                    dataType: "json",
-                    success: function(response) {
-                        console.log("AJAX Response:", response); // Debug response
-                        if (response.status === "success") {
-                            Swal.fire({
-                                icon: "success",
-                                title: "Success",
-                                text: response.message,
-                                confirmButtonColor: "#3085d6",
-                                confirmButtonText: "OK"
-                            }).then(() => {
-                                location.reload(); // Reload the page after success
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Error!",
-                                text: response.message
-                            });
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("AJAX Error:", xhr.responseText);
-                        Swal.fire({
-                            icon: "error",
-                            title: "Error!",
-                            text: "Something went wrong. Please try again."
-                        });
-                    }
-                });
-            });
-        });
-    </script>
+    <!-- Event Modal -->
+    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary" style="border-radius: 3px;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="exampleModalLabel">Event Details</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="eventForm">
+                        <input type="hidden" id="eventId">
+                        <div class="form-group">
+                            <label>Title:</label>
+                            <input type="text" class="form-control" id="eventTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Description:</label>
+                            <textarea class="form-control" id="eventDescription" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventStart">Start Date & Time:</label>
+                            <input type="datetime-local" id="eventStart" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventEnd">End Date & Time:</label>
+                            <input type="datetime-local" id="eventEnd" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Event Color:</label>
+                            <input type="color" id="eventColor" class="form-control" value="#007bff">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="deleteEventBtn" style="display:none;">Delete</button>
+                    <button type="button" class="btn btn-success" id="saveEventBtn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>
