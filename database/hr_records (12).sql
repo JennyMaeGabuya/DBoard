@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 12, 2025 at 05:47 AM
+-- Generation Time: Mar 15, 2025 at 06:01 AM
 -- Server version: 8.3.0
 -- PHP Version: 8.2.18
 
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `appointed_cert_issuance` (
 --
 
 INSERT INTO `appointed_cert_issuance` (`id`, `fullname`, `lastname`, `sex`, `start_date`, `position`, `office_appointed`, `salary`, `pera`, `rta`, `clothing`, `mid_year_bonus`, `year_end_bonus`, `cash_gift`, `productivity_enhancement`, `date_issued`, `created_at`, `updated_at`) VALUES
-(3, 'Hon. Atty. Juan Dela Cruz', 'Dela Cruz', 'Male', '2025-02-01', 'Admin Officer II', 'Budget Office', 12500.00, 5600.00, 534534.00, 543543.00, 45345.00, 4345435.00, 4345435.00, 543543.00, '2025-03-07', '2025-03-08 08:05:23', '2025-03-08 08:35:00'),
+(3, 'Hon. Atty. Juan Dela Cruz', 'Dela Cruz', 'Male', '2025-02-01', 'Admin Officer II', 'HR Office', 12500.00, 5600.00, 534534.00, 543543.00, 45345.00, 4345435.00, 4345435.00, 543543.00, '2025-03-07', '2025-03-08 08:05:23', '2025-03-12 05:57:44'),
 (4, 'Appointed test huhu', 'Test q ko', 'Male', '2024-12-07', 'Admin Officer 321', 'Assesor\'s Office', 56878.00, 987.00, 6578.00, 788.00, 879.00, 796.00, 5666.00, 7769.00, '2025-03-12', '2025-03-08 08:43:48', '2025-03-12 01:12:15');
 
 -- --------------------------------------------------------
@@ -155,9 +155,9 @@ CREATE TABLE IF NOT EXISTS `employee` (
 --
 
 INSERT INTO `employee` (`employee_no`, `firstname`, `middlename`, `lastname`, `name_extension`, `dob`, `pob`, `sex`, `civil_status`, `address`, `blood_type`, `mobile_no`, `email_address`, `image`, `created_at`, `updated_at`) VALUES
-('dsd', 'dsd', 'dsd', 'dsd', 'dsd', '2025-03-12', 'samin', 'Female', '', 'lipa', 'AB-', 55657663354, 'ds@gmail.com', NULL, '2025-03-11 16:00:00', '2025-03-11 16:00:00'),
+('dsfd34', 'Jenny', 'Mae', 'Gabuyav2', 'III', '2025-03-13', 'San Luis, Batangas', 'Male', 'soafer latina', 'Sta. Teresita, Batangas', 'O+', 99230232716, 'jenny@gmail.com', NULL, '2025-03-12 18:04:56', '2025-03-14 05:13:37'),
 ('EMP001', 'Juan', 'Dela', 'Cruz', 'Jr.', '1985-03-25', 'Manila', 'Male', 'Married', '123 Mabini St., Manila', 'O+', 9171234567, 'juan.cruz@email.com', NULL, '2025-02-19 14:09:03', '2025-02-19 14:14:08'),
-('EMP002', 'Noime', 'T.', 'Tipan', '', '1990-07-12', 'Quezon City', 'Female', 'Married', '456 Rizal Ave., QC', 'A+', 9281234567, 'maria.lopez@email.com', 'Noims.png', '2025-02-19 14:09:03', '2025-03-06 04:35:30'),
+('EMP002', 'Noime', 'T.', 'Tipan', '', '1990-07-12', 'Quezon City', 'Male', 'Married', '456 Rizal Ave., QC', 'A+', 9281234567, 'maria.lopez@email.com', 'Noims.png', '2025-02-19 14:09:03', '2025-03-13 16:00:00'),
 ('EMP003', 'Gelyn', 'M.', 'Katimbang', NULL, '1988-05-18', 'Cebu City', 'Female', 'Married', '789 Osmena Blvd., Cebu', 'B+', 9391234567, 'pedro.gonzalez@email.com', 'Gelyn.png', '2025-02-19 14:09:03', '2025-03-06 04:37:19'),
 ('EMP004', 'Elmie', 'H.', 'Panganiban', '', '1995-01-20', 'Davao City', 'Female', 'Married', '101 Bonifacio St., Davao', 'AB+', 9491234567, 'ana.fernandez@email.com', 'Elmie.png', '2025-02-19 14:09:03', '2025-03-06 04:35:51'),
 ('EMP005', 'Marjorie', 'O.', 'Cabrera', NULL, '1982-09-05', 'Baguio City', 'Female', 'Single', '202 Marcos Hwy, Baguio', 'O-', 9591234567, 'carlos.rivera@email.com', 'Marjorie.png', '2025-02-19 14:09:03', '2025-03-06 04:36:07'),
@@ -166,9 +166,9 @@ INSERT INTO `employee` (`employee_no`, `firstname`, `middlename`, `lastname`, `n
 ('EMP008', 'Isabel', 'T.', 'Mendoza', '', '1998-02-25', 'Laguna', 'Female', 'Single', '505 Calamba Rd., Laguna', 'AB-', 9891234567, 'isabel.mendoza@email.com', NULL, '2025-02-19 14:09:03', '2025-02-19 14:14:28'),
 ('EMP009', 'Miguel', 'R.', 'Domingo', '', '1991-08-09', 'Pampanga', 'Male', 'Married', '606 Angeles St., Pampanga', 'O+', 9991234567, 'miguel.domingo@email.com', NULL, '2025-02-19 14:09:03', '2025-02-19 14:14:31'),
 ('EMP010', 'Janet', 'M.', 'Ilagan', '', '1984-12-01', 'Zamboanga City', 'Female', 'Married', '707 Pilar St., Zamboanga', 'A+', 9091234567, 'carmen.reyes@email.com', 'Janet.png', '2025-02-19 14:09:03', '2025-03-06 04:35:03'),
-('HRM-ADMIN', 'Gally', 'Dimayuga', 'Tipan', '', '1990-06-28', 'CUENCA, BATANGAS', 'Male', 'Single', 'CUENCA, BATANGAS', 'A+', 9123456789, 'admin@gmail.com', 'Gally.png', '2025-02-17 06:33:54', '2025-03-12 01:06:17'),
-('sasa', 'sas', 'sas', 'sasa', 'sa', '2025-03-12', 'sasa', 'Male', 'Other', 'sas', 'A+', 34983490832, 'sas@gmail.com', '1x1-edited.jpg', '2025-03-11 16:00:00', '2025-03-11 16:00:00'),
-('sdas', 'dsad', 'dasdsa', 'dasdsad', 'dsads', '2025-03-12', 'hehehe', 'Male', 'sample new civil status', 'samin', 'A-', 32483094823, 'asd@gmail.com', '404 not found.jpg', '2025-03-11 16:00:00', '2025-03-11 16:00:00');
+('HRM-ADMIN', 'Gally', 'Dimayuga', 'Tipan', '', '1990-06-28', 'CUENCA, BATANGAS', 'Male', 'Single', 'CUENCA, BATANGAS', 'A+', 9123456789, 'admin@gmail.com', 'Gally.png', '2025-02-17 06:33:54', '2025-03-14 01:59:04'),
+('saS', 'WEQWS', 'DSAD', '2WEWE', 'dsdda', '2025-03-12', 'sasa', 'Female', 'Single', 'sasa', 'AB-', 23221432434, 'sdas@gmail.com', NULL, '2025-03-11 22:33:56', '2025-03-11 22:33:56'),
+('ssa', 'sas', 'sas', 'sas', 'sa', '2025-03-13', 'sasa', 'Male', 'Other', 'asas', 'B+', 23213820982, 'sas@gmailc.om', NULL, '2025-03-12 17:53:18', '2025-03-12 16:00:00');
 
 -- --------------------------------------------------------
 
@@ -183,15 +183,19 @@ CREATE TABLE IF NOT EXISTS `events` (
   `start_date` datetime NOT NULL,
   `end_date` datetime NOT NULL,
   `description` text,
+  `color` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `events`
 --
 
-INSERT INTO `events` (`id`, `title`, `start_date`, `end_date`, `description`) VALUES
-(1, 'sdsdsd', '2025-03-11 15:14:00', '2025-03-12 15:14:00', 'dsderewr');
+INSERT INTO `events` (`id`, `title`, `start_date`, `end_date`, `description`, `color`) VALUES
+(1, 'sdsdsd', '2025-03-15 13:15:00', '2025-03-16 13:15:00', 'dsderewr', '#ff8585'),
+(2, 'Zumba', '2025-03-24 08:00:00', '2025-03-24 10:00:00', 'Zumba Wellness Fitness activity for the elders and youth!', ''),
+(8, 'sa', '2025-03-15 12:58:00', '2025-03-15 13:00:00', 'sasa', ''),
+(11, 'sana gumana ang start and end', '2025-03-18 12:30:00', '2025-03-20 14:30:00', 'sdhsjdsa', '#ff0000');
 
 -- --------------------------------------------------------
 
@@ -217,7 +221,7 @@ CREATE TABLE IF NOT EXISTS `government_info` (
   UNIQUE KEY `sss_no` (`sss_no`),
   UNIQUE KEY `tin_no` (`tin_no`),
   KEY `employee_no` (`employee_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `government_info`
@@ -225,9 +229,9 @@ CREATE TABLE IF NOT EXISTS `government_info` (
 
 INSERT INTO `government_info` (`id`, `employee_no`, `gsis_no`, `pag_ibig_no`, `philhealth_no`, `sss_no`, `tin_no`, `created_at`, `updated_at`) VALUES
 (2, 'HRM-ADMIN', '4332423-3423', '3287-387245', '94586-7863', '4353-2435', '325436-32422', '2025-03-11 08:25:50', '2025-03-11 08:25:50'),
-(3, 'dsd', '1321s', 'dsd232', 'asad23213', '23221dsad', 'sdqwe2', '2025-03-11 16:00:00', '2025-03-11 16:00:00'),
-(4, 'sasa', '3312', '23213', '45435', '4543', '7868', '2025-03-11 16:00:00', '2025-03-11 16:00:00'),
-(5, 'sdas', '23123sds', '4234dfd', '7567fgf', '2324fddf', '9797cvc', '2025-03-11 16:00:00', '2025-03-11 16:00:00');
+(6, 'saS', '31', '32', '325', '536', '61', '2025-03-11 22:33:56', '2025-03-11 22:33:56'),
+(7, 'ssa', 'sawqwe', 'weqwe', '3243', 'dweqw', '3213', '2025-03-12 17:53:18', '2025-03-12 16:00:00'),
+(8, 'dsfd34', '3223-4', '3123-4', '12312-4', '3123-4', '2313-4', '2025-03-12 18:04:56', '2025-03-13 16:00:00');
 
 -- --------------------------------------------------------
 
