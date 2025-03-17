@@ -62,7 +62,7 @@ if (isset($_POST['update-employee-btn'])) {
             $_SESSION['display'] = 'Invalid image type! Only JPG, PNG, and GIF are allowed.';
             $_SESSION['title'] = 'Error';
             $_SESSION['success'] = 'error';
-            header("Location: edit-employee.php");
+            header('Location: edit-employee.php');
             exit();
         }
 
@@ -76,7 +76,7 @@ if (isset($_POST['update-employee-btn'])) {
             $_SESSION['display'] = 'Failed to upload image!';
             $_SESSION['title'] = 'Error';
             $_SESSION['success'] = 'error';
-            header("Location: edit-employee.php");
+            header('Location: edit-employee.php');
             exit();
         }
     }
@@ -124,7 +124,7 @@ if (isset($_POST['update-employee-btn'])) {
     $_SESSION['title'] = 'Success';
     $_SESSION['success'] = 'success';
 
-    header("Location: edit-employee.php");
+    header('Location: edit-employee.php');
     exit();
 }
 

@@ -46,7 +46,7 @@ if (isset($_GET['employee_no'])) {
         $sex = $row['sex'];
         $blood_type = $row['blood_type'];
         $imagePath = $row['image'];
-        $imageUrl  = !empty($image) ? 'img/profile/' . $image : 'img/mk-logo.png';
+        $imageUrl  = !empty($imagePath) ? 'img/profile/' . $imagePath : 'img/mk-logo.png';
         $gsis = $row['gsis_no'];
         $pag_ibig = $row['pag_ibig_no'];
         $philhealth = $row['philhealth_no'];
@@ -539,3 +539,16 @@ if (isset($_GET['employee_no'])) {
 
     <!-- Footer -->
     <?php include 'includes/footer.php'; ?>
+
+    <?php if (isset($_SESSION['display'])): ?>
+            <script>
+                Swal.fire({
+                    title: '<?php echo $_SESSION['title']; ?>',
+                    text: '<?php echo $_SESSION['display']; ?>',
+                    icon: '<?php echo $_SESSION['success']; ?>',
+                    confirmButtonText: 'OK'
+                });
+            </script>
+            <?php unset($_SESSION['display']);
+            unset($_SESSION['success']); ?>
+        <?php endif; ?>
