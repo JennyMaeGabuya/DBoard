@@ -135,7 +135,7 @@ FROM employee WHERE employee.employee_no = ?";
             border: 1px solid #ccc;
             border-radius: 5px;
             width: 8.27in;
-            height: 13in;
+            height: 11in;
             position: relative;
             overflow: hidden;
         }
@@ -180,6 +180,9 @@ FROM employee WHERE employee.employee_no = ?";
 
         .table {
             border: 1px solidrgb(110, 106, 106);
+        }
+        .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+            line-height:0.328571;
         }
 
         @media print {
@@ -397,7 +400,7 @@ FROM employee WHERE employee.employee_no = ?";
                                                 </th>
                                             </tr>
                                             <tr>
-                                                <th rowspan="3">
+                                                <th rowspan="4">
                                                     <img src="<?php echo htmlspecialchars($imageUrl); ?>" alt="" class="avatar-img rounded-circle" style="height: 150px; width: 150px;margin-left:10px;">
                                                 </th>
                                                 <th colspan="1">SURNAME</th>
@@ -410,8 +413,12 @@ FROM employee WHERE employee.employee_no = ?";
 
                                             </tr>
                                             <tr>
-                                                <th colspan="1">MIDDLE NAME <br> NAME EXTENSION</th>
-                                                <td colspan="2"><?php echo $middlename; ?> <br> <?php echo $name_extension; ?></td>
+                                                <th colspan="1">MIDDLE NAME</th>
+                                                <td colspan="2"> <?php echo $middlename; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="1">NAME EXTENSION</th>
+                                                <td colspan="3"> <?php echo $name_extension; ?></td>
                                             </tr>
 
 
