@@ -121,8 +121,8 @@
                                                                 class="edu-icon edu-home-admin author-log-ic"></span>My Account</a>
                                                     </li>
                                                     <li>
-                                                        <a href="./settings.php"><span
-                                                                class="edu-icon edu-settings author-log-ic"></span>Settings</a>
+                                                        <a href="./change-password.php"><span
+                                                                class="edu-icon edu-settings author-log-ic"></span>Change Password</a>
                                                     </li>
                                                     <li>
                                                         <a href="./logout.php"><span

@@ -1,6 +1,6 @@
 <?php
 session_start();
-$verified = $_SESSION['verified'] ?? false;
+
 if (!isset($_SESSION['user_id'])) {
     header('location:../index.php');
     exit();
@@ -9,12 +9,14 @@ if (!isset($_SESSION['user_id'])) {
 include "dbcon.php";
 
 $user_id = $_SESSION['user_id'];
+
+// Ensure session variables are initialized
 if (!isset($_SESSION['verified'])) {
     $_SESSION['verified'] = false;
 }
 $verified = $_SESSION['verified'];
 
-// Fetch current admin details
+// Fetch admin details
 $query = $con->prepare("SELECT id, email, username, password, employee_no FROM admin WHERE employee_no = ?");
 $query->bind_param("s", $user_id);
 $query->execute();
@@ -34,49 +36,67 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (!empty($admin['password']) && password_verify($password, $admin['password'])) {
             $_SESSION['verified'] = true;
-            $verified = true;
+            $_SESSION['success_message'] = "You can now update your details.";
         } else {
-            $error_message = "Incorrect password. Please try again.";
+            $_SESSION['error_message'] = "Incorrect password. Please try again.";
         }
+        header("Location: " . $_SERVER['PHP_SELF']); // Reload to reflect changes
+        exit();
     }
 
-    if (isset($_POST['update_account']) && $verified) {
+    if (isset($_POST['update_account']) && $_SESSION['verified']) {
         $email = $_POST['email'];
         $username = $_POST['username'];
         $new_password = $_POST['new_password'];
         $confirm_password = $_POST['confirm_password'];
 
-        if (!empty($new_password) && $new_password !== $confirm_password) {
-            $error_message = "Passwords do not match.";
-        } else {
-            $con->begin_transaction();
-            try {
+        // Check if there are actual changes
+        $email_changed = $email !== $admin['email'];
+        $username_changed = $username !== $admin['username'];
+        $password_changed = !empty($new_password);
+
+        if (!$email_changed && !$username_changed && !$password_changed) {
+            $_SESSION['error_message'] = "No changes detected. Please modify at least one field.";
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
+        }
+
+        if ($password_changed && $new_password !== $confirm_password) {
+            $_SESSION['error_message'] = "Passwords do not match.";
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
+        }
+
+        $con->begin_transaction();
+        try {
+            // Update only if email or username changed
+            if ($email_changed || $username_changed) {
                 $updateAdmin = $con->prepare("UPDATE admin SET email = ?, username = ? WHERE employee_no = ?");
                 $updateAdmin->bind_param("sss", $email, $username, $user_id);
                 $updateAdmin->execute();
-
-                if (!empty($new_password)) {
-                    $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-                    $updatePassword = $con->prepare("UPDATE admin SET password = ? WHERE employee_no = ?");
-                    $updatePassword->bind_param("ss", $hashed_password, $user_id);
-                    $updatePassword->execute();
-                }
-
-                $con->commit();
-
-                // Destroy session after update
-                session_destroy();
-
-                // Redirect with JavaScript to avoid immediate redirect before session is destroyed
-                echo "<script>
-                        alert('Account updated successfully. You will be logged out.');
-                        window.location.href = 'index.php';
-                      </script>";
-                exit();
-            } catch (Exception $e) {
-                $con->rollback();
-                $error_message = "Error updating account: " . $e->getMessage();
             }
+
+            // Update password if provided
+            if ($password_changed) {
+                $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+                $updatePassword = $con->prepare("UPDATE admin SET password = ? WHERE employee_no = ?");
+                $updatePassword->bind_param("ss", $hashed_password, $user_id);
+                $updatePassword->execute();
+            }
+
+            $con->commit();
+
+            // Store success message and flag for logout
+            $_SESSION['success_message'] = "You will be logged out shortly...";
+            $_SESSION['logout_trigger'] = true;
+
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
+        } catch (Exception $e) {
+            $con->rollback();
+            $_SESSION['error_message'] = "Error updating account: " . $e->getMessage();
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
         }
     }
 }
@@ -88,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Settings | ERMS</title>
+    <title>Change Password | ERMS</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="img/mk-logo.ico" />
@@ -111,8 +131,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="css/responsive.css" />
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -143,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                     </a>
                                                     <span class="bread-slash"> / </span>
                                                     <a href="#">
-                                                        <strong>Settings</strong>
+                                                        <strong>Change Password</strong>
                                                     </a>
                                                 </li>
                                             </ul>
@@ -249,6 +270,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </li>
                             </ul>
                             <div id="myTabContent" class="tab-content custom-product-edit">
+
+
                                 <div
                                     class="product-tab-list tab-pane fade active in"
                                     id="reviews">
@@ -271,6 +294,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                     <?php endif; ?>
 
                                                     <form method="POST" style="margin-top: 20px;">
+                                                        <label for="currentPassword">Current Password</label>
                                                         <div class="form-group input-with-icon">
                                                             <input type="password" id="currentPassword" class="form-control" name="password" placeholder="Enter your current password" required>
                                                             <i class="fas fa-eye toggle-password" onclick="togglePassword('currentPassword', this)"></i>
@@ -345,10 +369,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                                         <i class="fas fa-eye toggle-password" onclick="togglePassword('newPassword', this)"></i>
                                                                     </div>
                                                                     <div class="form-group input-with-icon">
-                                                                        <input type="password" id="confirmPassword" class="form-control" name="confirm_password" placeholder="Confirm Password">
+                                                                        <input type="password" id="confirmPassword" class="form-control" name="confirm_password" placeholder="Confirm New Password">
                                                                         <i class="fas fa-eye toggle-password" onclick="togglePassword('confirmPassword', this)"></i>
                                                                     </div>
-                                                                    <button type="submit" name="update_account" class="btn btn-primary waves-effect waves-light">Update</button>
+                                                                    <button type="submit" name="update_account" class="btn btn-success">Update</button>
                                                                 </form>
 
                                                                 <style>
@@ -394,6 +418,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         </div>
                                     </div>
                                 </div>
+
+                                <script>
+                                    $(document).ready(function() {
+                                        <?php if (isset($_SESSION['error_message'])): ?>
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Oops...',
+                                                text: "<?= addslashes($_SESSION['error_message']) ?>",
+                                            });
+                                            <?php unset($_SESSION['error_message']); ?>
+                                        <?php endif; ?>
+
+                                        <?php if (isset($_SESSION['success_message']) && !isset($_SESSION['logout_trigger'])): ?>
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Verified!',
+                                                text: "<?= addslashes($_SESSION['success_message']) ?>",
+                                                allowOutsideClick: false,
+                                                confirmButtonText: 'OK'
+                                            });
+                                            <?php unset($_SESSION['success_message']); ?>
+                                        <?php endif; ?>
+
+                                        <?php if (isset($_SESSION['success_message']) && isset($_SESSION['logout_trigger'])): ?>
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Updated Successfully!',
+                                                text: "<?= addslashes($_SESSION['success_message']) ?>",
+                                                allowOutsideClick: false,
+                                                timer: 3000,
+                                                showConfirmButton: false
+                                            }).then(() => {
+                                                window.location.href = 'logout.php';
+                                            });
+                                            <?php
+                                            unset($_SESSION['success_message']);
+                                            unset($_SESSION['logout_trigger']);
+                                            ?>
+                                        <?php endif; ?>
+                                    });
+                                </script>
+
                             </div>
                         </div>
                     </div>
