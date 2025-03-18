@@ -50,7 +50,234 @@ include "dbcon.php";
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
   <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="fullcalendar/fullcalendar.min.css" />
+  <script src="fullcalendar/lib/jquery.min.js"></script>
+  <script src="fullcalendar/lib/moment.min.js"></script>
+  <script src="fullcalendar/fullcalendar.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var selectedEvent = null;
+
+      var calendar = $('#calendar').fullCalendar({
+        editable: true,
+        events: "all-events.php",
+        displayEventTime: true,
+        selectable: true,
+        selectHelper: true,
+
+        header: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'month,agendaWeek,agendaDay'
+        },
+
+        // Default view when the calendar loads
+        defaultView: 'month',
+
+        // Open modal when selecting a date
+        select: function(start, end) {
+          selectedEvent = null;
+          $("#eventId").val("");
+          $("#eventTitle").val("");
+          $("#eventDescription").val("");
+
+          // Set the clicked date, but allow time to be editable
+          let startDate = moment(start).format("YYYY-MM-DD") + "T12:00";
+
+          $("#eventStart").val(startDate);
+          $("#eventEnd").val("");
+          $("#deleteEventBtn").hide();
+          $("#eventModal").modal("show");
+        },
+
+        // Open modal for editing when clicking an event
+        eventClick: function(event) {
+          selectedEvent = event;
+          $("#eventId").val(event.id);
+          $("#eventTitle").val(event.title);
+          $("#eventDescription").val(event.description);
+          $("#eventStart").val(moment(event.start).format("YYYY-MM-DDTHH:mm"));
+          $("#eventEnd").val(event.end ? moment(event.end).format("YYYY-MM-DDTHH:mm") : "");
+          $("#eventColor").val(event.color);
+
+          // Show delete button when editing an existing event
+          $("#deleteEventBtn").show();
+
+          $("#eventModal").modal("show");
+        },
+
+        // Update event position on drag
+        eventDrop: function(event) {
+          updateEvent(event);
+        }
+      });
+
+      $("#eventStart").on("change", function() {
+        let startDate = $("#eventStart").val();
+        let endDate = $("#eventEnd").val();
+
+        if (endDate && endDate < startDate) {
+          Swal.fire({
+            icon: "warning",
+            title: "Invalid End Date",
+            text: "End date cannot be before the start date.",
+            confirmButtonText: "OK"
+          });
+          $("#eventEnd").val(startDate); // Reset end date to start date
+        }
+      });
+
+      $("#eventEnd").on("change", function() {
+        let startDate = $("#eventStart").val();
+        let endDate = $("#eventEnd").val();
+
+        if (endDate < startDate) {
+          Swal.fire({
+            icon: "warning",
+            title: "Invalid End Date",
+            text: "End date cannot be before the start date.",
+            confirmButtonText: "OK"
+          });
+          $("#eventEnd").val(startDate); // Reset end date to start date
+        }
+      });
+
+      // Save event (Add or Update)
+      $("#saveEventBtn").click(function() {
+        let id = $("#eventId").val();
+        let title = $("#eventTitle").val();
+        let description = $("#eventDescription").val();
+        let start = $("#eventStart").val();
+        let end = $("#eventEnd").val();
+        let color = $("#eventColor").val();
+
+        if (!title || !start || !end) {
+          Swal.fire({
+            icon: "warning",
+            title: "Missing Fields",
+            text: "Please fill in all required fields."
+          });
+          return;
+        }
+
+        if (new Date(end) < new Date(start)) {
+          Swal.fire({
+            icon: "error",
+            title: "Invalid Date",
+            text: "End date cannot be before the start date."
+          });
+          return;
+        }
+
+        let url = id ? "update-event.php" : "add-event.php";
+        let data = `id=${id}&title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}&start_date=${start}&end_date=${end}&color=${encodeURIComponent(color)}`;
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: data
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === "success") {
+              Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: data.message,
+                confirmButtonText: "OK"
+              });
+
+              if (id) {
+                selectedEvent.title = title;
+                selectedEvent.description = description;
+                selectedEvent.start = moment(start);
+                selectedEvent.end = moment(end);
+                selectedEvent.color = color;
+                $('#calendar').fullCalendar('refetchEvents');
+              } else {
+                $('#calendar').fullCalendar('renderEvent', {
+                  id: data.id,
+                  title,
+                  start,
+                  end,
+                  description,
+                  color
+                }, true);
+              }
+              $("#eventModal").modal("hide");
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: data.message
+              });
+            }
+          })
+          .catch(error => console.error("Error:", error));
+      });
+
+      // Delete event
+      $("#deleteEventBtn").click(function() {
+        let id = $("#eventId").val();
+        Swal.fire({
+          title: "Are you sure?",
+          text: "This action cannot be undone.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            fetch("delete-event.php", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `id=${id}`
+              })
+              .then(response => response.json())
+              .then(data => {
+                if (data.status === "success") {
+                  $('#calendar').fullCalendar('removeEvents', id);
+                  Swal.fire({
+                    icon: "success",
+                    title: "Deleted!",
+                    text: data.message,
+                    confirmButtonText: "OK"
+                  });
+                  $("#eventModal").modal("hide");
+                } else {
+                  Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: data.message,
+                    confirmButtonText: "OK"
+                  });
+                }
+              })
+              .catch(error => console.error("Error:", error));
+          }
+        });
+      });
+
+      function displayMessage(message, type = "success") {
+        Swal.fire({
+          icon: type,
+          title: type === "success" ? "Success" : "Error",
+          text: message,
+          confirmButtonText: "OK",
+          allowOutsideClick: false
+        });
+      }
+    });
+  </script>
 </head>
 
 <body>
@@ -280,525 +507,103 @@ include "dbcon.php";
         </div>
       </div>
     </div>
-    <div class="product-sales-area mg-tb-30">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="product-sales-chart">
-              <div class="portlet-title">
-                <div class="row">
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <div class="caption pro-sl-hd">
-                      <span class="caption-subject"><b>University Earnings</b></span>
-                    </div>
-                  </div>
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <div class="actions graph-rp graph-rp-dl">
-                      <p>All Earnings are in million $</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <ul class="list-inline cus-product-sl-rp">
-                <li>
-                  <h5>
-                    <i class="fa fa-circle" style="color: #006df0"></i>CSE
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <i class="fa fa-circle" style="color: #933ec5"></i>Accounting
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <i class="fa fa-circle" style="color: #65b12d"></i>Electrical
-                  </h5>
-                </li>
-              </ul>
-              <div id="extra-area-chart" style="height: 356px"></div>
+
+    <!-- Calendar Preview -->
+    <div class="container-fluid mg-tb-30">
+      <div class="row">
+        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+          <div class="product-sales-chart">
+            <div class="portlet-title">
+              <h3 class="box-title">Event's Calendar</h3>
+              <div id="calendar"></div>
             </div>
           </div>
         </div>
+
+        <!-- Event Modal -->
+        <div class="modal fade" id="eventModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header bg-primary" style="border-radius: 3px;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="exampleModalLabel">Event Details</h4>
+              </div>
+              <div class="modal-body">
+                <form id="eventForm">
+                  <input type="hidden" id="eventId">
+                  <div class="form-group">
+                    <label>Title:</label>
+                    <input type="text" class="form-control" id="eventTitle" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Description:</label>
+                    <textarea class="form-control" id="eventDescription" required></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="eventStart">Start Date & Time:</label>
+                    <input type="datetime-local" id="eventStart" class="form-control" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="eventEnd">End Date & Time:</label>
+                    <input type="datetime-local" id="eventEnd" class="form-control" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Event Color:</label>
+                    <input type="color" id="eventColor" class="form-control" value="#007bff">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="deleteEventBtn" style="display:none;">Delete</button>
+                <button type="button" class="btn btn-success" id="saveEventBtn">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Today's Events -->
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+          <div class="white-box">
+            <h3 class="box-title">Today's Events</h3>
+            <ul class="basic-list" id="event-list">
+              <!-- Events will be loaded here dynamically -->
+            </ul>
+          </div>
+        </div>
+
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            fetch("today-events.php")
+              .then(response => response.json())
+              .then(data => {
+                let eventList = document.getElementById("event-list");
+                eventList.innerHTML = "";
+
+                if (data.length === 0) {
+                  eventList.innerHTML = `<li style="color: red; font-style: italic;">No events for today.</li>`;
+                } else {
+                  data.forEach(event => {
+                    let listItem = document.createElement("li");
+
+                    listItem.innerHTML = `<strong style="font-size: 16px;">${event.title}</strong><br> 
+              <small>
+                <span style="background-color:${event.color}; color: #fff; padding: 3px 5px; border-radius: 3px; font-size: 13px; font-weight: bold;">
+                  ${event.start_date} - ${event.end_date} | ${event.start_time}
+                </span>
+              </small>`;
+
+                    eventList.appendChild(listItem);
+                  });
+                }
+              })
+              .catch(error => console.error("Error fetching events:", error));
+          });
+        </script>
+
       </div>
     </div>
 
-    <div class="library-book-area mg-t-30">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-            <div class="single-cards-item">
-              <div class="single-product-image">
-                <a href="#"><img src="img/product/profile-bg.jpg" alt="" /></a>
-              </div>
-              <div class="single-product-text">
-                <img src="img/product/pro4.jpg" alt="" />
-                <h4><a class="cards-hd-dn" href="#">Angela Dominic</a></h4>
-                <h5>Web Designer & Developer</h5>
-                <p class="ctn-cards">
-                  Lorem ipsum dolor sit amet, this is a consectetur
-                  adipisicing elit
-                </p>
-                <a class="follow-cards" href="#">Follow</a>
-                <div class="row">
-                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <div class="cards-dtn">
-                      <h3><span class="counter">199</span></h3>
-                      <p>Articles</p>
-                    </div>
-                  </div>
-                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <div class="cards-dtn">
-                      <h3><span class="counter">599</span></h3>
-                      <p>Like</p>
-                    </div>
-                  </div>
-                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <div class="cards-dtn">
-                      <h3><span class="counter">399</span></h3>
-                      <p>Comment</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-            <div class="single-review-st-item res-mg-t-30 table-mg-t-pro-n">
-              <div class="single-review-st-hd">
-                <h2>Reviews</h2>
-              </div>
-              <div class="single-review-st-text">
-                <img src="img/notification/1.jpg" alt="" />
-                <div class="review-ctn-hf">
-                  <h3>Sarah Graves</h3>
-                  <p>Highly recommend</p>
-                </div>
-                <div class="review-item-rating">
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star-half"></i>
-                </div>
-              </div>
-              <div class="single-review-st-text">
-                <img src="img/notification/2.jpg" alt="" />
-                <div class="review-ctn-hf">
-                  <h3>Garbease sha</h3>
-                  <p>Awesome Pro</p>
-                </div>
-                <div class="review-item-rating">
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star-half"></i>
-                </div>
-              </div>
-              <div class="single-review-st-text">
-                <img src="img/notification/3.jpg" alt="" />
-                <div class="review-ctn-hf">
-                  <h3>Gobetro pro</h3>
-                  <p>Great Website</p>
-                </div>
-                <div class="review-item-rating">
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star-half"></i>
-                </div>
-              </div>
-              <div class="single-review-st-text">
-                <img src="img/notification/4.jpg" alt="" />
-                <div class="review-ctn-hf">
-                  <h3>Siam Graves</h3>
-                  <p>That's Good</p>
-                </div>
-                <div class="review-item-rating">
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star-half"></i>
-                </div>
-              </div>
-              <div class="single-review-st-text">
-                <img src="img/notification/5.jpg" alt="" />
-                <div class="review-ctn-hf">
-                  <h3>Sarah Graves</h3>
-                  <p>Highly recommend</p>
-                </div>
-                <div class="review-item-rating">
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star-half"></i>
-                </div>
-              </div>
-              <div class="single-review-st-text">
-                <img src="img/notification/6.jpg" alt="" />
-                <div class="review-ctn-hf">
-                  <h3>Julsha Grav</h3>
-                  <p>Sei Hoise bro</p>
-                </div>
-                <div class="review-item-rating">
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star"></i>
-                  <i class="educate-icon educate-star-half"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-            <div
-              class="single-product-item res-mg-t-30 table-mg-t-pro-n tb-sm-res-d-n dk-res-t-d-n">
-              <div class="single-product-image">
-                <a href="#"><img src="img/product/book-4.jpg" alt="" /></a>
-              </div>
-              <div class="single-product-text edu-pro-tx">
-                <h4><a href="#">Title Demo Here</a></h4>
-                <h5>
-                  Lorem ipsum dolor sit amet, this is a consec tetur
-                  adipisicing elit
-                </h5>
-                <div class="product-price">
-                  <h3>$45</h3>
-                  <div class="single-item-rating">
-                    <i class="educate-icon educate-star"></i>
-                    <i class="educate-icon educate-star"></i>
-                    <i class="educate-icon educate-star"></i>
-                    <i class="educate-icon educate-star"></i>
-                    <i class="educate-icon educate-star-half"></i>
-                  </div>
-                </div>
-                <div class="product-buttons">
-                  <button type="button" class="button-default cart-btn">
-                    Read More
-                  </button>
-                  <button type="button" class="button-default">
-                    <i class="fa fa-heart"></i>
-                  </button>
-                  <button type="button" class="button-default">
-                    <i class="fa fa-share"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="product-sales-area mg-tb-30">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="product-sales-chart">
-              <div class="portlet-title">
-                <div class="row">
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <div class="caption pro-sl-hd">
-                      <span class="caption-subject"><b>Adminsion Statistic</b></span>
-                    </div>
-                  </div>
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <div class="actions graph-rp actions-graph-rp">
-                      <a
-                        href="#"
-                        class="btn btn-dark btn-circle active tip-top"
-                        data-toggle="tooltip"
-                        title="Refresh">
-                        <i class="fa fa-reply" aria-hidden="true"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="btn btn-blue-grey btn-circle active tip-top"
-                        data-toggle="tooltip"
-                        title="Delete">
-                        <i class="fa fa-trash-o" aria-hidden="true"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <ul class="list-inline cus-product-sl-rp">
-                <li>
-                  <h5>
-                    <i class="fa fa-circle" style="color: #006df0"></i>Python
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <i class="fa fa-circle" style="color: #933ec5"></i>PHP
-                  </h5>
-                </li>
-                <li>
-                  <h5>
-                    <i class="fa fa-circle" style="color: #65b12d"></i>Java
-                  </h5>
-                </li>
-              </ul>
-              <div id="morris-area-chart"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="sedules-area mg-b-30">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-            <div class="analysis-progrebar">
-              <div class="analysis-progrebar-content">
-                <h5>Usage</h5>
-                <h2 class="storage-right">
-                  <span class="counter">90</span>%
-                </h2>
-                <div class="progress progress-mini ug-1">
-                  <div style="width: 68%" class="progress-bar"></div>
-                </div>
-                <div class="m-t-sm small">
-                  <p>Server down since 1:32 pm.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-            <div
-              class="analysis-progrebar reso-mg-b-30 res-mg-t-30 table-mg-t-pro-n">
-              <div class="analysis-progrebar-content">
-                <h5>Memory</h5>
-                <h2 class="storage-right">
-                  <span class="counter">70</span>%
-                </h2>
-                <div class="progress progress-mini ug-2">
-                  <div style="width: 78%" class="progress-bar"></div>
-                </div>
-                <div class="m-t-sm small">
-                  <p>Server down since 12:32 pm.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-            <div
-              class="analysis-progrebar reso-mg-b-30 res-tablet-mg-t-30 dk-res-t-pro-30">
-              <div class="analysis-progrebar-content">
-                <h5>Data</h5>
-                <h2 class="storage-right">
-                  <span class="counter">50</span>%
-                </h2>
-                <div class="progress progress-mini ug-3">
-                  <div
-                    style="width: 38%"
-                    class="progress-bar progress-bar-danger"></div>
-                </div>
-                <div class="m-t-sm small">
-                  <p>Server down since 8:32 pm.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-            <div
-              class="analysis-progrebar res-tablet-mg-t-30 dk-res-t-pro-30">
-              <div class="analysis-progrebar-content">
-                <h5>Space</h5>
-                <h2 class="storage-right">
-                  <span class="counter">40</span>%
-                </h2>
-                <div class="progress progress-mini ug-4">
-                  <div
-                    style="width: 28%"
-                    class="progress-bar progress-bar-danger"></div>
-                </div>
-                <div class="m-t-sm small">
-                  <p>Server down since 5:32 pm.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="courses-area mg-b-15">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box">
-              <h3 class="box-title">Browser Status</h3>
-              <ul class="basic-list">
-                <li>
-                  Google Chrome
-                  <span class="pull-right label-danger label-1 label">95.8%</span>
-                </li>
-                <li>
-                  Mozila Firefox
-                  <span class="pull-right label-purple label-2 label">85.8%</span>
-                </li>
-                <li>
-                  Apple Safari
-                  <span class="pull-right label-success label-3 label">23.8%</span>
-                </li>
-                <li>
-                  Internet Explorer
-                  <span class="pull-right label-info label-4 label">55.8%</span>
-                </li>
-                <li>
-                  Opera mini
-                  <span class="pull-right label-warning label-5 label">28.8%</span>
-                </li>
-                <li>
-                  Mozila Firefox
-                  <span class="pull-right label-purple label-6 label">26.8%</span>
-                </li>
-                <li>
-                  Safari
-                  <span class="pull-right label-purple label-7 label">31.8%</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-            <div class="white-box res-mg-t-30 table-mg-t-pro-n">
-              <h3 class="box-title">Visits from countries</h3>
-              <ul class="country-state">
-                <li>
-                  <h2><span class="counter">1250</span></h2>
-                  <small>From Australia</small>
-                  <div class="pull-right">
-                    75% <i class="fa fa-level-up text-danger ctn-ic-1"></i>
-                  </div>
-                  <div class="progress">
-                    <div
-                      class="progress-bar progress-bar-danger ctn-vs-1"
-                      role="progressbar"
-                      aria-valuenow="50"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                      style="width: 75%">
-                      <span class="sr-only">75% Complete</span>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <h2><span class="counter">1050</span></h2>
-                  <small>From USA</small>
-                  <div class="pull-right">
-                    48% <i class="fa fa-level-up text-success ctn-ic-2"></i>
-                  </div>
-                  <div class="progress">
-                    <div
-                      class="progress-bar progress-bar-info ctn-vs-2"
-                      role="progressbar"
-                      aria-valuenow="50"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                      style="width: 48%">
-                      <span class="sr-only">48% Complete</span>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <h2><span class="counter">6350</span></h2>
-                  <small>From Canada</small>
-                  <div class="pull-right">
-                    55% <i class="fa fa-level-up text-success ctn-ic-3"></i>
-                  </div>
-                  <div class="progress">
-                    <div
-                      class="progress-bar progress-bar-success ctn-vs-3"
-                      role="progressbar"
-                      aria-valuenow="50"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                      style="width: 55%">
-                      <span class="sr-only">55% Complete</span>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <h2><span class="counter">950</span></h2>
-                  <small>From India</small>
-                  <div class="pull-right">
-                    33% <i class="fa fa-level-down text-success ctn-ic-4"></i>
-                  </div>
-                  <div class="progress">
-                    <div
-                      class="progress-bar progress-bar-success ctn-vs-4"
-                      role="progressbar"
-                      aria-valuenow="50"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                      style="width: 33%">
-                      <span class="sr-only">33% Complete</span>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <h2><span class="counter">3250</span></h2>
-                  <small>From Bangladesh</small>
-                  <div class="pull-right">
-                    60% <i class="fa fa-level-up text-success ctn-ic-5"></i>
-                  </div>
-                  <div class="progress">
-                    <div
-                      class="progress-bar progress-bar-inverse ctn-vs-5"
-                      role="progressbar"
-                      aria-valuenow="50"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                      style="width: 60%">
-                      <span class="sr-only">60% Complete</span>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-            <div
-              class="courses-inner res-mg-t-30 table-mg-t-pro-n tb-sm-res-d-n dk-res-t-d-n">
-              <div class="courses-title">
-                <a href="#"><img src="img/courses/1.jpg" alt="" /></a>
-                <h2>Apps Development</h2>
-              </div>
-              <div class="courses-alaltic">
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-clock"></i></span>
-                  1 Year</span>
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-heart"></i></span>
-                  50</span>
-                <span class="cr-ic-r"><span class="course-icon"><i class="fa fa-dollar"></i></span>
-                  500</span>
-              </div>
-              <div class="course-des">
-                <p>
-                  <span><i class="fa fa-clock"></i></span> <b>Duration:</b> 6
-                  Months
-                </p>
-                <p>
-                  <span><i class="fa fa-clock"></i></span>
-                  <b>Professor:</b> Jane Doe
-                </p>
-                <p>
-                  <span><i class="fa fa-clock"></i></span>
-                  <b>Students:</b> 100+
-                </p>
-              </div>
-              <div class="product-buttons">
-                <button type="button" class="button-default cart-btn">
-                  Read More
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  </div>
 
-    <!--Footer-part-->
-    <?php include 'includes/footer.php'; ?>
+  <!--Footer-part-->
+  <?php include 'includes/footer.php'; ?>

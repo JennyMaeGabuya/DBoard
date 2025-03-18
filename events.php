@@ -1,7 +1,5 @@
 <?php
 session_start();
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 if (!isset($_SESSION['user_id'])) {
     header('location:../index.php');
     exit();
@@ -50,7 +48,7 @@ include "dbcon.php";
             var calendar = $('#calendar').fullCalendar({
                 editable: true,
                 events: "all-events.php",
-                displayEventTime: false,
+                displayEventTime: true,
                 selectable: true,
                 selectHelper: true,
 
