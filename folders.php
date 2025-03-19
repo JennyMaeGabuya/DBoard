@@ -14,7 +14,7 @@ include "dbcon.php";
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Organization | ERMS</title>
+    <title>Folders | ERMS</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="img/mk-logo.ico" />
@@ -61,16 +61,24 @@ include "dbcon.php";
                                         <div class="col-lg-12"
                                             style="display: flex; justify-content: space-between; align-items: center;">
                                             <!-- Left Side: Home Breadcrumb -->
-                                            <ul class="breadcome-menu"
-                                                style="display: flex; align-items: center; padding: 0; margin: 0;">
+                                            <ul class="breadcome-menu" style="display: flex; align-items: center; padding: 0; margin: 0;">
                                                 <li>
                                                     <link rel="stylesheet"
                                                         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                                                     <a href="dashboard.php">
                                                         <i class="fas fa-home"></i> Home
                                                     </a>
+                                                    <span class="bread-slash"> / </span>
+                                                    <a href="downloaded-file.php">
+                                                        CSC Downloaded File
+                                                    </a>
+                                                    <span class="bread-slash"> / </span>
+                                                    <a href="#">
+                                                        <strong>CSC File Folders</strong>
+                                                    </a>
                                                 </li>
                                             </ul>
+
                                             <!-- Right Side: Time, Date, and User Location -->
                                             <div class="pst-container">
                                                 <span id="user-location">Detecting location...</span> |
@@ -163,20 +171,38 @@ include "dbcon.php";
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="product-status-wrap drp-lst">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <h4>CSC Fields</h4>
+                            <h4>Downloadable File Folders</h4>
                         </div>
-                        
+                        <div class="row">
+                        </div>
 
                         <div class="widget-box">
                             <!-- JavaScript for live search -->
                             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                             <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
 
+                            <script>
+                                $(function() {
+                                    new DataTable('#myTable', {
+                                        responsive: true,
+                                        autoWidth: false,
+                                        language: {
+                                            lengthMenu: "Show _MENU_ entries",
+                                        },
+                                    });
+                                });
+                            </script>
                         </div>
+
+                        <!-- Start here! -->
+
+                        
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>

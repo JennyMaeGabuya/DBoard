@@ -58,6 +58,9 @@ include "dbcon.php";
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       var selectedEvent = null;
@@ -86,7 +89,7 @@ include "dbcon.php";
           $("#eventDescription").val("");
 
           // Set the clicked date, but allow time to be editable
-          let startDate = moment(start).format("YYYY-MM-DD") + "T12:00";
+          let startDate = moment(start).format("YYYY-MM-DD") + " T12:00";
 
           $("#eventStart").val(startDate);
           $("#eventEnd").val("");
@@ -541,11 +544,11 @@ include "dbcon.php";
                   </div>
                   <div class="form-group">
                     <label for="eventStart">Start Date & Time:</label>
-                    <input type="datetime-local" id="eventStart" class="form-control" required>
+                    <input type="text" id="eventStart" class="form-control" required>
                   </div>
                   <div class="form-group">
                     <label for="eventEnd">End Date & Time:</label>
-                    <input type="datetime-local" id="eventEnd" class="form-control" required>
+                    <input type="text" id="eventEnd" class="form-control" required>
                   </div>
                   <div class="form-group">
                     <label>Event Color:</label>
@@ -560,6 +563,20 @@ include "dbcon.php";
             </div>
           </div>
         </div>
+
+        <script>
+          flatpickr("#eventStart", {
+            enableTime: true,
+            dateFormat: "Y/m/d h:i K",
+            time_24hr: false
+          });
+
+          flatpickr("#eventEnd", {
+            enableTime: true,
+            dateFormat: "Y/m/d h:i K",
+            time_24hr: false
+          });
+        </script>
 
         <!-- Today's Events -->
         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">

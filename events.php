@@ -41,7 +41,7 @@ include "dbcon.php";
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 
     <script>
@@ -438,19 +438,19 @@ include "dbcon.php";
         </div>
     </div>
 
+    <script>
+        flatpickr("#eventStart", {
+            enableTime: true,
+            dateFormat: "Y/m/d h:i K",
+            time_24hr: false
+        });
+
+        flatpickr("#eventEnd", {
+            enableTime: true,
+            dateFormat: "Y/m/d h:i K",
+            time_24hr: false
+        });
+    </script>
+
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>
-    <script>
-    flatpickr("#eventStart", { 
-        enableTime: true,
-        dateFormat: "Y/m/d  h:i K",
-        time_24hr: false 
-    });
-
-    flatpickr("#eventEnd", { 
-        enableTime: true,
-        dateFormat: "Y/m/d  h:i K",
-        time_24hr: false
-    });
-</script>
-    
