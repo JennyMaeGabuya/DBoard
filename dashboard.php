@@ -100,8 +100,8 @@ include "dbcon.php";
           $("#eventId").val(event.id);
           $("#eventTitle").val(event.title);
           $("#eventDescription").val(event.description);
-          $("#eventStart").val(moment(event.start).format("YYYY-MM-DDTHH:mm"));
-          $("#eventEnd").val(event.end ? moment(event.end).format("YYYY-MM-DDTHH:mm") : "");
+          $("#eventStart").val(moment(event.start_date).format("YYYY-MM-DDTHH:mm"));
+          $("#eventEnd").val(event.end ? moment(event.end_date).format("YYYY-MM-DDTHH:mm") : "");
           $("#eventColor").val(event.color);
 
           // Show delete button when editing an existing event
