@@ -100,8 +100,8 @@ include "dbcon.php";
           $("#eventId").val(event.id);
           $("#eventTitle").val(event.title);
           $("#eventDescription").val(event.description);
-          $("#eventStart").val(moment(event.start_date).format("YYYY-MM-DDTHH:mm"));
-          $("#eventEnd").val(event.end ? moment(event.end_date).format("YYYY-MM-DDTHH:mm") : "");
+          $("#eventStart").val(moment(event.start).format("YYYY-MM-DDTHH:mm"));
+          $("#eventEnd").val(event.end ? moment(event.end).format("YYYY-MM-DDTHH:mm") : "");
           $("#eventColor").val(event.color);
 
           // Show delete button when editing an existing event
@@ -571,37 +571,123 @@ include "dbcon.php";
           </div>
         </div>
 
+        <audio id="event-alert-sound">
+          <source src="sounds/notification.mp3" type="audio/mpeg">
+        </audio>
+
         <script>
-          function loadTodayEvents() {
-            fetch("today-events.php")
-              .then(response => response.json())
-              .then(data => {
-                let eventList = document.getElementById("event-list");
-                if (!eventList) return console.error("Error: Event list container not found.");
+          document.addEventListener("DOMContentLoaded", function() {
+            if (Notification.permission !== "granted") {
+              Notification.requestPermission();
+            }
 
-                eventList.innerHTML = "";
+            let userInteractingWithCalendar = false;
+            let lastInteractionTime = 0;
+            const interactionTimeout = 10000; // 10 seconds timeout
 
-                if (data.length === 0) {
-                  eventList.innerHTML = `<li style="color: red; font-style: italic;">No events for today.</li>`;
-                } else {
+            function trackInteraction() {
+              userInteractingWithCalendar = true;
+              lastInteractionTime = new Date().getTime();
+            }
+
+            function resetInteractionFlag() {
+              let currentTime = new Date().getTime();
+              if (currentTime - lastInteractionTime > interactionTimeout) {
+                userInteractingWithCalendar = false;
+              }
+            }
+
+            // Detect when user interacts with the calendar (clicks or drags events)
+            document.getElementById("calendar").addEventListener("mousedown", trackInteraction);
+            document.getElementById("calendar").addEventListener("touchstart", trackInteraction);
+
+            // Detect when the modal is opened (user is interacting)
+            document.getElementById("eventModal").addEventListener("show.bs.modal", trackInteraction);
+
+            // Reset flag after modal closes
+            document.getElementById("eventModal").addEventListener("hidden.bs.modal", function() {
+              setTimeout(() => {
+                userInteractingWithCalendar = false;
+              }, 500);
+            });
+
+            function loadTodayEvents() {
+              fetch("today-events.php")
+                .then(response => response.json())
+                .then(data => {
+                  let eventList = document.getElementById("event-list");
+                  if (!eventList) return console.error("Error: Event list container not found.");
+
+                  eventList.innerHTML = "";
+
+                  if (data.length === 0) {
+                    eventList.innerHTML = `<li style="color: red; font-style: italic;">No events for today.</li>`;
+                  } else {
+                    data.forEach(event => {
+                      let listItem = document.createElement("li");
+                      listItem.innerHTML = `
+                              <strong style="font-size: 16px;">${event.title}</strong><br> 
+                              <small>
+                                  <span style="background-color:${event.color}; color: #fff; padding: 3px 5px; border-radius: 3px; font-size: 13px; font-weight: bold;">
+                                      ${event.start_date} - ${event.end_date} | ${event.start_time}
+                                  </span>
+                              </small>`;
+                      eventList.appendChild(listItem);
+                    });
+                  }
+                })
+                .catch(error => console.error("Error fetching events:", error));
+            }
+
+            function checkEvents() {
+              fetch("today-events.php")
+                .then(response => response.json())
+                .then(data => {
+                  let alertSound = document.getElementById("event-alert-sound");
+                  if (!alertSound) return console.error("Error: Alert sound element not found.");
+
+                  let currentTime = new Date();
+                  resetInteractionFlag(); // Reset interaction flag before checking conditions
+
                   data.forEach(event => {
-                    let listItem = document.createElement("li");
-                    listItem.innerHTML = `
-                            <strong style="font-size: 16px;">${event.title}</strong><br>
-                            <small>
-                                <span style="background-color:${event.color}; color: #fff; padding: 3px 5px; border-radius: 3px; font-size: 13px; font-weight: bold;">
-                                    ${event.start_date} - ${event.end_date} | ${event.start_time}
-                                </span>
-                            </small>`;
-                    eventList.appendChild(listItem);
-                  });
-                }
-              })
-              .catch(error => console.error("Error fetching events:", error));
-          }
+                    let eventTime = new Date();
+                    let [hours, minutes, period] = event.start_time.match(/(\d+):(\d+) (\w+)/).slice(1);
 
-          document.addEventListener("DOMContentLoaded", loadTodayEvents);
+                    hours = parseInt(hours);
+                    minutes = parseInt(minutes);
+                    if (period === "PM" && hours !== 12) hours += 12;
+                    if (period === "AM" && hours === 12) hours = 0;
+
+                    eventTime.setHours(hours, minutes, 0, 0);
+                    let timeDifference = (eventTime - currentTime) / 60000; // Convert milliseconds to minutes
+
+                    if (timeDifference > 14 && timeDifference < 16) {
+                      if (Notification.permission === "granted") {
+                        new Notification("Event Reminder", {
+                          body: `Your event "${event.title}" starts in 15 minutes!`,
+                          icon: "img/event-icon.png"
+                        });
+                      }
+
+                      // Prevent sound if the user interacted recently
+                      if (!document.hidden && !userInteractingWithCalendar) {
+                        alertSound.play().catch(err => console.log("Audio autoplay blocked"));
+                      }
+                    }
+                  });
+                })
+                .catch(error => console.error("Error fetching events:", error));
+            }
+
+            // Load events initially
+            loadTodayEvents();
+
+            // Check upcoming events every minute
+            setInterval(checkEvents, 60000);
+          });
         </script>
+
+
 
       </div>
     </div>
