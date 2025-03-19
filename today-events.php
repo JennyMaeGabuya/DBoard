@@ -2,6 +2,7 @@
 session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
 if (!isset($_SESSION['user_id'])) {
     header('location:../index.php');
     exit();
@@ -18,11 +19,11 @@ $query = "SELECT id, title,
                  TIME_FORMAT(start_date, '%h:%i %p') AS start_time, 
                  color 
           FROM events 
-          WHERE DATE(start_date) = ? 
+          WHERE DATE(start_date) <= ? AND DATE(end_date) >= ? 
           ORDER BY DATE(start_date) ASC, TIME(start_date) ASC";
 
 $stmt = $con->prepare($query);
-$stmt->bind_param("s", $today);
+$stmt->bind_param("ss", $today, $today);
 $stmt->execute();
 $result = $stmt->get_result();
 
