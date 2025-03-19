@@ -14,6 +14,10 @@ $result = $con->query($query);
 
 $events = [];
 while ($row = $result->fetch_assoc()) {
+    $start = date("Y-m-d ", strtotime($row["start"])) . " | " . date("h:i A", strtotime($row["start"])); // Format date and time with space before time
+    $end = date("Y-m-d ", strtotime($row["end"])) . " | " . date("h:i A", strtotime($row["end"])); // Format date and time with space before time
+
+
     $events[] = [
         "id" => $row["id"],
         "title" => $row["title"],

@@ -40,6 +40,9 @@ include "dbcon.php";
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -69,7 +72,7 @@ include "dbcon.php";
                     $("#eventDescription").val("");
 
                     // Set the clicked date, but allow time to be editable
-                    let startDate = moment(start).format("YYYY-MM-DD") + "T12:00";
+                    let startDate = moment(start).format("YYYY-MM-DD") + " T12:00";
 
                     $("#eventStart").val(startDate);
                     $("#eventEnd").val("");
@@ -83,8 +86,8 @@ include "dbcon.php";
                     $("#eventId").val(event.id);
                     $("#eventTitle").val(event.title);
                     $("#eventDescription").val(event.description);
-                    $("#eventStart").val(moment(event.start_date).format("YYYY-MM-DDTHH:mm"));
-                    $("#eventEnd").val(event.end ? moment(event.end_date).format("YYYY-MM-DDTHH:mm") : "");
+                    $("#eventStart").val(moment(event.start).format("YYYY-MM-DDTHH:mm"));
+                    $("#eventEnd").val(event.end ? moment(event.end).format("YYYY-MM-DDTHH:mm") : "");
                     $("#eventColor").val(event.color);
 
                     // Show delete button when editing an existing event
@@ -415,11 +418,11 @@ include "dbcon.php";
                         </div>
                         <div class="form-group">
                             <label for="eventStart">Start Date & Time:</label>
-                            <input type="datetime-local" id="eventStart" class="form-control" required>
+                            <input type="text" id="eventStart" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label for="eventEnd">End Date & Time:</label>
-                            <input type="datetime-local" id="eventEnd" class="form-control" required>
+                            <input type="text" id="eventEnd" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Event Color:</label>
@@ -437,3 +440,17 @@ include "dbcon.php";
 
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>
+    <script>
+    flatpickr("#eventStart", { 
+        enableTime: true,
+        dateFormat: "Y/m/d  h:i K",
+        time_24hr: false 
+    });
+
+    flatpickr("#eventEnd", { 
+        enableTime: true,
+        dateFormat: "Y/m/d  h:i K",
+        time_24hr: false
+    });
+</script>
+    
