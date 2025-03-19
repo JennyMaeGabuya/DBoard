@@ -1,8 +1,8 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
-  header('location:../index.php');
-  exit();
+    header('location:../index.php');
+    exit();
 }
 
 include "dbcon.php";
@@ -10,36 +10,62 @@ $uploadDir = "img/uploads/";
 
 // Ensure the upload directory exists
 if (!is_dir($uploadDir)) {
-  mkdir($uploadDir, 0777, true);
+    mkdir($uploadDir, 0777, true);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
-  $uploadedFiles = [];
-  foreach ($_FILES['files']['name'] as $key => $name) {
-    $targetFilePath = $uploadDir . basename($name);
+    $uploadedFiles = [];
 
-    if (move_uploaded_file($_FILES['files']['tmp_name'][$key], $targetFilePath)) {
-      $uploadedFiles[] = $name;
+    foreach ($_FILES['files']['name'] as $key => $name) {
+        $fileExt = pathinfo($name, PATHINFO_EXTENSION);
+        $fileBaseName = pathinfo($name, PATHINFO_FILENAME);
+        $sanitizedFileName = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $fileBaseName); // Clean filename
+        $newFileName = $sanitizedFileName . '.' . $fileExt;
+        $targetFilePath = $uploadDir . $newFileName;
+
+        // Avoid overwriting existing files by appending a number
+        $counter = 1;
+        while (file_exists($targetFilePath)) {
+            $newFileName = $sanitizedFileName . "_$counter." . $fileExt;
+            $targetFilePath = $uploadDir . $newFileName;
+            $counter++;
+        }
+
+        // Validate file type (optional security check)
+        $allowedTypes = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'docx', 'xlsx'];
+        if (!in_array(strtolower($fileExt), $allowedTypes)) {
+            echo json_encode(["success" => false, "error" => "Invalid file type."]);
+            exit();
+        }
+
+        if (move_uploaded_file($_FILES['files']['tmp_name'][$key], $targetFilePath)) {
+            $uploadedFiles[] = $newFileName;
+        } else {
+            echo json_encode(["success" => false, "error" => "File upload failed."]);
+            exit();
+        }
     }
-  }
 
-  echo json_encode(["success" => true, "files" => $uploadedFiles]);
-  exit;
+    echo json_encode(["success" => true, "files" => $uploadedFiles]);
+    exit();
 }
 
+// Handle file deletion
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
-  $fileToDelete = $uploadDir . basename($_POST['delete']);
-  if (file_exists($fileToDelete)) {
-    unlink($fileToDelete);
-    echo json_encode(["success" => true]);
-  } else {
-    echo json_encode(["success" => false, "error" => "File not found."]);
-  }
-  exit;
+    $fileToDelete = $uploadDir . basename($_POST['delete']);
+    if (file_exists($fileToDelete)) {
+        unlink($fileToDelete);
+        echo json_encode(["success" => true]);
+    } else {
+        echo json_encode(["success" => false, "error" => "File not found."]);
+    }
+    exit();
 }
 
+// List uploaded files
 $files = array_diff(scandir($uploadDir), ['.', '..']);
 ?>
+
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
@@ -86,7 +112,7 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
       align-items: center;
       justify-content: center;
       border: 2px dashed #3388f5;
-      padding: 70px;
+      padding: 100px;
       text-align: center;
       border-radius: 10px;
       background-color: #f8f9fa;
@@ -111,7 +137,7 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
     #uploadBtn {
       position: absolute;
       right: 20px;
-      top: 91%;
+      top: 93%;
       transform: translateY(-50%);
     }
 
@@ -168,6 +194,18 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
     .product-status-wrap {
       min-height: 100vh;
       background-color: white;
+    }
+
+    .file-list {
+        max-height: 550px; /* Set a maximum height for scrolling */
+        overflow-y: auto;  /* Enable vertical scrolling */
+        border: 2px solid #3388f5;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 10px;
+        margin-top: 10px; 
+        margin-left: 15px;
+        margin-right: -20px;
     }
   </style>
 </head>
@@ -300,10 +338,11 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
                 <div class="row">
                   <div class="col-md-6">
                     <div class="upload-section" id="dropArea">
-                      <span>Drag & Drop Files Here OR Click to Upload</span>
+                      <p>Drag & Drop Files Here OR Click to Select</p>
                     </div>
                     <input type="file" id="fileInput" multiple hidden>
                     <button class="btn btn-primary" id="uploadBtn">Upload</button>
+                    <div class="file-preview" id="filePreview"></div>
                     <p id="uploadStatus"></p>
                   </div>
                   <div class="col-md-6">
@@ -313,8 +352,8 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
                         <?php foreach ($files as $file): ?>
                           <li>
                             <?= $file; ?>
-                            <div>
-                              <a href="img/uploads/<?= $file; ?>" download>
+                            <div class="action-buttons">
+                              <a href="img/uploads/<?= $file; ?>" download class="download-btn">
                                 <i class="fa fa-download"></i>
                               </a>
                               <button class="delete-btn" data-file="<?= $file; ?>">❌</button>
@@ -323,118 +362,83 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
                         <?php endforeach; ?>
                       </ul>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <script>
-    $(document).ready(function() {
-      let dropArea = $("#dropArea");
-      let fileInput = $("#fileInput");
-      let uploadBtn = $("#uploadBtn");
+                    <script>
+                      $(document).ready(function () {
+                        let dropArea = $('#dropArea');
+                        let fileInput = $('#fileInput');
+                        let uploadBtn = $('#uploadBtn');
+                        let filePreview = $('#filePreview');
+                        let filesToUpload = [];
 
-      // Pag-drag over sa drop container
-      dropArea.on("dragover", function(e) {
-        e.preventDefault();
-        dropArea.css("background-color", "#eaf2ff");
-      });
+                        dropArea.on('dragover', function (e) {
+                          e.preventDefault();
+                          dropArea.css('background', '#eaf2ff');
+                        });
 
-      dropArea.on("dragleave", function() {
-        dropArea.css("background-color", "#f8f9fa");
-      });
+                        dropArea.on('dragleave', function () {
+                          dropArea.css('background', "#f8f9fa");
+                        });
 
-      // Kapag ni-release sa drop container
-      dropArea.on("drop", function(e) {
-        e.preventDefault();
-        dropArea.css("background-color", "#f8f9fa");
-        let files = e.originalEvent.dataTransfer.files;
-        if (files.length > 0) {
-          fileInput.prop("files", files);
-          displayFileName(files[0]); // Ipakita ang filename
-        }
-      });
+                        dropArea.on('drop', function (e) {
+                          e.preventDefault();
+                          dropArea.css('background', "#f8f9fa");
+                          let files = e.originalEvent.dataTransfer.files;
+                          handleFiles(files);
+                        });
 
-      fileInput.change(function() {
-        displayFileNames(this.files);
-      });
+                        fileInput.change(function () {
+                          handleFiles(this.files);
+                        });
 
+                        function handleFiles(files) {
+                          for (let i = 0; i < files.length; i++) {
+                            filesToUpload.push(files[i]);
+                            filePreview.append(`<p>${files[i].name}</p>`);
+                          }
+                        }
 
-      function displayFileNames(files) {
-        $("#uploadStatus").html(""); // Clears the text
-      }
+                        uploadBtn.click(function () {
+                          if (filesToUpload.length === 0) {
+                            Swal.fire('No File Selected', 'Please select files before uploading.', 'warning');
+                            return;
+                          }
 
+                          let formData = new FormData();
+                          filesToUpload.forEach(file => formData.append('files[]', file));
 
-      uploadBtn.click(function() {
-        let files = fileInput.prop("files");
-        if (files.length === 0) {
-          Swal.fire({
-            icon: 'warning',
-            title: 'No File Selected',
-            text: 'Please select a file before uploading.'
-          });
-          return;
-        }
-        uploadFiles(files);
-      });
+                          $.ajax({
+                            url: 'downloaded-file.php',
+                            type: 'POST',
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function (response) {
+                              let result = JSON.parse(response);
+                              if (result.success) {
+                                Swal.fire('Upload Successful!', 'Your files have been uploaded.', 'success').then(() => location.reload());
+                              } else {
+                                Swal.fire('Upload Failed', 'An error occurred while uploading.', 'error');
+                              }
+                            }
+                          });
+                        });
 
-      function uploadFiles(files) {
-        let formData = new FormData();
-        for (let i = 0; i < files.length; i++) {
-          formData.append("files[]", files[i]);
-        }
-
-        $.ajax({
-          url: "downloaded-file.php",
-          type: "POST",
-          data: formData,
-          contentType: false,
-          processData: false,
-          success: function(response) {
-            let result = JSON.parse(response);
-            if (result.success) {
-              Swal.fire({
-                icon: 'success',
-                title: 'Upload Successful!',
-                text: 'Your file has been uploaded successfully.',
-                showConfirmButton: true
-              }).then(() => {
-                location.reload();
-              });
-            } else {
-              Swal.fire({
-                icon: 'error',
-                title: 'Upload Failed',
-                text: 'An error occurred while uploading the file.'
-              });
-            }
-          }
-        });
-      }
-
-      $(document).on('click', '.delete-btn', function() {
-        let fileName = $(this).data('file');
-        if (confirm("Are you sure you want to delete this file?")) {
-          $.post("downloaded-file.php", {
-            delete: fileName
-          }, function(response) {
-            let result = JSON.parse(response);
-            if (result.success) {
-              location.reload();
-            } else {
-              alert("Delete failed.");
-            }
-          });
-        }
-      });
-    });
-  </script>
+                        $(document).on('click', '.delete-btn', function () {
+                          let fileName = $(this).data('file');
+                          if (confirm("Are you sure you want to delete this file?")) {
+                            $.post('downloaded-file.php', { delete: fileName }, function (response) {
+                              let result = JSON.parse(response);
+                              if (result.success) {
+                                location.reload();
+                              } else {
+                                alert("Delete failed.");
+                              }
+                            });
+                          }
+                        });
+                      });
+                    </script>
 </body>
 
 </html>
-<?php include 'includes/footer.php'; ?>
