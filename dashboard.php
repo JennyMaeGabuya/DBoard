@@ -572,11 +572,13 @@ include "dbcon.php";
         </div>
 
         <script>
-          document.addEventListener("DOMContentLoaded", function() {
+          function loadTodayEvents() {
             fetch("today-events.php")
               .then(response => response.json())
               .then(data => {
                 let eventList = document.getElementById("event-list");
+                if (!eventList) return console.error("Error: Event list container not found.");
+
                 eventList.innerHTML = "";
 
                 if (data.length === 0) {
@@ -584,20 +586,21 @@ include "dbcon.php";
                 } else {
                   data.forEach(event => {
                     let listItem = document.createElement("li");
-
-                    listItem.innerHTML = `<strong style="font-size: 16px;">${event.title}</strong><br> 
-              <small>
-                <span style="background-color:${event.color}; color: #fff; padding: 3px 5px; border-radius: 3px; font-size: 13px; font-weight: bold;">
-                  ${event.start_date} - ${event.end_date} | ${event.start_time}
-                </span>
-              </small>`;
-
+                    listItem.innerHTML = `
+                            <strong style="font-size: 16px;">${event.title}</strong><br>
+                            <small>
+                                <span style="background-color:${event.color}; color: #fff; padding: 3px 5px; border-radius: 3px; font-size: 13px; font-weight: bold;">
+                                    ${event.start_date} - ${event.end_date} | ${event.start_time}
+                                </span>
+                            </small>`;
                     eventList.appendChild(listItem);
                   });
                 }
               })
               .catch(error => console.error("Error fetching events:", error));
-          });
+          }
+
+          document.addEventListener("DOMContentLoaded", loadTodayEvents);
         </script>
 
       </div>
