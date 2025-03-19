@@ -31,13 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
       $counter++;
     }
 
-    // Validate file type (optional security check)
-    $allowedTypes = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'docx', 'xlsx'];
-    if (!in_array(strtolower($fileExt), $allowedTypes)) {
-      echo json_encode(["success" => false, "error" => "Invalid file type."]);
-      exit();
-    }
-
+    // Move uploaded file
     if (move_uploaded_file($_FILES['files']['tmp_name'][$key], $targetFilePath)) {
       $uploadedFiles[] = $newFileName;
     } else {
