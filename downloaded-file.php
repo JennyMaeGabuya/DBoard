@@ -1,8 +1,8 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header('location:../index.php');
-    exit();
+  header('location:../index.php');
+  exit();
 }
 
 include "dbcon.php";
@@ -10,56 +10,56 @@ $uploadDir = "img/uploads/";
 
 // Ensure the upload directory exists
 if (!is_dir($uploadDir)) {
-    mkdir($uploadDir, 0777, true);
+  mkdir($uploadDir, 0777, true);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
-    $uploadedFiles = [];
+  $uploadedFiles = [];
 
-    foreach ($_FILES['files']['name'] as $key => $name) {
-        $fileExt = pathinfo($name, PATHINFO_EXTENSION);
-        $fileBaseName = pathinfo($name, PATHINFO_FILENAME);
-        $sanitizedFileName = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $fileBaseName); // Clean filename
-        $newFileName = $sanitizedFileName . '.' . $fileExt;
-        $targetFilePath = $uploadDir . $newFileName;
+  foreach ($_FILES['files']['name'] as $key => $name) {
+    $fileExt = pathinfo($name, PATHINFO_EXTENSION);
+    $fileBaseName = pathinfo($name, PATHINFO_FILENAME);
+    $sanitizedFileName = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $fileBaseName); // Clean filename
+    $newFileName = $sanitizedFileName . '.' . $fileExt;
+    $targetFilePath = $uploadDir . $newFileName;
 
-        // Avoid overwriting existing files by appending a number
-        $counter = 1;
-        while (file_exists($targetFilePath)) {
-            $newFileName = $sanitizedFileName . "_$counter." . $fileExt;
-            $targetFilePath = $uploadDir . $newFileName;
-            $counter++;
-        }
-
-        // Validate file type (optional security check)
-        $allowedTypes = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'docx', 'xlsx'];
-        if (!in_array(strtolower($fileExt), $allowedTypes)) {
-            echo json_encode(["success" => false, "error" => "Invalid file type."]);
-            exit();
-        }
-
-        if (move_uploaded_file($_FILES['files']['tmp_name'][$key], $targetFilePath)) {
-            $uploadedFiles[] = $newFileName;
-        } else {
-            echo json_encode(["success" => false, "error" => "File upload failed."]);
-            exit();
-        }
+    // Avoid overwriting existing files by appending a number
+    $counter = 1;
+    while (file_exists($targetFilePath)) {
+      $newFileName = $sanitizedFileName . "_$counter." . $fileExt;
+      $targetFilePath = $uploadDir . $newFileName;
+      $counter++;
     }
 
-    echo json_encode(["success" => true, "files" => $uploadedFiles]);
-    exit();
+    // Validate file type (optional security check)
+    $allowedTypes = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'docx', 'xlsx'];
+    if (!in_array(strtolower($fileExt), $allowedTypes)) {
+      echo json_encode(["success" => false, "error" => "Invalid file type."]);
+      exit();
+    }
+
+    if (move_uploaded_file($_FILES['files']['tmp_name'][$key], $targetFilePath)) {
+      $uploadedFiles[] = $newFileName;
+    } else {
+      echo json_encode(["success" => false, "error" => "File upload failed."]);
+      exit();
+    }
+  }
+
+  echo json_encode(["success" => true, "files" => $uploadedFiles]);
+  exit();
 }
 
 // Handle file deletion
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
-    $fileToDelete = $uploadDir . basename($_POST['delete']);
-    if (file_exists($fileToDelete)) {
-        unlink($fileToDelete);
-        echo json_encode(["success" => true]);
-    } else {
-        echo json_encode(["success" => false, "error" => "File not found."]);
-    }
-    exit();
+  $fileToDelete = $uploadDir . basename($_POST['delete']);
+  if (file_exists($fileToDelete)) {
+    unlink($fileToDelete);
+    echo json_encode(["success" => true]);
+  } else {
+    echo json_encode(["success" => false, "error" => "File not found."]);
+  }
+  exit();
 }
 
 // List uploaded files
@@ -141,17 +141,6 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
       transform: translateY(-50%);
     }
 
-    .file-list {
-      border: 2px solid #3388f5;
-      padding: 10px;
-      text-align: center;
-      border-radius: 10px;
-      background-color: #f8f9fa;
-      cursor: pointer;
-      transition: background 0.3s;
-      margin-top: 20px;
-    }
-
     .file-list ul {
       list-style: none;
       padding: 0;
@@ -166,6 +155,26 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .file-list ul li span.filename {
+      flex-grow: 1;
+      /* Para lumawak ang file name area */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      /* Maglalagay ng "..." kung sobrang haba */
+      white-space: nowrap;
+      padding-right: 10px;
+      /* Para may espasyo bago ang buttons */
+    }
+
+    .file-list ul li .action-buttons {
+      display: flex;
+      gap: 10px;
+      /* Para may pagitan ang buttons */
+      flex-shrink: 0;
     }
 
     .file-list ul li a {
@@ -197,15 +206,17 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
     }
 
     .file-list {
-        max-height: 550px; /* Set a maximum height for scrolling */
-        overflow-y: auto;  /* Enable vertical scrolling */
-        border: 2px solid #3388f5;
-        background-color: #f8f9fa;
-        border-radius: 10px;
-        padding: 10px;
-        margin-top: 10px; 
-        margin-left: 15px;
-        margin-right: -20px;
+      max-height: 550px;
+      /* Set a maximum height for scrolling */
+      overflow-y: auto;
+      /* Enable vertical scrolling */
+      border: 2px solid #3388f5;
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      padding: 10px;
+      margin-top: 10px;
+      margin-left: 15px;
+      margin-right: -20px;
     }
   </style>
 </head>
@@ -338,7 +349,7 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
                 <div class="row">
                   <div class="col-md-6">
                     <div class="upload-section" id="dropArea">
-                      <p>Drag & Drop Files Here OR Click to Select</p>
+                      <p>Drag & Drop Files Here</p>
                     </div>
                     <input type="file" id="fileInput" multiple hidden>
                     <button class="btn btn-primary" id="uploadBtn">Upload</button>
@@ -351,7 +362,7 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
                       <ul>
                         <?php foreach ($files as $file): ?>
                           <li>
-                            <?= $file; ?>
+                            <span class="filename"><?= $file; ?></span>
                             <div class="action-buttons">
                               <a href="img/uploads/<?= $file; ?>" download class="download-btn">
                                 <i class="fa fa-download"></i>
@@ -393,10 +404,27 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
 
                         function handleFiles(files) {
                           for (let i = 0; i < files.length; i++) {
-                            filesToUpload.push(files[i]);
-                            filePreview.append(`<p>${files[i].name}</p>`);
+                            let file = files[i];
+
+                            // Avoid duplicate file selections
+                            if (filesToUpload.some(f => f.name === file.name)) continue;
+
+                            filesToUpload.push(file);
+                            let fileId = `file-${filesToUpload.length}`;
+
+                            filePreview.append(`
+                <div class="file-item" id="${fileId}">
+                    <span>${file.name}</span>
+                    <button class="cancel-btn" data-file="${file.name}" onclick="removeFile('${file.name}', '${fileId}')">x</button>
+                </div>
+            `);
                           }
                         }
+
+                        window.removeFile = function (fileName, fileId) {
+                          filesToUpload = filesToUpload.filter(file => file.name !== fileName);
+                          $(`#${fileId}`).remove();
+                        };
 
                         uploadBtn.click(function () {
                           if (filesToUpload.length === 0) {
@@ -416,29 +444,33 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
                             success: function (response) {
                               let result = JSON.parse(response);
                               if (result.success) {
-                                Swal.fire('Upload Successful!', 'Your files have been uploaded.', 'success').then(() => location.reload());
+                                Swal.fire('Upload Successful!', 'Your files have been uploaded.', 'success')
+                                  .then(() => location.reload());
                               } else {
                                 Swal.fire('Upload Failed', 'An error occurred while uploading.', 'error');
                               }
                             }
                           });
                         });
+                      });
 
-                        $(document).on('click', '.delete-btn', function () {
-                          let fileName = $(this).data('file');
-                          if (confirm("Are you sure you want to delete this file?")) {
-                            $.post('downloaded-file.php', { delete: fileName }, function (response) {
-                              let result = JSON.parse(response);
-                              if (result.success) {
-                                location.reload();
-                              } else {
-                                alert("Delete failed.");
-                              }
-                            });
-                          }
-                        });
+
+                      $(document).on('click', '.delete-btn', function () {
+                        let fileName = $(this).data('file');
+                        if (confirm("Are you sure you want to delete this file?")) {
+                          $.post('downloaded-file.php', { delete: fileName }, function (response) {
+                            let result = JSON.parse(response);
+                            if (result.success) {
+                              location.reload();
+                            } else {
+                              alert("Delete failed.");
+                            }
+                          });
+                        }
                       });
                     </script>
+
+                    <?php include 'includes/footer.php'; ?>
 </body>
 
 </html>
