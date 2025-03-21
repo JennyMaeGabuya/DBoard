@@ -34,16 +34,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <div class="left-sidebar-pro">
   <nav id="sidebar">
     <div class="sidebar-header">
-      <a href="./dashboard.php">
-        <img class="main-logo" src="img/hdr-logo.png" alt="" style="width: 200px; height: auto; margin-top: 10px; margin-bottom: 30px;" />
+      <a href="dashboard.php">
+        <img class="main-logo" src="img/hdr-logo.png" alt=""
+          style="width: 200px; height: auto; margin-top: 10px; margin-bottom: 30px;" />
       </a>
-      <strong><a href="./dashboard.php"><img src="img/mk-logo.png" alt="" style="width: 60px; height: auto;" /></a></strong>
+      <strong><a href="dashboard.php"><img src="img/mk-logo.png" alt=""
+            style="width: 60px; height: auto;" /></a></strong>
     </div>
     <div class="left-custom-menu-adp-wrap comment-scrollbar">
       <nav class="sidebar-nav left-sidebar-menu-pro">
         <ul class="metismenu" id="menu1">
           <li class="<?= ($current_page == 'dashboard.php') ? 'active' : ''; ?>">
-            <a href="./dashboard.php">
+            <a href="dashboard.php">
               <span class="educate-icon educate-home icon-wrap"></span>
               <span class="mini-click-non">Dashboard</span>
             </a>
@@ -55,12 +57,13 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </a>
           </li>
           <li class="<?= ($current_page == 'organization.php') ? 'active' : ''; ?>">
-            <a href="./organization.php">
+            <a href="organization.php">
               <i class="fas fa-sitemap"></i>
               <span class="mini-click-non">Organization</span>
             </a>
           </li>
-          <li class="<?= ($current_page == 'all-employees.php' || $current_page == 'add-employee.php' || $current_page == 'edit-employee.php' || $current_page == 'employee-profile.php' || $current_page == 'employeedetails.php' || $current_page == 'all-service-record.php' || $current_page == 'service_records.php') ? 'active' : ''; ?>">
+          <li
+            class="<?= ($current_page == 'all-employees.php' || $current_page == 'add-employee.php' || $current_page == 'edit-employee.php' || $current_page == 'employee-profile.php' || $current_page == 'employeedetails.php' || $current_page == 'all-service-record.php' || $current_page == 'service_records.php') ? 'active' : ''; ?>">
             <a class="has-arrow" href="#">
               <span class="educate-icon educate-professor icon-wrap"></span>
               <span class="mini-click-non">Employee</span>
@@ -74,7 +77,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
               </li>
             </ul>
           </li>
-          <li class="<?= ($current_page == 'certifications.php' || $current_page == 'add-course.php' || $current_page == 'edit-course.php' || $current_page == 'course-info.php' || $current_page == 'course-payment.php') ? 'active' : ''; ?>">
+          <li
+            class="<?= ($current_page == 'certifications.php' || $current_page == 'add-course.php' || $current_page == 'edit-course.php' || $current_page == 'course-info.php' || $current_page == 'course-payment.php') ? 'active' : ''; ?>">
             <a class="has-arrow" href="#">
               <i class="fas fa-file-contract"></i>
               <span class="mini-click-non">Certifications</span>
@@ -88,24 +92,27 @@ $current_page = basename($_SERVER['PHP_SELF']);
               </li>
             </ul>
           </li>
-          <li class="<?= ($current_page == 'downloaded-file.php' || $current_page == 'folders.php') ? 'active' : ''; ?>">
-  <a class="has-arrow" href="#">
-    <i class="fas fa-download"></i>
-    <span class="mini-click-non">CSC Downloads</span>
-  </a>
-  <ul class="submenu-angle">
-    <li class="<?= ($current_page == 'downloaded-file.php') ? 'active' : ''; ?>">
-      <a href="downloaded-file.php"><span class="mini-sub-pro">Upload Files</span></a>
-    </li>
-    <li class="<?= ($current_page == 'folders.php') ? 'active' : ''; ?>">
-      <a href="folders.php"><span class="mini-sub-pro">Folders</span></a>
-    </li>
-  </ul>
-</li>
-            <a href="./logout.php">
+          <li
+            class="<?= ($current_page == 'downloaded-file.php' || $current_page == 'folders.php') ? 'active' : ''; ?>">
+            <a class="has-arrow" href="#">
+              <i class="fas fa-download"></i>
+              <span class="mini-click-non">CSC Downloads</span>
+            </a>
+            <ul class="submenu-angle">
+              <li class="<?= ($current_page == 'downloaded-file.php') ? 'active' : ''; ?>">
+                <a href="downloaded-file.php"><span class="mini-sub-pro">Upload Files</span></a>
+              </li>
+              <li class="<?= ($current_page == 'folders.php') ? 'active' : ''; ?>">
+                <a href="folders.php"><span class="mini-sub-pro">Folders</span></a>
+              </li>
+            </ul>
+          </li>
+          <li class="<?= ($current_page == 'logout.php') ? 'active' : ''; ?>">
+            <a href="logout.php">
               <span class="educate-icon educate-pages icon-wrap sub-icon-mg"></span>
               <span class="mini-click-non">Logout</span>
             </a>
+          </li>
           </li>
         </ul>
       </nav>
