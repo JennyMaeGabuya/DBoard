@@ -74,8 +74,8 @@ include "dbcon.php";
                     // Set the clicked date, but allow time to be editable
                     let startDate = moment(start).format("YYYY-MM-DD") + " T12:00";
 
-                    $("#eventStart").val(startDate);
-                    $("#eventEnd").val("");
+                    $("#start_date").val(startDate);
+                    $("#end_date").val("");
                     $("#deleteEventBtn").hide();
                     $("#eventModal").modal("show");
                 },
@@ -86,8 +86,8 @@ include "dbcon.php";
                     $("#eventId").val(event.id);
                     $("#eventTitle").val(event.title);
                     $("#eventDescription").val(event.description);
-                    $("#eventStart").val(moment(event.start).format("YYYY-MM-DDTHH:mm"));
-                    $("#eventEnd").val(event.end ? moment(event.end).format("YYYY-MM-DDTHH:mm") : "");
+                    $("#start_date").val(moment(event.start).format("YYYY-MM-DDTHH:mm"));
+                    $("#end_date").val(event.end ? moment(event.end).format("YYYY-MM-DDTHH:mm") : "");
                     $("#eventColor").val(event.color);
 
                     // Show delete button when editing an existing event
@@ -102,34 +102,14 @@ include "dbcon.php";
                 }
             });
 
-            $("#eventStart").on("change", function() {
-                let startDate = $("#eventStart").val();
-                let endDate = $("#eventEnd").val();
-
-                if (endDate && endDate < startDate) {
-                    Swal.fire({
-                        icon: "warning",
-                        title: "Invalid End Date",
-                        text: "End date cannot be before the start date.",
-                        confirmButtonText: "OK"
-                    });
-                    $("#eventEnd").val(startDate); // Reset end date to start date
-                }
+            $("#start_date").on("change", function() {
+                let startDate = $("#start_date").val();
+                let endDate = $("#end_date").val();
             });
 
-            $("#eventEnd").on("change", function() {
-                let startDate = $("#eventStart").val();
-                let endDate = $("#eventEnd").val();
-
-                if (endDate < startDate) {
-                    Swal.fire({
-                        icon: "warning",
-                        title: "Invalid End Date",
-                        text: "End date cannot be before the start date.",
-                        confirmButtonText: "OK"
-                    });
-                    $("#eventEnd").val(startDate); // Reset end date to start date
-                }
+            $("#end_date").on("change", function() {
+                let startDate = $("#start_date").val();
+                let endDate = $("#end_date").val();
             });
 
             // Save event (Add or Update)
@@ -137,8 +117,8 @@ include "dbcon.php";
                 let id = $("#eventId").val();
                 let title = $("#eventTitle").val();
                 let description = $("#eventDescription").val();
-                let start = $("#eventStart").val();
-                let end = $("#eventEnd").val();
+                let start = $("#start_date").val();
+                let end = $("#end_date").val();
                 let color = $("#eventColor").val();
 
                 if (!title || !start || !end) {
@@ -417,12 +397,12 @@ include "dbcon.php";
                             <textarea class="form-control" id="eventDescription" required></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="eventStart">Start Date & Time:</label>
-                            <input type="text" id="eventStart" class="form-control" required>
+                            <label for="start_date">Start Date & Time:</label>
+                            <input type="text" id="start_date" name="start_date" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label for="eventEnd">End Date & Time:</label>
-                            <input type="text" id="eventEnd" class="form-control" required>
+                            <label for="end_date">End Date & Time:</label>
+                            <input type="text" id="end_date" name="end_date" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Event Color:</label>
@@ -439,16 +419,16 @@ include "dbcon.php";
     </div>
 
     <script>
-        flatpickr("#eventStart", {
-            enableTime: true,
-            dateFormat: "Y/m/d h:i K",
-            time_24hr: false
-        });
+        document.addEventListener("DOMContentLoaded", function() {
+            flatpickr("#start_date", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i"
+            });
 
-        flatpickr("#eventEnd", {
-            enableTime: true,
-            dateFormat: "Y/m/d h:i K",
-            time_24hr: false
+            flatpickr("#end_date", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i"
+            });
         });
     </script>
 
