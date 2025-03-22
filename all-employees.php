@@ -219,31 +219,58 @@ include "dbcon.php";
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $query = "SELECT e.*
-                                            FROM employee e
-                                            LEFT JOIN hr_staffs h ON e.employee_no = h.employee_no AND LOWER(h.role) LIKE '%mayor%'
-                                            WHERE h.employee_no IS NULL
-                                            ORDER BY created_at DESC;
-                                            ";
+                                    $query = "SELECT 
+                                        e.employee_no, e.firstname, e.middlename, e.lastname, e.name_extension, 
+                                        e.dob, e.pob, e.sex, e.civil_status, e.address, e.mobile_no, e.email_address, e.blood_type, e.image,
+                                        g.gsis_no, g.pag_ibig_no, g.philhealth_no, g.tin_no, g.sss_no,
+                                        (SELECT s.salary FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS salary,
+                                        (SELECT s.station_place FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS station_place,
+                                        (SELECT s.branch FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS branch,
+                                        (SELECT s.abs_wo_pay FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS abs_wo_pay,
+                                        (SELECT s.cause_of_separation FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS cause_of_separation
+                                        FROM employee e
+                                        LEFT JOIN government_info g ON e.employee_no = g.employee_no
+                                        LEFT JOIN hr_staffs h ON e.employee_no = h.employee_no AND LOWER(h.role) LIKE '%mayor%'
+                                        WHERE h.employee_no IS NULL
+                                        ORDER BY e.created_at DESC";
+
                                     $view_data = mysqli_query($con, $query);
                                     $count = 1;
 
                                     while ($row = mysqli_fetch_assoc($view_data)) {
-                                        $employee_no = $row['employee_no'];
-                                        $firstname = $row['firstname'];
-                                        $middlename = $row['middlename'];
-                                        $lastname = $row['lastname'];
-                                        $name_extension = $row['name_extension'];
-                                        $dob = $row['dob'];
-                                        $pob = $row['pob'];
-                                        $sex = $row['sex'];
-                                        $civil_status = $row['civil_status'];
-                                        $address = $row['address'];
-                                        $mobile_no = $row['mobile_no'];
-                                        $email_address = $row['email_address'];
-                                        $imagePath = $row['image'];
-                                        $imageUrl = empty($imagePath) ? 'img/mk-logo.png' : 'img/profile/' . $imagePath;
+                                        $employee_no = $row['employee_no'] ?? '';
+                                        $firstname = $row['firstname'] ?? '';
+                                        $middlename = $row['middlename'] ?? '';
+                                        $lastname = $row['lastname'] ?? '';
+                                        $name_extension = $row['name_extension'] ?? '';
+                                        $dob = $row['dob'] ?? '';
+                                        $pob = $row['pob'] ?? '';
+                                        $sex = $row['sex'] ?? '';
+                                        $civil_status = $row['civil_status'] ?? '';
+                                        $address = $row['address'] ?? '';
+                                        $mobile_no = $row['mobile_no'] ?? '';
+                                        $email_address = $row['email_address'] ?? '';
+                                        $blood_type = $row['blood_type'] ?? '';
+
+                                        // Government info
+                                        $gsis = $row['gsis_no'] ?? '';
+                                        $pag_ibig = $row['pag_ibig_no'] ?? '';
+                                        $philhealth = $row['philhealth_no'] ?? '';
+                                        $tin = $row['tin_no'] ?? '';
+                                        $sss = $row['sss_no'] ?? '';
+
+                                        // Service records
+                                        $salary = $row['salary'] ?? '';
+                                        $station_place = $row['station_place'] ?? '';
+                                        $branch = $row['branch'] ?? '';
+                                        $abs_wo_pay = $row['abs_wo_pay'] ?? '';
+                                        $cause_of_separation = $row['cause_of_separation'] ?? '';
+
+                                        // Image handling
+                                        $imagePath = $row['image'] ?? '';
+                                        $imageUrl = !empty($imagePath) ? 'img/profile/' . $imagePath : 'img/mk-logo.png';
                                     ?>
+
                                         <tr>
 
                                             <td style="text-align: center;"><?php echo $count; ?></td>
@@ -270,9 +297,9 @@ include "dbcon.php";
                                             <td><?php echo htmlspecialchars($sex); ?></td>
                                             <td>
                                                 <div style="text-align: center;">
-                                                    <a href="edit-employee.php?employee_no=<?php echo $employee_no; ?>" class="btn btn-warning" style="margin-right: 5px;">
+                                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editEmployee<?php echo $employee_no; ?>">
                                                         <i class="fa fa-pencil"></i>
-                                                    </a>
+                                                    </button>
                                                     <a href="employeedetails.php?employee_no=<?php echo $employee_no; ?>"
                                                         class="btn btn-success" title="View" style="margin-right: 5px;">
                                                         <i class="fa fa-eye"></i>
@@ -334,6 +361,209 @@ include "dbcon.php";
                                             </script>
 
                                         </tr>
+
+                                        <!-- Edit Employee Modal -->
+                                        <div class="modal fade" id="editEmployee<?php echo $employee_no; ?>" tabindex="-1" role="dialog" aria-labelledby="editEmployeeLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header bg-warning" style="border-radius: 3px;">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title" id="editEmployeeLabel" style="margin-bottom: 0;">Edit Employee</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form method="POST" action="update-employee.php" enctype="multipart/form-data">
+                                                            <h4 class="text-center">EDIT EMPLOYEE INFORMATION</h4>
+                                                            <hr>
+
+                                                            <!-- Hidden Field for Employee No -->
+                                                            <input type="hidden" name="employee_no" value="<?php echo $employee_no; ?>">
+
+                                                            <div class="row">
+                                                                <!-- Profile Picture Section -->
+                                                                <div class="col-md-4 text-center">
+                                                                    <div class="profile-info-inner">
+                                                                        <div class="profile-img">
+                                                                            <img id="profileImage_<?php echo $employee_no; ?>" src="<?php echo htmlspecialchars($imageUrl); ?>" alt="User Image" class="img-thumbnail" style="width: 150px; height: 150px;">
+                                                                        </div>
+                                                                        <br>
+                                                                        <div class="form-group">
+                                                                            <label for="formFile">Upload Profile Picture</label>
+                                                                            <input class="form-control" type="file" id="formFile_<?php echo $employee_no; ?>" name="image" accept="image/*" onchange="previewImage(event, '<?php echo $employee_no; ?>')">
+                                                                            <small class="text-muted" style="font-style: italic; color: red;">* Leave blank to keep existing photo.</small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Agency Employee Number</label>
+                                                                    <input name="emp_no" type="text"
+                                                                        class="form-control"
+                                                                        placeholder="Employee Number"
+                                                                        value="<?php echo htmlspecialchars($employee_no); ?>"
+                                                                        readonly />
+                                                                </div>
+
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Surname</label>
+                                                                    <input name="lastname" type="text" class="form-control" value="<?php echo $lastname; ?>" required />
+                                                                </div>
+
+                                                                <div class="form-group col-md-4">
+                                                                    <label>First Name</label>
+                                                                    <input name="firstname" type="text" class="form-control" value="<?php echo $firstname; ?>" required />
+                                                                </div>
+
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Middle Name</label>
+                                                                    <input name="middlename" type="text" class="form-control" value="<?php echo $middlename; ?>" required />
+                                                                </div>
+
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Name Extension (Jr., Sr.)</label>
+                                                                    <input name="name_extension" type="text" class="form-control" value="<?php echo $name_extension; ?>" />
+                                                                </div>
+
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Email Address</label>
+                                                                    <input name="email_address" type="email" class="form-control" value="<?php echo $email_address; ?>" required />
+                                                                </div>
+
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Mobile Number</label>
+                                                                    <input name="mobile_no" id="mobile" type="tel"
+                                                                        class="form-control" placeholder="Mobile no."
+                                                                        value="<?php echo htmlspecialchars($mobile_no); ?>"
+                                                                        required pattern="\d{11}" />
+                                                                </div>
+
+                                                                <!-- Accept only numbers -->
+                                                                <script>
+                                                                    document.getElementById('mobile').addEventListener('input', function(e) {
+                                                                        const value = e.target.value;
+                                                                        // Remove non-numeric characters
+                                                                        const numericValue = value.replace(/[^0-9]/g, '');
+
+                                                                        // Limit input to 11 digits
+                                                                        if (numericValue.length > 11) {
+                                                                            e.target.value = numericValue.slice(0, 11);
+                                                                        } else {
+                                                                            e.target.value = numericValue;
+                                                                        }
+                                                                    });
+                                                                </script>
+
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Birthdate</label>
+                                                                    <input name="dob" id="finish" type="date"
+                                                                        class="form-control" placeholder="Date of Birth"
+                                                                        value="<?php echo htmlspecialchars($dob); ?>" />
+                                                                </div>
+
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Civil Status</label>
+                                                                    <select name="civil_status" id="civil_status_edit" class="form-control" required onchange="checkOtherStatus('edit')">
+                                                                        <option value="Single" <?php echo ($civil_status == 'Single') ? 'selected' : ''; ?>>Single</option>
+                                                                        <option value="Married" <?php echo ($civil_status == 'Married') ? 'selected' : ''; ?>>Married</option>
+                                                                        <option value="Widowed" <?php echo ($civil_status == 'Widowed') ? 'selected' : ''; ?>>Widowed</option>
+                                                                        <option value="Separated" <?php echo ($civil_status == 'Separated') ? 'selected' : ''; ?>>Separated</option>
+                                                                        <option value="Other" <?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? 'selected' : ''; ?>>Other</option>
+                                                                    </select>
+
+                                                                    <input type="text" name="other_civil_status" id="other_civil_status_edit" class="form-control" placeholder="Please specify..."
+                                                                        value="<?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? htmlspecialchars($civil_status) : ''; ?>"
+                                                                        style="display: <?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? 'block' : 'none'; ?>; margin-top: 5px;" required>
+                                                                </div>
+
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Sex</label>
+                                                                    <select name="sex" class="form-control" required>
+                                                                        <option value="Male" <?php if ($sex == "Male") echo "selected"; ?>>Male</option>
+                                                                        <option value="Female" <?php if ($sex == "Female") echo "selected"; ?>>Female</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Blood Type</label>
+                                                                    <select name="blood_type" class="form-control" required>
+                                                                        <option value="A+" <?php if ($blood_type == "A+") echo "selected"; ?>>A+</option>
+                                                                        <option value="A-" <?php if ($blood_type == "A-") echo "selected"; ?>>A-</option>
+                                                                        <option value="B+" <?php if ($blood_type == "B+") echo "selected"; ?>>B+</option>
+                                                                        <option value="B-" <?php if ($blood_type == "B-") echo "selected"; ?>>B-</option>
+                                                                        <option value="AB+" <?php if ($blood_type == "AB+") echo "selected"; ?>>AB+</option>
+                                                                        <option value="AB-" <?php if ($blood_type == "AB-") echo "selected"; ?>>AB-</option>
+                                                                        <option value="O+" <?php if ($blood_type == "O+") echo "selected"; ?>>O+</option>
+                                                                        <option value="O-" <?php if ($blood_type == "O-") echo "selected"; ?>>O-</option>
+                                                                        <option value="Unknown" <?php if ($blood_type == "Unknown") echo "selected"; ?>>Unknown</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Address</label>
+                                                                    <input name="address" type="text" class="form-control" value="<?php echo $address; ?>" required />
+                                                                </div>
+
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Place of Birth</label>
+                                                                    <input name="pob" type="text" class="form-control" value="<?php echo $pob; ?>" required />
+                                                                </div>
+                                                            </div>
+
+                                                            <br>
+                                                            <hr>
+                                                            <h4 class="text-center">GOVERNMENT RECORDS</h4>
+                                                            <hr>
+
+                                                            <div class="row">
+                                                                <div class="form-group col-md-4">
+                                                                    <label>GSIS ID No</label>
+                                                                    <input name="gsis_no" type="text" class="form-control" value="<?php echo $gsis; ?>" required />
+                                                                </div>
+
+                                                                <div class="form-group col-md-4">
+                                                                    <label>PAGIBIG ID No</label>
+                                                                    <input name="pag_ibig_no" type="text" class="form-control" value="<?php echo $pag_ibig; ?>" required />
+                                                                </div>
+
+                                                                <div class="form-group col-md-4">
+                                                                    <label>PHILHEALTH No</label>
+                                                                    <input name="philhealth_no" type="text" class="form-control" value="<?php echo $philhealth; ?>" required />
+                                                                </div>
+
+                                                                <div class="form-group col-md-4">
+                                                                    <label>SSS No</label>
+                                                                    <input name="sss_no" type="text" class="form-control" value="<?php echo $sss; ?>" required />
+                                                                </div>
+
+                                                                <div class="form-group col-md-4">
+                                                                    <label>TIN No</label>
+                                                                    <input name="tin_no" type="text" class="form-control" value="<?php echo $tin; ?>" required />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-success"
+                                                                    name="update-employee-btn" style="margin-left: 5px;">Save Changes</button>
+                                                            </div>
+
+                                                            <!-- JavaScript for Image Preview -->
+                                                            <script>
+                                                                function previewImage(event, employee_no) {
+                                                                    var reader = new FileReader();
+                                                                    reader.onload = function() {
+                                                                        var output = document.getElementById('profileImage_' + employee_no);
+                                                                        output.src = reader.result; // Update the image preview
+                                                                    };
+                                                                    reader.readAsDataURL(event.target.files[0]); // Convert to Base64
+                                                                }
+                                                            </script>
+
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     <?php $count++;
                                     } ?>
                                 </tbody>
@@ -355,11 +585,11 @@ include "dbcon.php";
                     <h4 class="modal-title" id="exampleModalLabel">Add New Employee</h4>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="basic-info.php" method="POST" enctype="multipart/form-data">
+                    <form method="POST" action="basic-info.php" enctype="multipart/form-data">
                         <h4 class="text-center">BASIC INFORMATION</h4>
                         <hr>
                         <div class="row">
-                            <div class="form-group col-md-4 mb-2">
+                            <div class="form-group col-md-4">
                                 <label>Agency Employee No</label>
                                 <input name="emp_no" type="text" class="form-control" placeholder="Employee No"
                                     required />
@@ -402,7 +632,8 @@ include "dbcon.php";
                             <div class="form-group col-md-4">
                                 <label>Mobile Number</label>
                                 <input name="mobile_no" id="mobile" type="tel" class="form-control"
-                                    placeholder="Mobile No." required pattern="\d{11}" required />
+                                    placeholder="Mobile No." required pattern="\d{11}" maxlength="11"
+                                    oninput="this.value = this.value.replace(/\D/g, '').slice(0, 11);" />
                             </div>
 
                             <div class="form-group col-md-4">
@@ -413,31 +644,18 @@ include "dbcon.php";
 
                             <div class="form-group col-md-4">
                                 <label>Civil Status</label>
-                                <select name="civil_status" id="civil_status" class="form-control" required onchange="checkOtherStatus()">
-                                    <option value="none" selected disabled>Civil Status</option>
+                                <select name="civil_status" id="civil_status_add" class="form-control" required onchange="checkOtherStatus('add')">
+                                    <option value="" disabled selected>Select Civil Status</option>
                                     <option value="Single">Single</option>
                                     <option value="Married">Married</option>
                                     <option value="Widowed">Widowed</option>
                                     <option value="Separated">Separated</option>
                                     <option value="Other">Other</option>
                                 </select>
-                                <input type="text" name="other_civil_status" id="other_civil_status" class="form-control" placeholder="Please specify..." style="display: none; margin-top: 5px;">
+
+                                <input type="text" name="other_civil_status" id="other_civil_status_add" class="form-control" placeholder="Please specify..."
+                                    style="display: none; margin-top: 5px;" required>
                             </div>
-
-                            <script>
-                                function checkOtherStatus() {
-                                    var select = document.getElementById("civil_status");
-                                    var otherInput = document.getElementById("other_civil_status");
-
-                                    if (select.value === "Other") {
-                                        otherInput.style.display = "block";
-                                        otherInput.setAttribute("required", "required");
-                                    } else {
-                                        otherInput.style.display = "none";
-                                        otherInput.removeAttribute("required");
-                                    }
-                                }
-                            </script>
 
                             <div class="form-group col-md-4">
                                 <label>Sex</label>
@@ -531,21 +749,29 @@ include "dbcon.php";
             </div>
         </div>
 
+        <!-- For "Other" Civil Status -->
         <script>
-            document.getElementById('mobile').addEventListener('input', function(e) {
-                const value = e.target.value;
-                // Remove non-numeric characters
-                const numericValue = value.replace(/[^0-9]/g, '');
+            function checkOtherStatus(formType) {
+                var selectElement = document.getElementById("civil_status_" + formType);
+                var otherInput = document.getElementById("other_civil_status_" + formType);
 
-                // Limit input to 11 digits
-                if (numericValue.length > 11) {
-                    e.target.value = numericValue.slice(0, 11);
+                if (selectElement.value === "Other") {
+                    otherInput.style.display = "block";
+                    otherInput.setAttribute("required", "true");
                 } else {
-                    e.target.value = numericValue;
+                    otherInput.style.display = "none";
+                    otherInput.removeAttribute("required");
+                    otherInput.value = ""; // Clear input when another option is selected
                 }
+            }
+
+            // Ensure proper state on page load (for edit form only)
+            document.addEventListener("DOMContentLoaded", function() {
+                checkOtherStatus('edit'); // Only needed for Edit form
             });
         </script>
 
+        <!-- Sweetalert Notifier -->
         <?php if (isset($_SESSION['display'])): ?>
             <script>
                 Swal.fire({

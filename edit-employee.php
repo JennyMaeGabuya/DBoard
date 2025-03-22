@@ -330,7 +330,7 @@ if (isset($_GET['employee_no'])) {
                                                     <input name="mobile_no" id="mobile" type="tel"
                                                         class="form-control" placeholder="Mobile no."
                                                         value="<?php echo htmlspecialchars($mobile_no); ?>"
-                                                        required pattern="\d{11    }" />
+                                                        required pattern="\d{11}" />
                                                 </div>
 
                                                 <!-- Accept only numbers -->
@@ -464,7 +464,6 @@ if (isset($_GET['employee_no'])) {
                                                         value="<?php echo htmlspecialchars($pob); ?>" />
                                                 </div>
 
-
                                             </div>
                                             <br>
                                             <hr>
@@ -526,29 +525,28 @@ if (isset($_GET['employee_no'])) {
                                                 </div>
                                             </div>
                                         </div>
-
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
     </div>
 
     <!-- Footer -->
     <?php include 'includes/footer.php'; ?>
 
     <?php if (isset($_SESSION['display'])): ?>
-            <script>
-                Swal.fire({
-                    title: '<?php echo $_SESSION['title']; ?>',
-                    text: '<?php echo $_SESSION['display']; ?>',
-                    icon: '<?php echo $_SESSION['success']; ?>',
-                    confirmButtonText: 'OK'
-                });
-            </script>
-            <?php unset($_SESSION['display']);
-            unset($_SESSION['success']); ?>
-        <?php endif; ?>
+        <script>
+            Swal.fire({
+                title: '<?php echo $_SESSION['title']; ?>',
+                text: '<?php echo $_SESSION['display']; ?>',
+                icon: '<?php echo $_SESSION['success']; ?>',
+                confirmButtonText: 'OK'
+            });
+        </script>
+        <?php unset($_SESSION['display']);
+        unset($_SESSION['success']); ?>
+    <?php endif; ?>

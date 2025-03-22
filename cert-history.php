@@ -289,7 +289,7 @@ include "dbcon.php";
   <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-        <div class="modal-header bg-primary">
+        <div class="modal-header bg-warning" style="border-radius: 3px;">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Edit Certificate</h4>
         </div>

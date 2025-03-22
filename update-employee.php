@@ -34,11 +34,11 @@ if (isset($_POST['update-employee-btn'])) {
     $updated_at = date('Y-m-d');
 
     // Government records
-    $gsis = $_POST['gsis'];
-    $pag_ibig = $_POST['pag_ibig'];
-    $sss = $_POST['sss'];
-    $philhealth = $_POST['philhealth'];
-    $tin = $_POST['tin'];
+    $gsis = $_POST['gsis_no'];
+    $pag_ibig = $_POST['pag_ibig_no'];
+    $sss = $_POST['sss_no'];
+    $philhealth = $_POST['philhealth_no'];
+    $tin = $_POST['tin_no'];
 
     // Retrieve the existing image name
     $image_name = NULL;
