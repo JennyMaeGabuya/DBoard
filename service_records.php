@@ -291,7 +291,7 @@ FROM service_records WHERE employee_no = ?";
                         <div style="text-align: center;">
 
                           <a href="#editservice" data-toggle="modal" data-empid="<?php echo $row['id']; ?>"
-                            class="btn btn-success btn-border btn-round btn-sm">
+                            class="btn btn-warning btn-border btn-round btn-sm">
                             <i class="fa fa-pencil"></i>
                           </a>
                         </div>
