@@ -569,7 +569,7 @@ include "dbcon.php";
         </div>
 
         <audio id="event-alert-sound">
-          <source src="sounds/notification.mp3" type="audio/mpeg">
+          <source src="sounds/gwechana.mp3" type="audio/mpeg">
         </audio>
 
         <script>
@@ -594,14 +594,9 @@ include "dbcon.php";
               }
             }
 
-            // Detect when user interacts with the calendar (clicks or drags events)
             document.getElementById("calendar").addEventListener("mousedown", trackInteraction);
             document.getElementById("calendar").addEventListener("touchstart", trackInteraction);
-
-            // Detect when the modal is opened (user is interacting)
             document.getElementById("eventModal").addEventListener("show.bs.modal", trackInteraction);
-
-            // Reset flag after modal closes
             document.getElementById("eventModal").addEventListener("hidden.bs.modal", function() {
               setTimeout(() => {
                 userInteractingWithCalendar = false;
@@ -615,23 +610,18 @@ include "dbcon.php";
                   let eventList = document.getElementById("event-list");
                   if (!eventList) return console.error("Error: Event list container not found.");
 
-                  eventList.innerHTML = "";
-
-                  if (data.length === 0) {
-                    eventList.innerHTML = `<li style="color: red; font-style: italic;">No events for today.</li>`;
-                  } else {
-                    data.forEach(event => {
-                      let listItem = document.createElement("li");
-                      listItem.innerHTML = `
-                              <strong style="font-size: 16px;">${event.title}</strong><br> 
-                              <small>
-                                  <span style="background-color:${event.color}; color: #fff; padding: 3px 5px; border-radius: 3px; font-size: 13px; font-weight: bold;">
-                                      ${event.start_date} - ${event.end_date} | ${event.start_time}
-                                  </span>
-                              </small>`;
-                      eventList.appendChild(listItem);
-                    });
-                  }
+                  eventList.innerHTML = data.length === 0 ?
+                    `<li style="color: red; font-style: italic;">No events for today.</li>` :
+                    data.map(event => `
+              <li>
+                <strong style="font-size: 16px;">${event.title}</strong><br> 
+                <small>
+                  <span style="background-color:${event.color}; color: #fff; padding: 3px 5px; border-radius: 3px; font-size: 13px; font-weight: bold;">
+                    ${event.start_date} - ${event.end_date} | ${event.start_time}
+                  </span>
+                </small>
+              </li>
+            `).join("");
                 })
                 .catch(error => console.error("Error fetching events:", error));
             }
@@ -644,42 +634,38 @@ include "dbcon.php";
                   if (!alertSound) return console.error("Error: Alert sound element not found.");
 
                   let currentTime = new Date();
-                  resetInteractionFlag(); // Reset interaction flag before checking conditions
 
                   data.forEach(event => {
-                    let eventTime = new Date();
-                    let [hours, minutes, period] = event.start_time.match(/(\d+):(\d+) (\w+)/).slice(1);
+                    let eventTime = new Date(event.start_datetime); // Parse from PHP
+                    let timeDifference = Math.round((eventTime - currentTime) / 60000); // Convert ms to minutes
 
-                    hours = parseInt(hours);
-                    minutes = parseInt(minutes);
-                    if (period === "PM" && hours !== 12) hours += 12;
-                    if (period === "AM" && hours === 12) hours = 0;
+                    console.log(`🔍 Checking: ${event.title}, Time Difference: ${timeDifference} min`);
 
-                    eventTime.setHours(hours, minutes, 0, 0);
-                    let timeDifference = (eventTime - currentTime) / 60000; // Convert milliseconds to minutes
+                    if (timeDifference === 15 || timeDifference === 0) { // 🔔 Trigger only at exact times
+                      console.log(`🚨 Reminder: "${event.title}" in ${timeDifference} minutes!`);
 
-                    if (timeDifference > 14 && timeDifference < 16) {
                       if (Notification.permission === "granted") {
                         new Notification("Event Reminder", {
-                          body: `Your event "${event.title}" starts in 15 minutes!`,
+                          body: `Your event "${event.title}" starts in ${timeDifference} minutes!`,
                           icon: "img/event-icon.png"
                         });
                       }
 
-                      // Prevent sound if the user interacted recently
                       if (!document.hidden && !userInteractingWithCalendar) {
-                        alertSound.play().catch(err => console.log("Audio autoplay blocked"));
+                        alertSound.play()
+                          .then(() => console.log("🔊 Sound played"))
+                          .catch(err => console.log("⚠️ Autoplay blocked:", err));
+                      } else {
+                        console.log("🔕 No sound (User interacting or tab inactive)");
                       }
                     }
                   });
                 })
-                .catch(error => console.error("Error fetching events:", error));
+                .catch(error => console.error("⚠️ Error fetching events:", error));
             }
 
-            // Load events initially
             loadTodayEvents();
-
-            // Check upcoming events every minute
+            checkEvents();
             setInterval(checkEvents, 60000);
           });
         </script>
