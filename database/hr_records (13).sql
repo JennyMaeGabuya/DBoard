@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE IF NOT EXISTS `admin` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `employee_no` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `employee_no` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `username` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `email` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
@@ -130,7 +130,7 @@ INSERT INTO `elected_cert_issuance` (`id`, `fullname`, `lastname`, `sex`, `start
 
 DROP TABLE IF EXISTS `employee`;
 CREATE TABLE IF NOT EXISTS `employee` (
-  `employee_no` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `employee_no` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `firstname` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `middlename` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `lastname` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
@@ -206,7 +206,7 @@ INSERT INTO `events` (`id`, `title`, `start_date`, `end_date`, `description`, `c
 DROP TABLE IF EXISTS `government_info`;
 CREATE TABLE IF NOT EXISTS `government_info` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `employee_no` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `employee_no` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `gsis_no` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
   `pag_ibig_no` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
   `philhealth_no` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
@@ -272,7 +272,7 @@ INSERT INTO `hr_staffs` (`id`, `employee_no`, `designation`, `role`) VALUES
 DROP TABLE IF EXISTS `service_records`;
 CREATE TABLE IF NOT EXISTS `service_records` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `employee_no` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `employee_no` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `from_date` date NOT NULL,
   `to_date` date NOT NULL,
   `designation` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
