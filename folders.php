@@ -298,6 +298,7 @@ include "dbcon.php";
                                 </div>
                             </div>
                         </div>
+                    
 
                         <div class="widget-box">
                             <!-- JavaScript for live search -->
