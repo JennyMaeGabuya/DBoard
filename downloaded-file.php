@@ -376,6 +376,11 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
                         let filePreview = $('#filePreview');
                         let filesToUpload = [];
 
+                        // Trigger file input when clicking on drop area
+    dropArea.click(function () {
+      fileInput.click();
+    });
+
                         dropArea.on('dragover', function (e) {
                           e.preventDefault();
                           dropArea.css('background', '#eaf2ff');
