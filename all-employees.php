@@ -62,11 +62,14 @@ include "dbcon.php";
                             <div class="col-lg-12">
                                 <div class="breadcome-heading">
                                     <div class="row">
-                                        <div class="col-lg-12" style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div class="col-lg-12"
+                                            style="display: flex; justify-content: space-between; align-items: center;">
                                             <!-- Left Side: Home Breadcrumb -->
-                                            <ul class="breadcome-menu" style="display: flex; align-items: center; padding: 0; margin: 0;">
+                                            <ul class="breadcome-menu"
+                                                style="display: flex; align-items: center; padding: 0; margin: 0;">
                                                 <li>
-                                                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                                                    <link rel="stylesheet"
+                                                        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                                                     <a href="dashboard.php">
                                                         <i class="fas fa-home"></i> Home
                                                     </a>
@@ -178,7 +181,8 @@ include "dbcon.php";
                                         class="btn btn-primary btn-border btn-round btn-sm">
                                         <i class="fa-solid fa-plus-circle"></i> Add Employee
                                     </a>
-                                    <a href="reports/csv-employees.php" class="btn btn-success btn-border btn-round btn-sm">
+                                    <a href="reports/csv-employees.php"
+                                        class="btn btn-success btn-border btn-round btn-sm">
                                         <i class="fa fa-file-excel-o"></i> Export CSV
                                     </a>
                                 </div>
@@ -191,7 +195,7 @@ include "dbcon.php";
                             <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
 
                             <script>
-                                $(function() {
+                                $(function () {
                                     new DataTable('#myTable', {
                                         responsive: true,
                                         autoWidth: false,
@@ -269,7 +273,7 @@ include "dbcon.php";
                                         // Image handling
                                         $imagePath = $row['image'] ?? '';
                                         $imageUrl = !empty($imagePath) ? 'img/profile/' . $imagePath : 'img/mk-logo.png';
-                                    ?>
+                                        ?>
 
                                         <tr>
 
@@ -297,24 +301,26 @@ include "dbcon.php";
                                             <td><?php echo htmlspecialchars($sex); ?></td>
                                             <td>
                                                 <div style="text-align: center;">
-                                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editEmployee<?php echo $employee_no; ?>">
+                                                    <button type="button" class="btn btn-warning" data-toggle="modal"
+                                                        data-target="#editEmployee<?php echo $employee_no; ?>">
                                                         <i class="fa fa-pencil"></i>
                                                     </button>
                                                     <a href="employeedetails.php?employee_no=<?php echo $employee_no; ?>"
                                                         class="btn btn-success" title="View" style="margin-right: 5px;">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
-                                                    <a href="#" class="btn btn-danger delete-btn" data-id="<?php echo $employee_no; ?>" title="Delete">
+                                                    <a href="#" class="btn btn-danger delete-btn"
+                                                        data-id="<?php echo $employee_no; ?>" title="Delete">
                                                         <i class="fa fa-trash"></i>
                                                     </a>
                                                 </div>
                                             </td>
 
                                             <script>
-                                                document.addEventListener("DOMContentLoaded", function() {
+                                                document.addEventListener("DOMContentLoaded", function () {
                                                     // Confirmation before deleting an employee
                                                     document.querySelectorAll(".delete-btn").forEach(button => {
-                                                        button.addEventListener("click", function() {
+                                                        button.addEventListener("click", function () {
                                                             let employee_no = this.getAttribute("data-id");
 
                                                             Swal.fire({
@@ -363,41 +369,54 @@ include "dbcon.php";
                                         </tr>
 
                                         <!-- Edit Employee Modal -->
-                                        <div class="modal fade" id="editEmployee<?php echo $employee_no; ?>" tabindex="-1" role="dialog" aria-labelledby="editEmployeeLabel" aria-hidden="true">
+                                        <div class="modal fade" id="editEmployee<?php echo $employee_no; ?>" tabindex="-1"
+                                            role="dialog" aria-labelledby="editEmployeeLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header bg-warning" style="border-radius: 3px;">
-                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        <h4 class="modal-title" id="editEmployeeLabel" style="margin-bottom: 0;">Edit Employee</h4>
+                                                        <button type="button" class="close"
+                                                            data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title" id="editEmployeeLabel"
+                                                            style="margin-bottom: 0;">Edit Employee</h4>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form method="POST" action="update-employee.php" enctype="multipart/form-data">
+                                                        <form method="POST" action="update-employee.php"
+                                                            enctype="multipart/form-data">
                                                             <h4 class="text-center">EDIT EMPLOYEE INFORMATION</h4>
                                                             <hr>
 
                                                             <!-- Hidden Field for Employee No -->
-                                                            <input type="hidden" name="employee_no" value="<?php echo $employee_no; ?>">
+                                                            <input type="hidden" name="employee_no"
+                                                                value="<?php echo $employee_no; ?>">
 
                                                             <div class="row">
                                                                 <!-- Profile Picture Section -->
                                                                 <div class="col-md-4 text-center">
                                                                     <div class="profile-info-inner">
                                                                         <div class="profile-img">
-                                                                            <img id="profileImage_<?php echo $employee_no; ?>" src="<?php echo htmlspecialchars($imageUrl); ?>" alt="User Image" class="img-thumbnail" style="width: 150px; height: 150px;">
+                                                                            <img id="profileImage_<?php echo $employee_no; ?>"
+                                                                                src="<?php echo htmlspecialchars($imageUrl); ?>"
+                                                                                alt="User Image" class="img-thumbnail"
+                                                                                style="width: 150px; height: 150px;">
                                                                         </div>
                                                                         <br>
                                                                         <div class="form-group">
-                                                                            <label for="formFile">Upload Profile Picture</label>
-                                                                            <input class="form-control" type="file" id="formFile_<?php echo $employee_no; ?>" name="image" accept="image/*" onchange="previewImage(event, '<?php echo $employee_no; ?>')">
-                                                                            <small class="text-muted" style="font-style: italic; color: red;">* Leave blank to keep existing photo.</small>
+                                                                            <label for="formFile">Upload Profile
+                                                                                Picture</label>
+                                                                            <input class="form-control" type="file"
+                                                                                id="formFile_<?php echo $employee_no; ?>"
+                                                                                name="image" accept="image/*"
+                                                                                onchange="previewImage(event, '<?php echo $employee_no; ?>')">
+                                                                            <small class="text-muted"
+                                                                                style="font-style: italic; color: red;">*
+                                                                                Leave blank to keep existing photo.</small>
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>Agency Employee Number</label>
-                                                                    <input name="emp_no" type="text"
-                                                                        class="form-control"
+                                                                    <input name="emp_no" type="text" class="form-control"
                                                                         placeholder="Employee Number"
                                                                         value="<?php echo htmlspecialchars($employee_no); ?>"
                                                                         readonly />
@@ -405,27 +424,35 @@ include "dbcon.php";
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>Surname</label>
-                                                                    <input name="lastname" type="text" class="form-control" value="<?php echo $lastname; ?>" required />
+                                                                    <input name="lastname" type="text" class="form-control"
+                                                                        value="<?php echo $lastname; ?>" required />
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>First Name</label>
-                                                                    <input name="firstname" type="text" class="form-control" value="<?php echo $firstname; ?>" required />
+                                                                    <input name="firstname" type="text" class="form-control"
+                                                                        value="<?php echo $firstname; ?>" required />
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>Middle Name</label>
-                                                                    <input name="middlename" type="text" class="form-control" value="<?php echo $middlename; ?>" required />
+                                                                    <input name="middlename" type="text"
+                                                                        class="form-control"
+                                                                        value="<?php echo $middlename; ?>" required />
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>Name Extension (Jr., Sr.)</label>
-                                                                    <input name="name_extension" type="text" class="form-control" value="<?php echo $name_extension; ?>" />
+                                                                    <input name="name_extension" type="text"
+                                                                        class="form-control"
+                                                                        value="<?php echo $name_extension; ?>" />
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>Email Address</label>
-                                                                    <input name="email_address" type="email" class="form-control" value="<?php echo $email_address; ?>" required />
+                                                                    <input name="email_address" type="email"
+                                                                        class="form-control"
+                                                                        value="<?php echo $email_address; ?>" required />
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
@@ -438,7 +465,7 @@ include "dbcon.php";
 
                                                                 <!-- Accept only numbers -->
                                                                 <script>
-                                                                    document.getElementById('mobile').addEventListener('input', function(e) {
+                                                                    document.getElementById('mobile').addEventListener('input', function (e) {
                                                                         const value = e.target.value;
                                                                         // Remove non-numeric characters
                                                                         const numericValue = value.replace(/[^0-9]/g, '');
@@ -461,50 +488,71 @@ include "dbcon.php";
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>Civil Status</label>
-                                                                    <select name="civil_status" id="civil_status_edit" class="form-control" required onchange="checkOtherStatus('edit')">
-                                                                        <option value="Single" <?php echo ($civil_status == 'Single') ? 'selected' : ''; ?>>Single</option>
+                                                                    <select name="civil_status" id="civil_status_edit"
+                                                                        class="form-control" required
+                                                                        onchange="checkOtherStatus('edit')">
+                                                                        <option value="Single" <?php echo ($civil_status == 'Single') ? 'selected' : ''; ?>>
+                                                                            Single</option>
                                                                         <option value="Married" <?php echo ($civil_status == 'Married') ? 'selected' : ''; ?>>Married</option>
                                                                         <option value="Widowed" <?php echo ($civil_status == 'Widowed') ? 'selected' : ''; ?>>Widowed</option>
                                                                         <option value="Separated" <?php echo ($civil_status == 'Separated') ? 'selected' : ''; ?>>Separated</option>
-                                                                        <option value="Other" <?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? 'selected' : ''; ?>>Other</option>
+                                                                        <option value="Other" <?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? 'selected' : ''; ?>>
+                                                                            Other</option>
                                                                     </select>
 
-                                                                    <input type="text" name="other_civil_status" id="other_civil_status_edit" class="form-control" placeholder="Please specify..."
+                                                                    <input type="text" name="other_civil_status"
+                                                                        id="other_civil_status_edit" class="form-control"
+                                                                        placeholder="Please specify..."
                                                                         value="<?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? htmlspecialchars($civil_status) : ''; ?>"
-                                                                        style="display: <?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? 'block' : 'none'; ?>; margin-top: 5px;" required>
+                                                                        style="display: <?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? 'block' : 'none'; ?>; margin-top: 5px;"
+                                                                        required>
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>Sex</label>
                                                                     <select name="sex" class="form-control" required>
-                                                                        <option value="Male" <?php if ($sex == "Male") echo "selected"; ?>>Male</option>
-                                                                        <option value="Female" <?php if ($sex == "Female") echo "selected"; ?>>Female</option>
+                                                                        <option value="Male" <?php if ($sex == "Male")
+                                                                            echo "selected"; ?>>Male</option>
+                                                                        <option value="Female" <?php if ($sex == "Female")
+                                                                            echo "selected"; ?>>Female</option>
                                                                     </select>
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>Blood Type</label>
                                                                     <select name="blood_type" class="form-control" required>
-                                                                        <option value="A+" <?php if ($blood_type == "A+") echo "selected"; ?>>A+</option>
-                                                                        <option value="A-" <?php if ($blood_type == "A-") echo "selected"; ?>>A-</option>
-                                                                        <option value="B+" <?php if ($blood_type == "B+") echo "selected"; ?>>B+</option>
-                                                                        <option value="B-" <?php if ($blood_type == "B-") echo "selected"; ?>>B-</option>
-                                                                        <option value="AB+" <?php if ($blood_type == "AB+") echo "selected"; ?>>AB+</option>
-                                                                        <option value="AB-" <?php if ($blood_type == "AB-") echo "selected"; ?>>AB-</option>
-                                                                        <option value="O+" <?php if ($blood_type == "O+") echo "selected"; ?>>O+</option>
-                                                                        <option value="O-" <?php if ($blood_type == "O-") echo "selected"; ?>>O-</option>
-                                                                        <option value="Unknown" <?php if ($blood_type == "Unknown") echo "selected"; ?>>Unknown</option>
+                                                                        <option value="A+" <?php if ($blood_type == "A+")
+                                                                            echo "selected"; ?>>A+</option>
+                                                                        <option value="A-" <?php if ($blood_type == "A-")
+                                                                            echo "selected"; ?>>A-</option>
+                                                                        <option value="B+" <?php if ($blood_type == "B+")
+                                                                            echo "selected"; ?>>B+</option>
+                                                                        <option value="B-" <?php if ($blood_type == "B-")
+                                                                            echo "selected"; ?>>B-</option>
+                                                                        <option value="AB+" <?php if ($blood_type == "AB+")
+                                                                            echo "selected"; ?>>AB+</option>
+                                                                        <option value="AB-" <?php if ($blood_type == "AB-")
+                                                                            echo "selected"; ?>>AB-</option>
+                                                                        <option value="O+" <?php if ($blood_type == "O+")
+                                                                            echo "selected"; ?>>O+</option>
+                                                                        <option value="O-" <?php if ($blood_type == "O-")
+                                                                            echo "selected"; ?>>O-</option>
+                                                                        <option value="Unknown" <?php if ($blood_type == "Unknown")
+                                                                            echo "selected"; ?>>
+                                                                            Unknown</option>
                                                                     </select>
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>Address</label>
-                                                                    <input name="address" type="text" class="form-control" value="<?php echo $address; ?>" required />
+                                                                    <input name="address" type="text" class="form-control"
+                                                                        value="<?php echo $address; ?>" required />
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>Place of Birth</label>
-                                                                    <input name="pob" type="text" class="form-control" value="<?php echo $pob; ?>" required />
+                                                                    <input name="pob" type="text" class="form-control"
+                                                                        value="<?php echo $pob; ?>" required />
                                                                 </div>
                                                             </div>
 
@@ -516,41 +564,50 @@ include "dbcon.php";
                                                             <div class="row">
                                                                 <div class="form-group col-md-4">
                                                                     <label>GSIS ID No</label>
-                                                                    <input name="gsis_no" type="text" class="form-control" value="<?php echo $gsis; ?>" required />
+                                                                    <input name="gsis_no" type="text" class="form-control"
+                                                                        value="<?php echo $gsis; ?>" required />
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>PAGIBIG ID No</label>
-                                                                    <input name="pag_ibig_no" type="text" class="form-control" value="<?php echo $pag_ibig; ?>" required />
+                                                                    <input name="pag_ibig_no" type="text"
+                                                                        class="form-control"
+                                                                        value="<?php echo $pag_ibig; ?>" required />
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>PHILHEALTH No</label>
-                                                                    <input name="philhealth_no" type="text" class="form-control" value="<?php echo $philhealth; ?>" required />
+                                                                    <input name="philhealth_no" type="text"
+                                                                        class="form-control"
+                                                                        value="<?php echo $philhealth; ?>" required />
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>SSS No</label>
-                                                                    <input name="sss_no" type="text" class="form-control" value="<?php echo $sss; ?>" required />
+                                                                    <input name="sss_no" type="text" class="form-control"
+                                                                        value="<?php echo $sss; ?>" required />
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>TIN No</label>
-                                                                    <input name="tin_no" type="text" class="form-control" value="<?php echo $tin; ?>" required />
+                                                                    <input name="tin_no" type="text" class="form-control"
+                                                                        value="<?php echo $tin; ?>" required />
                                                                 </div>
                                                             </div>
 
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-danger"
+                                                                    data-dismiss="modal">Close</button>
                                                                 <button type="submit" class="btn btn-success"
-                                                                    name="update-employee-btn" style="margin-left: 5px;">Save Changes</button>
+                                                                    name="update-employee-btn"
+                                                                    style="margin-left: 5px;">Save Changes</button>
                                                             </div>
 
                                                             <!-- JavaScript for Image Preview -->
                                                             <script>
                                                                 function previewImage(event, employee_no) {
                                                                     var reader = new FileReader();
-                                                                    reader.onload = function() {
+                                                                    reader.onload = function () {
                                                                         var output = document.getElementById('profileImage_' + employee_no);
                                                                         output.src = reader.result; // Update the image preview
                                                                     };
@@ -564,7 +621,7 @@ include "dbcon.php";
                                             </div>
                                         </div>
 
-                                    <?php $count++;
+                                        <?php $count++;
                                     } ?>
                                 </tbody>
                             </table>
@@ -589,6 +646,35 @@ include "dbcon.php";
                         <h4 class="text-center">BASIC INFORMATION</h4>
                         <hr>
                         <div class="row">
+                        <div class="col-md-4 text-center">
+    <div class="profile-info-inner">
+        <div class="profile-img">
+            <img id="addprofileImage" src="img/person.jpg" alt="User  Image" class="img-thumbnail" style="width: 150px; height: 150px;">
+        </div>
+        <br>
+        <div class="form-group">
+            <label>Upload Profile Picture</label>
+            <input class="form-control" type="file" id="formFile" name="image" accept="image/*" onchange="previewImage(event)">
+        </div>
+    </div>
+</div>
+
+<script>
+    function previewImage(event) {
+        const file = event.target.files[0]; // Get the selected file
+        const reader = new FileReader(); // Create a FileReader object
+
+        reader.onload = function(e) {
+            const img = document.getElementById('addprofileImage'); // Get the image element
+            img.src = e.target.result; // Set the src of the image to the file's data URL
+        }
+
+        if (file) {
+            reader.readAsDataURL(file); // Read the file as a data URL
+        }
+    }
+</script>
+
                             <div class="form-group col-md-4">
                                 <label>Agency Employee No</label>
                                 <input name="emp_no" type="text" class="form-control" placeholder="Employee No"
@@ -644,7 +730,8 @@ include "dbcon.php";
 
                             <div class="form-group col-md-4">
                                 <label>Civil Status</label>
-                                <select name="civil_status" id="civil_status_add" class="form-control" required onchange="checkOtherStatus('add')">
+                                <select name="civil_status" id="civil_status_add" class="form-control" required
+                                    onchange="checkOtherStatus('add')">
                                     <option value="" disabled selected>Select Civil Status</option>
                                     <option value="Single">Single</option>
                                     <option value="Married">Married</option>
@@ -653,7 +740,8 @@ include "dbcon.php";
                                     <option value="Other">Other</option>
                                 </select>
 
-                                <input type="text" name="other_civil_status" id="other_civil_status_add" class="form-control" placeholder="Please specify..."
+                                <input type="text" name="other_civil_status" id="other_civil_status_add"
+                                    class="form-control" placeholder="Please specify..."
                                     style="display: none; margin-top: 5px;" required>
                             </div>
 
@@ -697,10 +785,7 @@ include "dbcon.php";
                                     required />
                             </div>
 
-                            <div class="form-group col-md-4">
-                                <label>Upload Profile Picture</label>
-                                <input class="form-control" type="file" id="formFile" name="image">
-                            </div>
+
                         </div>
 
                         <br>
@@ -711,8 +796,7 @@ include "dbcon.php";
                         <div class="row">
                             <div class="form-group col-md-4">
                                 <label>GSIS ID No</label>
-                                <input name="gsis" type="text" class="form-control" placeholder="GSIS No"
-                                    required />
+                                <input name="gsis" type="text" class="form-control" placeholder="GSIS No" required />
                             </div>
 
                             <div class="form-group col-md-4">
@@ -748,7 +832,21 @@ include "dbcon.php";
                 </div>
             </div>
         </div>
+        <script>
+            function previewImage(event) {
+                const file = event.target.files[0];
+                const reader = new FileReader();
 
+                reader.onload = function (e) {
+                    const img = document.getElementById('addprofileImage');
+                    img.src = e.target.result; // Set the src of the image to the file's data URL
+                }
+
+                if (file) {
+                    reader.readAsDataURL(file); // Read the file as a data URL
+                }
+            }
+        </script>
         <!-- For "Other" Civil Status -->
         <script>
             function checkOtherStatus(formType) {
@@ -766,7 +864,7 @@ include "dbcon.php";
             }
 
             // Ensure proper state on page load (for edit form only)
-            document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("DOMContentLoaded", function () {
                 checkOtherStatus('edit'); // Only needed for Edit form
             });
         </script>
