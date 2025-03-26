@@ -1,11 +1,16 @@
 <?php
 session_start();
+ob_start(); // Add this line to prevent "headers already sent" issue
+
 if (!isset($_SESSION['user_id'])) {
     header('location:../index.php');
     exit();
 }
 
 include "dbcon.php";
+if (!$con) {
+    die(json_encode(["success" => false, "error" => "Database connection failed!"]));
+}
 ?>
 
 <!DOCTYPE html>
@@ -77,7 +82,7 @@ include "dbcon.php";
 
         .folder i {
             font-size: 90px;
-            color:rgb(44, 44, 42);
+            color: rgb(44, 44, 42);
             margin-bottom: 10px;
         }
 
@@ -109,21 +114,6 @@ include "dbcon.php";
             }
         }
 
-        .add-folder-btn {
-            background-color:rgb(79, 170, 239);
-            color: #212529;
-            font-weight: 600;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            transition: background-color 0.3s ease;
-            cursor: pointer;
-        }
-
-        .add-folder-btn:hover {
-            background-color:rgb(25, 238, 13);
-        }
-
         .folder input {
             border: none;
             background: transparent;
@@ -132,6 +122,29 @@ include "dbcon.php";
             color: #212529;
             text-align: center;
             width: 100%;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .folder-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .folder-select-box {
+            display: none;
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 5px;
         }
     </style>
 
@@ -272,33 +285,46 @@ include "dbcon.php";
                             <h3>Downloadable File Folders</h3>
                         </div>
 
-                        <div class="folder-section">
-                            <div
-                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                                <h3></h3>
-                                <button class="add-folder-btn" id="addFolderBtn">Add Folder</button>
+                        <div class="folder-section"
+                            style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+                            <div class="folder-list">
+                                <!-- Folder icons go here -->
                             </div>
-
-                            <div class="folders-container" id="foldersContainer">
-                                <div class="folder">
-                                    <i class="fa fa-folder"></i>
-                                    <input type="text" value="Folder 1" readonly class="folder-label">
-                                </div>
-                                <div class="folder">
-                                    <i class="fa fa-folder"></i>
-                                    <input type="text" value="Folder 2" readonly class="folder-label">
-                                </div>
-                                <div class="folder">
-                                    <i class="fa fa-folder"></i>
-                                    <input type="text" value="Folder 3" readonly class="folder-label">
-                                </div>
-                                <div class="folder">
-                                    <i class="fa fa-folder"></i>
-                                    <input type="text" value="Folder 4" readonly class="folder-label">
-                                </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-primary" id="addFolderBtn">
+                                    <i class="fas fa-folder-plus"></i>
+                                </button>
+                                <button class="btn btn-danger" id="deleteSelectedBtn">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                <button class="btn btn-warning" id="selectBtn">
+                                    <i class="fas fa-check-square"></i>
+                                </button>
                             </div>
                         </div>
-                    
+
+
+                        <div class="folders-container" id="foldersContainer">
+                            <?php
+                            $query = "SELECT * FROM folders";
+                            $result = mysqli_query($con, $query);
+
+                            if ($result && mysqli_num_rows($result) > 0) {
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    if (isset($row['id']) && isset($row['name'])) { // Ensure keys exist
+                                        echo '<div class="folder">
+                    <input type="checkbox" class="folder-checkbox" value="' . $row['id'] . '" style="display: none;">
+                    <i class="fa fa-folder"></i>
+                    <input type="text" value="' . htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8') . '" readonly class="folder-label">
+                </div>';
+                                    }
+                                }
+                            } else {
+                                echo "<p>No folders found.</p>";
+                            }
+                            ?>
+                        </div>
+
 
                         <div class="widget-box">
                             <!-- JavaScript for live search -->
@@ -319,39 +345,102 @@ include "dbcon.php";
 
 
                                 $(document).ready(function () {
-                                    let folderCount = 4; // Start at 4 since there are 4 initial folders
-
-                                    // Add Folder Button Click Event
                                     $('#addFolderBtn').click(function () {
-                                        folderCount++;
+                                        let folderName = prompt("Enter the folder name:");
+                                        if (!folderName) return; // Stop if user cancels
 
-                                        // Create new folder element
-                                        const folderId = `folder-${folderCount}`;
-                                        const newFolder = $(`
-                                     <div class="folder" id="${folderId}">
-                                          <i class="fa fa-folder"></i>
-                                          <input type="text" value="Folder ${folderCount}" readonly class="folder-label">
-                                     </div>
-                                `);
-
-                                        // Append to container
-                                        $('#foldersContainer').append(newFolder);
+                                        $.ajax({
+                                            url: 'add-folder.php',
+                                            type: 'POST',
+                                            data: { folder_name: folderName },
+                                            dataType: 'json',
+                                            success: function (response) {
+                                                if (response.success) {
+                                                    console.log("Folder added successfully:", folderName);
+                                                    location.reload();
+                                                } else {
+                                                    alert("Error: " + response.error);
+                                                }
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.error("AJAX Error:", error);
+                                            }
+                                        })
                                     });
 
-                                    // Make folders editable on double click
+                                    // Gawin Editable ang Folder Names
                                     $(document).on('dblclick', '.folder input', function () {
                                         $(this).prop('readonly', false).focus();
                                     });
 
-                                    // Save folder name on blur
+                                    // Auto-save kapag na-blur ang input field
                                     $(document).on('blur', '.folder input', function () {
-                                        if (!$(this).val().trim()) {
-                                            $(this).val(`Folder ${folderCount}`);
+                                        let newName = $(this).val().trim();
+                                        if (!newName) {
+                                            return;
                                         }
+
+                                        $.ajax({
+                                            url: 'update_folder.php',
+                                            type: 'POST',
+                                            data: { folder_name: newName },
+                                            success: function (response) {
+                                                console.log("Folder updated successfully");
+                                            }
+                                        });
+
                                         $(this).prop('readonly', true);
                                     });
                                 });
 
+                                $(document).ready(function () {
+                                    let selectMode = false;
+
+                                    $('#selectBtn').click(function () {
+                                        selectMode = !selectMode;
+                                        if (selectMode) {
+                                            $('.folder-checkbox').show();
+                                            $(this).text('Cancel');
+                                        } else {
+                                            $('.folder-checkbox').hide().prop('checked', false);
+                                            $(this).text('Select');
+                                        }
+                                    });
+
+                                    $('#deleteSelectedBtn').click(function () {
+                                        let selectedFolders = [];
+                                        $('.folder-checkbox:checked').each(function () {
+                                            selectedFolders.push($(this).val());
+                                        });
+
+                                        if (selectedFolders.length === 0) {
+                                            alert("Please select at least one folder to delete.");
+                                            return;
+                                        }
+
+                                        if (!confirm("Are you sure you want to delete the selected folders?")) {
+                                            return;
+                                        }
+
+                                        $.ajax({
+                                            url: 'delete-folder.php',
+                                            type: 'POST',
+                                            data: { folder_ids: selectedFolders },
+                                            dataType: 'json',
+                                            success: function (response) {
+                                                if (response.success) {
+                                                    alert("Folders deleted successfully!");
+                                                    location.reload();
+                                                } else {
+                                                    alert("Error: " + response.error);
+                                                }
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.error("AJAX Error:", error);
+                                            }
+                                        });
+                                    });
+                                });
                             </script>
                         </div>
 

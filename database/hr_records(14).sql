@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 15, 2025 at 06:01 AM
+-- Generation Time: Mar 26, 2025 at 06:43 AM
 -- Server version: 8.3.0
 -- PHP Version: 8.2.18
 
@@ -30,11 +30,11 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE IF NOT EXISTS `admin` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `employee_no` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `username` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `role` enum('superadmin','admin') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'admin',
+  `employee_no` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `role` enum('superadmin','admin') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'admin',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -59,12 +59,12 @@ INSERT INTO `admin` (`id`, `employee_no`, `username`, `password`, `email`, `role
 DROP TABLE IF EXISTS `appointed_cert_issuance`;
 CREATE TABLE IF NOT EXISTS `appointed_cert_issuance` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `fullname` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `lastname` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `sex` enum('Male','Female') COLLATE utf8mb4_general_ci NOT NULL,
+  `fullname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `lastname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `sex` enum('Male','Female') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `start_date` date NOT NULL,
-  `position` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `office_appointed` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `position` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `office_appointed` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `salary` decimal(10,2) NOT NULL,
   `pera` decimal(10,2) NOT NULL,
   `rta` decimal(10,2) NOT NULL,
@@ -96,11 +96,11 @@ INSERT INTO `appointed_cert_issuance` (`id`, `fullname`, `lastname`, `sex`, `sta
 DROP TABLE IF EXISTS `elected_cert_issuance`;
 CREATE TABLE IF NOT EXISTS `elected_cert_issuance` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `fullname` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `lastname` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `sex` enum('Male','Female') COLLATE utf8mb4_general_ci NOT NULL,
+  `fullname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `lastname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `sex` enum('Male','Female') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `start_date` date NOT NULL,
-  `position` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `position` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `salary` decimal(10,2) NOT NULL,
   `pera` decimal(10,2) NOT NULL,
   `rta` decimal(10,2) NOT NULL,
@@ -130,20 +130,20 @@ INSERT INTO `elected_cert_issuance` (`id`, `fullname`, `lastname`, `sex`, `start
 
 DROP TABLE IF EXISTS `employee`;
 CREATE TABLE IF NOT EXISTS `employee` (
-  `employee_no` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `firstname` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `middlename` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `lastname` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `name_extension` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `employee_no` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `firstname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `middlename` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `lastname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `name_extension` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `dob` date NOT NULL,
-  `pob` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `sex` enum('Male','Female') COLLATE utf8mb4_general_ci NOT NULL,
+  `pob` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `sex` enum('Male','Female') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `civil_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `address` text COLLATE utf8mb4_general_ci NOT NULL,
-  `blood_type` enum('A+','A-','B+','B-','AB+','AB-','O+','O-','Unknown') COLLATE utf8mb4_general_ci DEFAULT 'Unknown',
+  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `blood_type` enum('A+','A-','B+','B-','AB+','AB-','O+','O-','Unknown') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'Unknown',
   `mobile_no` bigint DEFAULT NULL,
-  `email_address` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `email_address` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`employee_no`),
@@ -179,11 +179,11 @@ INSERT INTO `employee` (`employee_no`, `firstname`, `middlename`, `lastname`, `n
 DROP TABLE IF EXISTS `events`;
 CREATE TABLE IF NOT EXISTS `events` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `start_date` datetime NOT NULL,
   `end_date` datetime NOT NULL,
-  `description` text,
-  `color` varchar(255) NOT NULL,
+  `description` text COLLATE utf8mb4_general_ci,
+  `color` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -200,18 +200,40 @@ INSERT INTO `events` (`id`, `title`, `start_date`, `end_date`, `description`, `c
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `folders`
+--
+
+DROP TABLE IF EXISTS `folders`;
+CREATE TABLE IF NOT EXISTS `folders` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `folders`
+--
+
+INSERT INTO `folders` (`id`, `name`) VALUES
+(14, 'hello ganda'),
+(15, 'erika'),
+(16, 'jenny');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `government_info`
 --
 
 DROP TABLE IF EXISTS `government_info`;
 CREATE TABLE IF NOT EXISTS `government_info` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `employee_no` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `gsis_no` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `pag_ibig_no` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `philhealth_no` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `sss_no` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `tin_no` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `employee_no` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `gsis_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `pag_ibig_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `philhealth_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `sss_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `tin_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -242,9 +264,9 @@ INSERT INTO `government_info` (`id`, `employee_no`, `gsis_no`, `pag_ibig_no`, `p
 DROP TABLE IF EXISTS `hr_staffs`;
 CREATE TABLE IF NOT EXISTS `hr_staffs` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `employee_no` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `designation` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `role` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `employee_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `designation` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `role` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `employee_no` (`employee_no`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -272,17 +294,17 @@ INSERT INTO `hr_staffs` (`id`, `employee_no`, `designation`, `role`) VALUES
 DROP TABLE IF EXISTS `service_records`;
 CREATE TABLE IF NOT EXISTS `service_records` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `employee_no` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `employee_no` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `from_date` date NOT NULL,
   `to_date` date NOT NULL,
-  `designation` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `status` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `designation` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `status` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `salary` decimal(15,2) NOT NULL,
-  `station_place` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `branch` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `abs_wo_pay` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `station_place` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `branch` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `abs_wo_pay` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `date_separated` date DEFAULT NULL,
-  `cause_of_separation` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `cause_of_separation` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -294,12 +316,12 @@ CREATE TABLE IF NOT EXISTS `service_records` (
 --
 
 INSERT INTO `service_records` (`id`, `employee_no`, `from_date`, `to_date`, `designation`, `status`, `salary`, `station_place`, `branch`, `abs_wo_pay`, `date_separated`, `cause_of_separation`, `created_at`, `updated_at`) VALUES
-(2, 'HRM-ADMIN', '2025-03-05', '2025-03-07', 'fdf', 'fdf', 3232.00, 'HRM', 'M-Kahoy', 'NA', '2025-03-11', 'NA', '2025-03-04 16:00:00', '2025-03-05 03:48:06'),
-(3, 'HRM-ADMIN', '2024-03-08', '2025-03-06', 'fdf', 'Regular', 12500.00, 'HRM', 'MKahoy', '--td--', '2025-03-07', 'NA', '2025-03-07 16:00:00', '2025-03-12 01:05:40'),
+(2, 'HRM-ADMIN', '2025-03-05', '2025-03-07', 'dfsdsfs', 'fdf', 3232.00, 'HRM', 'M-Kahoy', 'NA', '2025-03-11', 'NA', '2025-03-04 16:00:00', '2025-03-24 07:07:28'),
+(3, 'HRM-ADMIN', '2024-03-08', '2025-03-06', 'dfsdsfs', 'Regular', 12500.00, 'HRM', 'MKahoy', '--td--', '2025-03-07', 'NA', '2025-03-07 16:00:00', '2025-03-24 07:07:28'),
 (4, 'EMP009', '2025-03-08', '2025-04-01', 'sa', 'sa', 1234345.00, 'sdsd', 'dsds', 'dsd', '2025-03-07', 'dsds', '2025-03-07 16:00:00', '2025-03-07 16:00:00'),
 (5, 'EMP009', '2025-03-07', '2025-03-04', 'dsd', 'ddsd', 232323.00, 'dsd', 'dsd', 'sdds', '2025-03-04', 'as', '2025-03-07 16:00:00', '2025-03-07 16:00:00'),
-(6, 'HRM-ADMIN', '2025-03-11', '2025-03-12', 'fdf', 'sdjhasjd', 38973487.00, 'HRM', 'hsdjah', '--td--', '2025-03-10', 'NA', '2025-03-10 16:00:00', '2025-03-12 01:05:40'),
-(7, 'HRM-ADMIN', '2025-03-11', '2025-03-12', 'fdf', 'sas', 45345.00, 'HRM', '6gdf', '546', '2025-03-12', 'hehehhhe', '2025-03-10 16:00:00', '2025-03-12 01:05:40');
+(6, 'HRM-ADMIN', '2025-03-11', '2025-03-12', 'dfsdsfs', 'sdjhasjd', 38973487.00, 'HRM', 'hsdjah', '--td--', '2025-03-10', 'NA', '2025-03-10 16:00:00', '2025-03-24 07:07:28'),
+(7, 'HRM-ADMIN', '2025-03-11', '2025-03-12', 'dfsdsfs', 'sas', 45345.00, 'HRM', '6gdf', '546', '2025-03-12', 'hehehhhe', '2025-03-10 16:00:00', '2025-03-24 07:07:28');
 
 --
 -- Constraints for dumped tables
