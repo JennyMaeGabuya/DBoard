@@ -62,93 +62,6 @@ include('dbcon.php');
 
         .error-pagewrap {
             margin-top: -15px;
-            /* Itaas ang logo */
-        }
-
-        /* Landing Page Modal */
-        .landing-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(199, 199, 199, 0.43);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        /* Landing Content */
-        .landing-content {
-            background: rgba(255, 255, 255, 0.89);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            width: 80%;
-            max-width: 700px;
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.7);
-            border: 2px solid rgba(255, 255, 255, 0.73);
-        }
-
-        /* Ensuring text remains readable */
-        .landing-content h3,
-        .landing-content p {
-            color: black;
-            font-family: 'Play', sans-serif;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            background: transparent;
-            color: red;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s ease-in-out;
-            border: none;
-        }
-
-        .close-btn:hover {
-            background-color: rgba(255, 0, 0, 0.18);
-            border-radius: 20px;
-        }
-
-        .carousel {
-            width: 100%;
-            max-width: 650px;
-            margin: 0 auto;
-        }
-
-        .carousel img {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-
-        .slick-slide {
-            display: block !important;
-        }
-
-        .slick-prev,
-        .slick-next {
-            color: black !important;
-            z-index: 1000;
-        }
-
-        .slick-prev::before,
-        .slick-next::before {
-            color: black !important;
-        }
-
-        .slick-prev:hover::before,
-        .slick-next:hover::before {
-            color: darkgray !important;
         }
 
         html,
@@ -165,26 +78,19 @@ include('dbcon.php');
             text-align: center;
         }
 
-        content-error {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            /* Para nasa gitna */
+        h3 {
+
+            font-size: 25px !important;
         }
 
         .hpanel {
             background: rgb(255, 255, 255);
-            /* Semi-transparent white */
             backdrop-filter: blur(20px);
-            /* Glass effect */
             -webkit-backdrop-filter: blur(20px);
             padding: 5px;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(240, 238, 238, 0.8);
-            /* Shadow effect */
             max-width: 500px;
-            /* Limit ang laki */
             width: 100%;
             text-align: center;
             box-shadow: 0 2px 7px rgba(255, 255, 255, 0.63);
@@ -200,21 +106,6 @@ include('dbcon.php');
 </head>
 
 <body>
-    <!-- Landing Page Modal -->
-    <div class="landing-modal" id="landingModal">
-        <div class="landing-content">
-            <button class="close-btn" onclick="closeModal()">x</button>
-            <h3 style="margin-bottom: 20px;">Employee Records Management System</h3>
-
-            <!-- Slick Carousel Wrapper -->
-            <section class="slider carousel">
-                <div><img src="img/landing/cs-1.jpg" alt="Image 1"></div>
-                <div><img src="img/landing/cs-2.jpg" alt="Image 2"></div>
-                <div><img src="img/landing/cs-3.jpg" alt="Image 3"></div>
-                <div><img src="img/landing/cs-4.jpg" alt="Image 4"></div>
-            </section>
-        </div>
-    </div>
 
     <div class="error-pagewrap">
         <div class="error-page-int">
@@ -224,20 +115,18 @@ include('dbcon.php');
             <div class="content-error">
                 <div class="hpanel">
                     <div class="panel-body">
-                        <form action="#" id="authForm">
+                        <!-- Login Form -->
+                        <form action="login.php" method="POST" id="authForm">
                             <div id="loginFields">
                                 <div class="form-group">
                                     <h3>ADMIN LOGIN</h3>
                                     <p>Employee Records Management System</p>
-                                    <input type="text" placeholder="Email" title="Please enter your username" required
-                                        name="username" id="username" class="form-control" />
+                                    <input type="text" placeholder="Email" required name="username" id="username" class="form-control">
                                     <span class="help-block small">Enter your username or email</span>
                                 </div>
                                 <div class="form-group" style="position: relative;">
-                                    <input type="password" title="Please enter your password" placeholder="Password"
-                                        required name="password" id="password" class="form-control" />
-                                    <i class="fas fa-eye" id="togglePassword"
-                                        style="position: absolute; right: 10px; top: 30%; cursor: pointer; font-size: 1.3em;"></i>
+                                    <input type="password" placeholder="Password" required name="password" id="password" class="form-control">
+                                    <i class="fas fa-eye" id="togglePassword" style="position: absolute; right: 10px; top: 30%; cursor: pointer; font-size: 1.3em;"></i>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 15px;">
                                     <div class="d-flex align-items-center">
@@ -246,28 +135,29 @@ include('dbcon.php');
                                     </div>
                                     <button type="button" class="btn btn-link" onclick="toggleAuthMode()">Forgot Password?</button>
                                 </div>
-                                <button id="loginButton" class="btn btn-success btn-block loginbtn">
+                                <button id="loginButton" class="btn btn-primary waves-effect waves-light btn-block loginbtn" disabled>
                                     <i id="buttonIcon" class="fas fa-lock"></i> Login
                                 </button>
                             </div>
+                        </form>
+
+                        <!-- Forgot Password Form -->
+                        <form action="resetpass-email.php" method="POST">
                             <div id="forgotPasswordFields" style="display: none;">
                                 <div class="text-center ps-recovered">
-                                    <h3>PASSWORD RECOVER</h3>
-                                    <p>Please fill the form to recover your password</p>
+                                    <h3>PASSWORD RECOVERY</h3>
                                 </div>
-                                <p>Enter your email address and your password will be reset and emailed to you.</p>
+                                <p>Enter your email address and a reset link will be emailed to the address provided.</p>
                                 <div class="form-group">
-                                    <label class="control-label" for="email">Email</label>
-                                    <input type="email" placeholder="Email" title="Please enter your email address" required
-                                        name="email" id="email" class="form-control" />
+                                    <input type="email" placeholder="Email" required name="email" id="email" class="form-control">
                                     <span class="help-block small">Your registered email address</span>
                                 </div>
-                                <button class="btn btn-success btn-block" style="margin-top: 20px;">Reset password</button>
+                                <button type="submit" class="btn btn-success btn-block" style="margin-top: 20px;">Reset Password</button>
                                 <button type="button" class="btn btn-link btn-block" onclick="toggleAuthMode()" style="margin: 0;">Back to Login</button>
-
                             </div>
                         </form>
 
+                        <!-- Footer -->
                         <div class="text-center login-footer">
                             <div class="row-fluid">
                                 <div id="footer" class="span12">
@@ -281,62 +171,18 @@ include('dbcon.php');
         </div>
     </div>
 
+    <!-- JavaScript -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Toggle Authentication Mode
+            // Toggle between Login and Forgot Password
             window.toggleAuthMode = function() {
-                const loginFields = document.getElementById('loginFields');
-                const forgotPasswordFields = document.getElementById('forgotPasswordFields');
-                const isLoginVisible = loginFields.style.display !== 'none';
-                loginFields.style.display = isLoginVisible ? 'none' : 'block';
-                forgotPasswordFields.style.display = isLoginVisible ? 'block' : 'none';
+                const loginFields = document.getElementById("loginFields");
+                const forgotPasswordFields = document.getElementById("forgotPasswordFields");
+                const isLoginVisible = loginFields.style.display !== "none";
+
+                loginFields.style.display = isLoginVisible ? "none" : "block";
+                forgotPasswordFields.style.display = isLoginVisible ? "block" : "none";
             };
-
-            // Initialize Slick Carousel
-            if (typeof jQuery !== 'undefined') {
-                $('.slider').slick({
-                    autoplay: true,
-                    autoplaySpeed: 2000,
-                    infinite: true,
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                    fade: true,
-                    cssEase: 'linear',
-                    arrows: true,
-                    dots: true
-                });
-            } else {
-                console.error("jQuery is not loaded!");
-            }
-
-            // Close Modal Function
-            window.closeModal = function() {
-                document.getElementById('landingModal').style.display = 'none';
-            };
-
-            // Close Modal When Clicking Outside
-            document.getElementById('landingModal').addEventListener("click", function(event) {
-                if (!document.querySelector(".landing-content").contains(event.target)) {
-                    closeModal();
-                }
-            });
-
-            // Remember Me Functionality
-            const usernameField = document.getElementById("username");
-            const rememberMeCheckbox = document.getElementById("rememberMe");
-
-            if (localStorage.getItem("rememberedUsername")) {
-                usernameField.value = localStorage.getItem("rememberedUsername");
-                rememberMeCheckbox.checked = true;
-            }
-
-            document.getElementById("loginForm").addEventListener("submit", function() {
-                if (rememberMeCheckbox.checked) {
-                    localStorage.setItem("rememberedUsername", usernameField.value);
-                } else {
-                    localStorage.removeItem("rememberedUsername");
-                }
-            });
 
             // Toggle Password Visibility
             const passwordField = document.getElementById("password");
@@ -349,6 +195,23 @@ include('dbcon.php');
                 togglePassword.classList.toggle("fa-eye", !isPassword);
             });
 
+            // Remember Me Functionality
+            const usernameField = document.getElementById("username");
+            const rememberMeCheckbox = document.getElementById("rememberMe");
+
+            if (localStorage.getItem("rememberedUsername")) {
+                usernameField.value = localStorage.getItem("rememberedUsername");
+                rememberMeCheckbox.checked = true;
+            }
+
+            document.getElementById("authForm").addEventListener("submit", function() {
+                if (rememberMeCheckbox.checked) {
+                    localStorage.setItem("rememberedUsername", usernameField.value);
+                } else {
+                    localStorage.removeItem("rememberedUsername");
+                }
+            });
+
             // Enable/Disable Login Button
             const loginButton = document.getElementById("loginButton");
 
@@ -359,7 +222,7 @@ include('dbcon.php');
             usernameField.addEventListener("input", toggleButtonState);
             passwordField.addEventListener("input", toggleButtonState);
 
-            // SweetAlert2 for Login Feedback
+            // Show SweetAlert2 Messages
             <?php if (isset($_SESSION['success'])): ?>
                 Swal.fire({
                     title: "Success!",
@@ -367,9 +230,9 @@ include('dbcon.php');
                     icon: "success",
                     confirmButtonText: "OK"
                 }).then(() => {
-                    window.location.href = "dashboard.php"; // Redirect after user clicks OK
+                    window.location.href = "dashboard.php"; // Redirect after success
                 });
-                <?php unset($_SESSION['success']); ?> // Clear session message
+                <?php unset($_SESSION['success']); ?>
             <?php endif; ?>
 
             <?php if (isset($_SESSION['error'])): ?>
@@ -379,7 +242,7 @@ include('dbcon.php');
                     icon: "error",
                     confirmButtonText: "OK"
                 });
-                <?php unset($_SESSION['error']); ?> // Clear session error
+                <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
         });
     </script>
