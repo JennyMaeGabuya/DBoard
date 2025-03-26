@@ -313,7 +313,7 @@ FROM service_records WHERE employee_no = ?";
 
   <script>
     $(document).ready(function() {
-      $('.btn-success').on('click', function() {
+      $('.btn-warning').on('click', function() {
         var empid = $(this).data('empid'); // Get empid from the button's data attribute
         var row = $(this).closest('tr'); // Get the closest row
         var empno = '<?php echo $employee_no; ?>'; // Assuming employee_no is available in the PHP context
