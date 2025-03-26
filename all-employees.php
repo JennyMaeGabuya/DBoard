@@ -195,7 +195,7 @@ include "dbcon.php";
                             <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
 
                             <script>
-                                $(function () {
+                                $(function() {
                                     new DataTable('#myTable', {
                                         responsive: true,
                                         autoWidth: false,
@@ -273,7 +273,7 @@ include "dbcon.php";
                                         // Image handling
                                         $imagePath = $row['image'] ?? '';
                                         $imageUrl = !empty($imagePath) ? 'img/profile/' . $imagePath : 'img/mk-logo.png';
-                                        ?>
+                                    ?>
 
                                         <tr>
 
@@ -317,10 +317,10 @@ include "dbcon.php";
                                             </td>
 
                                             <script>
-                                                document.addEventListener("DOMContentLoaded", function () {
+                                                document.addEventListener("DOMContentLoaded", function() {
                                                     // Confirmation before deleting an employee
                                                     document.querySelectorAll(".delete-btn").forEach(button => {
-                                                        button.addEventListener("click", function () {
+                                                        button.addEventListener("click", function() {
                                                             let employee_no = this.getAttribute("data-id");
 
                                                             Swal.fire({
@@ -465,7 +465,7 @@ include "dbcon.php";
 
                                                                 <!-- Accept only numbers -->
                                                                 <script>
-                                                                    document.getElementById('mobile').addEventListener('input', function (e) {
+                                                                    document.getElementById('mobile').addEventListener('input', function(e) {
                                                                         const value = e.target.value;
                                                                         // Remove non-numeric characters
                                                                         const numericValue = value.replace(/[^0-9]/g, '');
@@ -512,9 +512,9 @@ include "dbcon.php";
                                                                     <label>Sex</label>
                                                                     <select name="sex" class="form-control" required>
                                                                         <option value="Male" <?php if ($sex == "Male")
-                                                                            echo "selected"; ?>>Male</option>
+                                                                                                    echo "selected"; ?>>Male</option>
                                                                         <option value="Female" <?php if ($sex == "Female")
-                                                                            echo "selected"; ?>>Female</option>
+                                                                                                    echo "selected"; ?>>Female</option>
                                                                     </select>
                                                                 </div>
 
@@ -522,23 +522,23 @@ include "dbcon.php";
                                                                     <label>Blood Type</label>
                                                                     <select name="blood_type" class="form-control" required>
                                                                         <option value="A+" <?php if ($blood_type == "A+")
-                                                                            echo "selected"; ?>>A+</option>
+                                                                                                echo "selected"; ?>>A+</option>
                                                                         <option value="A-" <?php if ($blood_type == "A-")
-                                                                            echo "selected"; ?>>A-</option>
+                                                                                                echo "selected"; ?>>A-</option>
                                                                         <option value="B+" <?php if ($blood_type == "B+")
-                                                                            echo "selected"; ?>>B+</option>
+                                                                                                echo "selected"; ?>>B+</option>
                                                                         <option value="B-" <?php if ($blood_type == "B-")
-                                                                            echo "selected"; ?>>B-</option>
+                                                                                                echo "selected"; ?>>B-</option>
                                                                         <option value="AB+" <?php if ($blood_type == "AB+")
-                                                                            echo "selected"; ?>>AB+</option>
+                                                                                                echo "selected"; ?>>AB+</option>
                                                                         <option value="AB-" <?php if ($blood_type == "AB-")
-                                                                            echo "selected"; ?>>AB-</option>
+                                                                                                echo "selected"; ?>>AB-</option>
                                                                         <option value="O+" <?php if ($blood_type == "O+")
-                                                                            echo "selected"; ?>>O+</option>
+                                                                                                echo "selected"; ?>>O+</option>
                                                                         <option value="O-" <?php if ($blood_type == "O-")
-                                                                            echo "selected"; ?>>O-</option>
+                                                                                                echo "selected"; ?>>O-</option>
                                                                         <option value="Unknown" <?php if ($blood_type == "Unknown")
-                                                                            echo "selected"; ?>>
+                                                                                                    echo "selected"; ?>>
                                                                             Unknown</option>
                                                                     </select>
                                                                 </div>
@@ -607,7 +607,7 @@ include "dbcon.php";
                                                             <script>
                                                                 function previewImage(event, employee_no) {
                                                                     var reader = new FileReader();
-                                                                    reader.onload = function () {
+                                                                    reader.onload = function() {
                                                                         var output = document.getElementById('profileImage_' + employee_no);
                                                                         output.src = reader.result; // Update the image preview
                                                                     };
@@ -621,7 +621,7 @@ include "dbcon.php";
                                             </div>
                                         </div>
 
-                                        <?php $count++;
+                                    <?php $count++;
                                     } ?>
                                 </tbody>
                             </table>
@@ -646,34 +646,34 @@ include "dbcon.php";
                         <h4 class="text-center">BASIC INFORMATION</h4>
                         <hr>
                         <div class="row">
-                        <div class="col-md-4 text-center">
-    <div class="profile-info-inner">
-        <div class="profile-img">
-            <img id="addprofileImage" src="img/person.jpg" alt="User  Image" class="img-thumbnail" style="width: 150px; height: 150px;">
-        </div>
-        <br>
-        <div class="form-group">
-            <label>Upload Profile Picture</label>
-            <input class="form-control" type="file" id="formFile" name="image" accept="image/*" onchange="previewImage(event)">
-        </div>
-    </div>
-</div>
+                            <div class="col-md-4 text-center">
+                                <div class="profile-info-inner">
+                                    <div class="profile-img">
+                                        <img id="addprofileImage" src="img/person.jpg" alt="User  Image" class="img-thumbnail" style="width: 150px; height: 150px;">
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                        <label>Upload Profile Picture</label>
+                                        <input class="form-control" type="file" id="formFile" name="image" accept="image/*" onchange="previewImage(event)">
+                                    </div>
+                                </div>
+                            </div>
 
-<script>
-    function previewImage(event) {
-        const file = event.target.files[0]; // Get the selected file
-        const reader = new FileReader(); // Create a FileReader object
+                            <script>
+                                function previewImage(event) {
+                                    const file = event.target.files[0]; // Get the selected file
+                                    const reader = new FileReader(); // Create a FileReader object
 
-        reader.onload = function(e) {
-            const img = document.getElementById('addprofileImage'); // Get the image element
-            img.src = e.target.result; // Set the src of the image to the file's data URL
-        }
+                                    reader.onload = function(e) {
+                                        const img = document.getElementById('addprofileImage'); // Get the image element
+                                        img.src = e.target.result; // Set the src of the image to the file's data URL
+                                    }
 
-        if (file) {
-            reader.readAsDataURL(file); // Read the file as a data URL
-        }
-    }
-</script>
+                                    if (file) {
+                                        reader.readAsDataURL(file); // Read the file as a data URL
+                                    }
+                                }
+                            </script>
 
                             <div class="form-group col-md-4">
                                 <label>Agency Employee No</label>
@@ -837,7 +837,7 @@ include "dbcon.php";
                 const file = event.target.files[0];
                 const reader = new FileReader();
 
-                reader.onload = function (e) {
+                reader.onload = function(e) {
                     const img = document.getElementById('addprofileImage');
                     img.src = e.target.result; // Set the src of the image to the file's data URL
                 }
@@ -864,7 +864,7 @@ include "dbcon.php";
             }
 
             // Ensure proper state on page load (for edit form only)
-            document.addEventListener("DOMContentLoaded", function () {
+            document.addEventListener("DOMContentLoaded", function() {
                 checkOtherStatus('edit'); // Only needed for Edit form
             });
         </script>

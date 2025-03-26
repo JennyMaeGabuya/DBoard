@@ -151,7 +151,8 @@ include('dbcon.php');
             color: darkgray !important;
         }
 
-        html, body {
+        html,
+        body {
             background: url('img/kahoyhall.png') no-repeat center center fixed;
             background-size: cover;
             background-blend-mode: overlay;
@@ -189,6 +190,12 @@ include('dbcon.php');
             box-shadow: 0 2px 7px rgba(255, 255, 255, 0.63);
             border: 2px solid rgba(168, 166, 166, 0.06);
         }
+
+        .d-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
     </style>
 </head>
 
@@ -209,61 +216,82 @@ include('dbcon.php');
         </div>
     </div>
 
-
     <div class="error-pagewrap">
         <div class="error-page-int">
             <div class="text-center m-b-md custom-login">
                 <img src="img/spin-logo.png" alt="Logo" class="spin-logo">
             </div>
-
             <div class="content-error">
                 <div class="hpanel">
                     <div class="panel-body">
-                        <form action="login.php" method="POST" id="loginForm">
-                            <div class="form-group">
-                                <h3>ADMIN LOGIN</h3>
-                                <p>Employee Records Management System</p>
-                                <input type="text" placeholder="Email" title="Please enter your username" required
-                                    name="username" id="username" class="form-control" />
-                                <span class="help-block small">Enter your username or email</span>
-                            </div>
-
-                            <div class="form-group" style="position: relative;">
-                                <input type="password" title="Please enter your password" placeholder="Password"
-                                    required name="password" id="password" class="form-control" />
-                                <i class="fas fa-eye" id="togglePassword"
-                                    style="position: absolute; right: 10px; top: 30%; cursor: pointer; font-size: 1.3em;">
-                                </i>
-                            </div>
-
-                            <div class="checkbox login-checkbox" style="margin-left: 25px;">
-                                <label>
-                                    <input type="checkbox" id="rememberMe" class="i-checks"> Remember Me
-                                </label>
-                            </div>
-
-                            <button id="loginButton" class="btn btn-success btn-block loginbtn" disabled>
-                                <i id="buttonIcon" class="fas fa-lock"></i> Login
-                            </button>
-
-                            <div class="text-center login-footer">
-                                <div class="row-fluid">
-                                    <div id="footer" class="span12">
-                                        <?php echo date("Y"); ?> &copy; Municipality of Mataasnakahoy
-                                    </div>
+                        <form action="#" id="authForm">
+                            <div id="loginFields">
+                                <div class="form-group">
+                                    <h3>ADMIN LOGIN</h3>
+                                    <p>Employee Records Management System</p>
+                                    <input type="text" placeholder="Email" title="Please enter your username" required
+                                        name="username" id="username" class="form-control" />
+                                    <span class="help-block small">Enter your username or email</span>
                                 </div>
+                                <div class="form-group" style="position: relative;">
+                                    <input type="password" title="Please enter your password" placeholder="Password"
+                                        required name="password" id="password" class="form-control" />
+                                    <i class="fas fa-eye" id="togglePassword"
+                                        style="position: absolute; right: 10px; top: 30%; cursor: pointer; font-size: 1.3em;"></i>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 15px;">
+                                    <div class="d-flex align-items-center">
+                                        <input type="checkbox" id="rememberMe" class="i-checks" style="margin: 5px;">
+                                        <label for="rememberMe" style="font-weight: normal; margin-top: 5px;">Remember Me</label>
+                                    </div>
+                                    <button type="button" class="btn btn-link" onclick="toggleAuthMode()">Forgot Password?</button>
+                                </div>
+                                <button id="loginButton" class="btn btn-success btn-block loginbtn">
+                                    <i id="buttonIcon" class="fas fa-lock"></i> Login
+                                </button>
+                            </div>
+                            <div id="forgotPasswordFields" style="display: none;">
+                                <div class="text-center ps-recovered">
+                                    <h3>PASSWORD RECOVER</h3>
+                                    <p>Please fill the form to recover your password</p>
+                                </div>
+                                <p>Enter your email address and your password will be reset and emailed to you.</p>
+                                <div class="form-group">
+                                    <label class="control-label" for="email">Email</label>
+                                    <input type="email" placeholder="Email" title="Please enter your email address" required
+                                        name="email" id="email" class="form-control" />
+                                    <span class="help-block small">Your registered email address</span>
+                                </div>
+                                <button class="btn btn-success btn-block" style="margin-top: 20px;">Reset password</button>
+                                <button type="button" class="btn btn-link btn-block" onclick="toggleAuthMode()" style="margin: 0;">Back to Login</button>
+
                             </div>
                         </form>
+
+                        <div class="text-center login-footer">
+                            <div class="row-fluid">
+                                <div id="footer" class="span12">
+                                    <?php echo date("Y"); ?> &copy; Municipality of Mataasnakahoy
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
+            // Toggle Authentication Mode
+            window.toggleAuthMode = function() {
+                const loginFields = document.getElementById('loginFields');
+                const forgotPasswordFields = document.getElementById('forgotPasswordFields');
+                const isLoginVisible = loginFields.style.display !== 'none';
+                loginFields.style.display = isLoginVisible ? 'none' : 'block';
+                forgotPasswordFields.style.display = isLoginVisible ? 'block' : 'none';
+            };
+
             // Initialize Slick Carousel
             if (typeof jQuery !== 'undefined') {
                 $('.slider').slick({
@@ -282,14 +310,13 @@ include('dbcon.php');
             }
 
             // Close Modal Function
-            window.closeModal = function () {
+            window.closeModal = function() {
                 document.getElementById('landingModal').style.display = 'none';
             };
 
             // Close Modal When Clicking Outside
-            document.getElementById('landingModal').addEventListener("click", function (event) {
-                const modalContent = document.querySelector(".landing-content");
-                if (!modalContent.contains(event.target)) {
+            document.getElementById('landingModal').addEventListener("click", function(event) {
+                if (!document.querySelector(".landing-content").contains(event.target)) {
                     closeModal();
                 }
             });
@@ -303,7 +330,7 @@ include('dbcon.php');
                 rememberMeCheckbox.checked = true;
             }
 
-            document.getElementById("loginForm").addEventListener("submit", function () {
+            document.getElementById("loginForm").addEventListener("submit", function() {
                 if (rememberMeCheckbox.checked) {
                     localStorage.setItem("rememberedUsername", usernameField.value);
                 } else {
@@ -315,7 +342,7 @@ include('dbcon.php');
             const passwordField = document.getElementById("password");
             const togglePassword = document.getElementById("togglePassword");
 
-            togglePassword.addEventListener("click", function () {
+            togglePassword.addEventListener("click", function() {
                 const isPassword = passwordField.type === "password";
                 passwordField.type = isPassword ? "text" : "password";
                 togglePassword.classList.toggle("fa-eye-slash", isPassword);
