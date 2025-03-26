@@ -28,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['user_id'] = $row['employee_no'];
             $_SESSION['username'] = $row['username'];
             $_SESSION['success'] = "Login successful!";
+            $_SESSION['email'] = $row['email'];
 
             header("Location: dashboard.php"); // Redirect to the dashboard after successful login
             exit();
