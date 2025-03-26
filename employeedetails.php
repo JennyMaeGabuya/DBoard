@@ -11,8 +11,24 @@ if (isset($_GET['employee_no'])) {
     $employee_no = $_GET['employee_no'];
 
     // Prepare the SQL statement
-    $query = "SELECT * 
-FROM employee WHERE employee.employee_no = ?";
+    $query = "SELECT e.employee_no as employee_no, 
+e.firstname,
+e.lastname as lastname,
+e.middlename as middlename,
+e.name_extension as name_extension,
+e.dob as dob,
+e.pob as pob, 
+e.sex as sex,
+e.civil_status as civil_status,
+e.address as empaddress, 
+e.blood_type as blood_type,
+e.mobile_no as mobile_no,
+e.email_address as email_address,
+e.image as pic,
+ g.tin_no as tin, g.sss_no as sss,
+ g.philhealth_no as philhealth, g. pag_ibig_no as pag_ibig, g.gsis_no as gsis FROM employee e
+LEFT JOIN government_info g ON e.employee_no=g.employee_no 
+WHERE e.employee_no = ?";
     $stmt = $con->prepare($query);
 
     // Bind the parameter
@@ -38,10 +54,14 @@ FROM employee WHERE employee.employee_no = ?";
         $bday = $date->format('F j, Y');
         $sex = $row['sex'];
         $civil_status = $row['civil_status'];
-        $imagePath = $row['image'];
-        $address = $row['address'];
+        $imagePath = $row['pic'];
+        $address = $row['empaddress'];
         $blood_type = $row['blood_type'];
-
+        $gsis = $row['gsis'];
+        $sss = $row['sss'];
+        $pag_ibig = $row['pag_ibig'];
+        $tin = $row['tin'];
+        $philhealth = $row['philhealth'];
         // Determine the image URL based on position
 
         $imageUrl = empty($imagePath) ? 'img/mk-logo.png' : 'img/profile/' . $imagePath;
@@ -63,17 +83,7 @@ FROM employee WHERE employee.employee_no = ?";
     // Close the service statement
     $serviceStmt->close();
 
-    $govQuery = "SELECT * FROM government_info WHERE employee_no = ?";
-    $govStmt = $con->prepare($govQuery);
-    $govStmt->bind_param("s", $employee_no); // "s" means string
-    $govStmt->execute();
-    $govResult = $govStmt->get_result();
 
-    // Initialize variables to hold service data
-    $gsis = $pag_ibig = $philhealth = $sss = $tin = null;
-
-    // Close the service statement
-    $govStmt->close();
 
     // Check if service records exist
     $serviceQuery = "SELECT COUNT(*) as count FROM service_records WHERE employee_no = ?";
