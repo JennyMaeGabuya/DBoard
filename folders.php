@@ -75,7 +75,7 @@ if (!$con) {
         }
 
         .folder:hover {
-            background-color: #e2e6ea;
+            background-color:rgb(20, 71, 122);
             transform: translateY(-3px);
             box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
         }
@@ -181,11 +181,11 @@ if (!$con) {
                                                     </a>
                                                     <span class="bread-slash"> / </span>
                                                     <a href="downloaded-file.php">
-                                                        CSC Downloaded File
+                                                        Uploads Files
                                                     </a>
                                                     <span class="bread-slash"> / </span>
                                                     <a href="#">
-                                                        <strong>CSC File Folders</strong>
+                                                        <strong>Folders</strong>
                                                     </a>
                                                 </li>
                                             </ul>
@@ -304,151 +304,157 @@ if (!$con) {
                         </div>
 
 
-                        <div class="folders-container" id="foldersContainer">
+                        <div class="folders-container">
                             <?php
                             $query = "SELECT * FROM folders";
                             $result = mysqli_query($con, $query);
 
-                            if ($result && mysqli_num_rows($result) > 0) {
+                            if (mysqli_num_rows($result) > 0) {
                                 while ($row = mysqli_fetch_assoc($result)) {
-                                    if (isset($row['id']) && isset($row['name'])) { // Ensure keys exist
-                                        echo '<div class="folder">
-                    <input type="checkbox" class="folder-checkbox" value="' . $row['id'] . '" style="display: none;">
-                    <i class="fa fa-folder"></i>
-                    <input type="text" value="' . htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8') . '" readonly class="folder-label">
-                </div>';
-                                    }
+                                    echo '<div class="">
+                        <div class="folder" onclick="openFolder(' . $row['id'] . ')">
+                            <i class="fa fa-folder"></i><br>
+                            <strong>' . htmlspecialchars($row['name']) . '</strong>
+                        </div>
+                    </div>';
                                 }
                             } else {
                                 echo "<p>No folders found.</p>";
                             }
                             ?>
                         </div>
-
-
-                        <div class="widget-box">
-                            <!-- JavaScript for live search -->
-                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                            <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
-
-                            <script>
-                                $(function () {
-                                    new DataTable('#myTable', {
-                                        responsive: true,
-                                        autoWidth: false,
-                                        language: {
-                                            lengthMenu: "Show _MENU_ entries",
-                                        },
-                                    });
-                                });
-
-
-
-                                $(document).ready(function () {
-                                    $('#addFolderBtn').click(function () {
-                                        let folderName = prompt("Enter the folder name:");
-                                        if (!folderName) return; // Stop if user cancels
-
-                                        $.ajax({
-                                            url: 'add-folder.php',
-                                            type: 'POST',
-                                            data: { folder_name: folderName },
-                                            dataType: 'json',
-                                            success: function (response) {
-                                                if (response.success) {
-                                                    console.log("Folder added successfully:", folderName);
-                                                    location.reload();
-                                                } else {
-                                                    alert("Error: " + response.error);
-                                                }
-                                            },
-                                            error: function (xhr, status, error) {
-                                                console.error("AJAX Error:", error);
-                                            }
-                                        })
-                                    });
-
-                                    // Gawin Editable ang Folder Names
-                                    $(document).on('dblclick', '.folder input', function () {
-                                        $(this).prop('readonly', false).focus();
-                                    });
-
-                                    // Auto-save kapag na-blur ang input field
-                                    $(document).on('blur', '.folder input', function () {
-                                        let newName = $(this).val().trim();
-                                        if (!newName) {
-                                            return;
-                                        }
-
-                                        $.ajax({
-                                            url: 'update_folder.php',
-                                            type: 'POST',
-                                            data: { folder_name: newName },
-                                            success: function (response) {
-                                                console.log("Folder updated successfully");
-                                            }
-                                        });
-
-                                        $(this).prop('readonly', true);
-                                    });
-                                });
-
-                                $(document).ready(function () {
-                                    let selectMode = false;
-
-                                    $('#selectBtn').click(function () {
-                                        selectMode = !selectMode;
-                                        if (selectMode) {
-                                            $('.folder-checkbox').show();
-                                            $(this).text('Cancel');
-                                        } else {
-                                            $('.folder-checkbox').hide().prop('checked', false);
-                                            $(this).text('Select');
-                                        }
-                                    });
-
-                                    $('#deleteSelectedBtn').click(function () {
-                                        let selectedFolders = [];
-                                        $('.folder-checkbox:checked').each(function () {
-                                            selectedFolders.push($(this).val());
-                                        });
-
-                                        if (selectedFolders.length === 0) {
-                                            alert("Please select at least one folder to delete.");
-                                            return;
-                                        }
-
-                                        if (!confirm("Are you sure you want to delete the selected folders?")) {
-                                            return;
-                                        }
-
-                                        $.ajax({
-                                            url: 'delete-folder.php',
-                                            type: 'POST',
-                                            data: { folder_ids: selectedFolders },
-                                            dataType: 'json',
-                                            success: function (response) {
-                                                if (response.success) {
-                                                    alert("Folders deleted successfully!");
-                                                    location.reload();
-                                                } else {
-                                                    alert("Error: " + response.error);
-                                                }
-                                            },
-                                            error: function (xhr, status, error) {
-                                                console.error("AJAX Error:", error);
-                                            }
-                                        });
-                                    });
-                                });
-                            </script>
-                        </div>
-
-                        <!-- Start here! -->
                     </div>
+
+                    <script>
+                        function openFolder(folderId) {
+                            window.location.href = "files.php?folder_id=" + folderId;
+                        }
+                    </script>
+
+
+                    <div class="widget-box">
+                        <!-- JavaScript for live search -->
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
+
+                        <script>
+                            $(function () {
+                                new DataTable('#myTable', {
+                                    responsive: true,
+                                    autoWidth: false,
+                                    language: {
+                                        lengthMenu: "Show _MENU_ entries",
+                                    },
+                                });
+                            });
+
+
+
+                            $(document).ready(function () {
+                                $('#addFolderBtn').click(function () {
+                                    let folderName = prompt("Enter the folder name:");
+                                    if (!folderName) return; // Stop if user cancels
+
+                                    $.ajax({
+                                        url: 'add-folder.php',
+                                        type: 'POST',
+                                        data: { folder_name: folderName },
+                                        dataType: 'json',
+                                        success: function (response) {
+                                            if (response.success) {
+                                                console.log("Folder added successfully:", folderName);
+                                                location.reload();
+                                            } else {
+                                                alert("Error: " + response.error);
+                                            }
+                                        },
+                                        error: function (xhr, status, error) {
+                                            console.error("AJAX Error:", error);
+                                        }
+                                    })
+                                });
+
+                                // Gawin Editable ang Folder Names
+                                $(document).on('dblclick', '.folder input', function () {
+                                    $(this).prop('readonly', false).focus();
+                                });
+
+                                // Auto-save kapag na-blur ang input field
+                                $(document).on('blur', '.folder input', function () {
+                                    let newName = $(this).val().trim();
+                                    if (!newName) {
+                                        return;
+                                    }
+
+                                    $.ajax({
+                                        url: 'update_folder.php',
+                                        type: 'POST',
+                                        data: { folder_name: newName },
+                                        success: function (response) {
+                                            console.log("Folder updated successfully");
+                                        }
+                                    });
+
+                                    $(this).prop('readonly', true);
+                                });
+                            });
+
+                            $(document).ready(function () {
+                                let selectMode = false;
+
+                                $('#selectBtn').click(function () {
+                                    selectMode = !selectMode;
+                                    if (selectMode) {
+                                        $('.folder-checkbox').show();
+                                        $(this).text('Cancel');
+                                    } else {
+                                        $('.folder-checkbox').hide().prop('checked', false);
+                                        $(this).text('Select');
+                                    }
+                                });
+
+                                $('#deleteSelectedBtn').click(function () {
+                                    let selectedFolders = [];
+                                    $('.folder-checkbox:checked').each(function () {
+                                        selectedFolders.push($(this).val());
+                                    });
+
+                                    if (selectedFolders.length === 0) {
+                                        alert("Please select at least one folder to delete.");
+                                        return;
+                                    }
+
+                                    if (!confirm("Are you sure you want to delete the selected folders?")) {
+                                        return;
+                                    }
+
+                                    $.ajax({
+                                        url: 'delete-folder.php',
+                                        type: 'POST',
+                                        data: { folder_ids: selectedFolders },
+                                        dataType: 'json',
+                                        success: function (response) {
+                                            if (response.success) {
+                                                alert("Folders deleted successfully!");
+                                                location.reload();
+                                            } else {
+                                                alert("Error: " + response.error);
+                                            }
+                                        },
+                                        error: function (xhr, status, error) {
+                                            console.error("AJAX Error:", error);
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+                    </div>
+
+                    <!-- Start here! -->
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <!--Footer-part-->
