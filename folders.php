@@ -75,7 +75,7 @@ if (!$con) {
         }
 
         .folder:hover {
-            background-color:rgb(20, 71, 122);
+            background-color:rgb(165, 210, 247);
             transform: translateY(-3px);
             box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
         }

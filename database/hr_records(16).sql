@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 26, 2025 at 01:35 PM
+-- Generation Time: Mar 27, 2025 at 07:17 AM
 -- Server version: 8.3.0
 -- PHP Version: 8.2.18
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `role` enum('superadmin','admin') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'admin',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `reset_token` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `reset_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `reset_expires` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
@@ -202,6 +202,21 @@ INSERT INTO `events` (`id`, `title`, `start_date`, `end_date`, `description`, `c
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `files`
+--
+
+DROP TABLE IF EXISTS `files`;
+CREATE TABLE IF NOT EXISTS `files` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `folder_id` int NOT NULL,
+  `filename` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `folder_id` (`folder_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `folders`
 --
 
@@ -210,16 +225,16 @@ CREATE TABLE IF NOT EXISTS `folders` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `folders`
 --
 
 INSERT INTO `folders` (`id`, `name`) VALUES
-(14, 'hello ganda'),
-(15, 'erika'),
-(16, 'jenny');
+(22, 'erika'),
+(23, 'jenny'),
+(24, 'savior');
 
 -- --------------------------------------------------------
 
