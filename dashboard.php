@@ -569,7 +569,7 @@ include "dbcon.php";
         </div>
 
         <audio id="event-alert-sound">
-          <source src="sounds/gwechana.mp3" type="audio/mpeg">
+          <source src="sounds/erikashutupnotif.mp3" type="audio/mpeg">
         </audio>
 
         <script>
