@@ -142,7 +142,7 @@ include('dbcon.php');
                         </form>
 
                         <!-- Forgot Password Form -->
-                        <form action="resetpass-email.php" method="POST">
+                        <form action="resetpass-email.php" method="POST" id="forgotPasswordForm">
                             <div id="forgotPasswordFields" style="display: none;">
                                 <div class="text-center ps-recovered">
                                     <h3>PASSWORD RECOVERY</h3>
@@ -152,8 +152,12 @@ include('dbcon.php');
                                     <input type="email" placeholder="Email" required name="email" id="email" class="form-control">
                                     <span class="help-block small">Your registered email address</span>
                                 </div>
-                                <button type="submit" class="btn btn-success btn-block" style="margin-top: 20px;">Reset Password</button>
-                                <button type="button" class="btn btn-link btn-block" onclick="toggleAuthMode()" style="margin: 0;">Back to Login</button>
+                                <button type="submit" class="btn btn-success btn-block" id="resetButton" style="margin-top: 20px;">
+                                    Reset password
+                                </button>
+                                <button type="button" class="btn btn-link btn-block" onclick="toggleAuthMode()" style="margin: 0;">
+                                    Back to Login
+                                </button>
                             </div>
                         </form>
 
@@ -212,6 +216,17 @@ include('dbcon.php');
                 }
             });
 
+            // Prevent double submission on reset password form
+            const resetPasswordForm = document.getElementById("forgotPasswordForm");
+            const resetButton = document.getElementById("resetButton");
+
+            if (resetPasswordForm) {
+                resetPasswordForm.addEventListener("submit", function() {
+                    resetButton.disabled = true;
+                    resetButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                });
+            }
+
             // Enable/Disable Login Button
             const loginButton = document.getElementById("loginButton");
 
@@ -229,8 +244,6 @@ include('dbcon.php');
                     text: "<?php echo $_SESSION['success']; ?>",
                     icon: "success",
                     confirmButtonText: "OK"
-                }).then(() => {
-                    window.location.href = "dashboard.php"; // Redirect after success
                 });
                 <?php unset($_SESSION['success']); ?>
             <?php endif; ?>
