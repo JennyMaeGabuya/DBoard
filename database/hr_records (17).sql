@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 27, 2025 at 07:17 AM
+-- Generation Time: Mar 30, 2025 at 03:56 AM
 -- Server version: 8.3.0
 -- PHP Version: 8.2.18
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `role` enum('superadmin','admin') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'admin',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `reset_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `reset_token` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `reset_expires` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
 --
 
 INSERT INTO `admin` (`id`, `employee_no`, `username`, `password`, `email`, `role`, `created_at`, `updated_at`, `reset_token`, `reset_expires`) VALUES
-(1, 'HRM-ADMIN', 'admin', '$2y$10$4kNUDtTOmqdBTg0hDxaPaOno2MEAF2z556ZW5HEcLTgqIzfyB1dge', 'jennymaegabuya8@gmail.com', 'superadmin', '2025-02-17 06:35:11', '2025-03-26 13:18:17', NULL, NULL);
+(1, 'HRM-ADMIN', 'admin', '$2y$10$3AMqxct3hZocbj1VVsdtZeTZwgY8.j4YP.tffVnkPOOVc35/2ekhm', 'jennymaegabuya8@gmail.com', 'superadmin', '2025-02-17 06:35:11', '2025-03-30 03:40:31', '70d595eb8df0e895ef9a01aef3bd56fc307658eb4f7911da752a8da2f4b37d33dac6d38421fba0a9b175e99b106d92d68391', '2025-03-30 11:55:31');
 
 -- --------------------------------------------------------
 
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `appointed_cert_issuance` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `appointed_cert_issuance`
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `appointed_cert_issuance` (
 
 INSERT INTO `appointed_cert_issuance` (`id`, `fullname`, `lastname`, `sex`, `start_date`, `position`, `office_appointed`, `salary`, `pera`, `rta`, `clothing`, `mid_year_bonus`, `year_end_bonus`, `cash_gift`, `productivity_enhancement`, `date_issued`, `created_at`, `updated_at`) VALUES
 (3, 'Hon. Atty. Juan Dela Cruz', 'Dela Cruz', 'Male', '2025-02-01', 'Admin Officer II', 'HR Office', 12500.00, 5600.00, 534534.00, 543543.00, 45345.00, 4345435.00, 4345435.00, 543543.00, '2025-03-07', '2025-03-08 08:05:23', '2025-03-12 05:57:44'),
-(4, 'Appointed test huhu', 'Test q ko', 'Male', '2024-12-07', 'Admin Officer 321', 'Assesor\'s Office', 56878.00, 987.00, 6578.00, 788.00, 879.00, 796.00, 5666.00, 7769.00, '2025-03-12', '2025-03-08 08:43:48', '2025-03-12 01:12:15');
+(4, 'Appointed test huhu', 'Test q ko', 'Male', '2024-12-07', 'Admin Officer 321', 'Assesor\'s Office', 56878.00, 987.00, 6578.00, 788.00, 879.00, 796.00, 5666.00, 7769.00, '2025-03-30', '2025-03-08 08:43:48', '2025-03-30 02:36:21');
 
 -- --------------------------------------------------------
 
@@ -157,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
 --
 
 INSERT INTO `employee` (`employee_no`, `firstname`, `middlename`, `lastname`, `name_extension`, `dob`, `pob`, `sex`, `civil_status`, `address`, `blood_type`, `mobile_no`, `email_address`, `image`, `created_at`, `updated_at`) VALUES
-('dsfd34', 'Jenny', 'Mae', 'Gabuyav2', 'III', '2025-03-13', 'San Luis, Batangas', 'Male', 'soafer latina', 'Sta. Teresita, Batangas', 'O+', 99230232716, 'jenny@gmail.com', NULL, '2025-03-12 18:04:56', '2025-03-14 05:13:37'),
+('dsfd34', 'Jenny', 'Mae', 'Gabuyav2', 'III', '2025-03-13', 'San Luis, Batangas', 'Female', 'soafer latina', 'Sta. Teresita, Batangas', 'O+', 99230232716, 'jenny@gmail.com', NULL, '2025-03-12 18:04:56', '2025-03-25 16:00:00'),
 ('EMP001', 'Juan', 'Dela', 'Cruz', 'Jr.', '1985-03-25', 'Manila', 'Male', 'Married', '123 Mabini St., Manila', 'O+', 9171234567, 'juan.cruz@email.com', NULL, '2025-02-19 14:09:03', '2025-02-19 14:14:08'),
 ('EMP002', 'Noime', 'T.', 'Tipan', '', '1990-07-12', 'Quezon City', 'Male', 'Married', '456 Rizal Ave., QC', 'A+', 9281234567, 'maria.lopez@email.com', 'Noims.png', '2025-02-19 14:09:03', '2025-03-13 16:00:00'),
 ('EMP003', 'Gelyn', 'M.', 'Katimbang', NULL, '1988-05-18', 'Cebu City', 'Female', 'Married', '789 Osmena Blvd., Cebu', 'B+', 9391234567, 'pedro.gonzalez@email.com', 'Gelyn.png', '2025-02-19 14:09:03', '2025-03-06 04:37:19'),
@@ -186,18 +186,20 @@ CREATE TABLE IF NOT EXISTS `events` (
   `end_date` datetime NOT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `color` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `sent_mail` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `events`
 --
 
-INSERT INTO `events` (`id`, `title`, `start_date`, `end_date`, `description`, `color`) VALUES
-(1, 'sdsdsd', '2025-03-15 13:15:00', '2025-03-16 13:15:00', 'dsderewr', '#ff8585'),
-(2, 'Zumba', '2025-03-24 08:00:00', '2025-03-24 10:00:00', 'Zumba Wellness Fitness activity for the elders and youth!', ''),
-(8, 'sa', '2025-03-15 12:58:00', '2025-03-15 13:00:00', 'sasa', ''),
-(11, 'sana gumana ang start and end', '2025-03-18 12:30:00', '2025-03-20 14:30:00', 'sdhsjdsa', '#ff0000');
+INSERT INTO `events` (`id`, `title`, `start_date`, `end_date`, `description`, `color`, `sent_mail`) VALUES
+(1, 'sdsdsd', '2025-03-15 13:15:00', '2025-03-16 13:15:00', 'dsderewr', '#ff8585', 0),
+(2, 'Zumba', '2025-03-24 08:00:00', '2025-03-24 10:00:00', 'Zumba Wellness Fitness activity for the elders and youth!', '', 0),
+(8, 'sa', '2025-03-15 12:58:00', '2025-03-15 13:00:00', 'sasa', '', 0),
+(11, 'start and end', '2025-03-18 00:00:00', '2025-03-20 00:00:00', 'sdhsjdsa', '#ff0000', 0),
+(12, 'test email', '2025-03-30 12:00:00', '2025-03-30 15:00:00', 'hahhaha', '#00dbc2', 1);
 
 -- --------------------------------------------------------
 
@@ -209,10 +211,10 @@ DROP TABLE IF EXISTS `files`;
 CREATE TABLE IF NOT EXISTS `files` (
   `id` int NOT NULL AUTO_INCREMENT,
   `folder_id` int NOT NULL,
-  `filename` varchar(255) NOT NULL,
+  `filename` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `folder_id` (`folder_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -225,16 +227,17 @@ CREATE TABLE IF NOT EXISTS `folders` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `folders`
 --
 
 INSERT INTO `folders` (`id`, `name`) VALUES
-(22, 'erika'),
-(23, 'jenny'),
-(24, 'savior');
+(1, 'hello ganda'),
+(2, 'erika'),
+(3, 'jenny'),
+(4, 'savior');
 
 -- --------------------------------------------------------
 
@@ -270,7 +273,7 @@ INSERT INTO `government_info` (`id`, `employee_no`, `gsis_no`, `pag_ibig_no`, `p
 (2, 'HRM-ADMIN', '4332423-3423', '3287-387245', '94586-7863', '4353-2435', '325436-32422', '2025-03-11 08:25:50', '2025-03-11 08:25:50'),
 (6, 'saS', '31', '32', '325', '536', '61', '2025-03-11 22:33:56', '2025-03-11 22:33:56'),
 (7, 'ssa', 'sawqwe', 'weqwe', '3243', 'dweqw', '3213', '2025-03-12 17:53:18', '2025-03-12 16:00:00'),
-(8, 'dsfd34', '3223-4', '3123-4', '12312-4', '3123-4', '2313-4', '2025-03-12 18:04:56', '2025-03-13 16:00:00');
+(8, 'dsfd34', '3223-4', '3123-4', '12312-4', '3123-4', '2313-4', '2025-03-12 18:04:56', '2025-03-25 16:00:00');
 
 -- --------------------------------------------------------
 
