@@ -42,17 +42,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     font-family: Arial, sans-serif;
                     background-color: #f4f4f4;
                     padding: 20px;
+                    text-align: center;
                 }
                 .container {
                     max-width: 500px;
+                    margin: auto;
                     background: white;
                     padding: 20px;
                     border-radius: 10px;
                     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
                     text-align: center;
+                    border: 2px solid #ff9800;
                 }
                 h2 {
                     color: #333;
+                }
+                hr {
+                    border: 1px solid #ddd;
                 }
                 p {
                     font-size: 16px;
@@ -60,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 .button {
                     display: inline-block;
-                    padding: 12px 20px;
+                    padding: 10px 15px;
                     font-size: 16px;
                     color: #fff !important;
                     background-color: #ff9800;
@@ -73,7 +79,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     background-color: #e68900;
                 }
                 .footer {
-                    margin-top: 20px;
                     font-size: 13px;
                     color: red;
                     font-style: italic;
@@ -84,9 +89,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <body>
             <div class='container'>
                 <h2>Password Reset Request</h2>
+                <hr>
                 <p>We received a request to reset your password. Click the button below to proceed:</p>
                 <a class='button' href='$resetLink'>Reset Your Password</a>
                 <p>If you did not request this, please ignore this email.</p>
+                <hr>
                 <p class='footer'>This link will expire in <u>15 minutes</u>.</p>
             </div>
         </body>

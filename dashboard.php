@@ -20,8 +20,6 @@ if (!isset($_SESSION['user_id'])) {
   header('location:../index.php');
   exit();
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -571,7 +569,7 @@ if (!isset($_SESSION['user_id'])) {
         </div>
 
         <audio id="event-alert-sound">
-          <source src="sounds/erikashutupnotif.mp3" type="audio/mpeg">
+          <source src="sounds/notification.mp3" type="audio/mpeg">
         </audio>
 
         <script>
@@ -679,5 +677,3 @@ if (!isset($_SESSION['user_id'])) {
 
   <!--Footer-part-->
   <?php include 'includes/footer.php'; ?>
-
-  

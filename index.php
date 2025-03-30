@@ -66,25 +66,33 @@ include('dbcon.php');
 
         html,
         body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        body {
+            position: relative;
             background: url('img/kahoyhall.png') no-repeat center center fixed;
             background-size: cover;
-            background-blend-mode: overlay;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
-
-        }
-
-        h3,
-        p {
-            text-align: center;
-        }
-
-        h3 {
-
-            font-size: 25px !important;
+            z-index: 0;
         }
 
         .hpanel {
-            background: rgb(255, 255, 255);
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             padding: 5px;
@@ -95,6 +103,16 @@ include('dbcon.php');
             text-align: center;
             box-shadow: 0 2px 7px rgba(255, 255, 255, 0.63);
             border: 2px solid rgba(168, 166, 166, 0.06);
+        }
+
+        h3,
+        p {
+            text-align: center;
+        }
+
+        h3 {
+
+            font-size: 25px !important;
         }
 
         .d-flex {
