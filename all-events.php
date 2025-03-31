@@ -8,7 +8,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 include "dbcon.php";
-include 'emailnotif.php';
 
 $query = "SELECT id, title, start_date AS start, end_date AS end, description, color FROM events";
 $result = $con->query($query);
