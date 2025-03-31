@@ -218,7 +218,7 @@ if (!isset($_SESSION['user_id'])) {
           confirmButtonText: "Yes, delete it!"
         }).then((result) => {
           if (result.isConfirmed) {
-            fetch("delete-event.php", {
+            fetch("actions/delete-event.php", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/x-www-form-urlencoded"

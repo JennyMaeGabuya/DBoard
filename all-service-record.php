@@ -261,7 +261,7 @@ include 'emailnotif.php';
                                             </td>
                                             <td><?php echo htmlspecialchars($email_address); ?></td>
                                             <td style="text-align: center;">
-                                                <a href="service_records.php?empno=<?php echo $employee_no ?>"
+                                                <a href="service-records.php?empno=<?php echo $employee_no ?>"
                                                     class="btn btn-success btn-border btn-round btn-sm"
                                                     onclick="return checkServiceRecords(<?php echo $hasServiceRecords ? 'true' : 'false'; ?>)">
                                                     <i class="fa fa-list-alt"></i> View Record

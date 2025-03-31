@@ -349,7 +349,7 @@ WHERE e.employee_no = ?";
                                             <i class="fa-solid fa-file-pdf"></i> PDF
                                         </a>
 
-                                        <a href="service_records.php?empno=<?php echo $employee_no ?>"
+                                        <a href="service-records.php?empno=<?php echo $employee_no ?>"
                                             class="btn btn-success btn-border btn-round btn-sm"
                                             onclick="return checkServiceRecords(<?php echo $hasServiceRecords ? 'true' : 'false'; ?>)">
                                             <i class="fa fa-file"></i> Service Records
@@ -369,7 +369,7 @@ WHERE e.employee_no = ?";
                                                         cancelButtonText: 'Close'
                                                     }).then((result) => {
                                                         if (result.isConfirmed) {
-                                                            window.location.href = "service_records.php?empno=<?php echo $employee_no ?>";
+                                                            window.location.href = "service-records.php?empno=<?php echo $employee_no ?>";
                                                         }
                                                     });
                                                     return false;

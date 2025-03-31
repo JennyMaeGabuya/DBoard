@@ -492,7 +492,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["folder_ids"])) {
                                         }
 
                                         $.ajax({
-                                            url: 'delete-folder.php',
+                                            url: 'actions/delete-folder.php',
                                             type: 'POST',
                                             data: { folder_ids: selectedFolders },
                                             dataType: 'json',
