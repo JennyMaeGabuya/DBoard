@@ -8,6 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 include "dbcon.php";
+include 'emailnotif.php';
 if (!$con) {
     die(json_encode(["success" => false, "error" => "Database connection failed!"]));
 }

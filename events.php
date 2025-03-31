@@ -6,6 +6,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 include "dbcon.php";
+include 'emailnotif.php';
 ?>
 
 <head>

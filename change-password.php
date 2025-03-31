@@ -7,6 +7,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 include "dbcon.php";
+include 'emailnotif.php';
 
 $user_id = $_SESSION['user_id'];
 

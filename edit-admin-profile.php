@@ -8,6 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 include_once "dbcon.php";
+include 'emailnotif.php';
 
 // Set the user_id logged in as employee_no
 $employee_no = $_SESSION['user_id'];
