@@ -1,7 +1,5 @@
 <?php
 session_start();
-ob_start();
-
 if (!isset($_SESSION['user_id'])) {
     header('location:../index.php');
     exit();
@@ -9,9 +7,6 @@ if (!isset($_SESSION['user_id'])) {
 
 include "dbcon.php";
 include 'emailnotif.php';
-if (!$con) {
-    die(json_encode(["success" => false, "error" => "Database connection failed!"]));
-}
 
 if (!isset($_GET['folder_id'])) {
     die("Invalid folder ID.");
@@ -214,6 +209,7 @@ $file_result = mysqli_query($con, $file_query);
             </div>
         </div>
     </div>
+
     <div class="product-status mg-b-15">
         <div class="container-fluid">
             <div class="row">
@@ -228,18 +224,6 @@ $file_result = mysqli_query($con, $file_query);
                             <!-- JavaScript for live search -->
                             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                             <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
                             <div class="container">
 
 
@@ -248,9 +232,9 @@ $file_result = mysqli_query($con, $file_query);
                                     if (mysqli_num_rows($file_result) > 0) {
                                         while ($file = mysqli_fetch_assoc($file_result)) {
                                             echo '<div class="file-item">
-                        <i class="fa fa-file"></i>
-                        <a href="uploads/' . htmlspecialchars($file['filename']) . '" target="_blank">' . htmlspecialchars($file['filename']) . '</a>
-                    </div>';
+                                    <i class="fa fa-file"></i>
+                                    <a href="uploads/' . htmlspecialchars($file['filename']) . '" target="_blank">' . htmlspecialchars($file['filename']) . '</a>
+                                </div>';
                                         }
                                     } else {
                                         echo "<p>No files found.</p>";
@@ -258,4 +242,11 @@ $file_result = mysqli_query($con, $file_query);
                                     ?>
                                 </div>
                             </div>
-                            <?php include 'includes/footer.php'; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php include 'includes/footer.php'; ?>

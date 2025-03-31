@@ -19,53 +19,51 @@ include 'emailnotif.php';
 if (!$con) {
     die(json_encode(["success" => false, "error" => "Database connection failed!"]));
 
-// Check if the request method is POST and folder_ids is set
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["folder_ids"])) {
-    $folder_ids = $_POST["folder_ids"];
+    // Check if the request method is POST and folder_ids is set
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["folder_ids"])) {
+        $folder_ids = $_POST["folder_ids"];
 
-    // Validate input
-    if (!is_array($folder_ids)) {
-        echo json_encode(["success" => false, "error" => "Invalid folder IDs format!"]);
-        exit();
-    }
-
-    foreach ($folder_ids as $folder_id) {
-        $folder_id = intval($folder_id); // Convert to integer for security
-
-        // Prepare delete query
-        $deleteFolderQuery = "DELETE FROM folders WHERE id = ?";
-        $stmt = mysqli_prepare($con, $deleteFolderQuery);
-
-        if ($stmt) {
-            mysqli_stmt_bind_param($stmt, "i", $folder_id);
-            mysqli_stmt_execute($stmt);
-            mysqli_stmt_close($stmt);
-        } else {
-            echo json_encode(["success" => false, "error" => "Failed to prepare query!"]);
+        // Validate input
+        if (!is_array($folder_ids)) {
+            echo json_encode(["success" => false, "error" => "Invalid folder IDs format!"]);
             exit();
         }
 
-        // Delete folder from "CSC Files" directory
-        $folderPath = __DIR__ . "/../DBoard/img/CSC Files/" . $folder_id;
-        if (is_dir($folderPath)) {
-            $files = glob("$folderPath/*"); // Get all files in folder
-            foreach ($files as $file) {
-                if (is_file($file)) {
-                    unlink($file); // Delete file
-                }
-            }
-            rmdir($folderPath); // Delete the folder itself
-        }
-    }
+        foreach ($folder_ids as $folder_id) {
+            $folder_id = intval($folder_id); // Convert to integer for security
 
-    echo json_encode(["success" => true]);
-} else {
-    echo json_encode(["success" => false, "error" => "Invalid request!"]);
-}
+            // Prepare delete query
+            $deleteFolderQuery = "DELETE FROM folders WHERE id = ?";
+            $stmt = mysqli_prepare($con, $deleteFolderQuery);
+
+            if ($stmt) {
+                mysqli_stmt_bind_param($stmt, "i", $folder_id);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_close($stmt);
+            } else {
+                echo json_encode(["success" => false, "error" => "Failed to prepare query!"]);
+                exit();
+            }
+
+            // Delete folder from "CSC Files" directory
+            $folderPath = __DIR__ . "/../DBoard/img/CSC Files/" . $folder_id;
+            if (is_dir($folderPath)) {
+                $files = glob("$folderPath/*"); // Get all files in folder
+                foreach ($files as $file) {
+                    if (is_file($file)) {
+                        unlink($file); // Delete file
+                    }
+                }
+                rmdir($folderPath); // Delete the folder itself
+            }
+        }
+
+        echo json_encode(["success" => true]);
+    } else {
+        echo json_encode(["success" => false, "error" => "Invalid request!"]);
+    }
 }
 ?>
-
-
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
@@ -363,7 +361,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["folder_ids"])) {
                             </div>
                         </div>
 
-
                         <div class="folders-container">
                             <?php
                             $query = "SELECT * FROM folders";
@@ -372,15 +369,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["folder_ids"])) {
                             if (mysqli_num_rows($result) > 0) {
                                 while ($row = mysqli_fetch_assoc($result)) {
                                     echo '
-            <div class="folder-container">
-                <div class="folder-actions">
-                    <input type="checkbox" class="folder-checkbox" value="' . $row['id'] . '" style="display: none;">
-                </div>
-                <div class="folder" onclick="openFolder(' . $row['id'] . ')">
-                    <i class="fa fa-folder"></i><br>
-                    <strong>' . htmlspecialchars($row['name']) . '</strong>
-                </div>
-            </div>';
+                                <div class="folder-container">
+                                    <div class="folder-actions">
+                                        <input type="checkbox" class="folder-checkbox" value="' . $row['id'] . '" style="display: none;">
+                                    </div>
+                                    <div class="folder" onclick="openFolder(' . $row['id'] . ')">
+                                        <i class="fa fa-folder"></i><br>
+                                        <strong>' . htmlspecialchars($row['name']) . '</strong>
+                                    </div>
+                                </div>';
                                 }
                             } else {
                                 echo "<p>No folders found.</p>";
@@ -394,14 +391,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["folder_ids"])) {
                             }
                         </script>
 
-
                         <div class="widget-box">
                             <!-- JavaScript for live search -->
                             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                             <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
 
                             <script>
-                                $(function () {
+                                $(function() {
                                     new DataTable('#myTable', {
                                         responsive: true,
                                         autoWidth: false,
@@ -411,19 +407,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["folder_ids"])) {
                                     });
                                 });
 
-
-
-                                $(document).ready(function () {
-                                    $('#addFolderBtn').click(function () {
+                                $(document).ready(function() {
+                                    $('#addFolderBtn').click(function() {
                                         let folderName = prompt("Enter the folder name:");
                                         if (!folderName) return; // Stop if user cancels
 
                                         $.ajax({
                                             url: 'add-folder.php',
                                             type: 'POST',
-                                            data: { folder_name: folderName },
+                                            data: {
+                                                folder_name: folderName
+                                            },
                                             dataType: 'json',
-                                            success: function (response) {
+                                            success: function(response) {
                                                 if (response.success) {
                                                     console.log("Folder added successfully:", folderName);
                                                     location.reload();
@@ -431,19 +427,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["folder_ids"])) {
                                                     alert("Error: " + response.error);
                                                 }
                                             },
-                                            error: function (xhr, status, error) {
+                                            error: function(xhr, status, error) {
                                                 console.error("AJAX Error:", error);
                                             }
                                         })
                                     });
 
                                     // Gawin Editable ang Folder Names
-                                    $(document).on('dblclick', '.folder input', function () {
+                                    $(document).on('dblclick', '.folder input', function() {
                                         $(this).prop('readonly', false).focus();
                                     });
 
                                     // Auto-save kapag na-blur ang input field
-                                    $(document).on('blur', '.folder input', function () {
+                                    $(document).on('blur', '.folder input', function() {
                                         let newName = $(this).val().trim();
                                         if (!newName) {
                                             return;
@@ -452,8 +448,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["folder_ids"])) {
                                         $.ajax({
                                             url: 'update_folder.php',
                                             type: 'POST',
-                                            data: { folder_name: newName },
-                                            success: function (response) {
+                                            data: {
+                                                folder_name: newName
+                                            },
+                                            success: function(response) {
                                                 console.log("Folder updated successfully");
                                             }
                                         });
@@ -462,10 +460,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["folder_ids"])) {
                                     });
                                 });
 
-                                $(document).ready(function () {
+                                $(document).ready(function() {
                                     let selectMode = false;
 
-                                    $('#selectBtn').click(function () {
+                                    $('#selectBtn').click(function() {
                                         selectMode = !selectMode;
                                         if (selectMode) {
                                             $('.folder-checkbox').show();
@@ -476,9 +474,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["folder_ids"])) {
                                         }
                                     });
 
-                                    $('#deleteSelectedBtn').click(function () {
+                                    $('#deleteSelectedBtn').click(function() {
                                         let selectedFolders = [];
-                                        $('.folder-checkbox:checked').each(function () {
+                                        $('.folder-checkbox:checked').each(function() {
                                             selectedFolders.push($(this).val());
                                         });
 
@@ -494,9 +492,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["folder_ids"])) {
                                         $.ajax({
                                             url: 'actions/delete-folder.php',
                                             type: 'POST',
-                                            data: { folder_ids: selectedFolders },
+                                            data: {
+                                                folder_ids: selectedFolders
+                                            },
                                             dataType: 'json',
-                                            success: function (response) {
+                                            success: function(response) {
                                                 if (response.success) {
                                                     alert("Folders deleted successfully!");
                                                     location.reload();
@@ -504,7 +504,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["folder_ids"])) {
                                                     alert("Error: " + response.error);
                                                 }
                                             },
-                                            error: function (xhr, status, error) {
+                                            error: function(xhr, status, error) {
                                                 console.error("AJAX Error:", error);
                                             }
                                         });
