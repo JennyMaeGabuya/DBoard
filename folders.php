@@ -1,21 +1,13 @@
 <?php
 session_start();
-ob_start(); // Prevent "headers already sent" issues
-
-include "dbcon.php"; // Ensure database connection is included early
-
-if (!$con) {
-    die(json_encode(["success" => false, "error" => "Database connection failed!"]));
-}
-
 if (!isset($_SESSION['user_id'])) {
     header('location:../index.php');
     exit();
 }
 
-
 include "dbcon.php";
 include 'emailnotif.php';
+
 if (!$con) {
     die(json_encode(["success" => false, "error" => "Database connection failed!"]));
 
