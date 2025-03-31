@@ -13,12 +13,12 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-<<<<<<< HEAD
+
 include "dbcon.php";
 include 'emailnotif.php';
 if (!$con) {
     die(json_encode(["success" => false, "error" => "Database connection failed!"]));
-=======
+
 // Check if the request method is POST and folder_ids is set
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["folder_ids"])) {
     $folder_ids = $_POST["folder_ids"];
@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["folder_ids"])) {
     echo json_encode(["success" => true]);
 } else {
     echo json_encode(["success" => false, "error" => "Invalid request!"]);
->>>>>>> f155346df9dde1690625a47cd68875f6e72f5a33
+}
 }
 ?>
 
