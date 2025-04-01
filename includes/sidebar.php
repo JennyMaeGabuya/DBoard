@@ -93,7 +93,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </ul>
           </li>
           <li
-            class="<?= ($current_page == 'downloaded-file.php' || $current_page == 'folders.php') ? 'active' : ''; ?>">
+            class="<?= ($current_page == 'downloaded-file.php' || $current_page == 'folders.php' || $current_page == 'files.php') ? 'active' : ''; ?>">
             <a class="has-arrow" href="#">
               <i class="fas fa-download"></i>
               <span class="mini-click-non">CSC Downloads</span>
@@ -102,7 +102,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
               <li class="<?= ($current_page == 'downloaded-file.php') ? 'active' : ''; ?>">
                 <a href="downloaded-file.php"><span class="mini-sub-pro">Upload Files</span></a>
               </li>
-              <li class="<?= ($current_page == 'folders.php') ? 'active' : ''; ?>">
+              <li class="<?= ($current_page == 'folders.php' || $current_page == 'files.php') ? 'active' : ''; ?>">
                 <a href="folders.php"><span class="mini-sub-pro">Folders</span></a>
               </li>
             </ul>
