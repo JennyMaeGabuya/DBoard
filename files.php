@@ -56,60 +56,54 @@ $file_result = mysqli_query($con, $file_query);
     <link rel="stylesheet" href="//cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-       .file-list {
-    padding: 50px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    min-height: 120px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 50px;
-}
+        .file-list {
+            padding: 50px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            min-height: 120px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
 
-.file-item {
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    background: #f8f9fa;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    font-size: 16px;
-}
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: #f8f9fa;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
 
-.file-item:hover {
-    background-color: #e9ecef;
-    transform: scale(1.02);
-}
+        .file-item:hover {
+            background-color: #e9ecef;
+            transform: scale(1.02);
+        }
 
-.file-item i {
-    font-size: 22px;
-    margin-right: 12px;
-    color: #007bff;
-}
+        .file-item i {
+            font-size: 22px;
+            margin-right: 12px;
+            color: #007bff;
+        }
 
-.no-files {
-    text-align: center;
-    font-size: 18px;
-    color: #888;
-    padding: 20px;
-}
+        .no-files {
+            text-align: center;
+            font-size: 18px;
+            color: #888;
+            padding: 20px;
+        }
 
-.no-files i {
-    font-size: 30px;
-    display: block;
-    margin-bottom: 10px;
-    color: #aaa;
-}
-.product-status-wrap {
-    background-color: #ffffff; /* White background */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
-    width: 100%;
-    min-height: 500px; /* Adjusted height */
-}
+        .no-files i {
+            font-size: 30px;
+            display: block;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
 
-
+        .product-status-wrap {
+            min-height: 500px;
+        }
     </style>
 </head>
 
@@ -246,7 +240,7 @@ $file_result = mysqli_query($con, $file_query);
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <h3><?php echo htmlspecialchars($folder['name']); ?> Files</h3>
                         </div>
-                        
+
 
 
                         <div class="widget-box">
