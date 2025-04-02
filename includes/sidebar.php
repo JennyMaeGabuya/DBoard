@@ -63,7 +63,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </a>
           </li>
           <li
-            class="<?= ($current_page == 'all-employees.php' || $current_page == 'add-employee.php' || $current_page == 'edit-employee.php' || $current_page == 'employee-profile.php' || $current_page == 'employeedetails.php' || $current_page == 'all-service-record.php' || $current_page == 'service_records.php') ? 'active' : ''; ?>">
+            class="<?= ($current_page == 'all-employees.php' || $current_page == 'add-employee.php' || $current_page == 'edit-employee.php' || $current_page == 'employee-profile.php' || $current_page == 'employeedetails.php' || $current_page == 'all-service-record.php' || $current_page == 'service-records.php') ? 'active' : ''; ?>">
             <a class="has-arrow" href="#">
               <span class="educate-icon educate-professor icon-wrap"></span>
               <span class="mini-click-non">Employee</span>
@@ -72,7 +72,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
               <li class="<?= ($current_page == 'all-employees.php') ? 'active' : ''; ?>">
                 <a href="all-employees.php"><span class="mini-sub-pro">All Employees</span></a>
               </li>
-              <li class="<?= ($current_page == 'all-service-record.php') ? 'active' : ''; ?>">
+              <li class="<?= ($current_page == 'all-service-record.php' || $current_page == 'service-records.php') ? 'active' : ''; ?>">
                 <a href="all-service-record.php"><span class="mini-sub-pro">Service Records</span></a>
               </li>
             </ul>

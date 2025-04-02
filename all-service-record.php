@@ -211,7 +211,7 @@ include 'emailnotif.php';
                                     $query = "SELECT e.*
                                               FROM employee e
                                               INNER JOIN service_records s ON e.employee_no = s.employee_no
-                                              LEFT JOIN hr_staffs h ON e.employee_no = h.employee_no AND LOWER(h.role) LIKE '%mayor%'
+                                              LEFT JOIN hr_staffs h ON e.employee_no = h.employee_no AND LOWER(h.role)
                                               WHERE h.employee_no IS NULL
                                               GROUP BY e.employee_no";
 
@@ -235,7 +235,7 @@ include 'emailnotif.php';
                                         $serviceStmt->execute();
                                         $serviceResult = $serviceStmt->get_result();
                                         $serviceRow = $serviceResult->fetch_assoc();
-                                        $hasServiceRecords = $serviceRow['count'] > 0; // Boolean: true if records exist
+                                        $hasServiceRecords = $serviceRow['count'] > 0;
                                         $serviceStmt->close();
                                     ?>
                                         <tr>
