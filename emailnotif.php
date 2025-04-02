@@ -25,7 +25,7 @@ function sendEmailReminder($title, $start_datetime, $description, $color)
 
     // Email Setup
     $mail->setFrom('strojincskubisy7535cheek@gmail.com', 'Event Reminder');
-    $mail->addAddress('jennymaegabuya8@gmail.com');
+    $mail->addAddress('erinayeeyangam@gmail.com');
 
     $mail->Subject = "Event Reminder - $title";
     $mail->isHTML(true);

@@ -1,6 +1,7 @@
 <?php
 session_start();
 include('dbcon.php');
+include('emailnotif.php');
 ?>
 
 <!DOCTYPE html>
@@ -277,6 +278,12 @@ include('dbcon.php');
             <?php endif; ?>
         });
     </script>
+
+<script>
+  setTimeout(function(){
+    location.reload();
+  }, 300000); 
+</script>
 
 </body>
 
