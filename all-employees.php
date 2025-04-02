@@ -235,7 +235,7 @@ include 'emailnotif.php';
                                         (SELECT s.cause_of_separation FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS cause_of_separation
                                         FROM employee e
                                         LEFT JOIN government_info g ON e.employee_no = g.employee_no
-                                        LEFT JOIN hr_staffs h ON e.employee_no = h.employee_no AND LOWER(h.role) LIKE '%mayor%'
+                                        LEFT JOIN hr_staffs h ON e.employee_no = h.employee_no AND LOWER(h.role)
                                         WHERE h.employee_no IS NULL
                                         ORDER BY e.created_at DESC";
 

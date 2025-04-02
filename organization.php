@@ -232,8 +232,7 @@ include 'emailnotif.php';
                                             e.created_at,
                                             e.updated_at
                                         FROM employee e
-                                        JOIN hr_staffs h ON e.employee_no = h.employee_no
-                                        WHERE LOWER(h.role) NOT LIKE '%mayor%'");
+                                        JOIN hr_staffs h ON e.employee_no = h.employee_no");
 
                                     $stmt->execute();
                                     $result = $stmt->get_result();
