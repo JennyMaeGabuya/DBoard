@@ -31,6 +31,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
       $targetFilePath = $uploadDir . $newFileName;
       $counter++;
     }
+    // Fetch folders from the database
+    $query = "SELECT id, folder_name FROM folders";
+    $result = mysqli_query($con, $query); // Ensure you use `$con` here
+
+    // Check for errors
+    if (!$result) {
+      die("Database query failed: " . mysqli_error($con));
+    }
+
+    // Store folders in an array
+    $folders = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+      $folders[] = $row;
+    }
+
 
     // Move uploaded file
     if (move_uploaded_file($_FILES['files']['tmp_name'][$key], $targetFilePath)) {
@@ -132,8 +147,7 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
     #uploadBtn {
       position: absolute;
       right: 20px;
-      top: 93%;
-      transform: translateY(-50%);
+      top: 79%;
     }
 
     .file-list ul {
@@ -212,7 +226,39 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
       margin-top: 10px;
       margin-left: 15px;
       margin-right: -20px;
+      margin-bottom: 20px;
     }
+
+    #folderDropdown {
+    width: 70%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 10px;
+}
+
+#folderDropdown:hover {
+    border-color: #0056b3;
+}
+
+#folderDropdown:focus {
+    border-color: #004085;
+    box-shadow: 0 0 5px rgba(0, 91, 187, 0.5);
+}
+
+#folderDropdown option {
+    padding: 10px;
+    font-size: 16px;
+    background: #ffffff;
+    color: #333;
+    
+}
   </style>
 </head>
 
@@ -346,6 +392,12 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
                     <div class="upload-section" id="dropArea">
                       <p>Drag & Drop Files Here</p>
                     </div>
+                    <select id="folderDropdown" name="selected_folder" class="form-control">
+    <option value="">Select a Folder</option>
+    <?php foreach ($folders as $folder): ?>
+        <option value="<?= $folder['id']; ?>"><?= htmlspecialchars($folder['folder_name']); ?></option>
+    <?php endforeach; ?>
+</select>
                     <input type="file" id="fileInput" multiple hidden>
                     <button class="btn btn-primary" id="uploadBtn">Upload</button>
                     <div class="file-preview" id="filePreview"></div>
@@ -378,9 +430,9 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
                         let filesToUpload = [];
 
                         // Trigger file input when clicking on drop area
-    dropArea.click(function () {
-      fileInput.click();
-    });
+                        dropArea.click(function () {
+                          fileInput.click();
+                        });
 
                         dropArea.on('dragover', function (e) {
                           e.preventDefault();
