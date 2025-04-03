@@ -241,14 +241,11 @@ $file_result = mysqli_query($con, $file_query);
                             <h3><?php echo htmlspecialchars($folder['name']); ?> Files</h3>
                         </div>
 
-
-
                         <div class="widget-box">
                             <!-- JavaScript for live search -->
                             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                             <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
                             <div class="container">
-
 
                                 <div class="file-list">
                                     <?php
@@ -256,7 +253,7 @@ $file_result = mysqli_query($con, $file_query);
                                         while ($file = mysqli_fetch_assoc($file_result)) {
                                             echo '<div class="file-item">
                                     <i class="fa fa-file"></i>
-                                    <a href="uploads/' . htmlspecialchars($file['filename']) . '" target="_blank">' . htmlspecialchars($file['filename']) . '</a>
+                                    <a href="img/uploads/' . htmlspecialchars($file['filename']) . '" target="_blank">' . htmlspecialchars($file['filename']) . '</a>
                                 </div>';
                                         }
                                     } else {
@@ -266,6 +263,7 @@ $file_result = mysqli_query($con, $file_query);
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>

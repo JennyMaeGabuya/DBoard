@@ -7,6 +7,7 @@ if (!isset($_SESSION['user_id'])) {
 
 include "dbcon.php";
 include 'emailnotif.php';
+
 $uploadDir = "img/uploads/";
 
 // Ensure the upload directory exists
@@ -14,41 +15,51 @@ if (!is_dir($uploadDir)) {
   mkdir($uploadDir, 0777, true);
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
+// Fetch folders from the database
+$query = "SELECT id, name FROM folders";
+$result = mysqli_query($con, $query);
+$folders = [];
+if ($result) {
+  while ($row = mysqli_fetch_assoc($result)) {
+    $folders[] = $row;
+  }
+} else {
+  die("Database query failed: " . mysqli_error($con));
+}
+
+// Handle file upload
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files']) && isset($_POST['folder_id'])) {
+  $folder_id = intval($_POST['folder_id']); // Ensure folder_id is an integer
+  if ($folder_id <= 0) {
+    echo json_encode(["success" => false, "error" => "Invalid folder selection."]);
+    exit();
+  }
+
   $uploadedFiles = [];
 
   foreach ($_FILES['files']['name'] as $key => $name) {
     $fileExt = pathinfo($name, PATHINFO_EXTENSION);
     $fileBaseName = pathinfo($name, PATHINFO_FILENAME);
-    $sanitizedFileName = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $fileBaseName); // Clean filename
+    $sanitizedFileName = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $fileBaseName);
     $newFileName = $sanitizedFileName . '.' . $fileExt;
     $targetFilePath = $uploadDir . $newFileName;
 
-    // Avoid overwriting existing files by appending a number
+    // Avoid overwriting files
     $counter = 1;
     while (file_exists($targetFilePath)) {
       $newFileName = $sanitizedFileName . "_$counter." . $fileExt;
       $targetFilePath = $uploadDir . $newFileName;
       $counter++;
     }
-    // Fetch folders from the database
-    $query = "SELECT id, folder_name FROM folders";
-    $result = mysqli_query($con, $query); // Ensure you use `$con` here
-
-    // Check for errors
-    if (!$result) {
-      die("Database query failed: " . mysqli_error($con));
-    }
-
-    // Store folders in an array
-    $folders = [];
-    while ($row = mysqli_fetch_assoc($result)) {
-      $folders[] = $row;
-    }
-
 
     // Move uploaded file
     if (move_uploaded_file($_FILES['files']['tmp_name'][$key], $targetFilePath)) {
+      // Insert into the `files` table
+      $stmt = mysqli_prepare($con, "INSERT INTO files (folder_id, filename) VALUES (?, ?)");
+      mysqli_stmt_bind_param($stmt, "is", $folder_id, $newFileName);
+      mysqli_stmt_execute($stmt);
+      mysqli_stmt_close($stmt);
+
       $uploadedFiles[] = $newFileName;
     } else {
       echo json_encode(["success" => false, "error" => "File upload failed."]);
@@ -62,9 +73,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
 
 // Handle file deletion
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
-  $fileToDelete = $uploadDir . basename($_POST['delete']);
-  if (file_exists($fileToDelete)) {
-    unlink($fileToDelete);
+  $fileToDelete = basename($_POST['delete']);
+  $filePath = $uploadDir . $fileToDelete;
+
+  if (file_exists($filePath)) {
+    unlink($filePath);
+
+    // Delete from database
+    $stmt = mysqli_prepare($con, "DELETE FROM files WHERE filename = ?");
+    mysqli_stmt_bind_param($stmt, "s", $fileToDelete);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
     echo json_encode(["success" => true]);
   } else {
     echo json_encode(["success" => false, "error" => "File not found."]);
@@ -72,10 +92,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
   exit();
 }
 
-// List uploaded files
-$files = array_diff(scandir($uploadDir), ['.', '..']);
+// Fetch uploaded files from the database
+$files = [];
+$query = "SELECT filename FROM files";
+$result = mysqli_query($con, $query);
+if ($result) {
+  while ($row = mysqli_fetch_assoc($result)) {
+    $files[] = $row['filename'];
+  }
+}
 ?>
-
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
@@ -108,6 +134,7 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
+
   <style>
     .csc-container {
       background: #ffffff;
@@ -170,19 +197,15 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
 
     .file-list ul li span.filename {
       flex-grow: 1;
-      /* Para lumawak ang file name area */
       overflow: hidden;
       text-overflow: ellipsis;
-      /* Maglalagay ng "..." kung sobrang haba */
       white-space: nowrap;
       padding-right: 10px;
-      /* Para may espasyo bago ang buttons */
     }
 
     .file-list ul li .action-buttons {
       display: flex;
       gap: 10px;
-      /* Para may pagitan ang buttons */
       flex-shrink: 0;
     }
 
@@ -230,35 +253,35 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
     }
 
     #folderDropdown {
-    width: 70%;
-    padding: 10px;
-    font-size: 16px;
-    border: 2px solid #007bff;
-    border-radius: 5px;
-    background-color: #ffffff;
-    color: #333;
-    cursor: pointer;
-    outline: none;
-    transition: all 0.3s ease-in-out;
-    margin-bottom: 10px;
-}
+      width: 70%;
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid #007bff;
+      border-radius: 5px;
+      background-color: #ffffff;
+      color: #333;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.3s ease-in-out;
+      margin-bottom: 10px;
+    }
 
-#folderDropdown:hover {
-    border-color: #0056b3;
-}
+    #folderDropdown:hover {
+      border-color: #0056b3;
+    }
 
-#folderDropdown:focus {
-    border-color: #004085;
-    box-shadow: 0 0 5px rgba(0, 91, 187, 0.5);
-}
+    #folderDropdown:focus {
+      border-color: #004085;
+      box-shadow: 0 0 5px rgba(0, 91, 187, 0.5);
+    }
 
-#folderDropdown option {
-    padding: 10px;
-    font-size: 16px;
-    background: #ffffff;
-    color: #333;
-    
-}
+    #folderDropdown option {
+      padding: 10px;
+      font-size: 16px;
+      background: #ffffff;
+      color: #333;
+
+    }
   </style>
 </head>
 
@@ -387,142 +410,159 @@ $files = array_diff(scandir($uploadDir), ['.', '..']);
             <div class="product-status-wrap drp-lst">
               <div class="container">
                 <h2 class="text-center mb-4">CSC Downloaded File</h2>
+
                 <div class="row">
                   <div class="col-md-6">
                     <div class="upload-section" id="dropArea">
                       <p>Drag & Drop Files Here</p>
                     </div>
+
                     <select id="folderDropdown" name="selected_folder" class="form-control">
-    <option value="">Select a Folder</option>
-    <?php foreach ($folders as $folder): ?>
-        <option value="<?= $folder['id']; ?>"><?= htmlspecialchars($folder['folder_name']); ?></option>
-    <?php endforeach; ?>
-</select>
+                      <option value="">Select a Folder</option>
+                      <?php foreach ($folders as $folder): ?>
+                        <option value="<?= htmlspecialchars($folder['id']); ?>">
+                          <?= htmlspecialchars($folder['name']); ?>
+                        </option>
+                      <?php endforeach; ?>
+                    </select>
+
                     <input type="file" id="fileInput" multiple hidden>
                     <button class="btn btn-primary" id="uploadBtn">Upload</button>
                     <div class="file-preview" id="filePreview"></div>
                     <p id="uploadStatus"></p>
                   </div>
+
                   <div class="col-md-6">
                     <h4>Uploaded Files</h4>
                     <div class="file-list">
                       <ul>
                         <?php foreach ($files as $file): ?>
                           <li>
-                            <span class="filename"><?= $file; ?></span>
+                            <span class="filename"> <?= htmlspecialchars($file); ?> </span>
                             <div class="action-buttons">
-                              <a href="img/uploads/<?= $file; ?>" download class="download-btn">
+                              <a href="img/uploads/<?= htmlspecialchars($file); ?>" download class="download-btn">
                                 <i class="fa fa-download"></i>
                               </a>
-                              <button class="delete-btn" data-file="<?= $file; ?>">❌</button>
+                              <button class="delete-btn" data-file="<?= htmlspecialchars($file); ?>">❌</button>
                             </div>
                           </li>
                         <?php endforeach; ?>
                       </ul>
                     </div>
-
-                    <script>
-                      $(document).ready(function () {
-                        let dropArea = $('#dropArea');
-                        let fileInput = $('#fileInput');
-                        let uploadBtn = $('#uploadBtn');
-                        let filePreview = $('#filePreview');
-                        let filesToUpload = [];
-
-                        // Trigger file input when clicking on drop area
-                        dropArea.click(function () {
-                          fileInput.click();
-                        });
-
-                        dropArea.on('dragover', function (e) {
-                          e.preventDefault();
-                          dropArea.css('background', '#eaf2ff');
-                        });
-
-                        dropArea.on('dragleave', function () {
-                          dropArea.css('background', "#f8f9fa");
-                        });
-
-                        dropArea.on('drop', function (e) {
-                          e.preventDefault();
-                          dropArea.css('background', "#f8f9fa");
-                          let files = e.originalEvent.dataTransfer.files;
-                          handleFiles(files);
-                        });
-
-                        fileInput.change(function () {
-                          handleFiles(this.files);
-                        });
-
-                        function handleFiles(files) {
-                          for (let i = 0; i < files.length; i++) {
-                            let file = files[i];
-
-                            // Avoid duplicate file selections
-                            if (filesToUpload.some(f => f.name === file.name)) continue;
-
-                            filesToUpload.push(file);
-                            let fileId = `file-${filesToUpload.length}`;
-
-                            filePreview.append(`
-                <div class="file-item" id="${fileId}">
-                    <span>${file.name}</span>
-                    <button class="cancel-btn" data-file="${file.name}" onclick="removeFile('${file.name}', '${fileId}')">x</button>
+                  </div>
                 </div>
-            `);
+
+                <script>
+                  $(document).ready(function() {
+                    let dropArea = $('#dropArea');
+                    let fileInput = $('#fileInput');
+                    let uploadBtn = $('#uploadBtn');
+                    let filePreview = $('#filePreview');
+                    let folderDropdown = $('#folderDropdown');
+                    let filesToUpload = [];
+
+                    dropArea.click(function() {
+                      fileInput.click();
+                    });
+
+                    dropArea.on('dragover', function(e) {
+                      e.preventDefault();
+                      dropArea.css('background', '#eaf2ff');
+                    });
+
+                    dropArea.on('dragleave', function() {
+                      dropArea.css('background', "#f8f9fa");
+                    });
+
+                    dropArea.on('drop', function(e) {
+                      e.preventDefault();
+                      dropArea.css('background', "#f8f9fa");
+                      let files = e.originalEvent.dataTransfer.files;
+                      handleFiles(files);
+                    });
+
+                    fileInput.change(function() {
+                      handleFiles(this.files);
+                    });
+
+                    function handleFiles(files) {
+                      for (let i = 0; i < files.length; i++) {
+                        let file = files[i];
+                        if (filesToUpload.some(f => f.name === file.name)) continue;
+                        filesToUpload.push(file);
+                        let fileId = `file-${filesToUpload.length}`;
+                        filePreview.append(`
+                        <div class="file-item" id="${fileId}">
+                          <span>${file.name}</span>
+                          <button class="cancel-btn" data-file="${file.name}" onclick="removeFile('${file.name}', '${fileId}')">x</button>
+                        </div>
+                      `);
+                      }
+                    }
+
+                    window.removeFile = function(fileName, fileId) {
+                      filesToUpload = filesToUpload.filter(file => file.name !== fileName);
+                      $(`#${fileId}`).remove();
+                    };
+
+                    uploadBtn.click(function() {
+                      if (filesToUpload.length === 0) {
+                        Swal.fire('No File Selected', 'Please select files before uploading.', 'warning');
+                        return;
+                      }
+
+                      let selectedFolder = folderDropdown.val();
+                      if (!selectedFolder) {
+                        Swal.fire('No Folder Selected', 'Please select a folder before uploading.', 'warning');
+                        return;
+                      }
+
+                      let formData = new FormData();
+                      filesToUpload.forEach(file => formData.append('files[]', file));
+                      formData.append('folder_id', selectedFolder);
+
+                      $.ajax({
+                        url: 'downloaded-file.php',
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function(response) {
+                          let result = JSON.parse(response);
+                          if (result.success) {
+                            Swal.fire('Upload Successful!', 'Your files have been uploaded.', 'success')
+                              .then(() => location.reload());
+                          } else {
+                            Swal.fire('Upload Failed', 'An error occurred while uploading.', 'error');
                           }
                         }
+                      });
+                    });
 
-                        window.removeFile = function (fileName, fileId) {
-                          filesToUpload = filesToUpload.filter(file => file.name !== fileName);
-                          $(`#${fileId}`).remove();
-                        };
-
-                        uploadBtn.click(function () {
-                          if (filesToUpload.length === 0) {
-                            Swal.fire('No File Selected', 'Please select files before uploading.', 'warning');
-                            return;
+                    $(document).on('click', '.delete-btn', function() {
+                      let fileName = $(this).data('file');
+                      if (confirm("Are you sure you want to delete this file?")) {
+                        $.post('downloaded-file.php', {
+                          delete: fileName
+                        }, function(response) {
+                          let result = JSON.parse(response);
+                          if (result.success) {
+                            location.reload();
+                          } else {
+                            alert("Delete failed.");
                           }
-
-                          let formData = new FormData();
-                          filesToUpload.forEach(file => formData.append('files[]', file));
-
-                          $.ajax({
-                            url: 'downloaded-file.php',
-                            type: 'POST',
-                            data: formData,
-                            contentType: false,
-                            processData: false,
-                            success: function (response) {
-                              let result = JSON.parse(response);
-                              if (result.success) {
-                                Swal.fire('Upload Successful!', 'Your files have been uploaded.', 'success')
-                                  .then(() => location.reload());
-                              } else {
-                                Swal.fire('Upload Failed', 'An error occurred while uploading.', 'error');
-                              }
-                            }
-                          });
                         });
-                      });
+                      }
+                    });
+                  });
+                </script>
 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                      $(document).on('click', '.delete-btn', function () {
-                        let fileName = $(this).data('file');
-                        if (confirm("Are you sure you want to delete this file?")) {
-                          $.post('downloaded-file.php', { delete: fileName }, function (response) {
-                            let result = JSON.parse(response);
-                            if (result.success) {
-                              location.reload();
-                            } else {
-                              alert("Delete failed.");
-                            }
-                          });
-                        }
-                      });
-                    </script>
-
-                    <?php include 'includes/footer.php'; ?>
-</body>
-
-</html>
+  <?php include 'includes/footer.php'; ?>

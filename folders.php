@@ -38,7 +38,7 @@ if (!$con) {
             }
 
             // Delete folder from "CSC Files" directory
-            $folderPath = __DIR__ . "/../DBoard/img/CSC Files/" . $folder_id;
+            $folderPath = __DIR__ . "img/uploads/" . $folder_id;
             if (is_dir($folderPath)) {
                 $files = glob("$folderPath/*"); // Get all files in folder
                 foreach ($files as $file) {
