@@ -171,10 +171,20 @@ if ($result) {
     }
 
 
+    .upload-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      /* Para nasa kanan ang button */
+      width: 100%;
+      position: relative;
+    }
+
     #uploadBtn {
-      position: absolute;
-      right: 20px;
-      top: 79%;
+      position: relative;
+      /* Hindi absolute para hindi umaalis sa flow */
+      left: 480px;
+      bottom: 65px;
     }
 
     .file-list ul {
@@ -217,6 +227,46 @@ if ($result) {
 
     .file-list ul li a:hover {
       text-decoration: underline;
+    }
+
+    #filePreview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    #filePreview .file-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      font-size: 14px;
+    }
+
+    #filePreview .file-item img {
+      max-width: 30px;
+      max-height: 30px;
+      margin-right: 8px;
+    }
+
+    #filePreview .file-item span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 150px;
+    }
+
+    #filePreview .file-item .remove-file {
+      background: none;
+      border: none;
+      color: #aaa;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 0;
+      margin-left: 8px;
     }
 
     .delete-btn {
@@ -453,7 +503,7 @@ if ($result) {
                 </div>
 
                 <script>
-                  $(document).ready(function() {
+                  $(document).ready(function () {
                     let dropArea = $('#dropArea');
                     let fileInput = $('#fileInput');
                     let uploadBtn = $('#uploadBtn');
@@ -461,27 +511,27 @@ if ($result) {
                     let folderDropdown = $('#folderDropdown');
                     let filesToUpload = [];
 
-                    dropArea.click(function() {
+                    dropArea.click(function () {
                       fileInput.click();
                     });
 
-                    dropArea.on('dragover', function(e) {
+                    dropArea.on('dragover', function (e) {
                       e.preventDefault();
                       dropArea.css('background', '#eaf2ff');
                     });
 
-                    dropArea.on('dragleave', function() {
+                    dropArea.on('dragleave', function () {
                       dropArea.css('background', "#f8f9fa");
                     });
 
-                    dropArea.on('drop', function(e) {
+                    dropArea.on('drop', function (e) {
                       e.preventDefault();
                       dropArea.css('background', "#f8f9fa");
                       let files = e.originalEvent.dataTransfer.files;
                       handleFiles(files);
                     });
 
-                    fileInput.change(function() {
+                    fileInput.change(function () {
                       handleFiles(this.files);
                     });
 
@@ -500,12 +550,12 @@ if ($result) {
                       }
                     }
 
-                    window.removeFile = function(fileName, fileId) {
+                    window.removeFile = function (fileName, fileId) {
                       filesToUpload = filesToUpload.filter(file => file.name !== fileName);
                       $(`#${fileId}`).remove();
                     };
 
-                    uploadBtn.click(function() {
+                    uploadBtn.click(function () {
                       if (filesToUpload.length === 0) {
                         Swal.fire('No File Selected', 'Please select files before uploading.', 'warning');
                         return;
@@ -527,7 +577,7 @@ if ($result) {
                         data: formData,
                         contentType: false,
                         processData: false,
-                        success: function(response) {
+                        success: function (response) {
                           let result = JSON.parse(response);
                           if (result.success) {
                             Swal.fire('Upload Successful!', 'Your files have been uploaded.', 'success')
@@ -539,12 +589,12 @@ if ($result) {
                       });
                     });
 
-                    $(document).on('click', '.delete-btn', function() {
+                    $(document).on('click', '.delete-btn', function () {
                       let fileName = $(this).data('file');
                       if (confirm("Are you sure you want to delete this file?")) {
                         $.post('downloaded-file.php', {
                           delete: fileName
-                        }, function(response) {
+                        }, function (response) {
                           let result = JSON.parse(response);
                           if (result.success) {
                             location.reload();
