@@ -302,6 +302,46 @@ if ($result) {
       margin-bottom: 20px;
     }
 
+    #filePreview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+#filePreview .file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: calc(100% / 2 - 10px); /* Ensures two items per row with spacing */
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+}
+
+#filePreview .file-item img {
+  max-width: 30px;
+  max-height: 30px;
+  margin-right: 8px;
+}
+
+#filePreview .file-item span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 50px); /* Adjust to leave space for the close button */
+}
+
+#filePreview .file-item .remove-file {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 16px;
+}
+
     #folderDropdown {
       width: 70%;
       padding: 10px;
@@ -332,6 +372,8 @@ if ($result) {
       color: #333;
 
     }
+
+    
   </style>
 </head>
 

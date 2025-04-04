@@ -246,24 +246,43 @@ $file_result = mysqli_query($con, $file_query);
                             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                             <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
                             <div class="container">
-
                                 <div class="file-list">
                                     <?php
                                     if (mysqli_num_rows($file_result) > 0) {
                                         while ($file = mysqli_fetch_assoc($file_result)) {
-                                            echo '<div class="file-item">
-                                    <i class="fa fa-file"></i>
-                                    <a href="img/uploads/' . htmlspecialchars($file['filename']) . '" target="_blank">' . htmlspecialchars($file['filename']) . '</a>
-                                </div>';
+                                            $filePath = "img/uploads/" . htmlspecialchars($file['filename']);
+                                            echo '<div class="file-item" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div>
+                    <i class="fa fa-file"></i>
+                    <a href="' . $filePath . '" target="_blank">' . htmlspecialchars($file['filename']) . '</a>
+                </div>
+                <div>
+                    <!-- Preview -->
+                    <a href="view-files.php?id=' . $file['id'] . '" target="_blank" title="Preview">
+                        <i class="fa fa-eye" style="color:green ; margin-right: 10px;"></i>
+                    </a>
+
+                    <!-- Download -->
+                    <a href="' . $filePath . '" target="_blank" title="Download">
+                        <i class="fa fa-download" style="color: #007bff; margin-right: 10px;"></i>
+                    </a>
+
+                    <!-- Delete -->
+                    <a href="delete_files.php?id=' . $file['id'] . '" onclick="return confirm(\'Are you sure you want to delete this file?\')" title="Delete">
+                        <i class="fa fa-trash" style="color: red;"></i>
+                    </a>
+                </div>
+            </div>';
                                         }
                                     } else {
-                                        echo "<p>No files found.</p>";
+                                        echo "<p class='no-files'><i class='fa fa-exclamation-circle'></i> No files found.</p>";
                                     }
                                     ?>
                                 </div>
+
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
