@@ -247,50 +247,50 @@ class PDF_MC_Table extends FPDF
             $stmt->execute();
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();
-        
+
             if ($row) {
                 $is_mhrmo = true; //is the employee an MHRMO?
             }
         }
         $today = date('F j, Y');
-       // Initialize variables
-$mayor_name = "";
-$admin_officer_name = "";
-$mhrmo_name = "";
+        // Initialize variables
+        $mayor_name = "";
+        $admin_officer_name = "";
+        $mhrmo_name = "";
 
-// Fetch all HR roles
-$gstmt = $con->prepare("SELECT e.firstname, e.middlename, e.lastname, e.name_extension, h.role 
+        // Fetch all HR roles
+        $gstmt = $con->prepare("SELECT e.firstname, e.middlename, e.lastname, e.name_extension, h.role 
                         FROM employee e 
                         JOIN hr_staffs h ON e.employee_no = h.employee_no 
                         WHERE h.role IN ('Municipal Mayor', 'Admin Officer IV', 'MHRMO')");
-$gstmt->execute();
-$res = $gstmt->get_result();
+        $gstmt->execute();
+        $res = $gstmt->get_result();
 
-while ($row = $res->fetch_assoc()) {
-    $middlename_initial = !empty($row['middlename']) ? substr($row['middlename'], 0, 1) . "." : "";
+        while ($row = $res->fetch_assoc()) {
+            $middlename_initial = !empty($row['middlename']) ? substr($row['middlename'], 0, 1) . "." : "";
 
-    $full_name = trim($row['firstname'] . " " . $middlename_initial . " " . $row['lastname'] . " " . $row['name_extension']);
+            $full_name = trim($row['firstname'] . " " . $middlename_initial . " " . $row['lastname'] . " " . $row['name_extension']);
 
-    switch ($row['role']) {
-        case 'Municipal Mayor':
-            $mayor_name = $full_name;
-            break;
-        case 'Admin Officer IV':
-            $admin_officer_name = $full_name;
-            break;
-        case 'MHRMO':
-            $mhrmo_name = $full_name;
-            break;
-    }
-}
+            switch ($row['role']) {
+                case 'Municipal Mayor':
+                    $mayor_name = $full_name;
+                    break;
+                case 'Admin Officer IV':
+                    $admin_officer_name = $full_name;
+                    break;
+                case 'MHRMO':
+                    $mhrmo_name = $full_name;
+                    break;
+            }
+        }
 
-if ($is_mhrmo) {
-    $prepared = $admin_officer_name;
-    $preparedrole = "Admin Officer IV";
-} else {
-    $prepared = $mhrmo_name;
-    $preparedrole = "MHRMO";
-}
+        if ($is_mhrmo) {
+            $prepared = $admin_officer_name;
+            $preparedrole = "Admin Officer IV";
+        } else {
+            $prepared = $mhrmo_name;
+            $preparedrole = "MHRMO";
+        }
 
         $blockHeight = 50;
 
@@ -318,7 +318,6 @@ if ($is_mhrmo) {
         $this->UnderlineText($this->GetX(), $this->GetY(), $today);
         $this->Ln(5); // Add spacing
         $this->Cell(0, 5, "Date ", 0, 'J');
-
     }
 }
 
