@@ -85,9 +85,14 @@ if (!$con) {
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="css/responsive.css" />
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-    <link rel="stylesheet" href="//cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>
+        .product-status-wrap {
+            background-color: white;
+            min-height: 100vh;
+        }
+
         .folder-section {
             margin-top: 30px;
         }
@@ -95,13 +100,7 @@ if (!$con) {
         .folders-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            /* Ensures 4 folders per row */
             gap: 30px;
-            padding: 25px;
-            background-color: #ffffff;
-            border: 1px solid #dee2e6;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .folder {
@@ -116,6 +115,7 @@ if (!$con) {
             text-align: center;
             cursor: pointer;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            margin-top: 10px;
         }
 
         .folder:hover {
