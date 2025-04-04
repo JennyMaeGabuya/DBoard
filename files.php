@@ -57,53 +57,80 @@ $file_result = mysqli_query($con, $file_query);
     <link rel="stylesheet" href="//cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        .file-list {
-            padding: 50px;
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            min-height: 120px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            margin-top: 50px;
+        @media screen and (max-width: 768px) {
+            .col-lg-12 {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .pst-container {
+                font-size: 13px;
+                padding-top: 5px;
+                text-align: center;
+            }
         }
 
-        .file-item {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            background: #f8f9fa;
-            margin-bottom: 10px;
+        .container {
+            width: 100%;
+            margin: 30px auto;
+            padding
+        }
+
+        .file-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            transition: all 0.3s ease;
-            font-size: 16px;
+            overflow: hidden;
         }
 
-        .file-item:hover {
-            background-color: #e9ecef;
-            transform: scale(1.02);
+        .file-table th,
+        .file-table td {
+            border-bottom: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
         }
 
-        .file-item i {
-            font-size: 22px;
-            margin-right: 12px;
-            color: #007bff;
+        .file-table th {
+
+            font-weight: bold;
         }
 
-        .no-files {
-            text-align: center;
-            font-size: 18px;
-            color: #888;
-            padding: 20px;
+        .file-table tr:hover {
+            background: rgb(196, 215, 253);
         }
 
-        .no-files i {
-            font-size: 30px;
-            display: block;
-            margin-bottom: 10px;
-            color: #aaa;
+        .file-actions button {
+            left: 20px;
+            /* Add space between buttons */
+
         }
 
-        .product-status-wrap {
-            min-height: 500px;
+        .preview-btn,
+        .download-btn,
+        .delete-btn {
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+
+        }
+
+        .preview-btn {
+            background: #c49a6c;
+            color: white;
+        }
+
+        .download-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .delete-btn {
+            background: red;
+            color: white;
         }
     </style>
 </head>
@@ -157,27 +184,7 @@ $file_result = mysqli_query($con, $file_query);
                                 </div>
                             </div>
 
-                            <style>
-                                .pst-container {
-                                    font-size: 14px;
-                                    color: black;
-                                    text-align: right;
-                                    white-space: nowrap;
-                                }
 
-                                @media screen and (max-width: 768px) {
-                                    .col-lg-12 {
-                                        flex-direction: column;
-                                        text-align: center;
-                                    }
-
-                                    .pst-container {
-                                        font-size: 13px;
-                                        padding-top: 5px;
-                                        text-align: center;
-                                    }
-                                }
-                            </style>
 
                             <script>
                                 function updatePSTDateTime() {
@@ -247,51 +254,56 @@ $file_result = mysqli_query($con, $file_query);
                             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                             <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
                             <div class="container">
-                                <div class="file-list">
-                                    <?php
-                                    if (mysqli_num_rows($file_result) > 0) {
-                                        while ($file = mysqli_fetch_assoc($file_result)) {
-                                            $filePath = "img/uploads/" . htmlspecialchars($file['filename']);
-                                            echo '<div class="file-item" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <div>
-                    <i class="fa fa-file"></i>
-                    <a href="' . $filePath . '" target="_blank">' . htmlspecialchars($file['filename']) . '</a>
-                </div>
-                <div>
-                    <!-- Preview -->
+
+                                <table class="file-table">
+                                    <thead>
+                                        <tr>
+                                            <th>File Name</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        if (mysqli_num_rows($file_result) > 0) {
+                                            while ($file = mysqli_fetch_assoc($file_result)) {
+                                                $filePath = "img/uploads/" . htmlspecialchars($file['filename']);
+                                                echo '<tr>
+                    <td>
+                        <i class="fa fa-file-o" style="color: red; margin-right: 10px;"></i>
+                        <a href="' . $filePath . '" target="_blank" style="color: #007bff;">' . htmlspecialchars($file['filename']) . '</a>
+                    </td>
+                <td class="file-actions">
                     <a href="view-files.php?id=' . $file['id'] . '" target="_blank" title="Preview">
-                        <i class="fa fa-eye" style="color:green ; margin-right: 10px;"></i>
+                        <button class="preview-btn"><i class="fa fa-search"></i> Preview</button>
                     </a>
-
-                        <!-- Download (Updated to use download.php) -->
-                        <a href="actions/download.php?file=' . urlencode($file['filename']) . '" title="Download">
-                            <i class="fa fa-download" style="color: #007bff; margin-right: 10px;"></i>
-                        </a>
-
-                        <!-- Delete (Updated to use delete_files.php) -->
-                        <a href="actions/delete-files.php?id=' . $file['id'] . '" onclick="return confirm(\'Are you sure you want to delete this file?\')" title="Delete">
-                            <i class="fa fa-trash" style="color: red;"></i>
-                        </a>
-                    </div>
-                </div>';
+                    <a href="actions/download.php?file=' . urlencode($file['filename']) . '" title="Download">
+                        <button class="download-btn"><i class="fa fa-download"></i> Download</button>
+                    </a>
+                    <a href="actions/delete-files.php?id=' . $file['id'] . '" onclick="return confirm(\'Are you sure you want to delete this file?\')" title="Delete">
+                        <button class="delete-btn"><i class="fa fa-trash"></i> </button>
+                    </a>
+                </td>
+            </tr>';
+                                            }
+                                        } else {
+                                            echo '<tr><td colspan="2" class="no-files">No files found.</td></tr>';
                                         }
-                                    } else {
-                                        echo "<p class='no-files'><i class='fa fa-exclamation-circle'></i> No files found.</p>";
-                                    }
-                                    ?>
-                                </div>
-
+                                        ?>
+                                    </tbody>
+                                </table>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
+    </div>
     <script>
-  setTimeout(function(){
-    location.reload();
-  }, 300000); 
-</script>
+        setTimeout(function () {
+            location.reload();
+        }, 300000); 
+    </script>
     <?php include 'includes/footer.php'; ?>
