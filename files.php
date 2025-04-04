@@ -28,6 +28,7 @@ $file_query = "SELECT * FROM files WHERE folder_id = $folder_id";
 $file_result = mysqli_query($con, $file_query);
 ?>
 
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
@@ -262,17 +263,17 @@ $file_result = mysqli_query($con, $file_query);
                         <i class="fa fa-eye" style="color:green ; margin-right: 10px;"></i>
                     </a>
 
-                    <!-- Download -->
-                    <a href="' . $filePath . '" target="_blank" title="Download">
-                        <i class="fa fa-download" style="color: #007bff; margin-right: 10px;"></i>
-                    </a>
+                        <!-- Download (Updated to use download.php) -->
+                        <a href="actions/download.php?file=' . urlencode($file['filename']) . '" title="Download">
+                            <i class="fa fa-download" style="color: #007bff; margin-right: 10px;"></i>
+                        </a>
 
-                    <!-- Delete -->
-                    <a href="delete_files.php?id=' . $file['id'] . '" onclick="return confirm(\'Are you sure you want to delete this file?\')" title="Delete">
-                        <i class="fa fa-trash" style="color: red;"></i>
-                    </a>
-                </div>
-            </div>';
+                        <!-- Delete (Updated to use delete_files.php) -->
+                        <a href="actions/delete-files.php?id=' . $file['id'] . '" onclick="return confirm(\'Are you sure you want to delete this file?\')" title="Delete">
+                            <i class="fa fa-trash" style="color: red;"></i>
+                        </a>
+                    </div>
+                </div>';
                                         }
                                     } else {
                                         echo "<p class='no-files'><i class='fa fa-exclamation-circle'></i> No files found.</p>";
