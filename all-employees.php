@@ -883,6 +883,10 @@ include 'emailnotif.php';
             <?php unset($_SESSION['display']);
             unset($_SESSION['success']); ?>
         <?php endif; ?>
-
+        <script>
+  setTimeout(function(){
+    location.reload();
+  }, 300000); 
+</script>
         <!--Footer-part-->
         <?php include 'includes/footer.php'; ?>

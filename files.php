@@ -288,5 +288,9 @@ $file_result = mysqli_query($con, $file_query);
             </div>
         </div>
     </div>
-
+    <script>
+  setTimeout(function(){
+    location.reload();
+  }, 300000); 
+</script>
     <?php include 'includes/footer.php'; ?>

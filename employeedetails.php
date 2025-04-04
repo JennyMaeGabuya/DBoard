@@ -502,6 +502,10 @@ WHERE e.employee_no = ?";
             </div>
         </div>
     </div>
-
+    <script>
+  setTimeout(function(){
+    location.reload();
+  }, 300000); 
+</script>
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>

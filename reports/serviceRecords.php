@@ -249,7 +249,7 @@ class PDF_MC_Table extends FPDF
             $row = $result->fetch_assoc();
         
             if ($row) {
-                $is_mhrmo = true; // ✅ Employee is MHRMO
+                $is_mhrmo = true; //is the employee an MHRMO?
             }
         }
         $today = date('F j, Y');
@@ -284,7 +284,6 @@ while ($row = $res->fetch_assoc()) {
     }
 }
 
-// ✅ Final "Prepared by" logic
 if ($is_mhrmo) {
     $prepared = $admin_officer_name;
     $preparedrole = "Admin Officer IV";
