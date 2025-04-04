@@ -56,37 +56,37 @@ class PDF_MC_Table extends FPDF
         }
         $h = 5 * $nb;
         $this->CheckPageBreak($h);
-        
+
         $x = $this->GetX();
         $y = $this->GetY();
-        
+
         for ($i = 0; $i < count($data); $i++) {
             $w = $this->widths[$i];
             $a = isset($this->aligns[$i]) ? $this->aligns[$i] : 'C';
-    
+
             // Draw cell borders but exclude leftmost and rightmost borders of the table
-            if ($i > 0) { 
-                $this->Line($x, $y, $x, $y + $h); 
+            if ($i > 0) {
+                $this->Line($x, $y, $x, $y + $h);
             }
-            if ($i < count($data) - 1) { 
-                $this->Line($x + $w, $y, $x + $w, $y + $h); 
+            if ($i < count($data) - 1) {
+                $this->Line($x + $w, $y, $x + $w, $y + $h);
             }
-    
+
             // Draw top and bottom borders for all columns
             $this->Line($x, $y, $x + $w, $y); // Top border
             $this->Line($x, $y + $h, $x + $w, $y + $h); // Bottom border
-            
+
             // Print cell content
             $this->MultiCell($w, 5, $data[$i], 0, $a);
-            
+
             // Move to the next column
             $x += $w;
             $this->SetXY($x, $y);
         }
-        
+
         $this->Ln($h);
     }
-    
+
 
     function CheckPageBreak($h)
     {
@@ -98,11 +98,13 @@ class PDF_MC_Table extends FPDF
     function NbLines($w, $txt)
     {
         $cw = &$this->CurrentFont['cw'];
-        if ($w == 0) $w = $this->w - $this->rMargin - $this->x;
+        if ($w == 0)
+            $w = $this->w - $this->rMargin - $this->x;
         $wmax = ($w - 2 * $this->cMargin) * 1000 / $this->FontSize;
         $s = str_replace("\r", '', $txt);
         $nb = strlen($s);
-        if ($nb > 0 && $s[$nb - 1] == "\n") $nb--;
+        if ($nb > 0 && $s[$nb - 1] == "\n")
+            $nb--;
         $sep = -1;
         $i = 0;
         $j = 0;
@@ -118,11 +120,13 @@ class PDF_MC_Table extends FPDF
                 $nl++;
                 continue;
             }
-            if ($c == ' ') $sep = $i;
+            if ($c == ' ')
+                $sep = $i;
             $l += $cw[$c];
             if ($l > $wmax) {
                 if ($sep == -1) {
-                    if ($i == $j) $i++;
+                    if ($i == $j)
+                        $i++;
                 } else {
                     $i = $sep + 1;
                 }
@@ -143,7 +147,7 @@ class PDF_MC_Table extends FPDF
         $this->Write(5, $text);
         $this->Line($x, $y + 5, $x + $this->GetStringWidth($text), $y + 5);
     }
-    
+
     function Header()
     {
         $this->Image('../img/mk-logo.png', 32, 17, 26);
@@ -168,7 +172,7 @@ class PDF_MC_Table extends FPDF
         $midd = !empty($employee['middlename']) ? substr($employee['middlename'], 0, 1) . "." : ""; //get only middle initial
 
         $this->SetFont('Times', '', 11);
-        
+
         $name = strtoupper($employee['lastname']) . ', ' . strtoupper($employee['firstname']) . ' ' . strtoupper($midd) . ' ' . strtoupper($employee['name_extension']);
 
         $this->Cell(15, 7, 'NAME:  ', 0);
@@ -192,12 +196,12 @@ class PDF_MC_Table extends FPDF
 
         // Table Header
         $this->SetFont('Times', '', 9);
-        $this->Cell(34, 7, 'SERVICE', 'TRB',  0, 'C');
+        $this->Cell(34, 7, 'SERVICE', 'TRB', 0, 'C');
         $this->Cell(59, 7, 'RECORD OF APPOINTMENT', 1, 0, 'C');
         $this->Cell(57, 7, 'OFFICE/ENTITY/DIVISION', 1, 0, 'C');
-        $this->Cell(37, 7, 'SEPARATION', 'TBL', 0,  'C');
+        $this->Cell(37, 7, 'SEPARATION', 'TBL', 0, 'C');
         $this->Ln(7);
-        $this->Cell(34, 7, 'Inclusive Date', 'TRB',  0, 'C');
+        $this->Cell(34, 7, 'Inclusive Date', 'TRB', 0, 'C');
         $this->Cell(21, 7, '', 1, 0, 'C');
         $this->Cell(18, 7, '', 1, 0, 'C');
         $this->Cell(20, 7, '', 1, 0, 'C');
@@ -205,7 +209,7 @@ class PDF_MC_Table extends FPDF
         $this->Cell(20, 7, '', 1, 0, 'C');
         $this->Cell(17, 7, '', 1, 0, 'C');
         $this->Cell(17, 7, '', 1, 0, 'C');
-        $this->Cell(20, 7, '', 'TBL',  0, 'C');
+        $this->Cell(20, 7, '', 'TBL', 0, 'C');
         $this->Ln(7);
         $this->SetWidths([17, 17, 21, 18, 20, 20, 20, 17, 17, 20]);
         $this->Row(['From', 'To', 'Designation', 'Status', 'Station', 'Salary', 'Branch', 'Abs. W/o Pay', 'Date', 'Cause']);
@@ -234,57 +238,87 @@ class PDF_MC_Table extends FPDF
         $this->MultiCell(0, 5, "Issued in compliane with Executive Order No. 54 dated August 10, 1954 and in accordance with Circular No.58 dated August 10, 1954 of the System.", 0, 'J');
         $this->Ln(7);
 
-      
 
-        $prepstmt = $con->prepare("SELECT e.lastname, e.middlename, e.firstname, e.name_extension, hr.role FROM hr_staffs hr join employee e on hr.employee_no= e.employee_no WHERE role IN ('Municipal Mayor', 'Admin Officer IV')");
-$prepstmt->execute();
-$result = $prepstmt->get_result();
-
-// Get today's date
-$today = date('F j, Y');
-
-// Initialize variables
+        $is_mhrmo = false;
+        if (!empty($employee['employee_no'])) {
+            $emp = $employee['employee_no'];
+            $stmt = $con->prepare("SELECT role FROM hr_staffs WHERE role = 'MHRMO' AND employee_no = ?");
+            $stmt->bind_param("s", $emp);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+        
+            if ($row) {
+                $is_mhrmo = true; // ✅ Employee is MHRMO
+            }
+        }
+        $today = date('F j, Y');
+       // Initialize variables
 $mayor_name = "";
 $admin_officer_name = "";
+$mhrmo_name = "";
 
+// Fetch all HR roles
+$gstmt = $con->prepare("SELECT e.firstname, e.middlename, e.lastname, e.name_extension, h.role 
+                        FROM employee e 
+                        JOIN hr_staffs h ON e.employee_no = h.employee_no 
+                        WHERE h.role IN ('Municipal Mayor', 'Admin Officer IV', 'MHRMO')");
+$gstmt->execute();
+$res = $gstmt->get_result();
 
-while ($row = $result->fetch_assoc()) {
-    $middlename_initial = !empty($row['middlename']) ? substr($row['middlename'], 0, 1) . "." : ""; //get only middle initial
+while ($row = $res->fetch_assoc()) {
+    $middlename_initial = !empty($row['middlename']) ? substr($row['middlename'], 0, 1) . "." : "";
 
-    if ($row['role'] == 'Municipal Mayor') {
-        $mayor_name = $row['firstname'] . " " . $middlename_initial . " " . $row['lastname'] . " " . $row['name_extension'];
-    } elseif ($row['role'] == 'Admin Officer IV') {
-        $admin_officer_name = $row['firstname'] . " " . $middlename_initial . " " . $row['lastname'] . " " . $row['name_extension'];
+    $full_name = trim($row['firstname'] . " " . $middlename_initial . " " . $row['lastname'] . " " . $row['name_extension']);
+
+    switch ($row['role']) {
+        case 'Municipal Mayor':
+            $mayor_name = $full_name;
+            break;
+        case 'Admin Officer IV':
+            $admin_officer_name = $full_name;
+            break;
+        case 'MHRMO':
+            $mhrmo_name = $full_name;
+            break;
     }
 }
 
+// ✅ Final "Prepared by" logic
+if ($is_mhrmo) {
+    $prepared = $admin_officer_name;
+    $preparedrole = "Admin Officer IV";
+} else {
+    $prepared = $mhrmo_name;
+    $preparedrole = "MHRMO";
+}
 
-$blockHeight = 50;
+        $blockHeight = 50;
 
-// Ensure the block remains together
-$this->CheckPageBreak($blockHeight);
+        // Ensure the block remains together
+        $this->CheckPageBreak($blockHeight);
 
-$this->Cell(0, 5, "Prepared by: ", 0, 'J');
-$this->Ln(10);
-$this->SetFont('Times', 'B', 11);
-$this->Cell(0, 5, strtoupper($admin_officer_name), 0, 1, 'L');
-$this->SetFont('Times', '', 11);
-$this->Cell(0, 5, "Admin Officer IV", 0, 1, 'L');
+        $this->Cell(0, 5, "Prepared by: ", 0, 'J');
+        $this->Ln(10);
+        $this->SetFont('Times', 'B', 11);
+        $this->Cell(0, 5, strtoupper($prepared), 0, 1, 'L');
+        $this->SetFont('Times', '', 11);
+        $this->Cell(0, 5, $preparedrole, 0, 1, 'L');
 
-$this->Ln(5); // Add spacing
-$this->Cell(0, 5, "Certified correct: ", 0, 'J');
-$this->SetFont('Times', 'B', 11);
-$this->Ln(10); // Add spacing
-$this->Cell(0, 5, "Hon. ". strtoupper($mayor_name), 0, 1, 'L');
-$this->SetFont('Times', '', 11);
-$this->Cell(0, 5, "Municipal Mayor", 0, 1, 'L');
+        $this->Ln(5); // Add spacing
+        $this->Cell(0, 5, "Certified correct: ", 0, 'J');
+        $this->SetFont('Times', 'B', 11);
+        $this->Ln(10); // Add spacing
+        $this->Cell(0, 5, "Hon. " . strtoupper($mayor_name), 0, 1, 'L');
+        $this->SetFont('Times', '', 11);
+        $this->Cell(0, 5, "Municipal Mayor", 0, 1, 'L');
 
-$this->Ln(5); // Add spacing
-$this->UnderlineText($this->GetX(), $this->GetY(), "Not valid without seal");
-$this->Ln(5); // Move to next line
-$this->UnderlineText($this->GetX(), $this->GetY(), $today);
-$this->Ln(5); // Add spacing
-$this->Cell(0, 5, "Date ", 0, 'J');
+        $this->Ln(5); // Add spacing
+        $this->UnderlineText($this->GetX(), $this->GetY(), "Not valid without seal");
+        $this->Ln(5); // Move to next line
+        $this->UnderlineText($this->GetX(), $this->GetY(), $today);
+        $this->Ln(5); // Add spacing
+        $this->Cell(0, 5, "Date ", 0, 'J');
 
     }
 }
