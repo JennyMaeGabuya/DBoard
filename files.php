@@ -54,57 +54,45 @@ $file_result = mysqli_query($con, $file_query);
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="css/responsive.css" />
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-    <link rel="stylesheet" href="//cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
+
     <style>
-        @media screen and (max-width: 768px) {
-            .col-lg-12 {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .pst-container {
-                font-size: 13px;
-                padding-top: 5px;
-                text-align: center;
-            }
-        }
-
-        .container {
-            width: 100%;
-            margin: 30px auto;
-            padding
-        }
-
         .file-table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
-            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
         }
 
         .file-table th,
         .file-table td {
-            border-bottom: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
+            padding: 10px;
+            vertical-align: middle;
         }
 
-        .file-table th {
-
-            font-weight: bold;
+        .filename-cell {
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .file-table tr:hover {
-            background: rgb(196, 215, 253);
+        .file-link {
+            display: inline-block;
+            max-width: 100%;
+            vertical-align: middle;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .file-actions {
+            text-align: right;
+            white-space: nowrap;
         }
 
         .file-actions button {
-            left: 20px;
-            /* Add space between buttons */
-
+            margin-left: 5px;
         }
 
         .preview-btn,
@@ -115,7 +103,6 @@ $file_result = mysqli_query($con, $file_query);
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
-
         }
 
         .preview-btn {
@@ -184,8 +171,6 @@ $file_result = mysqli_query($con, $file_query);
                                 </div>
                             </div>
 
-
-
                             <script>
                                 function updatePSTDateTime() {
                                     const optionsDate = {
@@ -246,64 +231,107 @@ $file_result = mysqli_query($con, $file_query);
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="product-status-wrap drp-lst">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <h3><?php echo htmlspecialchars($folder['name']); ?> Files</h3>
+                            <h3 style="margin-bottom: 20px;"><?php echo htmlspecialchars($folder['name']); ?> Files</h3>
                         </div>
 
                         <div class="widget-box">
-                            <!-- JavaScript for live search -->
-                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                            <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
-                            <div class="container">
+                            <table class="file-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 80%; text-align: center;">File Name</th>
+                                        <th style="width: 20%; text-align: center;">Actions</th>
+                                    </tr>
+                                </thead>
 
-                                <table class="file-table">
-                                    <thead>
-                                        <tr>
-                                            <th>File Name</th>
+                                <tbody>
+                                    <?php
+                                    if (mysqli_num_rows($file_result) > 0) {
+                                        while ($file = mysqli_fetch_assoc($file_result)) {
+                                            $filePath = "img/uploads/" . htmlspecialchars($file['filename']);
+                                            $fileName = htmlspecialchars($file['filename']);
+                                            $fileId = $file['id'];
 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        if (mysqli_num_rows($file_result) > 0) {
-                                            while ($file = mysqli_fetch_assoc($file_result)) {
-                                                $filePath = "img/uploads/" . htmlspecialchars($file['filename']);
-                                                echo '<tr>
-                    <td>
-                        <i class="fa fa-file-o" style="color: red; margin-right: 10px;"></i>
-                        <a href="' . $filePath . '" target="_blank" style="color: #007bff;">' . htmlspecialchars($file['filename']) . '</a>
-                    </td>
-                <td class="file-actions">
-                    <a href="view-files.php?id=' . $file['id'] . '" target="_blank" title="Preview">
-                        <button class="preview-btn"><i class="fa fa-search"></i> Preview</button>
-                    </a>
-                    <a href="actions/download.php?file=' . urlencode($file['filename']) . '" title="Download">
-                        <button class="download-btn"><i class="fa fa-download"></i> Download</button>
-                    </a>
-                    <a href="actions/delete-files.php?id=' . $file['id'] . '" onclick="return confirm(\'Are you sure you want to delete this file?\')" title="Delete">
-                        <button class="delete-btn"><i class="fa fa-trash"></i> </button>
-                    </a>
-                </td>
-            </tr>';
-                                            }
-                                        } else {
-                                            echo '<tr><td colspan="2" class="no-files">No files found.</td></tr>';
+                                            // Truncate filename if too long (optional PHP-side fallback)
+                                            $displayName = strlen($fileName) > 50 ? substr($fileName, 0, 47) . '...' : $fileName;
+
+                                            echo '<tr>
+                                            <td class="filename-cell">
+                                                <i class="fa fa-file-o" style="margin-right: 10px;"></i>
+                                                <a href="' . $filePath . '" target="_blank" class="file-link" title="' . $fileName . '">' . $displayName . '</a>
+                                            </td>
+                                            <td class="file-actions text-right">
+                                                <a href="view-files.php?id=' . $fileId . '" target="_blank" title="Preview">
+                                                    <button class="preview-btn"><i class="fa fa-search"></i> Preview</button>
+                                                </a>
+                                                <a href="actions/download.php?file=' . urlencode($file['filename']) . '" title="Download">
+                                                    <button class="download-btn"><i class="fa fa-download"></i> Download</button>
+                                                </a>
+                                                <a href="#" class="delete-btn-swal" data-id="' . $fileId . '" title="Delete">
+                                                    <button class="delete-btn"><i class="fa fa-trash"></i></button>
+                                                </a>
+                                            </td>
+                                        </tr>';
                                         }
-                                        ?>
-                                    </tbody>
-                                </table>
-                            </div>
+                                    } else {
+                                        echo '<tr><td colspan="2" class="no-files">No files found.</td></tr>';
+                                    }
+                                    ?>
+                                </tbody>
 
+                            </table>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
-    </div>
+
     <script>
-        setTimeout(function () {
-            location.reload();
-        }, 300000); 
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.delete-btn-swal').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const fileId = this.getAttribute('data-id');
+                    const row = this.closest('tr');
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'This action will permanently delete the file.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Perform AJAX request to delete
+                            fetch(`actions/delete-files.php?id=${fileId}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        Swal.fire('Deleted!', data.message || 'File has been deleted.', 'success');
+                                        // Optional: remove the row without reloading
+                                        row.remove();
+                                    } else {
+                                        Swal.fire('Error!', data.message || 'Failed to delete the file.', 'error');
+                                    }
+                                })
+                                .catch(error => {
+                                    Swal.fire('Error!', 'Something went wrong.', 'error');
+                                });
+                        }
+                    });
+                });
+            });
+
+            // Optional: auto-reload every 5 minutes
+            setTimeout(function() {
+                location.reload();
+            }, 300000);
+        });
     </script>
+
     <?php include 'includes/footer.php'; ?>
