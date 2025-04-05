@@ -86,6 +86,8 @@ if (!$con) {
     <link rel="stylesheet" href="css/responsive.css" />
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
 
     <style>
         .product-status-wrap {
@@ -110,7 +112,7 @@ if (!$con) {
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px 10px;
+            padding: 15px 10px;
             transition: all 0.3s ease;
             text-align: center;
             cursor: pointer;
@@ -195,6 +197,24 @@ if (!$con) {
             width: 20px;
             height: 20px;
             cursor: pointer;
+        }
+
+        .swal-title-sm {
+            font-size: 20px !important;
+        }
+
+        .swal-input-sm {
+            font-size: 14px !important;
+            padding: 6px 8px !important;
+        }
+
+        .swal-btn-sm {
+            font-size: 15px !important;
+            padding: 6px 12px !important;
+        }
+
+        .swal-popup-sm {
+            font-size: 15px !important;
         }
     </style>
 
@@ -381,131 +401,188 @@ if (!$con) {
                             function openFolder(folderId) {
                                 window.location.href = "files.php?folder_id=" + folderId;
                             }
+
+                            $(document).ready(function() {
+                                $('#addFolderBtn').click(function() {
+                                    Swal.fire({
+                                        title: 'Add New Folder',
+                                        input: 'text',
+                                        inputLabel: 'Folder name',
+                                        inputPlaceholder: 'Enter folder name',
+                                        showCancelButton: true,
+                                        confirmButtonText: 'Create',
+                                        cancelButtonText: 'Cancel',
+                                        inputValidator: (value) => {
+                                            if (!value.trim()) {
+                                                return 'Folder name cannot be empty';
+                                            }
+                                        },
+                                        customClass: {
+                                            title: 'swal-title-sm',
+                                            input: 'swal-input-sm',
+                                            confirmButton: 'swal-btn-sm',
+                                            cancelButton: 'swal-btn-sm'
+                                        }
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            let folderName = result.value.trim();
+                                            $.ajax({
+                                                url: 'add-folder.php',
+                                                type: 'POST',
+                                                data: {
+                                                    folder_name: folderName
+                                                },
+                                                dataType: 'json',
+                                                success: function(response) {
+                                                    if (response.success) {
+                                                        Swal.fire({
+                                                            icon: 'success',
+                                                            title: 'Folder Created',
+                                                            text: `"${folderName}" has been added successfully.`,
+                                                            timer: 2000,
+                                                            showConfirmButton: false,
+                                                            customClass: {
+                                                                title: 'swal-title-sm',
+                                                                popup: 'swal-popup-sm'
+                                                            }
+                                                        }).then(() => {
+                                                            location.reload();
+                                                        });
+                                                    } else {
+                                                        Swal.fire({
+                                                            icon: 'error',
+                                                            title: 'Error',
+                                                            text: response.error || 'Failed to create folder.',
+                                                            customClass: {
+                                                                title: 'swal-title-sm',
+                                                                popup: 'swal-popup-sm'
+                                                            }
+                                                        });
+                                                    }
+                                                },
+                                                error: function(xhr, status, error) {
+                                                    Swal.fire({
+                                                        icon: 'error',
+                                                        title: 'AJAX Error',
+                                                        text: error,
+                                                        customClass: {
+                                                            title: 'swal-title-sm',
+                                                            popup: 'swal-popup-sm'
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+                                });
+
+                                // Auto-save kapag na-blur ang input field
+                                $(document).on('blur', '.folder input', function() {
+                                    let newName = $(this).val().trim();
+                                    if (!newName) {
+                                        return;
+                                    }
+
+                                    $.ajax({
+                                        url: 'update_folder.php',
+                                        type: 'POST',
+                                        data: {
+                                            folder_name: newName
+                                        },
+                                        success: function(response) {
+                                            console.log("Folder updated successfully");
+                                        }
+                                    });
+
+                                    $(this).prop('readonly', true);
+                                });
+                            });
+
+                            $(document).ready(function() {
+                                let selectMode = false;
+
+                                $('#selectBtn').click(function() {
+                                    selectMode = !selectMode;
+                                    if (selectMode) {
+                                        $('.folder-checkbox').show();
+                                        $(this).text('Cancel');
+                                    } else {
+                                        $('.folder-checkbox').hide().prop('checked', false);
+                                        $(this).text('Select');
+                                    }
+                                });
+
+                                $('#deleteSelectedBtn').click(function() {
+                                    let selectedFolders = [];
+                                    $('.folder-checkbox:checked').each(function() {
+                                        selectedFolders.push($(this).val());
+                                    });
+
+                                    if (selectedFolders.length === 0) {
+                                        Swal.fire({
+                                            icon: 'warning',
+                                            title: 'No folders selected',
+                                            text: 'Please select at least one folder to delete.'
+                                        });
+                                        return;
+                                    }
+
+                                    Swal.fire({
+                                        title: 'Are you sure?',
+                                        text: 'Selected folders and their files will be permanently deleted.',
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#d33',
+                                        cancelButtonColor: '#3085d6',
+                                        confirmButtonText: 'Yes, delete them!',
+                                        cancelButtonText: 'Cancel'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            $.ajax({
+                                                url: 'actions/delete-folder.php',
+                                                type: 'POST',
+                                                data: {
+                                                    folder_ids: selectedFolders
+                                                },
+                                                dataType: 'json',
+                                                success: function(response) {
+                                                    if (response.success) {
+                                                        Swal.fire({
+                                                            icon: 'success',
+                                                            title: 'Deleted!',
+                                                            text: 'Folders deleted successfully.',
+                                                            confirmButtonText: 'OK'
+                                                        }).then(() => {
+                                                            location.reload();
+                                                        });
+                                                    } else {
+                                                        Swal.fire({
+                                                            icon: 'error',
+                                                            title: 'Error',
+                                                            text: response.error || 'Something went wrong.',
+                                                            confirmButtonText: 'OK'
+                                                        });
+                                                    }
+                                                },
+                                                error: function(xhr, status, error) {
+                                                    Swal.fire({
+                                                        icon: 'error',
+                                                        title: 'AJAX Error',
+                                                        text: error,
+                                                        confirmButtonText: 'OK'
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+                                });
+                            });
+
+                            setTimeout(function() {
+                                location.reload();
+                            }, 300000);
                         </script>
 
-                        <div class="widget-box">
-                            <!-- JavaScript for live search -->
-                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                            <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
-
-                            <script>
-                                $(function() {
-                                    new DataTable('#myTable', {
-                                        responsive: true,
-                                        autoWidth: false,
-                                        language: {
-                                            lengthMenu: "Show _MENU_ entries",
-                                        },
-                                    });
-                                });
-
-                                $(document).ready(function() {
-                                    $('#addFolderBtn').click(function() {
-                                        let folderName = prompt("Enter the folder name:");
-                                        if (!folderName) return; // Stop if user cancels
-
-                                        $.ajax({
-                                            url: 'add-folder.php',
-                                            type: 'POST',
-                                            data: {
-                                                folder_name: folderName
-                                            },
-                                            dataType: 'json',
-                                            success: function(response) {
-                                                if (response.success) {
-                                                    console.log("Folder added successfully:", folderName);
-                                                    location.reload();
-                                                } else {
-                                                    alert("Error: " + response.error);
-                                                }
-                                            },
-                                            error: function(xhr, status, error) {
-                                                console.error("AJAX Error:", error);
-                                            }
-                                        })
-                                    });
-
-                                    // Gawin Editable ang Folder Names
-                                    $(document).on('dblclick', '.folder input', function() {
-                                        $(this).prop('readonly', false).focus();
-                                    });
-
-                                    // Auto-save kapag na-blur ang input field
-                                    $(document).on('blur', '.folder input', function() {
-                                        let newName = $(this).val().trim();
-                                        if (!newName) {
-                                            return;
-                                        }
-
-                                        $.ajax({
-                                            url: 'update_folder.php',
-                                            type: 'POST',
-                                            data: {
-                                                folder_name: newName
-                                            },
-                                            success: function(response) {
-                                                console.log("Folder updated successfully");
-                                            }
-                                        });
-
-                                        $(this).prop('readonly', true);
-                                    });
-                                });
-
-                                $(document).ready(function() {
-                                    let selectMode = false;
-
-                                    $('#selectBtn').click(function() {
-                                        selectMode = !selectMode;
-                                        if (selectMode) {
-                                            $('.folder-checkbox').show();
-                                            $(this).text('Cancel');
-                                        } else {
-                                            $('.folder-checkbox').hide().prop('checked', false);
-                                            $(this).text('Select');
-                                        }
-                                    });
-
-                                    $('#deleteSelectedBtn').click(function() {
-                                        let selectedFolders = [];
-                                        $('.folder-checkbox:checked').each(function() {
-                                            selectedFolders.push($(this).val());
-                                        });
-
-                                        if (selectedFolders.length === 0) {
-                                            alert("Please select at least one folder to delete.");
-                                            return;
-                                        }
-
-                                        if (!confirm("Are you sure you want to delete the selected folders?")) {
-                                            return;
-                                        }
-
-                                        $.ajax({
-                                            url: 'actions/delete-folder.php',
-                                            type: 'POST',
-                                            data: {
-                                                folder_ids: selectedFolders
-                                            },
-                                            dataType: 'json',
-                                            success: function(response) {
-                                                if (response.success) {
-                                                    alert("Folders deleted successfully!");
-                                                    location.reload();
-                                                } else {
-                                                    alert("Error: " + response.error);
-                                                }
-                                            },
-                                            error: function(xhr, status, error) {
-                                                console.error("AJAX Error:", error);
-                                            }
-                                        });
-                                    });
-                                });
-                            </script>
-                        </div>
-
-                        <!-- Start here! -->
                     </div>
                 </div>
             </div>

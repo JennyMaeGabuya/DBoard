@@ -327,7 +327,6 @@ $file_result = mysqli_query($con, $file_query);
                 });
             });
 
-            // Optional: auto-reload every 5 minutes
             setTimeout(function() {
                 location.reload();
             }, 300000);

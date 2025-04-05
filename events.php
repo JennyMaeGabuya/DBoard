@@ -431,11 +431,10 @@ include 'emailnotif.php';
                 dateFormat: "Y-m-d H:i"
             });
         });
+
+        setTimeout(function() {
+            location.reload();
+        }, 300000);
     </script>
-<script>
-  setTimeout(function(){
-    location.reload();
-  }, 300000); 
-</script>
-    <!--Footer-part-->
+
     <?php include 'includes/footer.php'; ?>
