@@ -28,6 +28,7 @@ $file_query = "SELECT * FROM files WHERE folder_id = $folder_id";
 $file_result = mysqli_query($con, $file_query);
 ?>
 
+<!DOCTYPE html>
 
 <head>
     <meta charset="utf-8" />
@@ -95,29 +96,20 @@ $file_result = mysqli_query($con, $file_query);
             margin-left: 5px;
         }
 
-        .preview-btn,
-        .download-btn,
-        .delete-btn {
+        .preview-btn {
             border: none;
-            padding: 8px 15px;
+            padding: 9px 13px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
         }
 
-        .preview-btn {
-            background: #c49a6c;
-            color: white;
-        }
-
-        .download-btn {
-            background: #28a745;
-            color: white;
-        }
-
-        .delete-btn {
-            background: red;
-            color: white;
+        .preview-btn[disabled] {
+            background-color: #ccc !important;
+            color: #666 !important;
+            border: none;
+            cursor: not-allowed;
+            opacity: 0.8;
         }
     </style>
 </head>
@@ -254,23 +246,35 @@ $file_result = mysqli_query($con, $file_query);
                                             // Truncate filename if too long (optional PHP-side fallback)
                                             $displayName = strlen($fileName) > 50 ? substr($fileName, 0, 47) . '...' : $fileName;
 
+                                            // Get file extension
+                                            $fileExtension = strtolower(pathinfo($file['filename'], PATHINFO_EXTENSION));
+                                            $isPdf = ($fileExtension === 'pdf');
+
                                             echo '<tr>
-                                            <td class="filename-cell">
-                                                <i class="fa fa-file-o" style="margin-right: 10px;"></i>
-                                                <a href="' . $filePath . '" target="_blank" class="file-link" title="' . $fileName . '">' . $displayName . '</a>
-                                            </td>
-                                            <td class="file-actions text-right">
-                                                <a href="view-files.php?id=' . $fileId . '" target="_blank" title="Preview">
-                                                    <button class="preview-btn"><i class="fa fa-search"></i> Preview</button>
-                                                </a>
-                                                <a href="actions/download.php?file=' . urlencode($file['filename']) . '" title="Download">
-                                                    <button class="download-btn"><i class="fa fa-download"></i> Download</button>
-                                                </a>
-                                                <a href="#" class="delete-btn-swal" data-id="' . $fileId . '" title="Delete">
-                                                    <button class="delete-btn"><i class="fa fa-trash"></i></button>
-                                                </a>
-                                            </td>
-                                        </tr>';
+                                                    <td class="filename-cell">
+                                                        <i class="fa fa-file-o" style="margin-right: 10px;"></i>
+                                                        <a href="' . $filePath . '" target="_blank" class="file-link" title="' . $fileName . '">' . $displayName . '</a>
+                                                    </td>
+                                                    <td class="file-actions text-right">';
+
+                                            if ($isPdf) {
+                                                echo '<a href="view-files.php?id=' . $fileId . '" target="_blank" title="Preview">
+                                                            <button class="btn btn-warning"><i class="fa fa-search"></i> Preview</button>
+                                                        </a>';
+                                            } else {
+                                                echo '<button class="preview-btn" disabled title="Preview only available for PDFs">
+                                                <i class="fa fa-search"></i> Preview
+                                            </button>';
+                                            }
+
+                                            echo '<a href="actions/download.php?file=' . urlencode($file['filename']) . '" title="Download">
+                                                        <button class="btn btn-success"><i class="fa fa-download"></i> Download</button>
+                                                    </a>
+                                                    <a href="#" class="delete-btn-swal" data-id="' . $fileId . '" title="Delete">
+                                                        <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                                    </a>
+                                                    </td>
+                                                </tr>';
                                         }
                                     } else {
                                         echo '<tr><td colspan="2" class="no-files">No files found.</td></tr>';
@@ -280,10 +284,8 @@ $file_result = mysqli_query($con, $file_query);
 
                             </table>
                         </div>
-
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
