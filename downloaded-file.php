@@ -10,12 +10,10 @@ include 'emailnotif.php';
 
 $uploadDir = "img/uploads/";
 
-// Ensure the upload directory exists
 if (!is_dir($uploadDir)) {
   mkdir($uploadDir, 0777, true);
 }
 
-// Fetch folders from the database
 $query = "SELECT id, name FROM folders";
 $result = mysqli_query($con, $query);
 $folders = [];
@@ -27,61 +25,68 @@ if ($result) {
   die("Database query failed: " . mysqli_error($con));
 }
 
-// Handle file upload
+function sanitizeFileName($name)
+{
+  // Remove problematic characters from the filename and ensure it's safe
+  return preg_replace('/[\/\\\\?%*:|"<>#&]/', '_', $name);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files']) && isset($_POST['folder_id'])) {
-  $folder_id = intval($_POST['folder_id']); // Ensure folder_id is an integer
+  $folder_id = intval($_POST['folder_id']);
   if ($folder_id <= 0) {
     echo json_encode(["success" => false, "error" => "Invalid folder selection."]);
     exit();
   }
 
   $uploadedFiles = [];
+  $duplicateFiles = [];
 
-  foreach ($_FILES['files']['name'] as $key => $name) {
-    $fileExt = pathinfo($name, PATHINFO_EXTENSION);
-    $fileBaseName = pathinfo($name, PATHINFO_FILENAME);
-    $sanitizedFileName = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $fileBaseName);
-    $newFileName = $sanitizedFileName . '.' . $fileExt;
-    $targetFilePath = $uploadDir . $newFileName;
+  foreach ($_FILES['files']['name'] as $key => $originalName) {
+    $fileTmpName = $_FILES['files']['tmp_name'][$key];
 
-    // Avoid overwriting files
-    $counter = 1;
-    while (file_exists($targetFilePath)) {
-      $newFileName = $sanitizedFileName . "_$counter." . $fileExt;
-      $targetFilePath = $uploadDir . $newFileName;
-      $counter++;
+    // Sanitize filename for the file system
+    $safeName = sanitizeFileName($originalName);
+    $targetFilePath = $uploadDir . $safeName;
+
+    // Check for duplicate
+    if (file_exists($targetFilePath)) {
+      $duplicateFiles[] = $originalName; // Let frontend handle renaming
+      continue;
     }
 
-    // Move uploaded file
-    if (move_uploaded_file($_FILES['files']['tmp_name'][$key], $targetFilePath)) {
-      // Insert into the `files` table
-      $stmt = mysqli_prepare($con, "INSERT INTO files (folder_id, filename) VALUES (?, ?)");
-      mysqli_stmt_bind_param($stmt, "is", $folder_id, $newFileName);
+    // Move file to target directory
+    if (move_uploaded_file($fileTmpName, $targetFilePath)) {
+      // Save original filename and current datetime in DB
+      $stmt = mysqli_prepare($con, "INSERT INTO files (folder_id, filename, uploaded_at) VALUES (?, ?, NOW())");
+      mysqli_stmt_bind_param($stmt, "is", $folder_id, $originalName);
       mysqli_stmt_execute($stmt);
       mysqli_stmt_close($stmt);
 
-      $uploadedFiles[] = $newFileName;
+      $uploadedFiles[] = $originalName;
     } else {
       echo json_encode(["success" => false, "error" => "File upload failed."]);
       exit();
     }
   }
 
-  echo json_encode(["success" => true, "files" => $uploadedFiles]);
+  echo json_encode([
+    "success" => true,
+    "files" => $uploadedFiles,
+    "duplicates" => $duplicateFiles
+  ]);
   exit();
 }
 
-// Handle file deletion
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
   $fileToDelete = basename($_POST['delete']);
-  $filePath = $uploadDir . $fileToDelete;
+  $safeName = sanitizeFileName($fileToDelete);
+  $filePath = $uploadDir . $safeName;
 
   if (file_exists($filePath)) {
     unlink($filePath);
 
-    // Delete from database
     $stmt = mysqli_prepare($con, "DELETE FROM files WHERE filename = ?");
-    mysqli_stmt_bind_param($stmt, "s", $fileToDelete);
+    mysqli_stmt_bind_param($stmt, "s", $fileToDelete); // Match original name
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 
@@ -92,14 +97,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
   exit();
 }
 
-// Fetch uploaded files from the database
-$files = [];
-$query = "SELECT filename FROM files";
+// Fetch uploaded files
+$recentFiles = [];
+$query = "SELECT filename FROM files WHERE uploaded_at >= NOW() - INTERVAL 7 DAY ORDER BY uploaded_at DESC";
 $result = mysqli_query($con, $query);
-if ($result) {
-  while ($row = mysqli_fetch_assoc($result)) {
-    $files[] = $row['filename'];
-  }
+
+while ($row = mysqli_fetch_assoc($result)) {
+  $recentFiles[] = $row['filename'];
 }
 ?>
 
@@ -283,15 +287,13 @@ if ($result) {
     }
 
     .product-status-wrap {
-      min-height: 100vh;
       background-color: white;
+      min-height: 100vh;
     }
 
     .file-list {
       max-height: 550px;
-      /* Set a maximum height for scrolling */
       overflow-y: auto;
-      /* Enable vertical scrolling */
       border: 2px solid #3388f5;
       background-color: #f8f9fa;
       border-radius: 10px;
@@ -303,44 +305,44 @@ if ($result) {
     }
 
     #filePreview {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-}
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
 
-#filePreview .file-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: calc(100% / 2 - 10px); /* Ensures two items per row with spacing */
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  font-size: 14px;
-}
+    #filePreview .file-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: calc(100% / 2 - 10px);
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      font-size: 14px;
+    }
 
-#filePreview .file-item img {
-  max-width: 30px;
-  max-height: 30px;
-  margin-right: 8px;
-}
+    #filePreview .file-item img {
+      max-width: 30px;
+      max-height: 30px;
+      margin-right: 8px;
+    }
 
-#filePreview .file-item span {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: calc(100% - 50px); /* Adjust to leave space for the close button */
-}
+    #filePreview .file-item span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: calc(100% - 50px);
+    }
 
-#filePreview .file-item .remove-file {
-  background: none;
-  border: none;
-  color: #aaa;
-  cursor: pointer;
-  font-size: 16px;
-}
+    #filePreview .file-item .remove-file {
+      background: none;
+      border: none;
+      color: #aaa;
+      cursor: pointer;
+      font-size: 16px;
+    }
 
     #folderDropdown {
       width: 70%;
@@ -372,8 +374,6 @@ if ($result) {
       color: #333;
 
     }
-
-    
   </style>
 </head>
 
@@ -495,10 +495,11 @@ if ($result) {
         </div>
       </div>
     </div>
+
     <div class="product-status mg-b-15">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="col-lg-12">
             <div class="product-status-wrap drp-lst">
               <div class="container">
                 <h2 class="text-center mb-4">CSC Downloaded File</h2>
@@ -506,7 +507,7 @@ if ($result) {
                 <div class="row">
                   <div class="col-md-6">
                     <div class="upload-section" id="dropArea">
-                      <p>Drag & Drop Files Here</p>
+                      <p>Drag or Drop Files Here</p>
                     </div>
 
                     <select id="folderDropdown" name="selected_folder" class="form-control">
@@ -525,14 +526,14 @@ if ($result) {
                   </div>
 
                   <div class="col-md-6">
-                    <h4>Uploaded Files</h4>
+                    <h4>Newly Uploaded Files</h4>
                     <div class="file-list">
                       <ul>
-                        <?php foreach ($files as $file): ?>
+                        <?php foreach ($recentFiles as $file): ?>
                           <li>
-                            <span class="filename"> <?= htmlspecialchars($file); ?> </span>
+                            <span class="filename"><?= htmlspecialchars($file); ?></span>
                             <div class="action-buttons">
-                              <a href="img/uploads/<?= htmlspecialchars($file); ?>" download class="download-btn">
+                              <a href="img/uploads/<?= urlencode($file); ?>" download class="download-btn">
                                 <i class="fa fa-download"></i>
                               </a>
                               <button class="delete-btn" data-file="<?= htmlspecialchars($file); ?>">❌</button>
@@ -542,10 +543,11 @@ if ($result) {
                       </ul>
                     </div>
                   </div>
+
                 </div>
 
                 <script>
-                  $(document).ready(function () {
+                  $(document).ready(function() {
                     let dropArea = $('#dropArea');
                     let fileInput = $('#fileInput');
                     let uploadBtn = $('#uploadBtn');
@@ -553,30 +555,40 @@ if ($result) {
                     let folderDropdown = $('#folderDropdown');
                     let filesToUpload = [];
 
-                    dropArea.click(function () {
+                    // Clicking on dropArea opens file dialog
+                    dropArea.on('click', function(e) {
                       fileInput.click();
                     });
 
-                    dropArea.on('dragover', function (e) {
+                    // Prevent default drag behaviors on entire document
+                    $(document).on('dragenter dragover', function(e) {
                       e.preventDefault();
+                      e.stopPropagation();
                       dropArea.css('background', '#eaf2ff');
                     });
 
-                    dropArea.on('dragleave', function () {
-                      dropArea.css('background', "#f8f9fa");
-                    });
-
-                    dropArea.on('drop', function (e) {
+                    $(document).on('dragleave', function(e) {
                       e.preventDefault();
-                      dropArea.css('background', "#f8f9fa");
-                      let files = e.originalEvent.dataTransfer.files;
-                      handleFiles(files);
+                      e.stopPropagation();
+                      dropArea.css('background', '#f8f9fa');
                     });
 
-                    fileInput.change(function () {
+                    // Global drop handler
+                    $(document).on('drop', function(e) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      dropArea.css('background', '#f8f9fa');
+                      if (e.originalEvent.dataTransfer && e.originalEvent.dataTransfer.files.length > 0) {
+                        handleFiles(e.originalEvent.dataTransfer.files);
+                      }
+                    });
+
+                    // File selection via input
+                    fileInput.on('change', function() {
                       handleFiles(this.files);
                     });
 
+                    // Handle files
                     function handleFiles(files) {
                       for (let i = 0; i < files.length; i++) {
                         let file = files[i];
@@ -592,12 +604,14 @@ if ($result) {
                       }
                     }
 
-                    window.removeFile = function (fileName, fileId) {
+                    // Remove file
+                    window.removeFile = function(fileName, fileId) {
                       filesToUpload = filesToUpload.filter(file => file.name !== fileName);
                       $(`#${fileId}`).remove();
                     };
 
-                    uploadBtn.click(function () {
+                    // Upload button handler
+                    uploadBtn.click(function() {
                       if (filesToUpload.length === 0) {
                         Swal.fire('No File Selected', 'Please select files before uploading.', 'warning');
                         return;
@@ -619,7 +633,61 @@ if ($result) {
                         data: formData,
                         contentType: false,
                         processData: false,
-                        success: function (response) {
+                        success: function(response) {
+                          let result = JSON.parse(response);
+
+                          if (result.duplicates.length > 0) {
+                            let duplicateFiles = result.duplicates.join('<br>');
+
+                            Swal.fire({
+                              title: "Duplicate Files Found",
+                              html: `These files already exist:<br><strong>${duplicateFiles}</strong><br>Rename and upload?`,
+                              icon: "warning",
+                              showCancelButton: true,
+                              confirmButtonText: "Yes, rename",
+                              cancelButtonText: "Cancel"
+                            }).then((res) => {
+                              if (res.isConfirmed) {
+                                renameAndUploadDuplicates(result.duplicates, selectedFolder);
+                              }
+                            });
+                          } else {
+                            if (result.success) {
+                              Swal.fire('Upload Successful!', 'Your files have been uploaded.', 'success')
+                                .then(() => location.reload());
+                            } else {
+                              Swal.fire('Upload Failed', 'An error occurred while uploading.', 'error');
+                            }
+                          }
+                        }
+                      });
+                    });
+
+                    function renameAndUploadDuplicates(duplicateFiles, folderId) {
+                      let formData = new FormData();
+                      filesToUpload.forEach(file => {
+                        if (duplicateFiles.includes(file.name)) {
+                          let fileExt = file.name.split('.').pop();
+                          let fileBaseName = file.name.replace(/\.[^/.]+$/, ""); // Remove extension
+                          let newFileName = `${fileBaseName}_1.${fileExt}`; // Add _1 instead of (1)
+                          let renamedFile = new File([file], newFileName, {
+                            type: file.type
+                          });
+                          formData.append('files[]', renamedFile);
+                        } else {
+                          formData.append('files[]', file);
+                        }
+                      });
+
+                      formData.append('folder_id', folderId);
+
+                      $.ajax({
+                        url: 'downloaded-file.php',
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function(response) {
                           let result = JSON.parse(response);
                           if (result.success) {
                             Swal.fire('Upload Successful!', 'Your files have been uploaded.', 'success')
@@ -629,22 +697,36 @@ if ($result) {
                           }
                         }
                       });
-                    });
+                    }
 
-                    $(document).on('click', '.delete-btn', function () {
+                    // Delete file with SweetAlert confirmation
+                    $(document).on('click', '.delete-btn', function() {
                       let fileName = $(this).data('file');
-                      if (confirm("Are you sure you want to delete this file?")) {
-                        $.post('downloaded-file.php', {
-                          delete: fileName
-                        }, function (response) {
-                          let result = JSON.parse(response);
-                          if (result.success) {
-                            location.reload();
-                          } else {
-                            alert("Delete failed.");
-                          }
-                        });
-                      }
+
+                      Swal.fire({
+                        title: "Are you sure?",
+                        text: `Do you really want to delete "${fileName}"? This action cannot be undone.`,
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#d33",
+                        cancelButtonColor: "#3085d6",
+                        confirmButtonText: "Yes, delete it!",
+                        cancelButtonText: "Cancel"
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          $.post('downloaded-file.php', {
+                            delete: fileName
+                          }, function(response) {
+                            let result = JSON.parse(response);
+                            if (result.success) {
+                              Swal.fire("Deleted!", `"${fileName}" has been deleted.`, "success")
+                                .then(() => location.reload());
+                            } else {
+                              Swal.fire("Error!", "File deletion failed.", "error");
+                            }
+                          });
+                        }
+                      });
                     });
                   });
                 </script>
