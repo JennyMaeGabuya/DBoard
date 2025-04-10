@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 30, 2025 at 03:56 AM
+-- Generation Time: Apr 10, 2025 at 11:29 AM
 -- Server version: 8.3.0
 -- PHP Version: 8.2.18
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `role` enum('superadmin','admin') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'admin',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `reset_token` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `reset_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `reset_expires` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
@@ -211,10 +211,21 @@ DROP TABLE IF EXISTS `files`;
 CREATE TABLE IF NOT EXISTS `files` (
   `id` int NOT NULL AUTO_INCREMENT,
   `folder_id` int NOT NULL,
-  `filename` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `filename` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `uploaded_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `folder_id` (`folder_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `files`
+--
+
+INSERT INTO `files` (`id`, `folder_id`, `filename`, `uploaded_at`) VALUES
+(4, 3, 'Alyssa-Choi-Tic-Tac-Toe.pdf', '2025-04-10 11:46:05'),
+(5, 3, 'spotify.txt', '2025-04-10 11:46:18'),
+(6, 3, 'SPay for April 2025.txt', '2025-04-10 11:47:20'),
+(7, 3, 'not-so-my-profile.txt', '2025-04-10 11:48:15');
 
 -- --------------------------------------------------------
 
@@ -225,9 +236,9 @@ CREATE TABLE IF NOT EXISTS `files` (
 DROP TABLE IF EXISTS `folders`;
 CREATE TABLE IF NOT EXISTS `folders` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `folders`
@@ -237,7 +248,8 @@ INSERT INTO `folders` (`id`, `name`) VALUES
 (1, 'hello ganda'),
 (2, 'erika'),
 (3, 'jenny'),
-(4, 'savior');
+(4, 'savior'),
+(8, 'sasas');
 
 -- --------------------------------------------------------
 
