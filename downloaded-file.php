@@ -302,6 +302,7 @@ while ($row = mysqli_fetch_assoc($result)) {
       margin-left: 15px;
       margin-right: -20px;
       margin-bottom: 20px;
+      max-width: 480px;
     }
 
     #filePreview {
@@ -374,6 +375,7 @@ while ($row = mysqli_fetch_assoc($result)) {
       color: #333;
 
     }
+    
   </style>
 </head>
 
@@ -525,7 +527,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                     <p id="uploadStatus"></p>
                   </div>
 
-                  <div class="col-md-6">
+                  <div class="col-md-6 ">
                     <h4>Newly Uploaded Files</h4>
                     <div class="file-list">
                       <ul>
