@@ -357,13 +357,13 @@ if (!$con) {
                                 <!-- Folder icons go here -->
                             </div>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-primary" id="addFolderBtn">
-                                    <i class="fas fa-folder-plus"></i>
+                                <button class="btn btn-primary btn-border btn-round btn-sm" id="addFolderBtn" title="Add Folder">
+                                    <i class="fas fa-folder-plus"></i> Add Folder
                                 </button>
-                                <button class="btn btn-danger" id="deleteSelectedBtn">
-                                    <i class="fas fa-trash-alt"></i>
+                                <button class="btn btn-danger btn-border btn-round btn-sm" id="deleteSelectedBtn" title="Delete Folder">
+                                    <i class="fas fa-trash"></i>
                                 </button>
-                                <button class="btn btn-warning" id="selectBtn">
+                                <button class="btn btn-warning btn-border btn-round btn-sm" id="selectBtn" title="Select Folder">
                                     <i class="fas fa-check-square"></i>
                                 </button>
                             </div>
