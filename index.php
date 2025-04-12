@@ -86,7 +86,7 @@ include('emailnotif.php');
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(52, 52, 52, 0.5);
             z-index: 0;
         }
 
@@ -102,7 +102,7 @@ include('emailnotif.php');
             max-width: 500px;
             width: 100%;
             text-align: center;
-            box-shadow: 0 2px 7px rgba(255, 255, 255, 0.63);
+            box-shadow: 0 2px 7px rgb(255, 255, 255);
             border: 2px solid rgba(168, 166, 166, 0.06);
         }
 
@@ -277,13 +277,11 @@ include('emailnotif.php');
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
         });
-    </script>
 
-<script>
-  setTimeout(function(){
-    location.reload();
-  }, 300000); 
-</script>
+        setTimeout(function() {
+            location.reload();
+        }, 300000);
+    </script>
 
 </body>
 

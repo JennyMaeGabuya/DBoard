@@ -7,31 +7,44 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-include "../dbcon.php";
+include "dbcon.php";
+
+// Sanitize filename to match how it's stored on the filesystem
+function sanitizeFileName($name) {
+    return preg_replace('/[\/\\\\?%*:|"<>#&]/', '_', $name);
+}
 
 if (isset($_GET['id'])) {
     $fileId = intval($_GET['id']);
 
-    // Get file info
-    $file_query = "SELECT filename, folder_id FROM files WHERE id = $fileId";
-    $file_result = mysqli_query($con, $file_query);
-    $file = mysqli_fetch_assoc($file_result);
+    // Get file info from DB
+    $stmt = mysqli_prepare($con, "SELECT filename, folder_id FROM files WHERE id = ?");
+    mysqli_stmt_bind_param($stmt, "i", $fileId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $file = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($stmt);
 
     if ($file) {
-        $filePath = "../img/uploads/" . $file['filename'];
+        $originalName = $file['filename'];
+        $safeName = sanitizeFileName($originalName);
 
-        // Delete file from server
+        $filePath = "../img/uploads/" . $safeName;
+
+        // Delete file from filesystem if it exists
         if (file_exists($filePath)) {
             unlink($filePath);
         }
 
-        // Delete file record from database
-        $delete_query = "DELETE FROM files WHERE id = $fileId";
-        if (mysqli_query($con, $delete_query)) {
+        // Delete from database
+        $stmt = mysqli_prepare($con, "DELETE FROM files WHERE id = ?");
+        mysqli_stmt_bind_param($stmt, "i", $fileId);
+        if (mysqli_stmt_execute($stmt)) {
             echo json_encode(['success' => true, 'message' => 'File deleted successfully.']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Database delete failed.']);
         }
+        mysqli_stmt_close($stmt);
     } else {
         echo json_encode(['success' => false, 'message' => 'File not found.']);
     }

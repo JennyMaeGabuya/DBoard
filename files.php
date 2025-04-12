@@ -24,7 +24,7 @@ if (!$folder) {
 }
 
 // Get files in the folder
-$file_query = "SELECT * FROM files WHERE folder_id = $folder_id";
+$file_query = "SELECT * FROM files WHERE folder_id = $folder_id ORDER BY uploaded_at DESC";
 $file_result = mysqli_query($con, $file_query);
 ?>
 
@@ -244,44 +244,43 @@ $file_result = mysqli_query($con, $file_query);
                                             $fileId = $file['id'];
 
                                             // Truncate filename if too long (optional PHP-side fallback)
-                                            $displayName = strlen($fileName) > 50 ? substr($fileName, 0, 47) . '...' : $fileName;
+                                            $displayName = strlen($fileName) > 55 ? substr($fileName, 0, 50) . '...' : $fileName;
 
                                             // Get file extension
                                             $fileExtension = strtolower(pathinfo($file['filename'], PATHINFO_EXTENSION));
                                             $isPdf = ($fileExtension === 'pdf');
 
                                             echo '<tr>
-                                                    <td class="filename-cell">
-                                                        <i class="fa fa-file-o" style="margin-right: 10px;"></i>
-                                                        <a href="' . $filePath . '" target="_blank" class="file-link" title="' . $fileName . '">' . $displayName . '</a>
-                                                    </td>
-                                                    <td class="file-actions text-right">';
+                                                <td class="filename-cell">
+                                                    <i class="fa fa-file-o" style="margin-right: 10px;"></i>
+                                                    <a href="' . $filePath . '" target="_blank" class="file-link" title="' . $fileName . '">' . $displayName . '</a>
+                                                </td>
+                                                <td class="file-actions text-right">';
 
                                             if ($isPdf) {
                                                 echo '<a href="view-files.php?id=' . $fileId . '" target="_blank" title="Preview">
-                                                            <button class="btn btn-warning"><i class="fa fa-search"></i> Preview</button>
-                                                        </a>';
+                                                        <button class="btn btn-warning"><i class="fa fa-search"></i> Preview</button>
+                                                    </a>';
                                             } else {
                                                 echo '<button class="preview-btn" disabled title="Preview only available for PDFs">
-                                                <i class="fa fa-search"></i> Preview
-                                            </button>';
+                                            <i class="fa fa-search"></i> Preview
+                                        </button>';
                                             }
 
                                             echo '<a href="actions/download.php?file=' . urlencode($file['filename']) . '" title="Download">
-                                                        <button class="btn btn-success"><i class="fa fa-download"></i> Download</button>
-                                                    </a>
-                                                    <a href="#" class="delete-btn-swal" data-id="' . $fileId . '" title="Delete">
-                                                        <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                                                    </a>
-                                                    </td>
-                                                </tr>';
+                                                    <button class="btn btn-success"><i class="fa fa-download"></i> Download</button>
+                                                </a>
+                                                <a href="#" class="delete-btn-swal" data-id="' . $fileId . '" title="Delete">
+                                                    <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                                </a>
+                                                </td>
+                                            </tr>';
                                         }
                                     } else {
                                         echo '<tr><td colspan="2" class="no-files">No files found.</td></tr>';
                                     }
                                     ?>
                                 </tbody>
-
                             </table>
                         </div>
                     </div>
@@ -291,7 +290,7 @@ $file_result = mysqli_query($con, $file_query);
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll('.delete-btn-swal').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -329,10 +328,59 @@ $file_result = mysqli_query($con, $file_query);
                 });
             });
 
-            setTimeout(function() {
-                location.reload();
-            }, 300000);
+            const folderId = <?php echo $folder_id; ?>;
+
+            // Allow drag-and-drop anywhere on the page
+            document.body.addEventListener('dragover', function(event) {
+                event.preventDefault(); // Allow drop
+            });
+
+            document.body.addEventListener('drop', function(event) {
+                event.preventDefault();
+
+                const files = event.dataTransfer.files;
+                if (files.length > 0) {
+                    uploadFiles(files);
+                }
+            });
+
+            // Handle file upload
+            function uploadFiles(files) {
+                const formData = new FormData();
+
+                // Append each file to the FormData object
+                Array.from(files).forEach(file => {
+                    formData.append("files[]", file);
+                });
+                formData.append("folder_id", folderId);
+
+                // Create an XMLHttpRequest to send the files
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "upload-file.php", true);
+
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.success) {
+                            Swal.fire("Success!", "Files uploaded successfully.", "success");
+                            location.reload(); // Reload the page to show the new files
+                        } else {
+                            Swal.fire("Error!", "An error occurred during file upload.", "error");
+                        }
+                    }
+                };
+
+                xhr.onerror = function() {
+                    Swal.fire("Error!", "Network error occurred during upload.", "error");
+                };
+
+                xhr.send(formData);
+            }
         });
+
+        setTimeout(function() {
+            location.reload();
+        }, 300000);
     </script>
 
     <?php include 'includes/footer.php'; ?>

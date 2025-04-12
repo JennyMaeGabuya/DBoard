@@ -250,10 +250,6 @@ if (!$con) {
                                                         <i class="fas fa-home"></i> Home
                                                     </a>
                                                     <span class="bread-slash"> / </span>
-                                                    <a href="downloaded-file.php">
-                                                        Uploads Files
-                                                    </a>
-                                                    <span class="bread-slash"> / </span>
                                                     <a href="#">
                                                         <strong>Folders</strong>
                                                     </a>

@@ -48,11 +48,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files']) && isset($_
     $safeName = sanitizeFileName($originalName);
     $targetFilePath = $uploadDir . $safeName;
 
-    // Check for duplicate
-    if (file_exists($targetFilePath)) {
-      $duplicateFiles[] = $originalName; // Let frontend handle renaming
+    // Check for existing file in the same folder (DB check)
+    $checkQuery = "SELECT id FROM files WHERE filename = ? AND folder_id = ?";
+    $checkStmt = mysqli_prepare($con, $checkQuery);
+    mysqli_stmt_bind_param($checkStmt, "si", $originalName, $folder_id);
+    mysqli_stmt_execute($checkStmt);
+    mysqli_stmt_store_result($checkStmt);
+
+    if (mysqli_stmt_num_rows($checkStmt) > 0) {
+      $duplicateFiles[] = $originalName;
+      mysqli_stmt_close($checkStmt);
       continue;
     }
+    mysqli_stmt_close($checkStmt);
 
     // Move file to target directory
     if (move_uploaded_file($fileTmpName, $targetFilePath)) {
@@ -78,17 +86,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files']) && isset($_
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
-  $fileToDelete = basename($_POST['delete']);
-  $safeName = sanitizeFileName($fileToDelete);
-  $filePath = $uploadDir . $safeName;
+  $fileToDelete = $_POST['delete'];
+  $folderId = intval($_POST['folder_id']);
 
-  if (file_exists($filePath)) {
-    unlink($filePath);
+  $stmt = mysqli_prepare($con, "SELECT id FROM files WHERE filename = ? AND folder_id = ?");
+  mysqli_stmt_bind_param($stmt, "si", $fileToDelete, $folderId);
+  mysqli_stmt_execute($stmt);
+  mysqli_stmt_store_result($stmt);
 
-    $stmt = mysqli_prepare($con, "DELETE FROM files WHERE filename = ?");
-    mysqli_stmt_bind_param($stmt, "s", $fileToDelete); // Match original name
-    mysqli_stmt_execute($stmt);
+  if (mysqli_stmt_num_rows($stmt) > 0) {
+    // Now get the actual stored filename (you may want to store the real file path or stored name)
     mysqli_stmt_close($stmt);
+
+    // Then delete from file system and DB (same logic, but ensure folder-based)
+    unlink($uploadDir . $fileToDelete); // Or use a stored actual name if it's prefixed
+    $delStmt = mysqli_prepare($con, "DELETE FROM files WHERE filename = ? AND folder_id = ?");
+    mysqli_stmt_bind_param($delStmt, "si", $fileToDelete, $folderId);
+    mysqli_stmt_execute($delStmt);
+    mysqli_stmt_close($delStmt);
 
     echo json_encode(["success" => true]);
   } else {
@@ -99,11 +114,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
 
 // Fetch uploaded files
 $recentFiles = [];
-$query = "SELECT filename FROM files WHERE uploaded_at >= NOW() - INTERVAL 7 DAY ORDER BY uploaded_at DESC";
+$query = "SELECT filename, folder_id FROM files WHERE uploaded_at >= NOW() - INTERVAL 7 DAY ORDER BY uploaded_at DESC";
 $result = mysqli_query($con, $query);
 
 while ($row = mysqli_fetch_assoc($result)) {
-  $recentFiles[] = $row['filename'];
+  $recentFiles[] = $row; // now each $file will have 'filename' and 'folder_id'
 }
 ?>
 
@@ -140,14 +155,6 @@ while ($row = mysqli_fetch_assoc($result)) {
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
 
   <style>
-    .csc-container {
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-      margin-top: 20px;
-    }
-
     .upload-section {
       display: flex;
       align-items: center;
@@ -174,26 +181,38 @@ while ($row = mysqli_fetch_assoc($result)) {
       color: #3388f5;
     }
 
-
     .upload-container {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      /* Para nasa kanan ang button */
-      width: 100%;
       position: relative;
     }
 
     #uploadBtn {
       position: relative;
-      /* Hindi absolute para hindi umaalis sa flow */
       left: 480px;
       bottom: 65px;
     }
 
-    .file-list ul {
-      list-style: none;
+    .delete-btn {
+      background: none;
+      border: none;
+      color: red;
+      font-size: 16px;
+      cursor: pointer;
       padding: 0;
+    }
+
+    .file-list {
+      max-height: 550px;
+      max-width: 450px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      border: 2px solid #3388f5;
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      padding: 10px;
+      box-sizing: border-box;
     }
 
     .file-list ul li {
@@ -207,14 +226,6 @@ while ($row = mysqli_fetch_assoc($result)) {
       align-items: center;
       overflow: hidden;
       white-space: nowrap;
-    }
-
-    .file-list ul li span.filename {
-      flex-grow: 1;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      padding-right: 10px;
     }
 
     .file-list ul li .action-buttons {
@@ -237,79 +248,6 @@ while ($row = mysqli_fetch_assoc($result)) {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 10px;
-    }
-
-    #filePreview .file-item {
-      display: flex;
-      align-items: center;
-      padding: 8px 12px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      background-color: #f9f9f9;
-      font-size: 14px;
-    }
-
-    #filePreview .file-item img {
-      max-width: 30px;
-      max-height: 30px;
-      margin-right: 8px;
-    }
-
-    #filePreview .file-item span {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 150px;
-    }
-
-    #filePreview .file-item .remove-file {
-      background: none;
-      border: none;
-      color: #aaa;
-      cursor: pointer;
-      font-size: 16px;
-      padding: 0;
-      margin-left: 8px;
-    }
-
-    .delete-btn {
-      background: none;
-      border: none;
-      color: black;
-      font-size: 16px;
-      cursor: pointer;
-      padding: 0;
-    }
-
-    h4 {
-      text-align: center;
-    }
-
-    .product-status-wrap {
-      background-color: white;
-      min-height: 100vh;
-    }
-
-    .file-list {
-      max-height: 550px;
-      overflow-y: auto;
-      border: 2px solid #3388f5;
-      background-color: #f8f9fa;
-      border-radius: 10px;
-      padding: 10px;
-      margin-top: 10px;
-      margin-left: 15px;
-      margin-right: -20px;
-      margin-bottom: 20px;
-      max-width: 480px;
-    }
-
-    #filePreview {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 10px;
     }
 
     #filePreview .file-item {
@@ -359,23 +297,14 @@ while ($row = mysqli_fetch_assoc($result)) {
       margin-bottom: 10px;
     }
 
-    #folderDropdown:hover {
-      border-color: #0056b3;
+    .filename {
+      display: inline-block;
+      max-width: 250px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
     }
-
-    #folderDropdown:focus {
-      border-color: #004085;
-      box-shadow: 0 0 5px rgba(0, 91, 187, 0.5);
-    }
-
-    #folderDropdown option {
-      padding: 10px;
-      font-size: 16px;
-      background: #ffffff;
-      color: #333;
-
-    }
-    
   </style>
 </head>
 
@@ -501,10 +430,9 @@ while ($row = mysqli_fetch_assoc($result)) {
     <div class="product-status mg-b-15">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-12">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="product-status-wrap drp-lst">
               <div class="container">
-                <h2 class="text-center mb-4">CSC Downloaded File</h2>
 
                 <div class="row">
                   <div class="col-md-6">
@@ -527,25 +455,30 @@ while ($row = mysqli_fetch_assoc($result)) {
                     <p id="uploadStatus"></p>
                   </div>
 
-                  <div class="col-md-6 ">
+                  <div class="col-md-6">
                     <h4>Newly Uploaded Files</h4>
                     <div class="file-list">
                       <ul>
                         <?php foreach ($recentFiles as $file): ?>
                           <li>
-                            <span class="filename"><?= htmlspecialchars($file); ?></span>
+                            <span class="filename" title="<?= htmlspecialchars($file['filename']); ?>">
+                              <?= htmlspecialchars($file['filename']); ?>
+                            </span>
                             <div class="action-buttons">
-                              <a href="img/uploads/<?= urlencode($file); ?>" download class="download-btn">
+                              <a href="img/uploads/<?= urlencode($file['filename']); ?>" download class="download-btn">
                                 <i class="fa fa-download"></i>
                               </a>
-                              <button class="delete-btn" data-file="<?= htmlspecialchars($file); ?>">❌</button>
+                              <button class="delete-btn"
+                                data-file="<?= htmlspecialchars($file['filename']); ?>"
+                                data-folder="<?= intval($file['folder_id']); ?>">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                              </button>
                             </div>
                           </li>
                         <?php endforeach; ?>
                       </ul>
                     </div>
                   </div>
-
                 </div>
 
                 <script>
@@ -704,6 +637,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                     // Delete file with SweetAlert confirmation
                     $(document).on('click', '.delete-btn', function() {
                       let fileName = $(this).data('file');
+                      let folderId = $(this).data('folder');
 
                       Swal.fire({
                         title: "Are you sure?",
@@ -717,14 +651,15 @@ while ($row = mysqli_fetch_assoc($result)) {
                       }).then((result) => {
                         if (result.isConfirmed) {
                           $.post('downloaded-file.php', {
-                            delete: fileName
+                            delete: fileName,
+                            folder_id: folderId
                           }, function(response) {
                             let result = JSON.parse(response);
                             if (result.success) {
                               Swal.fire("Deleted!", `"${fileName}" has been deleted.`, "success")
                                 .then(() => location.reload());
                             } else {
-                              Swal.fire("Error!", "File deletion failed.", "error");
+                              Swal.fire("Error!", result.error || "File deletion failed.", "error");
                             }
                           });
                         }
