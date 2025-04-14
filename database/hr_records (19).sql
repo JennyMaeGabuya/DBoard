@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Apr 10, 2025 at 11:29 AM
--- Server version: 8.3.0
--- PHP Version: 8.2.18
+-- Host: 127.0.0.1
+-- Generation Time: Apr 14, 2025 at 07:46 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,23 +27,18 @@ SET time_zone = "+00:00";
 -- Table structure for table `admin`
 --
 
-DROP TABLE IF EXISTS `admin`;
-CREATE TABLE IF NOT EXISTS `admin` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `employee_no` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `role` enum('superadmin','admin') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'admin',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `reset_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `reset_expires` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`),
-  UNIQUE KEY `email` (`email`),
-  KEY `employee_no` (`employee_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `admin` (
+  `id` int(11) NOT NULL,
+  `employee_no` varchar(100) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `role` enum('superadmin','admin') NOT NULL DEFAULT 'admin',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `reset_token` varchar(100) DEFAULT NULL,
+  `reset_expires` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `admin`
@@ -58,15 +53,14 @@ INSERT INTO `admin` (`id`, `employee_no`, `username`, `password`, `email`, `role
 -- Table structure for table `appointed_cert_issuance`
 --
 
-DROP TABLE IF EXISTS `appointed_cert_issuance`;
-CREATE TABLE IF NOT EXISTS `appointed_cert_issuance` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `fullname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `lastname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `sex` enum('Male','Female') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+CREATE TABLE `appointed_cert_issuance` (
+  `id` int(11) NOT NULL,
+  `fullname` varchar(255) NOT NULL,
+  `lastname` varchar(255) NOT NULL,
+  `sex` enum('Male','Female') NOT NULL,
   `start_date` date NOT NULL,
-  `position` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `office_appointed` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `position` varchar(255) NOT NULL,
+  `office_appointed` varchar(255) NOT NULL,
   `salary` decimal(10,2) NOT NULL,
   `pera` decimal(10,2) NOT NULL,
   `rta` decimal(10,2) NOT NULL,
@@ -76,10 +70,9 @@ CREATE TABLE IF NOT EXISTS `appointed_cert_issuance` (
   `cash_gift` decimal(10,2) NOT NULL,
   `productivity_enhancement` decimal(10,2) NOT NULL,
   `date_issued` date NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `appointed_cert_issuance`
@@ -95,14 +88,13 @@ INSERT INTO `appointed_cert_issuance` (`id`, `fullname`, `lastname`, `sex`, `sta
 -- Table structure for table `elected_cert_issuance`
 --
 
-DROP TABLE IF EXISTS `elected_cert_issuance`;
-CREATE TABLE IF NOT EXISTS `elected_cert_issuance` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `fullname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `lastname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `sex` enum('Male','Female') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+CREATE TABLE `elected_cert_issuance` (
+  `id` int(11) NOT NULL,
+  `fullname` varchar(255) NOT NULL,
+  `lastname` varchar(255) NOT NULL,
+  `sex` enum('Male','Female') NOT NULL,
   `start_date` date NOT NULL,
-  `position` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `position` varchar(255) NOT NULL,
   `salary` decimal(10,2) NOT NULL,
   `pera` decimal(10,2) NOT NULL,
   `rta` decimal(10,2) NOT NULL,
@@ -112,10 +104,9 @@ CREATE TABLE IF NOT EXISTS `elected_cert_issuance` (
   `cash_gift` decimal(10,2) NOT NULL,
   `productivity_enhancement` decimal(10,2) NOT NULL,
   `date_issued` date NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `elected_cert_issuance`
@@ -130,26 +121,23 @@ INSERT INTO `elected_cert_issuance` (`id`, `fullname`, `lastname`, `sex`, `start
 -- Table structure for table `employee`
 --
 
-DROP TABLE IF EXISTS `employee`;
-CREATE TABLE IF NOT EXISTS `employee` (
-  `employee_no` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `firstname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `middlename` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `lastname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `name_extension` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+CREATE TABLE `employee` (
+  `employee_no` varchar(100) NOT NULL,
+  `firstname` varchar(50) NOT NULL,
+  `middlename` varchar(50) DEFAULT NULL,
+  `lastname` varchar(50) NOT NULL,
+  `name_extension` varchar(10) DEFAULT NULL,
   `dob` date NOT NULL,
-  `pob` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `sex` enum('Male','Female') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `civil_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `blood_type` enum('A+','A-','B+','B-','AB+','AB-','O+','O-','Unknown') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'Unknown',
-  `mobile_no` bigint DEFAULT NULL,
-  `email_address` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`employee_no`),
-  UNIQUE KEY `email_address` (`email_address`)
+  `pob` varchar(255) NOT NULL,
+  `sex` enum('Male','Female') NOT NULL,
+  `civil_status` varchar(255) DEFAULT NULL,
+  `address` text NOT NULL,
+  `blood_type` enum('A+','A-','B+','B-','AB+','AB-','O+','O-','Unknown') DEFAULT 'Unknown',
+  `mobile_no` bigint(20) DEFAULT NULL,
+  `email_address` varchar(100) NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -178,17 +166,15 @@ INSERT INTO `employee` (`employee_no`, `firstname`, `middlename`, `lastname`, `n
 -- Table structure for table `events`
 --
 
-DROP TABLE IF EXISTS `events`;
-CREATE TABLE IF NOT EXISTS `events` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+CREATE TABLE `events` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
   `start_date` datetime NOT NULL,
   `end_date` datetime NOT NULL,
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `color` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `sent_mail` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `description` text DEFAULT NULL,
+  `color` varchar(255) NOT NULL,
+  `sent_mail` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `events`
@@ -207,15 +193,12 @@ INSERT INTO `events` (`id`, `title`, `start_date`, `end_date`, `description`, `c
 -- Table structure for table `files`
 --
 
-DROP TABLE IF EXISTS `files`;
-CREATE TABLE IF NOT EXISTS `files` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `folder_id` int NOT NULL,
-  `filename` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `uploaded_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `folder_id` (`folder_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `files` (
+  `id` int(11) NOT NULL,
+  `folder_id` int(11) NOT NULL,
+  `filename` varchar(255) NOT NULL,
+  `uploaded_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `files`
@@ -225,7 +208,11 @@ INSERT INTO `files` (`id`, `folder_id`, `filename`, `uploaded_at`) VALUES
 (4, 3, 'Alyssa-Choi-Tic-Tac-Toe.pdf', '2025-04-10 11:46:05'),
 (5, 3, 'spotify.txt', '2025-04-10 11:46:18'),
 (6, 3, 'SPay for April 2025.txt', '2025-04-10 11:47:20'),
-(7, 3, 'not-so-my-profile.txt', '2025-04-10 11:48:15');
+(7, 3, 'not-so-my-profile.txt', '2025-04-10 11:48:15'),
+(8, 2, '🎉 Questions.pdf', '2025-04-14 10:26:35'),
+(9, 1, '🎉 Questions.pdf', '2025-04-14 10:46:57'),
+(10, 4, '🎉 Questions.pdf', '2025-04-14 13:15:17'),
+(11, 5, '🎉 Questions.pdf', '2025-04-14 13:33:43');
 
 -- --------------------------------------------------------
 
@@ -233,23 +220,22 @@ INSERT INTO `files` (`id`, `folder_id`, `filename`, `uploaded_at`) VALUES
 -- Table structure for table `folders`
 --
 
-DROP TABLE IF EXISTS `folders`;
-CREATE TABLE IF NOT EXISTS `folders` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `folders` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `parent_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `folders`
 --
 
-INSERT INTO `folders` (`id`, `name`) VALUES
-(1, 'hello ganda'),
-(2, 'erika'),
-(3, 'jenny'),
-(4, 'savior'),
-(8, 'sasas');
+INSERT INTO `folders` (`id`, `name`, `parent_id`) VALUES
+(1, 'jellay', NULL),
+(3, 'erika', NULL),
+(4, 'OJT', 3),
+(5, 'peloramas', NULL),
+(6, 'narrative', 5);
 
 -- --------------------------------------------------------
 
@@ -257,25 +243,17 @@ INSERT INTO `folders` (`id`, `name`) VALUES
 -- Table structure for table `government_info`
 --
 
-DROP TABLE IF EXISTS `government_info`;
-CREATE TABLE IF NOT EXISTS `government_info` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `employee_no` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `gsis_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `pag_ibig_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `philhealth_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `sss_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `tin_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `gsis_no` (`gsis_no`),
-  UNIQUE KEY `pag_ibig_no` (`pag_ibig_no`),
-  UNIQUE KEY `philhealth_no` (`philhealth_no`),
-  UNIQUE KEY `sss_no` (`sss_no`),
-  UNIQUE KEY `tin_no` (`tin_no`),
-  KEY `employee_no` (`employee_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `government_info` (
+  `id` int(11) NOT NULL,
+  `employee_no` varchar(100) NOT NULL,
+  `gsis_no` varchar(20) NOT NULL,
+  `pag_ibig_no` varchar(20) NOT NULL,
+  `philhealth_no` varchar(20) NOT NULL,
+  `sss_no` varchar(20) NOT NULL,
+  `tin_no` varchar(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `government_info`
@@ -293,15 +271,12 @@ INSERT INTO `government_info` (`id`, `employee_no`, `gsis_no`, `pag_ibig_no`, `p
 -- Table structure for table `hr_staffs`
 --
 
-DROP TABLE IF EXISTS `hr_staffs`;
-CREATE TABLE IF NOT EXISTS `hr_staffs` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `employee_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `designation` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `role` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `employee_no` (`employee_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `hr_staffs` (
+  `id` int(11) NOT NULL,
+  `employee_no` varchar(50) NOT NULL,
+  `designation` varchar(100) NOT NULL,
+  `role` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `hr_staffs`
@@ -323,25 +298,22 @@ INSERT INTO `hr_staffs` (`id`, `employee_no`, `designation`, `role`) VALUES
 -- Table structure for table `service_records`
 --
 
-DROP TABLE IF EXISTS `service_records`;
-CREATE TABLE IF NOT EXISTS `service_records` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `employee_no` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+CREATE TABLE `service_records` (
+  `id` int(11) NOT NULL,
+  `employee_no` varchar(100) NOT NULL,
   `from_date` date NOT NULL,
   `to_date` date NOT NULL,
-  `designation` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `status` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `designation` varchar(255) NOT NULL,
+  `status` varchar(100) NOT NULL,
   `salary` decimal(15,2) NOT NULL,
-  `station_place` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `branch` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `abs_wo_pay` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `station_place` varchar(255) NOT NULL,
+  `branch` varchar(255) NOT NULL,
+  `abs_wo_pay` varchar(50) DEFAULT NULL,
   `date_separated` date DEFAULT NULL,
-  `cause_of_separation` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `employee_no` (`employee_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `cause_of_separation` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `service_records`
@@ -356,6 +328,142 @@ INSERT INTO `service_records` (`id`, `employee_no`, `from_date`, `to_date`, `des
 (7, 'HRM-ADMIN', '2025-03-11', '2025-03-12', 'dfsdsfs', 'sas', 45345.00, 'HRM', '6gdf', '546', '2025-03-12', 'hehehhhe', '2025-03-10 16:00:00', '2025-03-24 07:07:28');
 
 --
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `employee_no` (`employee_no`);
+
+--
+-- Indexes for table `appointed_cert_issuance`
+--
+ALTER TABLE `appointed_cert_issuance`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `elected_cert_issuance`
+--
+ALTER TABLE `elected_cert_issuance`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `employee`
+--
+ALTER TABLE `employee`
+  ADD PRIMARY KEY (`employee_no`),
+  ADD UNIQUE KEY `email_address` (`email_address`);
+
+--
+-- Indexes for table `events`
+--
+ALTER TABLE `events`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `files`
+--
+ALTER TABLE `files`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `folder_id` (`folder_id`);
+
+--
+-- Indexes for table `folders`
+--
+ALTER TABLE `folders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `parent_id` (`parent_id`);
+
+--
+-- Indexes for table `government_info`
+--
+ALTER TABLE `government_info`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `gsis_no` (`gsis_no`),
+  ADD UNIQUE KEY `pag_ibig_no` (`pag_ibig_no`),
+  ADD UNIQUE KEY `philhealth_no` (`philhealth_no`),
+  ADD UNIQUE KEY `sss_no` (`sss_no`),
+  ADD UNIQUE KEY `tin_no` (`tin_no`),
+  ADD KEY `employee_no` (`employee_no`);
+
+--
+-- Indexes for table `hr_staffs`
+--
+ALTER TABLE `hr_staffs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `employee_no` (`employee_no`);
+
+--
+-- Indexes for table `service_records`
+--
+ALTER TABLE `service_records`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `employee_no` (`employee_no`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `appointed_cert_issuance`
+--
+ALTER TABLE `appointed_cert_issuance`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `elected_cert_issuance`
+--
+ALTER TABLE `elected_cert_issuance`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `events`
+--
+ALTER TABLE `events`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `files`
+--
+ALTER TABLE `files`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `folders`
+--
+ALTER TABLE `folders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `government_info`
+--
+ALTER TABLE `government_info`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `hr_staffs`
+--
+ALTER TABLE `hr_staffs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `service_records`
+--
+ALTER TABLE `service_records`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -364,6 +472,12 @@ INSERT INTO `service_records` (`id`, `employee_no`, `from_date`, `to_date`, `des
 --
 ALTER TABLE `admin`
   ADD CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`employee_no`) REFERENCES `employee` (`employee_no`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `folders`
+--
+ALTER TABLE `folders`
+  ADD CONSTRAINT `folders_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `folders` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `government_info`
