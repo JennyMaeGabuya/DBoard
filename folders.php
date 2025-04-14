@@ -371,8 +371,8 @@ if (!$con) {
 
                         <div class="folders-container">
                             <?php
-                            $query = "SELECT * FROM folders";
-                            $result = mysqli_query($con, $query);
+                           $query = "SELECT * FROM folders WHERE parent_id IS NULL ORDER BY name ASC";
+                           $result = mysqli_query($con, $query);
 
                             if (mysqli_num_rows($result) > 0) {
                                 while ($row = mysqli_fetch_assoc($result)) {

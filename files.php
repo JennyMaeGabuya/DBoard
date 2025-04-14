@@ -19,6 +19,11 @@ $folder_query = "SELECT name FROM folders WHERE id = $folder_id";
 $folder_result = mysqli_query($con, $folder_query);
 $folder = mysqli_fetch_assoc($folder_result);
 
+// Get subfolders of the current folder
+$subfolder_query = "SELECT * FROM folders WHERE parent_id = $folder_id ORDER BY name ASC";
+$subfolder_result = mysqli_query($con, $subfolder_query);
+
+
 if (!$folder) {
     die("Folder not found.");
 }
@@ -111,6 +116,8 @@ $file_result = mysqli_query($con, $file_query);
             cursor: not-allowed;
             opacity: 0.8;
         }
+
+        .
     </style>
 </head>
 
@@ -153,6 +160,7 @@ $file_result = mysqli_query($con, $file_query);
                                                     </a>
                                                 </li>
                                             </ul>
+
                                             <!-- Right Side: Time, Date, and User Location -->
                                             <div class="pst-container">
                                                 <span id="user-location">Detecting location...</span> |
@@ -222,8 +230,13 @@ $file_result = mysqli_query($con, $file_query);
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="product-status-wrap drp-lst">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <h3 style="margin-bottom: 20px;"><?php echo htmlspecialchars($folder['name']); ?> Files</h3>
+
+                        <div class="col-lg-12 d-flex justify-content-between align-items-center file-header mb-3">
+                            <h3 class="folder-title"><?php echo htmlspecialchars($folder['name']); ?> Files</h3>
+                            <button class="btn btn-primary add-folder-btn" onclick="openCreateFolderModal()"
+                                style="margin-left: 1100px; margin-bottom: 8px;">
+                                <i class="fas fa-folder-plus"></i> Add Folder
+                            </button>
                         </div>
 
                         <div class="widget-box">
@@ -237,47 +250,71 @@ $file_result = mysqli_query($con, $file_query);
 
                                 <tbody>
                                     <?php
+                                    // Show subfolders first
+                                    if (mysqli_num_rows($subfolder_result) > 0) {
+                                        while ($subfolder = mysqli_fetch_assoc($subfolder_result)) {
+                                            echo '<tr>
+                                                <td class="filename-cell">
+                                                    <i class="fa fa-folder-open" style="margin-right: 10px;"></i>
+                                                    <a href="files.php?folder_id=' . $subfolder['id'] . '" class="file-link" title="' . htmlspecialchars($subfolder['name']) . '">' . htmlspecialchars($subfolder['name']) . '</a>
+                                                </td>
+                                                <td class="file-actions text-right">
+                                                    <a href="files.php?folder_id=' . $subfolder['id'] . '" title="Open Folder">
+                                                        <button class="btn btn-primary" style="margin-left: 13px; margin-right: 4px;" ><i class="fa fa-folder-open"></i> Open</button>
+                                                    </a>
+                                                    <a href="actions/download-folder.php?id=' . $subfolder['id'] . '" title="Download Folder">
+                                                        <button class="btn btn-success" style="margin-right: 2px;"><i class="fa fa-download"></i> Download</button>
+                                                    </a>
+                                                    <a href="#" class="delete-folder-btn" data-id="' . $subfolder['id'] . '" title="Delete Folder">
+                                                        <button class="btn btn-danger" ><i class="fa fa-trash"></i></button>
+                                                    </a>
+                                                </td>
+                                            </tr>';
+                                        }
+                                    }
+
+                                    // Then show files
                                     if (mysqli_num_rows($file_result) > 0) {
                                         while ($file = mysqli_fetch_assoc($file_result)) {
                                             $filePath = "img/uploads/" . htmlspecialchars($file['filename']);
                                             $fileName = htmlspecialchars($file['filename']);
                                             $fileId = $file['id'];
 
-                                            // Truncate filename if too long (optional PHP-side fallback)
                                             $displayName = strlen($fileName) > 55 ? substr($fileName, 0, 50) . '...' : $fileName;
-
-                                            // Get file extension
                                             $fileExtension = strtolower(pathinfo($file['filename'], PATHINFO_EXTENSION));
                                             $isPdf = ($fileExtension === 'pdf');
 
                                             echo '<tr>
-                                                <td class="filename-cell">
-                                                    <i class="fa fa-file-o" style="margin-right: 10px;"></i>
-                                                    <a href="' . $filePath . '" target="_blank" class="file-link" title="' . $fileName . '">' . $displayName . '</a>
-                                                </td>
-                                                <td class="file-actions text-right">';
+                <td class="filename-cell">
+                    <i class="fa fa-file-o" style="margin-right: 10px;"></i>
+                    <a href="' . $filePath . '" target="_blank" class="file-link" title="' . $fileName . '">' . $displayName . '</a>
+                </td>
+                <td class="file-actions text-right">';
 
                                             if ($isPdf) {
                                                 echo '<a href="view-files.php?id=' . $fileId . '" target="_blank" title="Preview">
-                                                        <button class="btn btn-warning"><i class="fa fa-search"></i> Preview</button>
-                                                    </a>';
+                    <button class="btn btn-warning"><i class="fa fa-search"></i> Preview</button>
+                </a>';
                                             } else {
                                                 echo '<button class="preview-btn" disabled title="Preview only available for PDFs">
-                                            <i class="fa fa-search"></i> Preview
-                                        </button>';
+                    <i class="fa fa-search"></i> Preview
+                </button>';
                                             }
 
                                             echo '<a href="actions/download.php?file=' . urlencode($file['filename']) . '" title="Download">
-                                                    <button class="btn btn-success"><i class="fa fa-download"></i> Download</button>
-                                                </a>
-                                                <a href="#" class="delete-btn-swal" data-id="' . $fileId . '" title="Delete">
-                                                    <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                                                </a>
-                                                </td>
-                                            </tr>';
+                <button class="btn btn-success"><i class="fa fa-download"></i> Download</button>
+            </a>
+            <a href="#" class="delete-btn-swal" data-id="' . $fileId . '" title="Delete">
+                <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+            </a>
+            </td>
+            </tr>';
                                         }
                                     } else {
-                                        echo '<tr><td colspan="2" class="no-files">No files found.</td></tr>';
+                                        // Only show if there are no files *and* no subfolders
+                                        if (mysqli_num_rows($subfolder_result) == 0) {
+                                            echo '<tr><td colspan="2" class="no-files">No files or subfolders found.</td></tr>';
+                                        }
                                     }
                                     ?>
                                 </tbody>
@@ -289,10 +326,12 @@ $file_result = mysqli_query($con, $file_query);
         </div>
     </div>
 
+
+
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll('.delete-btn-swal').forEach(btn => {
-                btn.addEventListener('click', function(e) {
+                btn.addEventListener('click', function (e) {
                     e.preventDefault();
                     const fileId = this.getAttribute('data-id');
                     const row = this.closest('tr');
@@ -331,11 +370,11 @@ $file_result = mysqli_query($con, $file_query);
             const folderId = <?php echo $folder_id; ?>;
 
             // Allow drag-and-drop anywhere on the page
-            document.body.addEventListener('dragover', function(event) {
+            document.body.addEventListener('dragover', function (event) {
                 event.preventDefault(); // Allow drop
             });
 
-            document.body.addEventListener('drop', function(event) {
+            document.body.addEventListener('drop', function (event) {
                 event.preventDefault();
 
                 const files = event.dataTransfer.files;
@@ -358,7 +397,7 @@ $file_result = mysqli_query($con, $file_query);
                 const xhr = new XMLHttpRequest();
                 xhr.open("POST", "upload-file.php", true);
 
-                xhr.onload = function() {
+                xhr.onload = function () {
                     if (xhr.status === 200) {
                         const response = JSON.parse(xhr.responseText);
                         if (response.success) {
@@ -370,7 +409,7 @@ $file_result = mysqli_query($con, $file_query);
                     }
                 };
 
-                xhr.onerror = function() {
+                xhr.onerror = function () {
                     Swal.fire("Error!", "Network error occurred during upload.", "error");
                 };
 
@@ -378,9 +417,66 @@ $file_result = mysqli_query($con, $file_query);
             }
         });
 
-        setTimeout(function() {
+        setTimeout(function () {
             location.reload();
         }, 300000);
     </script>
+
+    <script>
+        function openCreateFolderModal() {
+            $('#createFolderModal').modal('show');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('createFolderForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const formData = new FormData(this);
+
+                fetch('actions/create-subfolder.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        $('#createFolderModal').modal('hide');
+
+                        if (data.success) {
+                            Swal.fire('Success!', data.message, 'success').then(() => location.reload());
+                        } else {
+                            Swal.fire('Error', data.message || 'Could not create folder.', 'error');
+                        }
+                    })
+                    .catch(err => {
+                        Swal.fire('Error', 'An error occurred.', 'error');
+                    });
+            });
+        });
+    </script>
+
+    <div class="modal fade" id="createFolderModal" tabindex="-1" role="dialog" aria-labelledby="createFolderLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="createFolderForm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create Subfolder</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control" name="folder_name" placeholder="Enter folder name"
+                            required>
+                        <input type="hidden" name="parent_id" value="<?php echo $folder_id; ?>">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Create</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <?php include 'includes/footer.php'; ?>
