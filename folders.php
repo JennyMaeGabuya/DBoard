@@ -371,8 +371,8 @@ if (!$con) {
 
                         <div class="folders-container">
                             <?php
-                           $query = "SELECT * FROM folders WHERE parent_id IS NULL ORDER BY name ASC";
-                           $result = mysqli_query($con, $query);
+                            $query = "SELECT * FROM folders WHERE parent_id IS NULL ORDER BY name ASC";
+                            $result = mysqli_query($con, $query);
 
                             if (mysqli_num_rows($result) > 0) {
                                 while ($row = mysqli_fetch_assoc($result)) {
@@ -423,7 +423,7 @@ if (!$con) {
                                         if (result.isConfirmed) {
                                             let folderName = result.value.trim();
                                             $.ajax({
-                                                url: 'add-folder.php',
+                                                url: 'actions/add-folder.php',
                                                 type: 'POST',
                                                 data: {
                                                     folder_name: folderName
@@ -470,27 +470,6 @@ if (!$con) {
                                             });
                                         }
                                     });
-                                });
-
-                                // Auto-save kapag na-blur ang input field
-                                $(document).on('blur', '.folder input', function() {
-                                    let newName = $(this).val().trim();
-                                    if (!newName) {
-                                        return;
-                                    }
-
-                                    $.ajax({
-                                        url: 'update_folder.php',
-                                        type: 'POST',
-                                        data: {
-                                            folder_name: newName
-                                        },
-                                        success: function(response) {
-                                            console.log("Folder updated successfully");
-                                        }
-                                    });
-
-                                    $(this).prop('readonly', true);
                                 });
                             });
 

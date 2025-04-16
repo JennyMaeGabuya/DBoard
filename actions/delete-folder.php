@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['folder_ids'])) {
     if ($stmtDelete->execute()) {
         // Delete the corresponding folders and files from the system
         foreach ($foldersToDelete as $folderName) {
-            $folderPath = "../Dboard/img/CSC Files/" . $folderName;
+            $folderPath = "../img/CSC Files/" . $folderName;
             if (is_dir($folderPath)) {
                 deleteFolder($folderPath);
             }

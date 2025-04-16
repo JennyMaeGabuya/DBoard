@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     error_log("Folder Name: " . $folder_name); // 
 
     // Define the main CSC Files directory
-    $base_directory = "../DBoard/img/CSC Files";
+    $base_directory = "../img/CSC Files/";
 
     // Ensure the base directory exists
     if (!file_exists($base_directory)) {
