@@ -72,7 +72,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
               <li class="<?= ($current_page == 'all-employees.php') ? 'active' : ''; ?>">
                 <a href="all-employees.php"><span class="mini-sub-pro">All Employees</span></a>
               </li>
-              <li class="<?= ($current_page == 'all-service-record.php' || $current_page == 'service-records.php') ? 'active' : ''; ?>">
+              <li
+                class="<?= ($current_page == 'all-service-record.php' || $current_page == 'service-records.php') ? 'active' : ''; ?>">
                 <a href="all-service-record.php"><span class="mini-sub-pro">Service Records</span></a>
               </li>
             </ul>
@@ -107,6 +108,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
               </li>
             </ul>
           </li>
+          <li class="<?= ($current_page == 'backup.php') ? 'active' : ''; ?>">
+            <a href="backup.php">
+              <i class="fa-solid fa-database"></i>
+              <span class="mini-click-non">Backup Database</span>
+            </a>
+          </li>
           <li class="<?= ($current_page == 'logout.php') ? 'active' : ''; ?>">
             <a href="logout.php">
               <span class="educate-icon educate-pages icon-wrap sub-icon-mg"></span>
@@ -120,3 +127,5 @@ $current_page = basename($_SERVER['PHP_SELF']);
   </nav>
 </div>
 <!-- End Left menu area -->
+
+
