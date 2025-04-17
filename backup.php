@@ -7,8 +7,6 @@ if (!isset($_SESSION['user_id'])) {
 
 include "dbcon.php";
 include 'emailnotif.php';
-
-
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +14,7 @@ include 'emailnotif.php';
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Files | ERMS</title>
+    <title>Backup Database | ERMS</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="img/mk-logo.ico" />
@@ -43,13 +41,13 @@ include 'emailnotif.php';
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
 
     <style>
-        .file-table {
+        .db-table {
             width: 100%;
             border-collapse: collapse;
         }
 
-        .file-table th,
-        .file-table td {
+        .db-table th,
+        .db-table td {
             padding: 10px;
             vertical-align: middle;
         }
@@ -94,8 +92,6 @@ include 'emailnotif.php';
             cursor: not-allowed;
             opacity: 0.8;
         }
-
-        .
     </style>
 </head>
 
@@ -111,25 +107,22 @@ include 'emailnotif.php';
     <div class="breadcome-area">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="breadcome-list">
+                <div class="col-lg-12">
+                    <div class="breadcome-list single-page-breadcome">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="breadcome-heading">
                                     <div class="row">
-                                        <div class="col-lg-12"
-                                            style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div class="col-lg-12" style="display: flex; justify-content: space-between; align-items: center;">
                                             <!-- Left Side: Home Breadcrumb -->
-                                            <ul class="breadcome-menu"
-                                                style="display: flex; align-items: center; padding: 0; margin: 0;">
+                                            <ul class="breadcome-menu" style="display: flex; align-items: center; padding: 0; margin: 0;">
                                                 <li>
-                                                    <link rel="stylesheet"
-                                                        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                                                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                                                     <a href="dashboard.php">
                                                         <i class="fas fa-home"></i> Home
                                                     </a>
                                                     <span class="bread-slash"> / </span>
-                                                    <a href="downloaded-file.php">
+                                                    <a href="#">
                                                         <strong>Backup Database</strong>
                                                     </a>
                                                 </li>
@@ -219,59 +212,68 @@ include 'emailnotif.php';
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="product-status mg-b-15">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="product-status-wrap drp-lst">
+    <div class="product-status mg-b-15">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="product-status-wrap drp-lst">
 
-                            <div class="col-lg-12 d-flex justify-content-between align-items-center file-header mb-3">
-                                <h3 class="folder-title">Database Records</h3>
-                                <button class="btn btn-danger btn-border btn-round btn-sm" onclick="confirmBackupDB()"
-                                    style="margin-left: 1100px; margin-bottom: 8px;">
+                        <div class="db-section"
+                            style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+                            <h3 class="db-title">Database Records</h3>
+                            <div class="db-list">
+                                <!-- DB icons go here -->
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-danger btn-border btn-round btn-sm" onclick="confirmBackupDB()">
                                     <i class="fa-solid fa-cloud-arrow-down"></i> Backup Now
                                 </button>
                             </div>
+                        </div>
 
-                            <div class="widget-box">
-                                <table class="file-table">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 80%; text-align: center;">File Name</th>
-                                            <th style="width: 20%; text-align: center;">Actions</th>
-                                        </tr>
-                                    </thead>
+                        <div class="widget-box">
+                            <table class="db-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 80%; text-align: center;">File Name</th>
+                                        <th style="width: 20%; text-align: center;">Actions</th>
+                                    </tr>
+                                </thead>
 
-                                    <tbody>
+                                <tbody>
 
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <script>
-            function confirmBackupDB() {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "This will download the latest database backup.",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, backup now!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Redirect to the backup script
-                        window.location.href = 'database/backup_db.php';
-                    }
-                });
-            }
-        </script>
+    <script>
+        function confirmBackupDB() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This will download the latest database backup.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, backup now!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirect to the backup script
+                    window.location.href = 'database/backup-db.php';
+                }
+            });
+        }
 
+        setTimeout(function() {
+            location.reload();
+        }, 300000);
+    </script>
 
-        <?php include 'includes/footer.php'; ?>
+    <?php include 'includes/footer.php'; ?>

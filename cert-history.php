@@ -93,7 +93,6 @@ include 'emailnotif.php';
 
               <style>
                 .pst-container {
-                  font-weight: bold;
                   font-size: 14px;
                   color: black;
                   text-align: right;
@@ -519,11 +518,11 @@ include 'emailnotif.php';
         });
       });
     });
+
+    setTimeout(function() {
+      location.reload();
+    }, 300000);
   </script>
-<script>
-  setTimeout(function(){
-    location.reload();
-  }, 300000); 
-</script>
+
   <!--Footer-part-->
   <?php include 'includes/footer.php'; ?>
