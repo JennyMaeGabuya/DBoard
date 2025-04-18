@@ -1,11 +1,28 @@
 <?php
-// Include your database conection
-include '../dbcon.php'; // assumes $con is created here
+date_default_timezone_set('Asia/Manila');
+
+// Check if this is an automatic backup
+$isAutomatic = isset($_GET['automatic']) && $_GET['automatic'] === 'true';
+
+// Define backup directory
+$backup_dir = __DIR__ . '/backups';
+
+// Make sure the backup directory exists
+if (!file_exists($backup_dir)) {
+    mkdir($backup_dir, 0755, true);
+}
+
+// Include your database connection
+include '../dbcon.php';
 
 $con->set_charset("utf8");
 
-// Set your database name
-$database = 'hr_records'; // or manually: $database = 'your_database_name';
+// Database name
+$database = 'hr_records';
+
+// Generate backup filename
+$backup_file_name = $database . '_backup_' . date('Ymd_His') . '.sql';
+$backup_path = $backup_dir . '/' . $backup_file_name;
 
 // Start SQL script
 $sqlScript  = "-- Database Backup\n";
@@ -47,8 +64,21 @@ foreach ($tables as $table) {
     $sqlScript .= "\n";
 }
 
-// Send headers and force download
-$backup_file_name = $database . '_backup_' . date('Ymd_His') . '.sql';
+// Save backup to file
+file_put_contents($backup_path, $sqlScript);
+
+// Log the backup
+file_put_contents($backup_dir . '/backup-log.txt', 
+    date('Y-m-d H:i:s') . " - " . ($isAutomatic ? "Automatic" : "Manual") . " backup created: $backup_file_name\n", 
+    FILE_APPEND);
+
+// For automatic backups, redirect back without download
+if ($isAutomatic) {
+    header('Location: ../index.php?backup=automatic_success');
+    exit;
+}
+
+// For manual backups, force download
 header('Content-Description: File Transfer');
 header('Content-Type: application/octet-stream');
 header('Content-Disposition: attachment; filename=' . basename($backup_file_name));
