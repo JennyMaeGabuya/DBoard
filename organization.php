@@ -59,11 +59,14 @@ include 'emailnotif.php';
                             <div class="col-lg-12">
                                 <div class="breadcome-heading">
                                     <div class="row">
-                                        <div class="col-lg-12" style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div class="col-lg-12"
+                                            style="display: flex; justify-content: space-between; align-items: center;">
                                             <!-- Left Side: Home Breadcrumb -->
-                                            <ul class="breadcome-menu" style="display: flex; align-items: center; padding: 0; margin: 0;">
+                                            <ul class="breadcome-menu"
+                                                style="display: flex; align-items: center; padding: 0; margin: 0;">
                                                 <li>
-                                                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                                                    <link rel="stylesheet"
+                                                        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                                                     <a href="dashboard.php">
                                                         <i class="fas fa-home"></i> Home
                                                     </a>
@@ -171,7 +174,8 @@ include 'emailnotif.php';
                         <div class="row">
                             <div class="col-md-6 text-right">
                                 <div class="button-container">
-                                    <a href="organization-chart.php" class="btn btn-warning btn-border btn-round btn-sm" target="_blank">
+                                    <a href="organization-chart.php" class="btn btn-warning btn-border btn-round btn-sm"
+                                        target="_blank">
                                         <i class="fa fa-sitemap"></i> View Chart
                                     </a>
                                 </div>
@@ -184,7 +188,7 @@ include 'emailnotif.php';
                             <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
 
                             <script>
-                                $(function() {
+                                $(function () {
                                     new DataTable('#myTable', {
                                         responsive: true,
                                         autoWidth: false,
@@ -256,7 +260,7 @@ include 'emailnotif.php';
                                         $role = $row['role'];
                                         $imagePath = $row['image'];
                                         $imageUrl = empty($imagePath) ? 'img/mk-logo.png' : 'img/profile/' . $imagePath;
-                                    ?>
+                                        ?>
 
                                         <tr>
                                             <td style="text-align: center;"><?php echo $count; ?></td>
@@ -290,7 +294,7 @@ include 'emailnotif.php';
                                             </td>
                                         </tr>
 
-                                    <?php $count++;
+                                        <?php $count++;
                                     } ?>
                                 </tbody>
                             </table>
@@ -301,10 +305,12 @@ include 'emailnotif.php';
             </div>
         </div>
     </div>
+
     <script>
-  setTimeout(function(){
-    location.reload();
-  }, 300000); 
-</script>
+        setTimeout(function () {
+            location.reload();
+        }, 300000); 
+    </script>
+    
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>

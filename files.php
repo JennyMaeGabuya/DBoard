@@ -258,7 +258,8 @@ $file_result = mysqli_query($con, $file_query);
                                 <!-- Folder icons go here -->
                             </div>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-primary btn-border btn-round btn-sm" onclick="openCreateFolderModal()">
+                                <button class="btn btn-primary btn-border btn-round btn-sm"
+                                    onclick="openCreateFolderModal()">
                                     <i class="fas fa-folder-plus"></i> Add Folder
                                 </button>
                             </div>
@@ -287,8 +288,12 @@ $file_result = mysqli_query($con, $file_query);
                                                     <a href="files.php?folder_id=' . $folderId . '" class="file-link" title="' . $folderName . '">' . $folderName . '</a>
                                                 </td>
                                                 <td class="file-actions text-right" style="text-align: center;">
-                                                    <a href="files.php?folder_id=' . $folderId . '" class="btn btn-info" style="width: 100%;" title="Open Folder">
+                                                    <a href="files.php?folder_id=' . $folderId . '" class="btn btn-info" style="width: 80%; margin-right:5px;" title="Open Folder">
                                                         <i class="fa fa-folder-open"></i> Open
+                                                    </a>
+                                                    <a href="actions/delete-subfolder.php?id=' . $folderId . '"
+                                                        class="btn btn-danger delete-btn" style="width: 15%;">
+                                                        <i class="fa fa-trash"></i>
                                                     </a>
                                                 </td>
                                             </tr>';
@@ -346,11 +351,34 @@ $file_result = mysqli_query($con, $file_query);
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+                const url = this.getAttribute('href');
+
+                Swal.fire({
+                    title: 'Delete this folder?',
+                    text: "This action cannot be undone.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = url;
+                    }
+                });
+            });
+        });
+    </script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll('.delete-btn-swal').forEach(btn => {
-                btn.addEventListener('click', function(e) {
+                btn.addEventListener('click', function (e) {
                     e.preventDefault();
                     const fileId = this.getAttribute('data-id');
                     const row = this.closest('tr');
@@ -389,11 +417,11 @@ $file_result = mysqli_query($con, $file_query);
             const folderId = <?php echo $folder_id; ?>;
 
             // Allow drag-and-drop anywhere on the page
-            document.body.addEventListener('dragover', function(event) {
+            document.body.addEventListener('dragover', function (event) {
                 event.preventDefault(); // Allow drop
             });
 
-            document.body.addEventListener('drop', function(event) {
+            document.body.addEventListener('drop', function (event) {
                 event.preventDefault();
 
                 const files = event.dataTransfer.files;
@@ -416,7 +444,7 @@ $file_result = mysqli_query($con, $file_query);
                 const xhr = new XMLHttpRequest();
                 xhr.open("POST", "upload-file.php", true);
 
-                xhr.onload = function() {
+                xhr.onload = function () {
                     if (xhr.status === 200) {
                         const response = JSON.parse(xhr.responseText);
                         if (response.success) {
@@ -428,7 +456,7 @@ $file_result = mysqli_query($con, $file_query);
                     }
                 };
 
-                xhr.onerror = function() {
+                xhr.onerror = function () {
                     Swal.fire("Error!", "Network error occurred during upload.", "error");
                 };
 
@@ -436,7 +464,7 @@ $file_result = mysqli_query($con, $file_query);
             }
         });
 
-        setTimeout(function() {
+        setTimeout(function () {
             location.reload();
         }, 300000);
 
@@ -445,15 +473,15 @@ $file_result = mysqli_query($con, $file_query);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('createFolderForm').addEventListener('submit', function(e) {
+            document.getElementById('createFolderForm').addEventListener('submit', function (e) {
                 e.preventDefault();
 
                 const formData = new FormData(this);
 
                 fetch('actions/create-subfolder.php', {
-                        method: 'POST',
-                        body: formData
-                    })
+                    method: 'POST',
+                    body: formData
+                })
                     .then(response => response.json())
                     .then(data => {
                         $('#createFolderModal').modal('hide');
@@ -471,7 +499,8 @@ $file_result = mysqli_query($con, $file_query);
         });
     </script>
 
-    <div class="modal fade" id="createFolderModal" tabindex="-1" role="dialog" aria-labelledby="createFolderLabel" aria-hidden="true">
+    <div class="modal fade" id="createFolderModal" tabindex="-1" role="dialog" aria-labelledby="createFolderLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <form id="createFolderForm">
                 <div class="modal-content">

@@ -101,7 +101,8 @@ FROM service_records WHERE employee_no = ?";
                       <!-- Left Side: Home Breadcrumb -->
                       <ul class="breadcome-menu" style="display: flex; align-items: center; padding: 0; margin: 0;">
                         <li>
-                          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                          <link rel="stylesheet"
+                            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                           <a href="dashboard.php">
                             <i class="fas fa-home"></i> Home
                           </a>
@@ -219,8 +220,8 @@ FROM service_records WHERE employee_no = ?";
                     <i class="fa-solid fa-plus-circle"></i> Add Service Record
                   </a>
 
-                  <a href="reports/serviceRecords.php?id=<?php echo $employee_no ?>" class="btn btn-danger btn-border btn-round btn-sm"
-                    target="_blank">
+                  <a href="reports/serviceRecords.php?id=<?php echo $employee_no ?>"
+                    class="btn btn-danger btn-border btn-round btn-sm" target="_blank">
                     <i class="fa-solid fa-file-pdf"></i> PDF
                   </a>
                 </div>
@@ -230,7 +231,7 @@ FROM service_records WHERE employee_no = ?";
             <div class="widget-box">
               <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
               <script>
-                $(function() {
+                $(function () {
                   new DataTable('#certHistoryTable', {
                     responsive: true,
                     autoWidth: false,
@@ -274,7 +275,7 @@ FROM service_records WHERE employee_no = ?";
                   $count = 1;
 
                   while ($row = $result->fetch_assoc()) {
-                  ?>
+                    ?>
                     <tr>
                       <td style="text-align: center;"><?php echo $count; ?></td>
                       <td><?php echo htmlspecialchars($row['from_date']); ?></td>
@@ -298,7 +299,7 @@ FROM service_records WHERE employee_no = ?";
                         </div>
                       </td>
                     </tr>
-                  <?php
+                    <?php
                     $count++;
                   }
                   ?>
@@ -313,8 +314,8 @@ FROM service_records WHERE employee_no = ?";
   </div>
 
   <script>
-    $(document).ready(function() {
-      $('.btn-warning').on('click', function() {
+    $(document).ready(function () {
+      $('.btn-warning').on('click', function () {
         var empid = $(this).data('empid'); // Get empid from the button's data attribute
         var row = $(this).closest('tr'); // Get the closest row
         var empno = '<?php echo $employee_no; ?>'; // Assuming employee_no is available in the PHP context
@@ -365,8 +366,7 @@ FROM service_records WHERE employee_no = ?";
 
               <div class="form-group col-md-4 mb-2">
                 <label>Employee Number</label>
-                <input name="empno" type="text" class="form-control" placeholder="Employee Number"
-                  readonly />
+                <input name="empno" type="text" class="form-control" placeholder="Employee Number" readonly />
               </div>
               <div class="form-group col-md-4">
                 <label>From</label>
@@ -438,7 +438,7 @@ FROM service_records WHERE employee_no = ?";
     </div>
   </div>
 
-  <?php if (isset($_SESSION['display'])) : ?>
+  <?php if (isset($_SESSION['display'])): ?>
     <script>
       Swal.fire({
         title: '<?php echo $_SESSION['title']; ?>',
@@ -452,7 +452,8 @@ FROM service_records WHERE employee_no = ?";
   <?php endif; ?>
 
   <!--SERVICE RECORDS FORM MODAL-->
-  <div class="modal fade" id="addservice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="addservice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header bg-primary" style="border-radius: 3px;">
@@ -466,27 +467,16 @@ FROM service_records WHERE employee_no = ?";
             <div class="row">
               <div class="form-group col-md-4 mb-2">
                 <label>Employee Number</label>
-                <input
-                  name="emp_no"
-                  type="text"
-                  class="form-control"
-                  placeholder="Employee Number" value="<?php echo $employee_no; ?>" readonly />
+                <input name="emp_no" type="text" class="form-control" placeholder="Employee Number"
+                  value="<?php echo $employee_no; ?>" readonly />
               </div>
               <div class="form-group col-md-4">
                 <label>From</label>
-                <input
-                  name="date_started"
-                  type="date"
-                  class="form-control"
-                  placeholder="Salary" />
+                <input name="date_started" type="date" class="form-control" placeholder="Salary" />
               </div>
               <div class="form-group col-md-4">
                 <label>To</label>
-                <input
-                  name="date_ended"
-                  type="date"
-                  class="form-control"
-                  placeholder="Pera" required />
+                <input name="date_ended" type="date" class="form-control" placeholder="Pera" required />
               </div>
 
             </div>
@@ -495,74 +485,44 @@ FROM service_records WHERE employee_no = ?";
               <div class="form-group col-md-4">
                 <label>Designation</label>
                 <div class="form-group">
-                  <input
-                    name="designation"
-                    type="text"
-                    class="form-control"
-                    required />
+                  <input name="designation" type="text" class="form-control" required />
                 </div>
               </div>
 
               <div class="form-group col-md-4">
                 <label>Status</label>
-                <input
-                  name="status"
-                  type="text"
-                  class="form-control"
-                  required />
+                <input name="status" type="text" class="form-control" required />
               </div>
               <div class="form-group col-md-4">
                 <label>Salary</label>
-                <input
-                  name="servicesalary"
-                  type="number"
-                  class="form-control"
-                  required />
+                <input name="servicesalary" type="number" class="form-control" required />
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-md-4">
                 <label>Station Place</label>
-                <input
-                  name="station"
-                  type="text"
-                  class="form-control"
-                  required />
+                <input name="station" type="text" class="form-control" required />
               </div>
               <div class="form-group col-md-4">
                 <label>Branch</label>
-                <input
-                  name="branch"
-                  type="text"
-                  class="form-control"
-                  required />
+                <input name="branch" type="text" class="form-control" required />
               </div>
               <div class="form-group col-md-4">
                 <label>Absent without Pay</label>
-                <input
-                  name="abs_wo_pay"
-                  type="text"
-                  class="form-control"
-                  required />
+                <input name="abs_wo_pay" type="text" class="form-control" required />
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-md-4">
                 <label>Date Separated</label>
-                <input
-                  name="separated"
-                  type="date"
-                  class="form-control" />
+                <input name="separated" type="date" class="form-control" />
               </div>
 
               <div class="form-group col-md-8">
                 <label>Cause of Separation</label>
-                <input
-                  name="separation"
-                  type="text"
-                  class="form-control" />
+                <input name="separation" type="text" class="form-control" />
               </div>
 
             </div>
@@ -578,10 +538,12 @@ FROM service_records WHERE employee_no = ?";
       </div>
     </div>
   </div>
+
   <script>
-  setTimeout(function(){
-    location.reload();
-  }, 300000); 
-</script>
+    setTimeout(function () {
+      location.reload();
+    }, 300000); 
+  </script>
+  
   <!--Footer-part-->
   <?php include 'includes/footer.php'; ?>
