@@ -288,11 +288,11 @@ $file_result = mysqli_query($con, $file_query);
                                                     <a href="files.php?folder_id=' . $folderId . '" class="file-link" title="' . $folderName . '">' . $folderName . '</a>
                                                 </td>
                                                 <td class="file-actions text-right" style="text-align: center;">
-                                                    <a href="files.php?folder_id=' . $folderId . '" class="btn btn-info" style="width: 80%; margin-right:5px;" title="Open Folder">
+                                                    <a href="files.php?folder_id=' . $folderId . '" class="btn btn-info" style="width: 80%; margin-right: 5px;" title="Open Folder">
                                                         <i class="fa fa-folder-open"></i> Open
                                                     </a>
                                                     <a href="actions/delete-subfolder.php?id=' . $folderId . '"
-                                                        class="btn btn-danger delete-btn" style="width: 15%;">
+                                                        class="btn btn-danger delete-btn">
                                                         <i class="fa fa-trash"></i>
                                                     </a>
                                                 </td>
