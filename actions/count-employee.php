@@ -4,7 +4,7 @@ include 'dbcon.php';
 date_default_timezone_set('Asia/Manila');
 $today = date('Y-m-d');
 
-// Count HR Staffs (including Mayor) - Just all active employees
+// Count HR Staffs (excluding Mayor) - and all active employees
 $sqlHR = "SELECT COUNT(*) AS hr_count 
           FROM employee
           WHERE LOWER(role) NOT LIKE '%mayor%' 
