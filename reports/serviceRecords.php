@@ -242,7 +242,7 @@ class PDF_MC_Table extends FPDF
         $is_mhrmo = false;
         if (!empty($employee['employee_no'])) {
             $emp = $employee['employee_no'];
-            $stmt = $con->prepare("SELECT role FROM hr_staffs WHERE role = 'MHRMO' AND employee_no = ?");
+            $stmt = $con->prepare("SELECT role FROM employee WHERE role = 'MHRMO' AND employee_no = ?");
             $stmt->bind_param("s", $emp);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -259,10 +259,9 @@ class PDF_MC_Table extends FPDF
         $mhrmo_name = "";
 
         // Fetch all HR roles
-        $gstmt = $con->prepare("SELECT e.firstname, e.middlename, e.lastname, e.name_extension, h.role 
-                        FROM employee e 
-                        JOIN hr_staffs h ON e.employee_no = h.employee_no 
-                        WHERE h.role IN ('Municipal Mayor', 'Admin Officer IV', 'MHRMO')");
+        $gstmt = $con->prepare("SELECT firstname, middlename, lastname, name_extension, role 
+                        FROM employee 
+                        WHERE role IN ('Municipal Mayor', 'Admin Officer IV', 'MHRMO')");
         $gstmt->execute();
         $res = $gstmt->get_result();
 

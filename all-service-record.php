@@ -211,7 +211,7 @@ include 'emailnotif.php';
                                     $query = "SELECT e.*
                                     FROM employee e
                                     INNER JOIN service_records s ON e.employee_no = s.employee_no
-                                    WHERE e.role IS NULL OR TRIM(e.role) = ''
+                                    WHERE e.role IS NOT NULL
                                     GROUP BY e.employee_no";
 
                                     $view_data = mysqli_query($con, $query);
