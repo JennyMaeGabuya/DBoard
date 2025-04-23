@@ -303,7 +303,7 @@ include 'emailnotif.php';
                                             <td>
                                                 <div style="text-align: center;">
                                                     <button type="button" class="btn btn-warning" data-toggle="modal"
-                                                        data-target="#editEmployee<?php echo $employee_no; ?>">
+                                                        data-target="#editEmployee<?php echo $employee_no; ?>" style="margin-right: 5px;">
                                                         <i class="fa fa-pencil"></i>
                                                     </button>
                                                     <a href="employeedetails.php?employee_no=<?php echo $employee_no; ?>"
