@@ -22,10 +22,30 @@ if ($row['count'] > 0) {
     exit;
 }
 
+// Get the current folder path from the database
+$currentFolderQuery = "SELECT name FROM folders WHERE id = $folder_id";
+$currentFolderResult = mysqli_query($con, $currentFolderQuery);
+$currentFolder = mysqli_fetch_assoc($currentFolderResult);
+
+if (!$currentFolder) {
+    echo json_encode(['success' => false, 'error' => 'Folder not found']);
+    exit;
+}
+
+// Define the main CSC Files directory
+$base_directory = "../img/CSC Files/";
+$currentFolderPath = $base_directory . $currentFolder['name'];
+$newFolderPath = $base_directory . $folder_name;
+
 // Update the folder name in the database
 $query = "UPDATE folders SET name = '$folder_name' WHERE id = $folder_id";
 if (mysqli_query($con, $query)) {
-    echo json_encode(['success' => true]);
+    // Rename the folder in the file system
+    if (rename($currentFolderPath, $newFolderPath)) {
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Failed to rename folder in the file system']);
+    }
 } else {
     echo json_encode(['success' => false, 'error' => 'Update failed: ' . mysqli_error($con)]);
 }

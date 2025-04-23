@@ -20,10 +20,62 @@ if ($row['count'] > 0) {
     exit;
 }
 
+// Get the current folder name and parent folder ID from the database
+$currentFolderQuery = "SELECT name, parent_id FROM folders WHERE id = $folder_id";
+$currentFolderResult = mysqli_query($con, $currentFolderQuery);
+$currentFolder = mysqli_fetch_assoc($currentFolderResult);
+
+if (!$currentFolder) {
+    echo json_encode(['success' => false, 'error' => 'Folder not found']);
+    exit;
+}
+
+// Define the main CSC Files directory
+$base_directory = "../img/CSC Files/";
+
+// Get the parent folder path if it exists
+$parentFolderId = $currentFolder['parent_id'];
+$parentFolderPath = '';
+
+// If the folder has a parent, get the full path to the parent folder
+if ($parentFolderId) {
+    $pathSegments = [];
+    $currentId = $parentFolderId;
+
+    // Reconstruct the path to the parent folder
+    while ($currentId !== null) {
+        $stmt = $con->prepare("SELECT name, parent_id FROM folders WHERE id = ?");
+        $stmt->bind_param("i", $currentId);
+        $stmt->execute();
+        $stmt->bind_result($name, $nextParentId);
+
+        if ($stmt->fetch()) {
+            array_unshift($pathSegments, $name);
+            $currentId = $nextParentId;
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Parent folder not found.']);
+            exit;
+        }
+
+        $stmt->close();
+    }
+
+    $parentFolderPath = implode('/', $pathSegments);
+}
+
+// Construct the current and new subfolder paths
+$currentFolderPath = $base_directory . ($parentFolderPath ? $parentFolderPath . '/' : '') . $currentFolder['name'];
+$newFolderPath = $base_directory . ($parentFolderPath ? $parentFolderPath . '/' : '') . $folder_name;
+
 // Update the folder name in the database
 $query = "UPDATE folders SET name = '$folder_name' WHERE id = $folder_id";
 if (mysqli_query($con, $query)) {
-    echo json_encode(['success' => true]);
+    // Rename the folder in the file system
+    if (rename($currentFolderPath, $newFolderPath)) {
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Failed to rename folder in the file system']);
+    }
 } else {
     echo json_encode(['success' => false, 'error' => 'Update failed: ' . mysqli_error($con)]);
 }
