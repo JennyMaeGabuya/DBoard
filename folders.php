@@ -217,7 +217,6 @@ if (!$con) {
             font-size: 15px !important;
         }
 
-
         .folder-dropdown li.rename-folder:hover {
             background-color: #f0f0f0;
         }
@@ -381,7 +380,7 @@ if (!$con) {
                             <?php
                             // Include database connection
                             include 'dbcon.php'; // Ensure this file contains the correct database connection
-                            
+
                             // Fetch folders from the database
                             $query = "SELECT * FROM folders WHERE parent_id IS NULL ORDER BY name ASC";
                             $result = mysqli_query($con, $query);
@@ -389,19 +388,19 @@ if (!$con) {
                             if (mysqli_num_rows($result) > 0) {
                                 while ($row = mysqli_fetch_assoc($result)) {
                                     echo '
-            <div class="folder-container">
-                <div class="folder-actions">
-                    <input type="checkbox" class="folder-checkbox" value="' . $row['id'] . '" style="display: none;">
-                    <div class="folder-options" style="position: relative; display: inline-block;">
-    <i class="fa fa-ellipsis-v folder-menu-toggle" data-folder-id="' . $row['id'] . '" style="cursor: pointer; padding: 5px;"></i>
-    <div class="folder-dropdown" id="dropdown-' . $row['id'] . '" style="display: none; position: absolute; left: 100%; top: 0; background: white; border: 1px solid #ddd; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 1000; min-width: 50px;">
-        <ul style="list-style: none; margin: 0; padding: 0;">
-            <li class="rename-folder" data-folder-id="' . $row['id'] . '" data-folder-name="' . htmlspecialchars($row['name']) . '" style="padding: 10px; cursor: pointer; border-bottom: 1px solid #eee; transition: background 0.3s;">
-                Rename
-            </li>
-        </ul>
-    </div>
-</div>
+                                        <div class="folder-container">
+                                            <div class="folder-actions">
+                                                <input type="checkbox" class="folder-checkbox" value="' . $row['id'] . '" style="display: none;">
+                                                <div class="folder-options" style="position: relative; display: inline-block;">
+                                <i class="fa fa-ellipsis-v folder-menu-toggle" data-folder-id="' . $row['id'] . '" style="cursor: pointer; padding: 5px;"></i>
+                                <div class="folder-dropdown" id="dropdown-' . $row['id'] . '" style="display: none; position: absolute; left: 100%; top: 0; background: white; border: 1px solid #ddd; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 1000; min-width: 50px;">
+                                    <ul style="list-style: none; margin: 0; padding: 0;">
+                                        <li class="rename-folder" data-folder-id="' . $row['id'] . '" data-folder-name="' . htmlspecialchars($row['name']) . '" style="padding: 10px; cursor: pointer; border-bottom: 1px solid #eee; transition: background 0.3s;">
+                                            Rename
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                 </div>
                 <div class="folder" onclick="openFolder(' . $row['id'] . ')">
                     <i class="fa fa-folder"></i><br>
@@ -419,12 +418,11 @@ if (!$con) {
                                 window.location.href = "files.php?folder_id=" + folderId;
                             }
 
-                            $(document).ready(function () {
-                                $('#addFolderBtn').click(function () {
+                            $(document).ready(function() {
+                                $('#addFolderBtn').click(function() {
                                     Swal.fire({
                                         title: 'Add New Folder',
                                         input: 'text',
-                                        inputLabel: 'Folder name',
                                         inputPlaceholder: 'Enter folder name',
                                         showCancelButton: true,
                                         confirmButtonText: 'Create',
@@ -450,7 +448,7 @@ if (!$con) {
                                                     folder_name: folderName
                                                 },
                                                 dataType: 'json',
-                                                success: function (response) {
+                                                success: function(response) {
                                                     if (response.success) {
                                                         Swal.fire({
                                                             icon: 'success',
@@ -477,7 +475,7 @@ if (!$con) {
                                                         });
                                                     }
                                                 },
-                                                error: function (xhr, status, error) {
+                                                error: function(xhr, status, error) {
                                                     Swal.fire({
                                                         icon: 'error',
                                                         title: 'AJAX Error',
@@ -494,10 +492,10 @@ if (!$con) {
                                 });
                             });
 
-                            $(document).ready(function () {
+                            $(document).ready(function() {
                                 let selectMode = false;
 
-                                $('#selectBtn').click(function () {
+                                $('#selectBtn').click(function() {
                                     selectMode = !selectMode;
                                     if (selectMode) {
                                         $('.folder-checkbox').show();
@@ -508,9 +506,9 @@ if (!$con) {
                                     }
                                 });
 
-                                $('#deleteSelectedBtn').click(function () {
+                                $('#deleteSelectedBtn').click(function() {
                                     let selectedFolders = [];
-                                    $('.folder-checkbox:checked').each(function () {
+                                    $('.folder-checkbox:checked').each(function() {
                                         selectedFolders.push($(this).val());
                                     });
 
@@ -541,7 +539,7 @@ if (!$con) {
                                                     folder_ids: selectedFolders
                                                 },
                                                 dataType: 'json',
-                                                success: function (response) {
+                                                success: function(response) {
                                                     if (response.success) {
                                                         Swal.fire({
                                                             icon: 'success',
@@ -560,7 +558,7 @@ if (!$con) {
                                                         });
                                                     }
                                                 },
-                                                error: function (xhr, status, error) {
+                                                error: function(xhr, status, error) {
                                                     Swal.fire({
                                                         icon: 'error',
                                                         title: 'AJAX Error',
@@ -574,13 +572,13 @@ if (!$con) {
                                 });
                             });
 
-                            setTimeout(function () {
+                            setTimeout(function() {
                                 location.reload();
                             }, 300000);
 
-                            $(document).ready(function () {
+                            $(document).ready(function() {
                                 // Toggle dropdown
-                                $(document).on('click', '.folder-menu-toggle', function (e) {
+                                $(document).on('click', '.folder-menu-toggle', function(e) {
                                     e.stopPropagation(); // Prevent other click events
                                     const folderId = $(this).data('folder-id');
                                     $('.folder-dropdown').hide(); // Close all
@@ -588,23 +586,29 @@ if (!$con) {
                                 });
 
                                 // Hide dropdown if clicked outside
-                                $(document).on('click', function () {
+                                $(document).on('click', function() {
                                     $('.folder-dropdown').hide();
                                 });
 
                                 // Handle rename click
-                                $(document).on('click', '.rename-folder', function (e) {
+                                $(document).on('click', '.rename-folder', function(e) {
                                     e.stopPropagation();
                                     const folderId = $(this).data('folder-id');
                                     const currentName = $(this).data('folder-name');
 
                                     Swal.fire({
-                                        title: 'Rename Folder',
+                                        title: 'Rename this folder?',
                                         input: 'text',
                                         inputValue: currentName,
                                         showCancelButton: true,
                                         confirmButtonText: 'Rename',
                                         cancelButtonText: 'Cancel',
+                                        customClass: {
+                                            title: 'swal-title-sm',
+                                            input: 'swal-input-sm',
+                                            confirmButton: 'swal-btn-sm',
+                                            cancelButton: 'swal-btn-sm'
+                                        },
                                         inputValidator: (value) => {
                                             if (!value.trim()) {
                                                 return 'Folder name cannot be empty';
@@ -621,16 +625,26 @@ if (!$con) {
                                                     folder_name: newName
                                                 },
                                                 dataType: 'json',
-                                                success: function (response) {
+                                                success: function(response) {
                                                     if (response.success) {
-                                                        Swal.fire('Renamed!', 'Folder name updated.', 'success').then(() => {
-                                                            location.reload(); // Reload the page to see the updated name
+                                                        Swal.fire({
+                                                            title: 'Renamed!',
+                                                            text: 'Folder name updated.',
+                                                            icon: 'success',
+                                                            timer: 2000,
+                                                            showConfirmButton: false,
+                                                            customClass: {
+                                                                title: 'swal-title-sm',
+                                                                popup: 'swal-popup-sm'
+                                                            }
+                                                        }).then(() => {
+                                                            location.reload(); // Reload to reflect changes
                                                         });
                                                     } else {
                                                         Swal.fire('Error', response.error || 'Rename failed.', 'error');
                                                     }
                                                 },
-                                                error: function (xhr, status, error) {
+                                                error: function(xhr, status, error) {
                                                     console.error('AJAX Error:', status, error, xhr.responseText);
                                                     Swal.fire('Error', 'AJAX error occurred: ' + error + ' (Status: ' + status + ')', 'error');
                                                 }
@@ -638,6 +652,7 @@ if (!$con) {
                                         }
                                     });
                                 });
+
                             });
                         </script>
 
