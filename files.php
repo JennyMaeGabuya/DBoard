@@ -283,20 +283,21 @@ $file_result = mysqli_query($con, $file_query);
                                             $folderName = htmlspecialchars($subfolder['name']);
 
                                             echo '<tr>
-                                                <td class="filename-cell">
-                                                    <i class="fa fa-folder-open" style="margin-right: 10px;"></i>
-                                                    <a href="files.php?folder_id=' . $folderId . '" class="file-link" title="' . $folderName . '">' . $folderName . '</a>
-                                                </td>
-                                                <td class="file-actions text-right" style="text-align: center;">
-                                                    <a href="files.php?folder_id=' . $folderId . '" class="btn btn-info" style="width: 80%; margin-right: 5px;" title="Open Folder">
-                                                        <i class="fa fa-folder-open"></i> Open
-                                                    </a>
-                                                    <a href="actions/delete-subfolder.php?id=' . $folderId . '"
-                                                        class="btn btn-danger delete-btn">
-                                                        <i class="fa fa-trash"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>';
+    <td class="filename-cell">
+        <i class="fa fa-folder-open rename-icon" style="margin-right: 10px; cursor: pointer;" data-id="' . $folderId . '"></i>
+        <span class="folder-name-text" data-id="' . $folderId . '">' . $folderName . '</span>
+        <input type="text" class="folder-name-input" data-id="' . $folderId . '" value="' . $folderName . '" style="display: none; width: 70%; padding: 2px; font-size: 14px;">
+    </td>
+    <td class="file-actions text-right" style="text-align: center;">
+        <a href="files.php?folder_id=' . $folderId . '" class="btn btn-info" style="width: 80%; margin-right: 5px;" title="Open Folder">
+            <i class="fa fa-folder-open"></i> Open
+        </a>
+        <a href="actions/delete-subfolder.php?id=' . $folderId . '" class="btn btn-danger delete-btn">
+            <i class="fa fa-trash"></i>
+        </a>
+    </td>
+</tr>';
+                                        
                                         }
                                     }
 
@@ -501,6 +502,61 @@ $file_result = mysqli_query($con, $file_query);
         setTimeout(function() {
             location.reload();
         }, 300000);
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".rename-icon").forEach(function (icon) {
+        icon.addEventListener("click", function () {
+            const id = this.dataset.id;
+            const span = document.querySelector('.folder-name-text[data-id="' + id + '"]');
+            const input = document.querySelector('.folder-name-input[data-id="' + id + '"]');
+
+            span.style.display = "none";
+            input.style.display = "inline-block";
+            input.focus();
+            input.select();
+        });
+    });
+
+    function saveRename(input) {
+        const id = input.dataset.id;
+        const newName = input.value.trim();
+        if (newName === "") return;
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "actions/rename-subfolder.php", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onload = function () {
+            const response = JSON.parse(xhr.responseText);
+            if (xhr.status === 200 && response.success) {
+                const span = document.querySelector('.folder-name-text[data-id="' + id + '"]');
+                span.textContent = newName;
+                span.style.display = "inline";
+                input.style.display = "none";
+            } else {
+                alert(response.error || "Rename failed!");
+            }
+        };
+        xhr.send("id=" + encodeURIComponent(id) + "&name=" + encodeURIComponent(newName));
+    }
+
+    document.querySelectorAll(".folder-name-input").forEach(function (input) {
+        input.addEventListener("blur", function () {
+            saveRename(this);
+        });
+
+        input.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                this.blur(); // Trigger save
+            }
+        });
+    });
+});
+
+
+
+
+
     </script>
 
     <div class="modal fade" id="createFolderModal" tabindex="-1" role="dialog" aria-labelledby="createFolderLabel"
