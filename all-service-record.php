@@ -209,11 +209,10 @@ include 'emailnotif.php';
                                 <tbody>
                                     <?php
                                     $query = "SELECT e.*
-                                              FROM employee e
-                                              INNER JOIN service_records s ON e.employee_no = s.employee_no
-                                              LEFT JOIN hr_staffs h ON e.employee_no = h.employee_no AND LOWER(h.role)
-                                              WHERE h.employee_no IS NULL
-                                              GROUP BY e.employee_no";
+                                    FROM employee e
+                                    INNER JOIN service_records s ON e.employee_no = s.employee_no
+                                    WHERE e.role IS NULL OR TRIM(e.role) = ''
+                                    GROUP BY e.employee_no";
 
                                     $view_data = mysqli_query($con, $query);
                                     $count = 1;
@@ -302,6 +301,6 @@ include 'emailnotif.php';
             location.reload();
         }, 300000);
     </script>
-    
+
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>

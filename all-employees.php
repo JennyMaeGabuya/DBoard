@@ -225,19 +225,18 @@ include 'emailnotif.php';
                                 <tbody>
                                     <?php
                                     $query = "SELECT 
-                                        e.employee_no, e.firstname, e.middlename, e.lastname, e.name_extension, 
-                                        e.dob, e.pob, e.sex, e.civil_status, e.address, e.mobile_no, e.email_address, e.blood_type, e.image,
-                                        g.gsis_no, g.pag_ibig_no, g.philhealth_no, g.tin_no, g.sss_no,
-                                        (SELECT s.salary FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS salary,
-                                        (SELECT s.station_place FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS station_place,
-                                        (SELECT s.branch FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS branch,
-                                        (SELECT s.abs_wo_pay FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS abs_wo_pay,
-                                        (SELECT s.cause_of_separation FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS cause_of_separation
-                                        FROM employee e
-                                        LEFT JOIN government_info g ON e.employee_no = g.employee_no
-                                        LEFT JOIN hr_staffs h ON e.employee_no = h.employee_no AND LOWER(h.role)
-                                        WHERE h.employee_no IS NULL
-                                        ORDER BY e.created_at DESC";
+    e.employee_no, e.firstname, e.middlename, e.lastname, e.name_extension, 
+    e.dob, e.pob, e.sex, e.civil_status, e.address, e.mobile_no, e.email_address, e.blood_type, e.image,
+    g.gsis_no, g.pag_ibig_no, g.philhealth_no, g.tin_no, g.sss_no,
+    (SELECT s.salary FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS salary,
+    (SELECT s.station_place FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS station_place,
+    (SELECT s.branch FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS branch,
+    (SELECT s.abs_wo_pay FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS abs_wo_pay,
+    (SELECT s.cause_of_separation FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS cause_of_separation
+    FROM employee e
+    LEFT JOIN government_info g ON e.employee_no = g.employee_no
+    WHERE e.account_status = 1
+    ORDER BY e.created_at DESC";
 
                                     $view_data = mysqli_query($con, $query);
                                     $count = 1;
@@ -256,28 +255,20 @@ include 'emailnotif.php';
                                         $mobile_no = $row['mobile_no'] ?? '';
                                         $email_address = $row['email_address'] ?? '';
                                         $blood_type = $row['blood_type'] ?? '';
-
-                                        // Government info
                                         $gsis = $row['gsis_no'] ?? '';
                                         $pag_ibig = $row['pag_ibig_no'] ?? '';
                                         $philhealth = $row['philhealth_no'] ?? '';
                                         $tin = $row['tin_no'] ?? '';
                                         $sss = $row['sss_no'] ?? '';
-
-                                        // Service records
                                         $salary = $row['salary'] ?? '';
                                         $station_place = $row['station_place'] ?? '';
                                         $branch = $row['branch'] ?? '';
                                         $abs_wo_pay = $row['abs_wo_pay'] ?? '';
                                         $cause_of_separation = $row['cause_of_separation'] ?? '';
-
-                                        // Image handling
                                         $imagePath = $row['image'] ?? '';
                                         $imageUrl = !empty($imagePath) ? 'img/profile/' . $imagePath : 'img/mk-logo.png';
                                     ?>
-
                                         <tr>
-
                                             <td style="text-align: center;"><?php echo $count; ?></td>
                                             <td>
                                                 <img src="<?php echo htmlspecialchars($imageUrl); ?>" alt=""
@@ -316,7 +307,7 @@ include 'emailnotif.php';
                                                     </a>
                                                 </div>
                                             </td>
-
+                                            
                                             <script>
                                                 document.addEventListener("DOMContentLoaded", function() {
                                                     // Confirmation before deleting an employee

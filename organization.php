@@ -188,7 +188,7 @@ include 'emailnotif.php';
                             <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
 
                             <script>
-                                $(function () {
+                                $(function() {
                                     new DataTable('#myTable', {
                                         responsive: true,
                                         autoWidth: false,
@@ -217,26 +217,27 @@ include 'emailnotif.php';
                                 <tbody>
                                     <?php
                                     $stmt = $con->prepare("SELECT 
-                                            e.employee_no,
-                                            e.firstname,
-                                            e.middlename,
-                                            e.lastname,
-                                            e.name_extension,
-                                            e.dob,
-                                            e.pob,
-                                            e.sex,
-                                            e.civil_status,
-                                            e.address,
-                                            e.blood_type,
-                                            e.mobile_no,
-                                            e.email_address,
-                                            e.image,
-                                            h.designation,
-                                            h.role,
-                                            e.created_at,
-                                            e.updated_at
-                                        FROM employee e
-                                        JOIN hr_staffs h ON e.employee_no = h.employee_no");
+                                                            employee_no,
+                                                            firstname,
+                                                            middlename,
+                                                            lastname,
+                                                            name_extension,
+                                                            dob,
+                                                            pob,
+                                                            sex,
+                                                            civil_status,
+                                                            address,
+                                                            blood_type,
+                                                            mobile_no,
+                                                            email_address,
+                                                            image,
+                                                            designation,
+                                                            role,
+                                                            created_at,
+                                                            updated_at
+                                                        FROM employee
+                                                        WHERE account_status = 1
+                                                        AND hr_staff = 1");
 
                                     $stmt->execute();
                                     $result = $stmt->get_result();
@@ -260,7 +261,7 @@ include 'emailnotif.php';
                                         $role = $row['role'];
                                         $imagePath = $row['image'];
                                         $imageUrl = empty($imagePath) ? 'img/mk-logo.png' : 'img/profile/' . $imagePath;
-                                        ?>
+                                    ?>
 
                                         <tr>
                                             <td style="text-align: center;"><?php echo $count; ?></td>
@@ -294,9 +295,10 @@ include 'emailnotif.php';
                                             </td>
                                         </tr>
 
-                                        <?php $count++;
+                                    <?php $count++;
                                     } ?>
                                 </tbody>
+
                             </table>
                         </div>
 
@@ -307,10 +309,10 @@ include 'emailnotif.php';
     </div>
 
     <script>
-        setTimeout(function () {
+        setTimeout(function() {
             location.reload();
-        }, 300000); 
+        }, 300000);
     </script>
-    
+
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>
