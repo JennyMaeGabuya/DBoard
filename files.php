@@ -297,7 +297,7 @@ $file_result = mysqli_query($con, $file_query);
         </a>
     </td>
 </tr>';
-                                        
+
                                         }
                                     }
 
@@ -355,7 +355,7 @@ $file_result = mysqli_query($con, $file_query);
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', function(e) {
+            button.addEventListener('click', function (e) {
                 e.preventDefault();
                 const url = this.getAttribute('href');
 
@@ -377,9 +377,9 @@ $file_result = mysqli_query($con, $file_query);
     </script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll('.delete-btn-swal').forEach(btn => {
-                btn.addEventListener('click', function(e) {
+                btn.addEventListener('click', function (e) {
                     e.preventDefault();
                     const fileId = this.getAttribute('data-id');
                     const row = this.closest('tr');
@@ -418,11 +418,11 @@ $file_result = mysqli_query($con, $file_query);
             const folderId = <?php echo $folder_id; ?>;
 
             // Allow drag-and-drop anywhere on the page
-            document.body.addEventListener('dragover', function(event) {
+            document.body.addEventListener('dragover', function (event) {
                 event.preventDefault(); // Allow drop
             });
 
-            document.body.addEventListener('drop', function(event) {
+            document.body.addEventListener('drop', function (event) {
                 event.preventDefault();
 
                 const files = event.dataTransfer.files;
@@ -445,7 +445,7 @@ $file_result = mysqli_query($con, $file_query);
                 const xhr = new XMLHttpRequest();
                 xhr.open("POST", "upload-file.php", true);
 
-                xhr.onload = function() {
+                xhr.onload = function () {
                     if (xhr.status === 200) {
                         const response = JSON.parse(xhr.responseText);
                         if (response.success) {
@@ -457,7 +457,7 @@ $file_result = mysqli_query($con, $file_query);
                     }
                 };
 
-                xhr.onerror = function() {
+                xhr.onerror = function () {
                     Swal.fire("Error!", "Network error occurred during upload.", "error");
                 };
 
@@ -465,7 +465,7 @@ $file_result = mysqli_query($con, $file_query);
             }
         });
 
-        setTimeout(function() {
+        setTimeout(function () {
             location.reload();
         }, 300000);
 
@@ -474,15 +474,15 @@ $file_result = mysqli_query($con, $file_query);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('createFolderForm').addEventListener('submit', function(e) {
+            document.getElementById('createFolderForm').addEventListener('submit', function (e) {
                 e.preventDefault();
 
                 const formData = new FormData(this);
 
                 fetch('actions/create-subfolder.php', {
-                        method: 'POST',
-                        body: formData
-                    })
+                    method: 'POST',
+                    body: formData
+                })
                     .then(response => response.json())
                     .then(data => {
                         $('#createFolderModal').modal('hide');
@@ -499,59 +499,59 @@ $file_result = mysqli_query($con, $file_query);
             });
         });
 
-        setTimeout(function() {
+        setTimeout(function () {
             location.reload();
         }, 300000);
 
 
         document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".rename-icon").forEach(function (icon) {
-        icon.addEventListener("click", function () {
-            const id = this.dataset.id;
-            const span = document.querySelector('.folder-name-text[data-id="' + id + '"]');
-            const input = document.querySelector('.folder-name-input[data-id="' + id + '"]');
+            document.querySelectorAll(".rename-icon").forEach(function (icon) {
+                icon.addEventListener("click", function () {
+                    const id = this.dataset.id;
+                    const span = document.querySelector('.folder-name-text[data-id="' + id + '"]');
+                    const input = document.querySelector('.folder-name-input[data-id="' + id + '"]');
 
-            span.style.display = "none";
-            input.style.display = "inline-block";
-            input.focus();
-            input.select();
-        });
-    });
+                    span.style.display = "none";
+                    input.style.display = "inline-block";
+                    input.focus();
+                    input.select();
+                });
+            });
 
-    function saveRename(input) {
-        const id = input.dataset.id;
-        const newName = input.value.trim();
-        if (newName === "") return;
+            function saveRename(input) {
+                const id = input.dataset.id;
+                const newName = input.value.trim();
+                if (newName === "") return;
 
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "actions/rename-subfolder.php", true);
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhr.onload = function () {
-            const response = JSON.parse(xhr.responseText);
-            if (xhr.status === 200 && response.success) {
-                const span = document.querySelector('.folder-name-text[data-id="' + id + '"]');
-                span.textContent = newName;
-                span.style.display = "inline";
-                input.style.display = "none";
-            } else {
-                alert(response.error || "Rename failed!");
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "actions/rename-subfolder.php", true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.onload = function () {
+                    const response = JSON.parse(xhr.responseText);
+                    if (xhr.status === 200 && response.success) {
+                        const span = document.querySelector('.folder-name-text[data-id="' + id + '"]');
+                        span.textContent = newName;
+                        span.style.display = "inline";
+                        input.style.display = "none";
+                    } else {
+                        alert(response.error || "Rename failed!");
+                    }
+                };
+                xhr.send("id=" + encodeURIComponent(id) + "&name=" + encodeURIComponent(newName));
             }
-        };
-        xhr.send("id=" + encodeURIComponent(id) + "&name=" + encodeURIComponent(newName));
-    }
 
-    document.querySelectorAll(".folder-name-input").forEach(function (input) {
-        input.addEventListener("blur", function () {
-            saveRename(this);
-        });
+            document.querySelectorAll(".folder-name-input").forEach(function (input) {
+                input.addEventListener("blur", function () {
+                    saveRename(this);
+                });
 
-        input.addEventListener("keydown", function (e) {
-            if (e.key === "Enter") {
-                this.blur(); // Trigger save
-            }
+                input.addEventListener("keydown", function (e) {
+                    if (e.key === "Enter") {
+                        this.blur(); // Trigger save
+                    }
+                });
+            });
         });
-    });
-});
 
 
 
