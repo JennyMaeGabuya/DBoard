@@ -296,10 +296,12 @@ include 'emailnotif.php';
             </div>
         </div>
     </div>
+
     <script>
-  setTimeout(function(){
-    location.reload();
-  }, 300000); 
-</script>
+        setTimeout(function() {
+            location.reload();
+        }, 300000);
+    </script>
+    
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>

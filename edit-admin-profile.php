@@ -511,4 +511,10 @@ if ($result->num_rows > 0) {
         </script>
     <?php endif; ?>
 
+    <script>
+        setTimeout(function() {
+            location.reload();
+        }, 300000);
+    </script>
+
     <?php include 'includes/footer.php'; ?>

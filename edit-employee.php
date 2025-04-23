@@ -536,9 +536,6 @@ if (isset($_GET['employee_no'])) {
         </div>
     </div>
 
-    <!-- Footer -->
-    <?php include 'includes/footer.php'; ?>
-
     <?php if (isset($_SESSION['display'])): ?>
         <script>
             Swal.fire({
@@ -551,3 +548,12 @@ if (isset($_GET['employee_no'])) {
         <?php unset($_SESSION['display']);
         unset($_SESSION['success']); ?>
     <?php endif; ?>
+
+    <script>
+        setTimeout(function() {
+            location.reload();
+        }, 300000);
+    </script>
+
+    <!-- Footer -->
+    <?php include 'includes/footer.php'; ?>

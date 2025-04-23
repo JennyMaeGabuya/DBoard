@@ -192,8 +192,14 @@ WHERE e.employee_no = ?";
         .table {
             border: 1px solidrgb(110, 106, 106);
         }
-        .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
-            line-height:0.328571;
+
+        .table>tbody>tr>td,
+        .table>tbody>tr>th,
+        .table>tfoot>tr>td,
+        .table>tfoot>tr>th,
+        .table>thead>tr>td,
+        .table>thead>tr>th {
+            line-height: 0.328571;
         }
 
         @media print {
@@ -451,16 +457,16 @@ WHERE e.employee_no = ?";
 
                                             </tr>
                                             <tr>
-                                            <th>Civil Status:</th>
-                                            <td><?php echo $civil_status; ?></td>
+                                                <th>Civil Status:</th>
+                                                <td><?php echo $civil_status; ?></td>
                                                 <th>Sex:</th>
                                                 <td><?php echo $sex; ?></td>
-                                              
+
 
                                             </tr>
                                             <tr>
-                                            <th>Birthday:</th>
-                                            <td><?php echo $bday; ?></td>
+                                                <th>Birthday:</th>
+                                                <td><?php echo $bday; ?></td>
                                                 <th>Blood Type</th>
                                                 <td colspan="3"><?php echo $blood_type; ?></td>
                                             </tr>
@@ -502,10 +508,12 @@ WHERE e.employee_no = ?";
             </div>
         </div>
     </div>
+
     <script>
-  setTimeout(function(){
-    location.reload();
-  }, 300000); 
-</script>
+        setTimeout(function() {
+            location.reload();
+        }, 300000);
+    </script>
+
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>

@@ -469,5 +469,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
 
+    <script>
+        setTimeout(function() {
+            location.reload();
+        }, 300000);
+    </script>
+
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>

@@ -55,3 +55,4 @@ if (in_array($mime_type, $previewable_types)) {
     echo "This file cannot be previewed.";
     exit;
 }
+?>

@@ -354,7 +354,7 @@ $file_result = mysqli_query($con, $file_query);
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', function (e) {
+            button.addEventListener('click', function(e) {
                 e.preventDefault();
                 const url = this.getAttribute('href');
 
@@ -376,9 +376,9 @@ $file_result = mysqli_query($con, $file_query);
     </script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll('.delete-btn-swal').forEach(btn => {
-                btn.addEventListener('click', function (e) {
+                btn.addEventListener('click', function(e) {
                     e.preventDefault();
                     const fileId = this.getAttribute('data-id');
                     const row = this.closest('tr');
@@ -417,11 +417,11 @@ $file_result = mysqli_query($con, $file_query);
             const folderId = <?php echo $folder_id; ?>;
 
             // Allow drag-and-drop anywhere on the page
-            document.body.addEventListener('dragover', function (event) {
+            document.body.addEventListener('dragover', function(event) {
                 event.preventDefault(); // Allow drop
             });
 
-            document.body.addEventListener('drop', function (event) {
+            document.body.addEventListener('drop', function(event) {
                 event.preventDefault();
 
                 const files = event.dataTransfer.files;
@@ -444,7 +444,7 @@ $file_result = mysqli_query($con, $file_query);
                 const xhr = new XMLHttpRequest();
                 xhr.open("POST", "upload-file.php", true);
 
-                xhr.onload = function () {
+                xhr.onload = function() {
                     if (xhr.status === 200) {
                         const response = JSON.parse(xhr.responseText);
                         if (response.success) {
@@ -456,7 +456,7 @@ $file_result = mysqli_query($con, $file_query);
                     }
                 };
 
-                xhr.onerror = function () {
+                xhr.onerror = function() {
                     Swal.fire("Error!", "Network error occurred during upload.", "error");
                 };
 
@@ -464,7 +464,7 @@ $file_result = mysqli_query($con, $file_query);
             }
         });
 
-        setTimeout(function () {
+        setTimeout(function() {
             location.reload();
         }, 300000);
 
@@ -473,15 +473,15 @@ $file_result = mysqli_query($con, $file_query);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('createFolderForm').addEventListener('submit', function (e) {
+            document.getElementById('createFolderForm').addEventListener('submit', function(e) {
                 e.preventDefault();
 
                 const formData = new FormData(this);
 
                 fetch('actions/create-subfolder.php', {
-                    method: 'POST',
-                    body: formData
-                })
+                        method: 'POST',
+                        body: formData
+                    })
                     .then(response => response.json())
                     .then(data => {
                         $('#createFolderModal').modal('hide');
@@ -497,6 +497,10 @@ $file_result = mysqli_query($con, $file_query);
                     });
             });
         });
+
+        setTimeout(function() {
+            location.reload();
+        }, 300000);
     </script>
 
     <div class="modal fade" id="createFolderModal" tabindex="-1" role="dialog" aria-labelledby="createFolderLabel"

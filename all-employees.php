@@ -833,60 +833,64 @@ include 'emailnotif.php';
                 </div>
             </div>
         </div>
-        <script>
-            function previewImage(event) {
-                const file = event.target.files[0];
-                const reader = new FileReader();
+    </div>
 
-                reader.onload = function(e) {
-                    const img = document.getElementById('addprofileImage');
-                    img.src = e.target.result; // Set the src of the image to the file's data URL
-                }
+    <script>
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
 
-                if (file) {
-                    reader.readAsDataURL(file); // Read the file as a data URL
-                }
-            }
-        </script>
-        <!-- For "Other" Civil Status -->
-        <script>
-            function checkOtherStatus(formType) {
-                var selectElement = document.getElementById("civil_status_" + formType);
-                var otherInput = document.getElementById("other_civil_status_" + formType);
-
-                if (selectElement.value === "Other") {
-                    otherInput.style.display = "block";
-                    otherInput.setAttribute("required", "true");
-                } else {
-                    otherInput.style.display = "none";
-                    otherInput.removeAttribute("required");
-                    otherInput.value = ""; // Clear input when another option is selected
-                }
+            reader.onload = function(e) {
+                const img = document.getElementById('addprofileImage');
+                img.src = e.target.result; // Set the src of the image to the file's data URL
             }
 
-            // Ensure proper state on page load (for edit form only)
-            document.addEventListener("DOMContentLoaded", function() {
-                checkOtherStatus('edit'); // Only needed for Edit form
+            if (file) {
+                reader.readAsDataURL(file); // Read the file as a data URL
+            }
+        }
+    </script>
+
+    <script>
+        function checkOtherStatus(formType) {
+            var selectElement = document.getElementById("civil_status_" + formType);
+            var otherInput = document.getElementById("other_civil_status_" + formType);
+
+            if (selectElement.value === "Other") {
+                otherInput.style.display = "block";
+                otherInput.setAttribute("required", "true");
+            } else {
+                otherInput.style.display = "none";
+                otherInput.removeAttribute("required");
+                otherInput.value = ""; // Clear input when another option is selected
+            }
+        }
+
+        // Ensure proper state on page load (for edit form only)
+        document.addEventListener("DOMContentLoaded", function() {
+            checkOtherStatus('edit'); // Only needed for Edit form
+        });
+    </script>
+
+    <!-- Sweetalert Notifier -->
+    <?php if (isset($_SESSION['display'])): ?>
+        <script>
+            Swal.fire({
+                title: '<?php echo $_SESSION['title']; ?>',
+                text: '<?php echo $_SESSION['display']; ?>',
+                icon: '<?php echo $_SESSION['success']; ?>',
+                confirmButtonText: 'OK'
             });
         </script>
+        <?php unset($_SESSION['display']);
+        unset($_SESSION['success']); ?>
+    <?php endif; ?>
 
-        <!-- Sweetalert Notifier -->
-        <?php if (isset($_SESSION['display'])): ?>
-            <script>
-                Swal.fire({
-                    title: '<?php echo $_SESSION['title']; ?>',
-                    text: '<?php echo $_SESSION['display']; ?>',
-                    icon: '<?php echo $_SESSION['success']; ?>',
-                    confirmButtonText: 'OK'
-                });
-            </script>
-            <?php unset($_SESSION['display']);
-            unset($_SESSION['success']); ?>
-        <?php endif; ?>
-        <script>
-  setTimeout(function(){
-    location.reload();
-  }, 300000); 
-</script>
-        <!--Footer-part-->
-        <?php include 'includes/footer.php'; ?>
+    <script>
+        setTimeout(function() {
+            location.reload();
+        }, 300000);
+    </script>
+
+    <!--Footer-part-->
+    <?php include 'includes/footer.php'; ?>
