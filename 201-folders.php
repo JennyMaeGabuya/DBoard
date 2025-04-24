@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
@@ -8,11 +7,6 @@ if (!isset($_SESSION['user_id'])) {
 
 include "dbcon.php";
 include 'emailnotif.php';
-
-if (!$con) {
-    echo json_encode(["success" => false, "error" => "Database connection failed!"]);
-    exit();
-}
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_POST["folder_ids"]) && is_array($_POST["folder_ids"])) {
@@ -54,8 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         echo json_encode(["success" => false, "error" => "Invalid folder IDs format!"]);
     }
-} else {
-    echo json_encode(["success" => false, "error" => "Invalid request!"]);
 }
 ?>
 
@@ -66,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Folders | ERMS</title>
+    <title>201 Folders | ERMS</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="img/mk-logo.ico" />
@@ -368,11 +360,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                     title="Add Folder">
                                     <i class="fas fa-folder-plus"></i> Add Folder
                                 </button>
-                                <button class="btn btn-danger btn-border btn-round btn-md" id="deleteSelectedBtn"
+                                <button class="btn btn-danger btn-border btn-round btn-sm" id="deleteSelectedBtn"
                                     title="Delete Folder">
                                     <i class="fas fa-trash"></i>
                                 </button>
-                                <button class="btn btn-warning btn-border btn-round btn-md" id="selectBtn"
+                                <button class="btn btn-warning btn-border btn-round btn-sm" id="selectBtn"
                                     title="Select Folder">
                                     <i class="fas fa-check-square"></i>
                                 </button>
@@ -381,9 +373,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                         <div class="folders-container">
                             <?php
-                            // Include database connection
-                            include 'dbcon.php'; // Ensure this file contains the correct database connection
-
                             // Fetch folders from the database
                             $query = "SELECT * FROM 201_folders WHERE parent_id IS NULL ORDER BY name ASC";
                             $result = mysqli_query($con, $query);

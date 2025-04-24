@@ -29,7 +29,7 @@ if (isset($_GET['id'])) {
         $originalName = $file['filename'];
         $safeName = sanitizeFileName($originalName);
 
-        $filePath = "../img/uploads/" . $safeName;
+        $filePath = "../img/CSC Uploads/" . $safeName;
 
         // Delete file from filesystem if it exists
         if (file_exists($filePath)) {

@@ -94,14 +94,14 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </ul>
           </li>
           <li
-            class="<?= ($current_page == '#' || $current_page == 'folders.php' || $current_page == 'files.php') ? 'active' : ''; ?>">
+            class="<?= ($current_page == '201-files.php' || $current_page == '201-folders.php' || $current_page == 'folders.php' || $current_page == 'files.php') ? 'active' : ''; ?>">
             <a class="has-arrow" href="#">
               <i class="fas fa-download"></i>
               <span class="mini-click-non">File Downloads</span>
             </a>
             <ul class="submenu-angle">
               <li class="<?= ($current_page == 'folders.php' || $current_page == 'files.php') ? 'active' : ''; ?>">
-                <a href="folders.php"><span class="mini-sub-pro">CSC Folders</span></a>
+                <a href="folders.php"><span class="mini-sub-pro">CSC Forms</span></a>
               </li>
               <ul class="submenu-angle"></ul>
               <li class="<?= ($current_page == '201-folders.php' || $current_page == '201-files.php') ? 'active' : ''; ?>">
@@ -128,5 +128,3 @@ $current_page = basename($_SERVER['PHP_SELF']);
   </nav>
 </div>
 <!-- End Left menu area -->
-
-

@@ -150,7 +150,7 @@ $file_result = mysqli_query($con, $file_query);
                                                     </a>
                                                     <span class="bread-slash"> / </span>
                                                     <a href="folders.php">
-                                                        Folders
+                                                        CSC Forms
                                                     </a>
                                                     <span class="bread-slash"> / </span>
                                                     <a href="#">
@@ -283,28 +283,27 @@ $file_result = mysqli_query($con, $file_query);
                                             $folderName = htmlspecialchars($subfolder['name']);
 
                                             echo '<tr>
-    <td class="filename-cell">
-        <i class="fa fa-folder-open rename-icon" style="margin-right: 10px; cursor: pointer;" data-id="' . $folderId . '"></i>
-        <span class="folder-name-text" data-id="' . $folderId . '">' . $folderName . '</span>
-        <input type="text" class="folder-name-input" data-id="' . $folderId . '" value="' . $folderName . '" style="display: none; width: 70%; padding: 2px; font-size: 14px;">
-    </td>
-    <td class="file-actions text-right" style="text-align: center;">
-        <a href="files.php?folder_id=' . $folderId . '" class="btn btn-info" style="width: 80%; margin-right: 5px;" title="Open Folder">
-            <i class="fa fa-folder-open"></i> Open
-        </a>
-        <a href="actions/delete-subfolder.php?id=' . $folderId . '" class="btn btn-danger delete-btn">
-            <i class="fa fa-trash"></i>
-        </a>
-    </td>
-</tr>';
-
+                                                <td class="filename-cell">
+                                                    <i class="fa fa-folder-open rename-icon" style="margin-right: 10px; cursor: pointer;" data-id="' . $folderId . '"></i>
+                                                    <span class="folder-name-text" data-id="' . $folderId . '">' . $folderName . '</span>
+                                                    <input type="text" class="folder-name-input" data-id="' . $folderId . '" value="' . $folderName . '" style="display: none; width: 70%; padding: 2px; font-size: 14px;">
+                                                </td>
+                                                <td class="file-actions text-right" style="text-align: center;">
+                                                    <a href="files.php?folder_id=' . $folderId . '" class="btn btn-info" style="width: 80%; margin-right: 5px;" title="Open Folder">
+                                                        <i class="fa fa-folder-open"></i> Open
+                                                    </a>
+                                                    <a href="actions/delete-subfolder.php?id=' . $folderId . '" class="btn btn-danger delete-btn">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>';
                                         }
                                     }
 
                                     // Then show files
                                     if (mysqli_num_rows($file_result) > 0) {
                                         while ($file = mysqli_fetch_assoc($file_result)) {
-                                            $filePath = "img/uploads/" . htmlspecialchars($file['filename']);
+                                            $filePath = "img/CSC Uploads/" . htmlspecialchars($file['filename']);
                                             $fileName = htmlspecialchars($file['filename']);
                                             $fileId = $file['id'];
 
@@ -320,7 +319,7 @@ $file_result = mysqli_query($con, $file_query);
                                                     <td class="file-actions text-right">';
 
                                             if ($isPdf) {
-                                                echo '<a href="view-files.php?id=' . $fileId . '" target="_blank" title="Preview">
+                                                echo '<a href="actions/view-files.php?id=' . $fileId . '" target="_blank" title="Preview">
                                                 <button class="btn btn-warning"><i class="fa fa-search"></i> Preview</button>
                                             </a>';
                                             } else {
@@ -352,10 +351,10 @@ $file_result = mysqli_query($con, $file_query);
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', function (e) {
+            button.addEventListener('click', function(e) {
                 e.preventDefault();
                 const url = this.getAttribute('href');
 
@@ -374,12 +373,10 @@ $file_result = mysqli_query($con, $file_query);
                 });
             });
         });
-    </script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll('.delete-btn-swal').forEach(btn => {
-                btn.addEventListener('click', function (e) {
+                btn.addEventListener('click', function(e) {
                     e.preventDefault();
                     const fileId = this.getAttribute('data-id');
                     const row = this.closest('tr');
@@ -418,11 +415,11 @@ $file_result = mysqli_query($con, $file_query);
             const folderId = <?php echo $folder_id; ?>;
 
             // Allow drag-and-drop anywhere on the page
-            document.body.addEventListener('dragover', function (event) {
+            document.body.addEventListener('dragover', function(event) {
                 event.preventDefault(); // Allow drop
             });
 
-            document.body.addEventListener('drop', function (event) {
+            document.body.addEventListener('drop', function(event) {
                 event.preventDefault();
 
                 const files = event.dataTransfer.files;
@@ -443,9 +440,9 @@ $file_result = mysqli_query($con, $file_query);
 
                 // Create an XMLHttpRequest to send the files
                 const xhr = new XMLHttpRequest();
-                xhr.open("POST", "upload-file.php", true);
+                xhr.open("POST", "actions/upload-file.php", true);
 
-                xhr.onload = function () {
+                xhr.onload = function() {
                     if (xhr.status === 200) {
                         const response = JSON.parse(xhr.responseText);
                         if (response.success) {
@@ -457,7 +454,7 @@ $file_result = mysqli_query($con, $file_query);
                     }
                 };
 
-                xhr.onerror = function () {
+                xhr.onerror = function() {
                     Swal.fire("Error!", "Network error occurred during upload.", "error");
                 };
 
@@ -465,24 +462,20 @@ $file_result = mysqli_query($con, $file_query);
             }
         });
 
-        setTimeout(function () {
-            location.reload();
-        }, 300000);
-
         function openCreateFolderModal() {
             $('#createFolderModal').modal('show');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('createFolderForm').addEventListener('submit', function (e) {
+            document.getElementById('createFolderForm').addEventListener('submit', function(e) {
                 e.preventDefault();
 
                 const formData = new FormData(this);
 
                 fetch('actions/create-subfolder.php', {
-                    method: 'POST',
-                    body: formData
-                })
+                        method: 'POST',
+                        body: formData
+                    })
                     .then(response => response.json())
                     .then(data => {
                         $('#createFolderModal').modal('hide');
@@ -499,14 +492,13 @@ $file_result = mysqli_query($con, $file_query);
             });
         });
 
-        setTimeout(function () {
+        setTimeout(function() {
             location.reload();
         }, 300000);
 
-
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".rename-icon").forEach(function (icon) {
-                icon.addEventListener("click", function () {
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".rename-icon").forEach(function(icon) {
+                icon.addEventListener("click", function() {
                     const id = this.dataset.id;
                     const span = document.querySelector('.folder-name-text[data-id="' + id + '"]');
                     const input = document.querySelector('.folder-name-input[data-id="' + id + '"]');
@@ -526,7 +518,7 @@ $file_result = mysqli_query($con, $file_query);
                 const xhr = new XMLHttpRequest();
                 xhr.open("POST", "actions/rename-subfolder.php", true);
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhr.onload = function () {
+                xhr.onload = function() {
                     const response = JSON.parse(xhr.responseText);
                     if (xhr.status === 200 && response.success) {
                         const span = document.querySelector('.folder-name-text[data-id="' + id + '"]');
@@ -540,23 +532,18 @@ $file_result = mysqli_query($con, $file_query);
                 xhr.send("id=" + encodeURIComponent(id) + "&name=" + encodeURIComponent(newName));
             }
 
-            document.querySelectorAll(".folder-name-input").forEach(function (input) {
-                input.addEventListener("blur", function () {
+            document.querySelectorAll(".folder-name-input").forEach(function(input) {
+                input.addEventListener("blur", function() {
                     saveRename(this);
                 });
 
-                input.addEventListener("keydown", function (e) {
+                input.addEventListener("keydown", function(e) {
                     if (e.key === "Enter") {
                         this.blur(); // Trigger save
                     }
                 });
             });
         });
-
-
-
-
-
     </script>
 
     <div class="modal fade" id="createFolderModal" tabindex="-1" role="dialog" aria-labelledby="createFolderLabel"

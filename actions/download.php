@@ -5,7 +5,7 @@ session_start();
 // Check if the 'file' query parameter is set
 if (isset($_GET['file'])) {
     $fileName = basename($_GET['file']);
-    $filePath = "../img/uploads/" . $fileName;
+    $filePath = "../img/CSC Uploads/" . $fileName;
 
     // Check if the file exists
     if (file_exists($filePath)) {

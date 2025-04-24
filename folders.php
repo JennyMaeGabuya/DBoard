@@ -38,7 +38,7 @@ if (!$con) {
             }
 
             // Delete folder from "CSC Files" directory
-            $folderPath = __DIR__ . "img/uploads/" . $folder_id;
+            $folderPath = __DIR__ . "img/CSC Uploads/" . $folder_id;
             if (is_dir($folderPath)) {
                 $files = glob("$folderPath/*"); // Get all files in folder
                 foreach ($files as $file) {
@@ -255,7 +255,7 @@ if (!$con) {
                                                     </a>
                                                     <span class="bread-slash"> / </span>
                                                     <a href="#">
-                                                        <strong>Folders</strong>
+                                                        <strong>CSC Forms</strong>
                                                     </a>
                                                 </li>
                                             </ul>
@@ -352,7 +352,7 @@ if (!$con) {
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="product-status-wrap drp-lst">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <h3>Downloadable File Folders</h3>
+                            <h3>CSC Forms</h3>
                         </div>
 
                         <div class="folder-section"

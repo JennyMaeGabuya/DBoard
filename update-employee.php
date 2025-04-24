@@ -97,44 +97,59 @@ if (isset($_POST['update-employee-btn'])) {
         die("Prepare failed: " . $con->error);
     }
 
-    $stmt->bind_param("ssssssssssissssiiss", 
-    $firstname, $middlename, $lastname, $name_extension, $dob, $pob, 
-    $sex, $civil_status, $address, $blood_type, $mobile_no, $email_address, 
-    $image_name, $designation, $role, $account_status, $hr_department, $updated_at, $emp_no
-);
-
+    $stmt->bind_param(
+        "ssssssssssissssiiss",
+        $firstname,
+        $middlename,
+        $lastname,
+        $name_extension,
+        $dob,
+        $pob,
+        $sex,
+        $civil_status,
+        $address,
+        $blood_type,
+        $mobile_no,
+        $email_address,
+        $image_name,
+        $designation,
+        $role,
+        $account_status,
+        $hr_department,
+        $updated_at,
+        $emp_no
+    );
 
     if (!$stmt->execute()) {
         die("Execution failed: " . $stmt->error);
     }
 
-// Check if government_info exists
-$checkGovQuery = "SELECT employee_no FROM government_info WHERE employee_no = ?";
-$checkStmt = $con->prepare($checkGovQuery);
-$checkStmt->bind_param("s", $emp_no);
-$checkStmt->execute();
-$checkStmt->store_result();
+    // Check if government_info exists
+    $checkGovQuery = "SELECT employee_no FROM government_info WHERE employee_no = ?";
+    $checkStmt = $con->prepare($checkGovQuery);
+    $checkStmt->bind_param("s", $emp_no);
+    $checkStmt->execute();
+    $checkStmt->store_result();
 
-if ($checkStmt->num_rows > 0) {
-    // Update if exists
-    $govQuery = "UPDATE government_info 
+    if ($checkStmt->num_rows > 0) {
+        // Update if exists
+        $govQuery = "UPDATE government_info 
                  SET gsis_no = ?, pag_ibig_no = ?, philhealth_no = ?, sss_no = ?, tin_no = ?, updated_at = ?
                  WHERE employee_no = ?";
-    $govStmt = $con->prepare($govQuery);
-    $govStmt->bind_param("sssssss", $gsis, $pag_ibig, $philhealth, $sss, $tin, $updated_at, $emp_no);
-} else {
-    // Insert if not exists
-    $govQuery = "INSERT INTO government_info 
+        $govStmt = $con->prepare($govQuery);
+        $govStmt->bind_param("sssssss", $gsis, $pag_ibig, $philhealth, $sss, $tin, $updated_at, $emp_no);
+    } else {
+        // Insert if not exists
+        $govQuery = "INSERT INTO government_info 
                  (employee_no, gsis_no, pag_ibig_no, philhealth_no, sss_no, tin_no, created_at, updated_at) 
                  VALUES (?, ?, ?, ?, ?, ?, ?)";
-    $govStmt = $con->prepare($govQuery);
-    $govStmt->bind_param("sssssss", $emp_no, $gsis, $pag_ibig, $philhealth, $sss, $tin, $created_at, $updated_at);
-}
+        $govStmt = $con->prepare($govQuery);
+        $govStmt->bind_param("sssssss", $emp_no, $gsis, $pag_ibig, $philhealth, $sss, $tin, $created_at, $updated_at);
+    }
 
-if (!$govStmt->execute()) {
-    die("Execution failed: " . $govStmt->error);
-}
-
+    if (!$govStmt->execute()) {
+        die("Execution failed: " . $govStmt->error);
+    }
 
     $_SESSION['display'] = 'Successfully updated employee information.';
     $_SESSION['title'] = 'Success';
@@ -143,5 +158,3 @@ if (!$govStmt->execute()) {
     header('Location: edit-employee.php');
     exit();
 }
-
-?>
