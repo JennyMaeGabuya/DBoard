@@ -261,7 +261,7 @@ class PDF_MC_Table extends FPDF
         // Fetch all HR roles
         $gstmt = $con->prepare("SELECT firstname, middlename, lastname, name_extension, role 
                         FROM employee 
-                        WHERE role IN ('Municipal Mayor', 'Admin Officer IV', 'MHRMO')");
+                        WHERE role IN ('Municipal Mayor', 'Admin Officer IV', 'MHRMO') and account_status = 1") ;
         $gstmt->execute();
         $res = $gstmt->get_result();
 
