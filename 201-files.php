@@ -149,8 +149,8 @@ $file_result = mysqli_query($con, $file_query);
                                                         <i class="fas fa-home"></i> Home
                                                     </a>
                                                     <span class="bread-slash"> / </span>
-                                                    <a href="folders.php">
-                                                        Folders
+                                                    <a href="201-folders.php">
+                                                        201 Folders
                                                     </a>
                                                     <span class="bread-slash"> / </span>
                                                     <a href="#">
