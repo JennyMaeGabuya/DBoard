@@ -24,6 +24,10 @@ if (isset($_POST['update-employee-btn'])) {
     $address = $_POST['address'];
     $pob = $_POST['pob'];
     $civil_status = $_POST['civil_status'];
+    $designation = $_POST['designation'];
+    $role = $_POST['role'];
+    $hr_department = $_POST['hr_department'];
+    $account_status = $_POST[$account_status];
 
     if ($civil_status === "Other" && !empty($_POST['other_civil_status'])) {
         $civil_status = trim($_POST['other_civil_status']);
@@ -85,7 +89,7 @@ if (isset($_POST['update-employee-btn'])) {
     $updateQuery = "UPDATE `employee` 
                     SET `firstname` = ?, `middlename` = ?, `lastname` = ?, `name_extension` = ?, `dob` = ?, `pob` = ?, 
                         `sex` = ?, `civil_status` = ?, `address` = ?, `blood_type` = ?, `mobile_no` = ?, 
-                        `email_address` = ?, `image` = ?, `updated_at` = ?
+                        `email_address` = ?, `image` = ?, `designation` = ?,`role` = ?, `account_status` = ?, `hr_staff` = ?,  `updated_at` = ?
                     WHERE `employee_no` = ?";
 
     $stmt = $con->prepare($updateQuery);
@@ -93,10 +97,10 @@ if (isset($_POST['update-employee-btn'])) {
         die("Prepare failed: " . $con->error);
     }
 
-    $stmt->bind_param("sssssssssssssss", 
+    $stmt->bind_param("sssssssssssssssiiss", 
         $firstname, $middlename, $lastname, $name_extension, $dob, $pob, 
         $sex, $civil_status, $address, $blood_type, $mobile_no, $email_address, 
-        $image_name, $updated_at, $emp_no
+        $image_name, $designation, $role, $account_status, $hr_department, $updated_at, $emp_no
     );
 
     if (!$stmt->execute()) {

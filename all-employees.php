@@ -196,7 +196,7 @@ include 'emailnotif.php';
                             <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
 
                             <script>
-                                $(function() {
+                                $(function () {
                                     new DataTable('#myTable', {
                                         responsive: true,
                                         autoWidth: false,
@@ -226,7 +226,7 @@ include 'emailnotif.php';
                                     <?php
                                     $query = "SELECT 
     e.employee_no, e.firstname, e.middlename, e.lastname, e.name_extension, 
-    e.dob, e.pob, e.sex, e.civil_status, e.address, e.mobile_no, e.email_address, e.blood_type, e.image,
+    e.dob, e.pob, e.sex, e.civil_status, e.address, e.mobile_no, e.email_address, e.blood_type, e.image,e.designation, e.role, e.account_status, e.hr_staff,
     g.gsis_no, g.pag_ibig_no, g.philhealth_no, g.tin_no, g.sss_no,
     (SELECT s.salary FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS salary,
     (SELECT s.station_place FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS station_place,
@@ -250,6 +250,10 @@ include 'emailnotif.php';
                                         $dob = $row['dob'] ?? '';
                                         $pob = $row['pob'] ?? '';
                                         $sex = $row['sex'] ?? '';
+                                        $designation = $row['designation'] ?? '';
+                                        $role = $row['role'] ?? '';
+                                        $account_status = $row['account_status'] ?? '';
+                                        $hr_staff = $row['hr_staff'] ?? '';
                                         $civil_status = $row['civil_status'] ?? '';
                                         $address = $row['address'] ?? '';
                                         $mobile_no = $row['mobile_no'] ?? '';
@@ -267,7 +271,7 @@ include 'emailnotif.php';
                                         $cause_of_separation = $row['cause_of_separation'] ?? '';
                                         $imagePath = $row['image'] ?? '';
                                         $imageUrl = !empty($imagePath) ? 'img/profile/' . $imagePath : 'img/mk-logo.png';
-                                    ?>
+                                        ?>
                                         <tr>
                                             <td style="text-align: center;"><?php echo $count; ?></td>
                                             <td>
@@ -294,7 +298,8 @@ include 'emailnotif.php';
                                             <td>
                                                 <div style="text-align: center;">
                                                     <button type="button" class="btn btn-warning" data-toggle="modal"
-                                                        data-target="#editEmployee<?php echo $employee_no; ?>" style="margin-right: 5px;">
+                                                        data-target="#editEmployee<?php echo $employee_no; ?>"
+                                                        style="margin-right: 5px;">
                                                         <i class="fa fa-pencil"></i>
                                                     </button>
                                                     <a href="employeedetails.php?employee_no=<?php echo $employee_no; ?>"
@@ -307,12 +312,12 @@ include 'emailnotif.php';
                                                     </a>
                                                 </div>
                                             </td>
-                                            
+
                                             <script>
-                                                document.addEventListener("DOMContentLoaded", function() {
+                                                document.addEventListener("DOMContentLoaded", function () {
                                                     // Confirmation before deleting an employee
                                                     document.querySelectorAll(".delete-btn").forEach(button => {
-                                                        button.addEventListener("click", function() {
+                                                        button.addEventListener("click", function () {
                                                             let employee_no = this.getAttribute("data-id");
 
                                                             Swal.fire({
@@ -457,7 +462,7 @@ include 'emailnotif.php';
 
                                                                 <!-- Accept only numbers -->
                                                                 <script>
-                                                                    document.getElementById('mobile').addEventListener('input', function(e) {
+                                                                    document.getElementById('mobile').addEventListener('input', function (e) {
                                                                         const value = e.target.value;
                                                                         // Remove non-numeric characters
                                                                         const numericValue = value.replace(/[^0-9]/g, '');
@@ -504,9 +509,9 @@ include 'emailnotif.php';
                                                                     <label>Sex</label>
                                                                     <select name="sex" class="form-control" required>
                                                                         <option value="Male" <?php if ($sex == "Male")
-                                                                                                    echo "selected"; ?>>Male</option>
+                                                                            echo "selected"; ?>>Male</option>
                                                                         <option value="Female" <?php if ($sex == "Female")
-                                                                                                    echo "selected"; ?>>Female</option>
+                                                                            echo "selected"; ?>>Female</option>
                                                                     </select>
                                                                 </div>
 
@@ -514,23 +519,23 @@ include 'emailnotif.php';
                                                                     <label>Blood Type</label>
                                                                     <select name="blood_type" class="form-control" required>
                                                                         <option value="A+" <?php if ($blood_type == "A+")
-                                                                                                echo "selected"; ?>>A+</option>
+                                                                            echo "selected"; ?>>A+</option>
                                                                         <option value="A-" <?php if ($blood_type == "A-")
-                                                                                                echo "selected"; ?>>A-</option>
+                                                                            echo "selected"; ?>>A-</option>
                                                                         <option value="B+" <?php if ($blood_type == "B+")
-                                                                                                echo "selected"; ?>>B+</option>
+                                                                            echo "selected"; ?>>B+</option>
                                                                         <option value="B-" <?php if ($blood_type == "B-")
-                                                                                                echo "selected"; ?>>B-</option>
+                                                                            echo "selected"; ?>>B-</option>
                                                                         <option value="AB+" <?php if ($blood_type == "AB+")
-                                                                                                echo "selected"; ?>>AB+</option>
+                                                                            echo "selected"; ?>>AB+</option>
                                                                         <option value="AB-" <?php if ($blood_type == "AB-")
-                                                                                                echo "selected"; ?>>AB-</option>
+                                                                            echo "selected"; ?>>AB-</option>
                                                                         <option value="O+" <?php if ($blood_type == "O+")
-                                                                                                echo "selected"; ?>>O+</option>
+                                                                            echo "selected"; ?>>O+</option>
                                                                         <option value="O-" <?php if ($blood_type == "O-")
-                                                                                                echo "selected"; ?>>O-</option>
+                                                                            echo "selected"; ?>>O-</option>
                                                                         <option value="Unknown" <?php if ($blood_type == "Unknown")
-                                                                                                    echo "selected"; ?>>
+                                                                            echo "selected"; ?>>
                                                                             Unknown</option>
                                                                     </select>
                                                                 </div>
@@ -546,6 +551,52 @@ include 'emailnotif.php';
                                                                     <input name="pob" type="text" class="form-control"
                                                                         value="<?php echo $pob; ?>" required />
                                                                 </div>
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Designation</label>
+                                                                    <input name="designation" type="text"
+                                                                        class="form-control"
+                                                                        value="<?php echo $designation; ?>"
+                                                                        placeholder="Designation" required />
+                                                                </div>
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Role</label>
+                                                                    <input name="role" type="text" class="form-control"
+                                                                        value="<?php echo $role; ?>" placeholder="Role"
+                                                                        required />
+                                                                </div>
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Employee of HR Department?</label>
+
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="radio"
+                                                                            name="hr_department" id="radioDefault1"
+                                                                            value="1" <?php if ($hr_staff == 1)
+                                                                                echo 'checked'; ?>>
+                                                                        <label class="form-check-label" for="radioDefault1">
+                                                                            Yes
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="radio"
+                                                                            name="hr_department" id="radioDefault2"
+                                                                            value="0" <?php if ($hr_staff == 0)
+                                                                                echo 'checked'; ?>>
+                                                                        <label class="form-check-label" for="radioDefault2">
+                                                                            No
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Employee Status</label>
+                                                                    <select name="account_status" class="form-control"
+                                                                        required>
+                                                                        <option value="1" <?php if ($account_status == 1)
+                                                                            echo 'selected'; ?>>Active</option>
+                                                                        <option value="0" <?php if ($account_status == 0)
+                                                                            echo 'selected'; ?>>Not Active</option>
+                                                                    </select>
+                                                                </div>
+
                                                             </div>
 
                                                             <br>
@@ -599,7 +650,7 @@ include 'emailnotif.php';
                                                             <script>
                                                                 function previewImage(event, employee_no) {
                                                                     var reader = new FileReader();
-                                                                    reader.onload = function() {
+                                                                    reader.onload = function () {
                                                                         var output = document.getElementById('profileImage_' + employee_no);
                                                                         output.src = reader.result; // Update the image preview
                                                                     };
@@ -613,7 +664,7 @@ include 'emailnotif.php';
                                             </div>
                                         </div>
 
-                                    <?php $count++;
+                                        <?php $count++;
                                     } ?>
                                 </tbody>
                             </table>
@@ -641,12 +692,14 @@ include 'emailnotif.php';
                             <div class="col-md-4 text-center">
                                 <div class="profile-info-inner">
                                     <div class="profile-img">
-                                        <img id="addprofileImage" src="img/person.jpg" alt="User  Image" class="img-thumbnail" style="width: 150px; height: 150px;">
+                                        <img id="addprofileImage" src="img/person.jpg" alt="User  Image"
+                                            class="img-thumbnail" style="width: 150px; height: 150px;">
                                     </div>
                                     <br>
                                     <div class="form-group">
                                         <label>Upload Profile Picture</label>
-                                        <input class="form-control" type="file" id="formFile" name="image" accept="image/*" onchange="previewImage(event)">
+                                        <input class="form-control" type="file" id="formFile" name="image"
+                                            accept="image/*" onchange="previewImage(event)">
                                     </div>
                                 </div>
                             </div>
@@ -656,7 +709,7 @@ include 'emailnotif.php';
                                     const file = event.target.files[0]; // Get the selected file
                                     const reader = new FileReader(); // Create a FileReader object
 
-                                    reader.onload = function(e) {
+                                    reader.onload = function (e) {
                                         const img = document.getElementById('addprofileImage'); // Get the image element
                                         img.src = e.target.result; // Set the src of the image to the file's data URL
                                     }
@@ -776,8 +829,33 @@ include 'emailnotif.php';
                                 <input name="pob" type="text" class="form-control" placeholder="Place of Birth"
                                     required />
                             </div>
+                            <div class="form-group col-md-4">
+                                <label>Designation</label>
+                                <input name="designation" type="text" class="form-control" placeholder="Designation"
+                                    required />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Role</label>
+                                <input name="role" type="text" class="form-control" placeholder="Role" required />
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>Employee of HR Department?</label>
 
-
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="hr_department" id="radioDefault1"
+                                        value="1">
+                                    <label class="form-check-label" for="radioDefault1">
+                                        Yes
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="hr_department" id="radioDefault2"
+                                        value="0" checked>
+                                    <label class="form-check-label" for="radioDefault2">
+                                        No
+                                    </label>
+                                </div>
+                            </div>
                         </div>
 
                         <br>
@@ -831,7 +909,7 @@ include 'emailnotif.php';
             const file = event.target.files[0];
             const reader = new FileReader();
 
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 const img = document.getElementById('addprofileImage');
                 img.src = e.target.result; // Set the src of the image to the file's data URL
             }
@@ -858,7 +936,7 @@ include 'emailnotif.php';
         }
 
         // Ensure proper state on page load (for edit form only)
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             checkOtherStatus('edit'); // Only needed for Edit form
         });
     </script>
@@ -878,7 +956,7 @@ include 'emailnotif.php';
     <?php endif; ?>
 
     <script>
-        setTimeout(function() {
+        setTimeout(function () {
             location.reload();
         }, 300000);
     </script>

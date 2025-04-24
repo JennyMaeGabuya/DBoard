@@ -23,6 +23,11 @@ if (isset($_POST['basic-infobtn'])) {
     $address = $_POST['address'];
     $pob = $_POST['pob'];
     $civil_status = $_POST['civil_status'];
+    $designation = $_POST['designation'];
+    $role = $_POST['role'];
+    $hr_department = $_POST['hr_department'];
+    $account_status = 1;
+
 
     if ($civil_status === "Other" && !empty($_POST['other_civil_status'])) {
         $civil_status = trim($_POST['other_civil_status']);
@@ -89,10 +94,10 @@ if (isset($_POST['basic-infobtn'])) {
     }
 
     // Insert the new employee (image can be NULL)
-    $insertQuery = "INSERT INTO `employee` (`employee_no`, `firstname`, `middlename`, `lastname`, `name_extension`, `dob`, `pob`, `sex`, `civil_status`, `address`, `blood_type`, `mobile_no`, `email_address`, `image`, `created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $insertQuery = "INSERT INTO `employee` (`employee_no`, `firstname`, `middlename`, `lastname`, `name_extension`, `dob`, `pob`, `sex`, `civil_status`, `address`, `blood_type`, `mobile_no`, `email_address`, `image`, `designation`,`role`,`account_status`,`hr_staff`,`created_at`, `updated_at`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $con->prepare($insertQuery);
-    $stmt->bind_param("sssssssssssissss", $employee_no, $firstname, $middlename, $lastname, $name_extension, $dob, $pob, $sex, $civil_status, $address, $blood_type, $mobile_no, $email_address, $image_name, $created_at, $updated_at);
+    $stmt->bind_param("sssssssssssissssiiss", $employee_no, $firstname, $middlename, $lastname, $name_extension, $dob, $pob, $sex, $civil_status, $address, $blood_type, $mobile_no, $email_address, $image_name, $designation, $role, $account_status, $hr_department, $created_at, $updated_at);
 
     if ($stmt->execute()) {
         // Insert government records
