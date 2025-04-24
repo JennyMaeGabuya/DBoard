@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 24, 2025 at 09:23 AM
+-- Generation Time: Apr 24, 2025 at 10:36 AM
 -- Server version: 8.3.0
 -- PHP Version: 8.2.18
 
@@ -20,6 +20,56 @@ SET time_zone = "+00:00";
 --
 -- Database: `hr_records`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `201_files`
+--
+
+DROP TABLE IF EXISTS `201_files`;
+CREATE TABLE IF NOT EXISTS `201_files` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `folder_id` int NOT NULL,
+  `filename` varchar(255) NOT NULL,
+  `uploaded_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `folder_id` (`folder_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `201_files`
+--
+
+INSERT INTO `201_files` (`id`, `folder_id`, `filename`, `uploaded_at`) VALUES
+(6, 9, 'Bagong-Pilipinas.png', '2025-04-24 18:31:38');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `201_folders`
+--
+
+DROP TABLE IF EXISTS `201_folders`;
+CREATE TABLE IF NOT EXISTS `201_folders` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `parent_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `parent_id` (`parent_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `201_folders`
+--
+
+INSERT INTO `201_folders` (`id`, `name`, `parent_id`) VALUES
+(10, 'z 201 for testing', NULL),
+(4, 'Dimaculangan - 201 Files', NULL),
+(5, 'Gabuya - 201 Files', NULL),
+(6, 'Magnaye- 201 Files', NULL),
+(7, 'Peloramas - 201 Files', NULL),
+(8, 'Tipan - 201 Files', NULL);
 
 -- --------------------------------------------------------
 
@@ -87,7 +137,7 @@ CREATE TABLE IF NOT EXISTS `appointed_cert_issuance` (
 
 INSERT INTO `appointed_cert_issuance` (`id`, `fullname`, `lastname`, `sex`, `start_date`, `position`, `office_appointed`, `salary`, `pera`, `rta`, `clothing`, `mid_year_bonus`, `year_end_bonus`, `cash_gift`, `productivity_enhancement`, `date_issued`, `created_at`, `updated_at`) VALUES
 (3, 'Hon. Atty. Juan Dela Cruz', 'Dela Cruz', 'Male', '2025-02-01', 'Admin Officer II', 'HR Office', 12500.00, 5600.00, 534534.00, 543543.00, 45345.00, 4345435.00, 4345435.00, 543543.00, '2025-03-07', '2025-03-08 08:05:23', '2025-03-12 05:57:44'),
-(4, 'Appointed test huhu', 'Test q ko', 'Male', '2024-12-07', 'Admin Officer 321', 'Assesor\'s Office', 56878.00, 987.00, 6578.00, 788.00, 879.00, 796.00, 5666.00, 7769.00, '2025-03-30', '2025-03-08 08:43:48', '2025-03-30 02:36:21');
+(4, 'Appointed test huhu', 'Test q ko', 'Male', '2024-12-07', 'Admin Officer 321', 'Assesor\'s Office', 56878.00, 987.00, 6578.00, 788.00, 879.00, 796.00, 5666.00, 7769.00, '2025-04-24', '2025-03-08 08:43:48', '2025-04-24 09:24:49');
 
 -- --------------------------------------------------------
 
@@ -161,7 +211,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
 --
 
 INSERT INTO `employee` (`employee_no`, `firstname`, `middlename`, `lastname`, `name_extension`, `dob`, `pob`, `sex`, `civil_status`, `address`, `blood_type`, `mobile_no`, `email_address`, `image`, `designation`, `role`, `account_status`, `hr_staff`, `created_at`, `updated_at`) VALUES
-('dsfd34', 'Jenny', 'Mae', 'Gabuyav2', 'III', '2025-03-13', 'San Luis, Batangas', 'Female', 'soafer latina', 'Sta. Teresita, Batangas', 'O+', 99230232716, 'jenny@gmail.com', NULL, '', '', 1, 0, '2025-03-12 18:04:56', '2025-04-23 05:50:52'),
+('dsfd34', 'Jenny', 'Mae', 'Gabuyav2', 'III', '2025-03-13', 'San Luis, Batangas', 'Female', 'soafer latina', 'Sta. Teresita, Batangas', 'O+', 99230232716, 'jenny@gmail.com', NULL, 'Treasure\'s Office', 'Admin Aide', 0, 0, '2025-03-12 18:04:56', '2025-04-23 16:00:00'),
 ('EMP001', 'Juan', 'Dela', 'Cruz', 'Jr.', '1985-03-25', 'Manila', 'Male', 'Married', '123 Mabini St., Manila', 'O+', 9171234567, 'juan.cruz@email.com', NULL, '', '', 1, 0, '2025-02-19 14:09:03', '2025-04-23 05:50:52'),
 ('EMP002', 'Noime', 'T.', 'Tipan', '', '1990-07-12', 'Quezon City', 'Male', 'Married', '456 Rizal Ave., QC', 'A+', 9281234567, 'maria.lopez@email.com', 'Noims.png', 'HR Officer', 'Admin Officer IV', 1, 1, '2025-02-19 14:09:03', '2025-04-23 05:50:52'),
 ('EMP003', 'Gelyn', 'M.', 'Katimbang', NULL, '1988-05-18', 'Cebu City', 'Female', 'Married', '789 Osmena Blvd., Cebu', 'B+', 9391234567, 'pedro.gonzalez@email.com', 'Gelyn.png', 'HR Assistant', 'Admin Officer II', 1, 1, '2025-02-19 14:09:03', '2025-04-23 05:50:52'),
@@ -220,14 +270,15 @@ CREATE TABLE IF NOT EXISTS `files` (
   `uploaded_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `folder_id` (`folder_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `files`
 --
 
 INSERT INTO `files` (`id`, `folder_id`, `filename`, `uploaded_at`) VALUES
-(1, 5, 'batstateu-redspartan.png', '2025-04-23 15:33:08');
+(6, 11, 'mk-logo.png', '2025-04-24 18:31:53'),
+(7, 11, 'CSC-11-Professional-and-Sub-Professional-Levels-v2-version-1-2.pdf', '2025-04-24 18:33:56');
 
 -- --------------------------------------------------------
 
@@ -242,19 +293,20 @@ CREATE TABLE IF NOT EXISTS `folders` (
   `parent_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `parent_id` (`parent_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `folders`
 --
 
 INSERT INTO `folders` (`id`, `name`, `parent_id`) VALUES
-(1, 'jella', NULL),
-(2, 'erika', NULL),
-(3, 'savie', NULL),
-(4, 'jenny', NULL),
-(5, 'everson', NULL),
-(7, 'erika v2 totoo', NULL);
+(1, 'Jella - CSC', NULL),
+(2, 'Erika - CSC', NULL),
+(4, 'Jenny  - CSC', NULL),
+(5, 'Everson - CSC', NULL),
+(9, 'csc erika sub folder', 2),
+(10, 'Savior - CSC', NULL),
+(11, 'y CSC test', NULL);
 
 -- --------------------------------------------------------
 
@@ -290,7 +342,7 @@ INSERT INTO `government_info` (`id`, `employee_no`, `gsis_no`, `pag_ibig_no`, `p
 (2, 'HRM-ADMIN', '4332423-3423', '3287-387245', '94586-7863', '4353-2435', '325436-32422', '2025-03-11 08:25:50', '2025-03-11 08:25:50'),
 (6, 'saS', '31', '32', '325', '536', '61', '2025-03-11 22:33:56', '2025-03-11 22:33:56'),
 (7, 'ssa', 'sawqwe', 'weqwe', '3243', 'dweqw', '3213', '2025-03-12 17:53:18', '2025-03-12 16:00:00'),
-(8, 'dsfd34', '3223-4', '3123-4', '12312-4', '3123-4', '2313-4', '2025-03-12 18:04:56', '2025-03-25 16:00:00');
+(8, 'dsfd34', '3223-4', '3123-4', '12312-4', '3123-4', '2313-4', '2025-03-12 18:04:56', '2025-04-23 16:00:00');
 
 -- --------------------------------------------------------
 
