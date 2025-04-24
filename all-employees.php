@@ -219,6 +219,7 @@ include 'emailnotif.php';
                                         <th scope="col">Address</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">Sex</th>
+                                        <th scope="col">Status</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
@@ -295,6 +296,17 @@ include 'emailnotif.php';
                                             <td><?php echo htmlspecialchars($address); ?></td>
                                             <td><?php echo htmlspecialchars($email_address); ?></td>
                                             <td><?php echo htmlspecialchars($sex); ?></td>
+                                                                                       <td>
+                                                <?php if ($account_status == 1): ?>
+                                                    <span class="badge bg-primary text-white"
+                                                        style="background-color: #0d6efd;">Active</span>
+                                                <?php else: ?>
+                                                    <span class="badge bg-danger text-white"
+                                                        style="background-color: #dc3545;">Not Active</span>
+                                                <?php endif; ?>
+                                            </td>
+
+
                                             <td>
                                                 <div style="text-align: center;">
                                                     <button type="button" class="btn btn-warning" data-toggle="modal"
