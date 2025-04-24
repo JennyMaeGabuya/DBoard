@@ -104,8 +104,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <a href="folders.php"><span class="mini-sub-pro">CSC Folders</span></a>
               </li>
               <ul class="submenu-angle"></ul>
-              <li class="<?= ($current_page == '201.php' || $current_page == '201-files.php') ? 'active' : ''; ?>">
-                <a href="201.php"><span class="mini-sub-pro">201 Files</span></a>
+              <li class="<?= ($current_page == '201-folders.php' || $current_page == '201-files.php') ? 'active' : ''; ?>">
+                <a href="201-folders.php"><span class="mini-sub-pro">201 Files</span></a>
               </li>
             </ul>
           </li>

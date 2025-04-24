@@ -1,7 +1,8 @@
+
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header('location:../index.php');
+    header('Location: ../index.php');
     exit();
 }
 
@@ -9,53 +10,55 @@ include "dbcon.php";
 include 'emailnotif.php';
 
 if (!$con) {
-    die(json_encode(["success" => false, "error" => "Database connection failed!"]));
+    echo json_encode(["success" => false, "error" => "Database connection failed!"]);
+    exit();
 }
 
-// Check if the request method is POST and folder_ids is set
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["folder_ids"])) {
-    $folder_ids = $_POST["folder_ids"];
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST["folder_ids"]) && is_array($_POST["folder_ids"])) {
+        $folder_ids = $_POST["folder_ids"];
+        $errors = [];
 
-    // Validate input
-    if (!is_array($folder_ids)) {
-        echo json_encode(["success" => false, "error" => "Invalid folder IDs format!"]);
-        exit();
-    }
+        foreach ($folder_ids as $folder_id) {
+            // Delete folder from database
+            $deleteFolderQuery = "DELETE FROM 201_folders WHERE id = ?";
+            $stmt = mysqli_prepare($con, $deleteFolderQuery);
 
-    foreach ($folder_ids as $folder_id) {
-        $folder_id = intval($folder_id); // Convert to integer for security
-
-        // Prepare delete query
-        $deleteFolderQuery = "DELETE FROM 201_folders WHERE id = ?";
-        $stmt = mysqli_prepare($con, $deleteFolderQuery);
-
-        if ($stmt) {
-            mysqli_stmt_bind_param($stmt, "i", $folder_id);
-            mysqli_stmt_execute($stmt);
-            mysqli_stmt_close($stmt);
-        } else {
-            echo json_encode(["success" => false, "error" => "Failed to prepare query!"]);
-            exit();
-        }
-
-        // Delete folder from "201 Files" directory
-        $folderPath = __DIR__ . "/img/201 Files/" . $folder_id;
-        if (is_dir($folderPath)) {
-            $files = glob("$folderPath/*"); // Get all files in folder
-            foreach ($files as $file) {
-                if (is_file($file)) {
-                    unlink($file); // Delete file
-                }
+            if ($stmt) {
+                mysqli_stmt_bind_param($stmt, "i", $folder_id);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_close($stmt);
+            } else {
+                $errors[] = "Failed to prepare query for folder ID $folder_id.";
+                continue;
             }
-            rmdir($folderPath); // Delete the folder itself
-        }
-    }
 
-    echo json_encode(["success" => true]);
+            // Delete folder from filesystem
+            $folderPath = __DIR__ . "/img/201 Files/" . $folder_id;
+            if (is_dir($folderPath)) {
+                $files = glob("$folderPath/*");
+                foreach ($files as $file) {
+                    if (is_file($file)) {
+                        unlink($file);
+                    }
+                }
+                rmdir($folderPath);
+            }
+        }
+
+        if (empty($errors)) {
+            echo json_encode(["success" => true]);
+        } else {
+            echo json_encode(["success" => false, "error" => $errors]);
+        }
+    } else {
+        echo json_encode(["success" => false, "error" => "Invalid folder IDs format!"]);
+    }
 } else {
     echo json_encode(["success" => false, "error" => "Invalid request!"]);
 }
 ?>
+
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
@@ -365,11 +368,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["folder_ids"])) {
                                     title="Add Folder">
                                     <i class="fas fa-folder-plus"></i> Add Folder
                                 </button>
-                                <button class="btn btn-danger btn-border btn-round btn-sm" id="deleteSelectedBtn"
+                                <button class="btn btn-danger btn-border btn-round btn-md" id="deleteSelectedBtn"
                                     title="Delete Folder">
                                     <i class="fas fa-trash"></i>
                                 </button>
-                                <button class="btn btn-warning btn-border btn-round btn-sm" id="selectBtn"
+                                <button class="btn btn-warning btn-border btn-round btn-md" id="selectBtn"
                                     title="Select Folder">
                                     <i class="fas fa-check-square"></i>
                                 </button>

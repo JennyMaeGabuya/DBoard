@@ -8,20 +8,24 @@ if (!isset($_SESSION['user_id'])) {
 include "dbcon.php";
 include 'emailnotif.php';
 
-$fileId = intval($_GET['id']);
-$stmt = $con->prepare("SELECT filename FROM 201_files WHERE id = ?");
-$stmt->bind_param("i", $fileId);
-$stmt->execute();
-$result = $stmt->get_result();
-$file = $result->fetch_assoc();
+if (!isset($_GET['folder_id'])) {
+    die("Invalid folder ID.");
+}
 
-if ($file) {
-    header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename="'.basename($file['filename']).'"');
-    readfile($file['filename']);
-    exit;
-} else {
-    die("File not found");
+$folder_id = intval($_GET['folder_id']);
+
+// Get folder name
+$folder_query = "SELECT name FROM 201_folders WHERE id = $folder_id";
+$folder_result = mysqli_query($con, $folder_query);
+$folder = mysqli_fetch_assoc($folder_result);
+
+// Get subfolders of the current folder
+$subfolder_query = "SELECT * FROM 201_folders WHERE parent_id = $folder_id ORDER BY name ASC";
+$subfolder_result = mysqli_query($con, $subfolder_query);
+
+
+if (!$folder) {
+    die("Folder not found.");
 }
 
 // Get files in the folder
@@ -145,7 +149,7 @@ $file_result = mysqli_query($con, $file_query);
                                                         <i class="fas fa-home"></i> Home
                                                     </a>
                                                     <span class="bread-slash"> / </span>
-                                                    <a href="201.php">
+                                                    <a href="folders.php">
                                                         Folders
                                                     </a>
                                                     <span class="bread-slash"> / </span>
@@ -285,7 +289,7 @@ $file_result = mysqli_query($con, $file_query);
         <input type="text" class="folder-name-input" data-id="' . $folderId . '" value="' . $folderName . '" style="display: none; width: 70%; padding: 2px; font-size: 14px;">
     </td>
     <td class="file-actions text-right" style="text-align: center;">
-        <a href="files.php?folder_id=' . $folderId . '" class="btn btn-info" style="width: 80%; margin-right: 5px;" title="Open Folder">
+        <a href="201-files.php?folder_id=' . $folderId . '" class="btn btn-info" style="width: 80%; margin-right: 5px;" title="Open Folder">
             <i class="fa fa-folder-open"></i> Open
         </a>
         <a href="actions/delete-subfolder.php?id=' . $folderId . '" class="btn btn-danger delete-btn">
@@ -316,7 +320,7 @@ $file_result = mysqli_query($con, $file_query);
                                                     <td class="file-actions text-right">';
 
                                             if ($isPdf) {
-                                                echo '<a href="view-files.php?id=' . $fileId . '" target="_blank" title="Preview">
+                                                echo '<a href="201-view-files.php?id=' . $fileId . '" target="_blank" title="Preview">
                                                 <button class="btn btn-warning"><i class="fa fa-search"></i> Preview</button>
                                             </a>';
                                             } else {
