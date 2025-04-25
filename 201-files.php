@@ -521,7 +521,7 @@ $file_result = mysqli_query($con, $file_query);
                 if (newName === "") return;
 
                 const xhr = new XMLHttpRequest();
-                xhr.open("POST", "actions/rename-subfolder.php", true);
+                xhr.open("POST", "actions/201-rename-subfolder.php", true);
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xhr.onload = function() {
                     const response = JSON.parse(xhr.responseText);
