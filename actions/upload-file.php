@@ -17,7 +17,7 @@ if (isset($_FILES['files']) && isset($_POST['folder_id'])) {
     $uploadedFiles = [];
     $errorMessages = [];
 
-    $maxFileSize = 20 * 1024 * 1024; // 20MB in bytes
+    $maxFileSize = 100 * 1024 * 1024; // 20MB in bytes
 
     $fileCount = count($_FILES['files']['name']);
     for ($i = 0; $i < $fileCount; $i++) {
