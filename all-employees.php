@@ -301,7 +301,7 @@ include 'emailnotif.php';
                                                         style="background-color: #0d6efd;">Active</span>
                                                 <?php else: ?>
                                                     <span class="badge bg-danger text-white"
-                                                        style="background-color: #dc3545;">Not Active</span>
+                                                        style="background-color: #dc3545;">Inactive</span>
                                                 <?php endif; ?>
                                             </td>
 
@@ -604,7 +604,7 @@ include 'emailnotif.php';
                                                                         <option value="1" <?php if ($account_status == 1)
                                                                                                 echo 'selected'; ?>>Active</option>
                                                                         <option value="0" <?php if ($account_status == 0)
-                                                                                                echo 'selected'; ?>>Not Active</option>
+                                                                                                echo 'selected'; ?>>Inactive</option>
                                                                     </select>
                                                                 </div>
 
