@@ -103,7 +103,7 @@ $file_result = mysqli_query($con, $file_query);
 
         .preview-btn {
             border: none;
-            padding: 9px 13px;
+            padding: 8px 13px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
@@ -284,15 +284,18 @@ $file_result = mysqli_query($con, $file_query);
 
                                             echo '<tr>
                                                 <td class="filename-cell">
-                                                    <i class="fa fa-folder-open rename-icon" style="margin-right: 10px; cursor: pointer;" data-id="' . $folderId . '"></i>
+                                                    <i class="fa fa-folder-open" style="margin-right: 10px;"></i>
                                                     <span class="folder-name-text" data-id="' . $folderId . '">' . $folderName . '</span>
                                                     <input type="text" class="folder-name-input" data-id="' . $folderId . '" value="' . $folderName . '" style="display: none; width: 70%; padding: 2px; font-size: 14px;">
                                                 </td>
                                                 <td class="file-actions text-right" style="text-align: center;">
-                                                    <a href="files.php?folder_id=' . $folderId . '" class="btn btn-info" style="width: 80%; margin-right: 5px;" title="Open Folder">
+                                                    <button class="btn btn-warning rename-icon" data-id="' . $folderId . '" style="width: 35%; margin-right: 5px;" title="Rename Folder">
+                                                        <i class="fa fa-pencil"></i> Edit
+                                                    </button>
+                                                    <a href="files.php?folder_id=' . $folderId . '" class="btn btn-info" style="width: 41%; margin-right: 5px;" title="Open Folder">
                                                         <i class="fa fa-folder-open"></i> Open
                                                     </a>
-                                                    <a href="actions/delete-subfolder.php?id=' . $folderId . '" class="btn btn-danger delete-btn">
+                                                    <a href="actions/delete-subfolder.php?id=' . $folderId . '" class="btn btn-danger delete-btn" title="Delete">
                                                         <i class="fa fa-trash"></i>
                                                     </a>
                                                 </td>
@@ -319,14 +322,15 @@ $file_result = mysqli_query($con, $file_query);
                                                     <td class="file-actions text-right">';
 
                                             if ($isPdf) {
-                                                echo '<a href="actions/view-files.php?id=' . $fileId . '" target="_blank" title="Preview">
-                                                <button class="btn btn-warning"><i class="fa fa-search"></i> Preview</button>
-                                            </a>';
+                                                echo '<button class="btn btn-primary preview-btn" data-file="actions/view-files.php?id=' . $fileId . '" title="Preview">
+                                                                <i class="fa fa-search"></i> Preview
+                                                              </button>';
                                             } else {
-                                                echo '<button class="preview-btn" disabled title="Preview only available for PDFs">
-                                                <i class="fa fa-search"></i> Preview
-                                            </button>';
+                                                echo '<button class="btn btn-secondary" disabled title="Preview only available for PDFs">
+                                                                <i class="fa fa-search"></i> Preview
+                                                              </button>';
                                             }
+
                                             echo '<a href="actions/download.php?file=' . urlencode($file['filename']) . '" title="Download">
                                                 <button class="btn btn-success"><i class="fa fa-download"></i> Download</button>
                                                 </a>
@@ -352,7 +356,33 @@ $file_result = mysqli_query($con, $file_query);
         </div>
     </div>
 
+    <!-- Modal Structure for Preview -->
+    <div id="previewModal" class="modal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center;">
+        <div style="background: white; width: 80%; height: 90%; position: relative; border-radius: 8px; overflow: hidden;">
+            <button onclick="closePreview()" style="position: absolute; top: 10px; right: 10px; background: red; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">X</button>
+            <iframe id="previewFrame" src="" style="width: 100%; height: 100%; border: none;"></iframe>
+        </div>
+    </div>
+
     <script>
+        // Function to handle the preview button click
+        document.addEventListener('DOMContentLoaded', function() {
+            const previewButtons = document.querySelectorAll('.preview-btn');
+
+            previewButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const fileUrl = this.getAttribute('data-file');
+                    document.getElementById('previewFrame').src = fileUrl;
+                    document.getElementById('previewModal').style.display = 'flex';
+                });
+            });
+        });
+
+        function closePreview() {
+            document.getElementById('previewModal').style.display = 'none';
+            document.getElementById('previewFrame').src = '';
+        }
+
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
