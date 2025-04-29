@@ -39,13 +39,12 @@ if (isset($_POST['basic-infobtn'])) {
     $created_at = date('Y-m-d H:i:s');
     $updated_at = date('Y-m-d H:i:s');
 
-    // Government records
-    $gsis = $_POST['gsis'];
-    $pag_ibig = $_POST['pag_ibig'];
-    $sss = $_POST['sss'];
-    $philhealth = $_POST['philhealth'];
-    $tin = $_POST['tin'];
-
+    // Government records  
+    $gsis = !empty($_POST['gsis']) ? $_POST['gsis'] : 'N/A';
+    $pag_ibig = !empty($_POST['pag_ibig']) ? $_POST['pag_ibig'] : 'N/A';
+    $sss = !empty($_POST['sss']) ? $_POST['sss'] : 'N/A';
+    $philhealth = !empty($_POST['philhealth']) ? $_POST['philhealth'] : 'N/A';
+    $tin = !empty($_POST['tin']) ? $_POST['tin'] : 'N/A';
     // Default image value (NULL if no image is uploaded)
     $image_name = NULL;
 

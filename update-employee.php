@@ -142,9 +142,9 @@ if (isset($_POST['update-employee-btn'])) {
         // Insert if not exists
         $govQuery = "INSERT INTO government_info 
                  (employee_no, gsis_no, pag_ibig_no, philhealth_no, sss_no, tin_no, created_at, updated_at) 
-                 VALUES (?, ?, ?, ?, ?, ?, ?)";
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $govStmt = $con->prepare($govQuery);
-        $govStmt->bind_param("sssssss", $emp_no, $gsis, $pag_ibig, $philhealth, $sss, $tin, $created_at, $updated_at);
+        $govStmt->bind_param("ssssssss", $emp_no, $gsis, $pag_ibig, $philhealth, $sss, $tin, $created_at, $updated_at);
     }
 
     if (!$govStmt->execute()) {

@@ -877,29 +877,28 @@ include 'emailnotif.php';
                         <div class="row">
                             <div class="form-group col-md-4">
                                 <label>GSIS ID No</label>
-                                <input name="gsis" type="text" class="form-control" placeholder="GSIS No" required />
+                                <input name="gsis" type="text" class="form-control" placeholder="GSIS No"  />
                             </div>
 
                             <div class="form-group col-md-4">
                                 <label>PAGIBIG ID No</label>
-                                <input name="pag_ibig" type="text" class="form-control" placeholder="PAG-IBIG ID No"
-                                    required />
+                                <input name="pag_ibig" type="text" class="form-control" placeholder="PAG-IBIG ID No"/>
                             </div>
 
                             <div class="form-group col-md-4">
                                 <label>PHILHEALTH No</label>
                                 <input name="philhealth" type="text" class="form-control"
-                                    placeholder="PhilHealth Number" required />
+                                    placeholder="PhilHealth Number"/>
                             </div>
 
                             <div class="form-group col-md-4">
                                 <label>SSS No</label>
-                                <input name="sss" type="text" class="form-control" placeholder="SSS No" required />
+                                <input name="sss" type="text" class="form-control" placeholder="SSS No"/>
                             </div>
 
                             <div class="form-group col-md-4">
                                 <label>TIN No</label>
-                                <input name="tin" type="text" class="form-control" placeholder="TIN No" required />
+                                <input name="tin" type="text" class="form-control" placeholder="TIN No"/>
                             </div>
                         </div>
 
@@ -967,9 +966,9 @@ include 'emailnotif.php';
     <?php endif; ?>
 
     <script>
-        setTimeout(function() {
-            location.reload();
-        }, 300000);
+        //setTimeout(function() {
+           // location.reload();
+        //}, 300000);
     </script>
 
     <!--Footer-part-->
