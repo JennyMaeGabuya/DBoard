@@ -54,7 +54,7 @@ $x_center = 105;
 
 // Fetch staff data from the database
 $query = "SELECT e.firstname, e.middlename, e.lastname, e.name_extension, e.image, e.role 
-          FROM employee e where hr_staff = 1
+          FROM employee e where hr_staff = 1 and account_status = 1
           ORDER BY FIELD(e.role,  'MHRMO','Municipal Mayor' ) DESC";
 $result = mysqli_query($con, $query);
 
