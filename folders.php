@@ -216,9 +216,6 @@ if (!$con) {
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="product-status-wrap drp-lst">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <h3>CSC Forms</h3>
-                        </div>
 
                         <div class="folders-container" style="height: 100vh;">
                             <iframe src="https://www.csc.gov.ph/downloads" style="width: 100%; height: 100%; border: none;"></iframe>
