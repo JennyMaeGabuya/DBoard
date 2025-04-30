@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 29, 2025 at 09:57 AM
+-- Generation Time: Apr 30, 2025 at 03:39 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -199,6 +199,7 @@ INSERT INTO `employee` (`employee_no`, `firstname`, `middlename`, `lastname`, `n
 ('EMP008', 'Isabel', 'T.', 'Mendoza', '', '1998-02-25', 'Laguna', 'Female', 'Single', '505 Calamba Rd., Laguna', 'AB-', 9891234567, 'isabel.mendoza@email.com', NULL, '', '', 1, 0, '2025-02-19 14:09:03', '2025-04-23 05:50:52'),
 ('EMP009', 'Miguel', 'R.', 'Domingo', '', '1991-08-09', 'Pampanga', 'Male', 'Married', '606 Angeles St., Pampanga', 'O+', 9991234567, 'miguel.domingo@email.com', NULL, '', '', 1, 0, '2025-02-19 14:09:03', '2025-04-23 05:50:52'),
 ('EMP010', 'Janet', 'M.', 'Ilagan', '', '1984-12-01', 'Zamboanga City', 'Female', 'Married', '707 Pilar St., Zamboanga', 'A+', 9091234567, 'carmen.reyes@email.com', 'Janet.png', 'Executive Officer', 'Municipal Mayor', 1, 1, '2025-02-19 14:09:03', '2025-04-23 05:50:52'),
+('emp343', 'dss', 'ass', 'hhss', '', '1998-12-31', 'dddhhdhds', 'Male', 'Single', 'hhshshsghs', 'B+', 9272727722, 'gg@gmail.com', NULL, 'IT', 'hhdhhd', 1, 0, '2025-04-29 19:12:11', '2025-04-29 16:00:00'),
 ('err12', 'gggf', 'ff', 'tff', '', '2000-02-12', 'San Luis, Batangas', 'Male', 'Single', 'Bagong Pook', 'A-', 9882828823, 'er@gmail.com', NULL, 'IT', 'hhhh', 1, 0, '2025-04-29 00:47:52', '2025-04-29 00:47:52'),
 ('HRM-ADMIN', 'Gally', 'Dimayuga', 'Tipan', '', '1990-06-28', 'CUENCA, BATANGAS', 'Male', 'Single', 'CUENCA, BATANGAS', 'A+', 9123456789, 'admin@gmail.com', 'Gally.png', 'Office of the HRM', 'MHRMO', 1, 1, '2025-02-17 06:33:54', '2025-04-23 05:50:52');
 
@@ -233,67 +234,17 @@ INSERT INTO `events` (`id`, `title`, `start_date`, `end_date`, `description`, `c
 -- --------------------------------------------------------
 
 --
--- Table structure for table `files`
---
-
-CREATE TABLE `files` (
-  `id` int(11) NOT NULL,
-  `folder_id` int(11) NOT NULL,
-  `filename` varchar(255) NOT NULL,
-  `uploaded_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `files`
---
-
-INSERT INTO `files` (`id`, `folder_id`, `filename`, `uploaded_at`) VALUES
-(6, 11, 'mk-logo.png', '2025-04-24 18:31:53'),
-(7, 11, 'CSC-11-Professional-and-Sub-Professional-Levels-v2-version-1-2.pdf', '2025-04-24 18:33:56'),
-(10, 12, '9_BatStateU-FO-OJT-07_On-the-Job-Training-Time-Frame_Rev.-01.pdf', '2025-04-28 11:23:13'),
-(9, 12, 'Bookkeeping.pdf', '2025-04-28 11:03:02'),
-(11, 12, 'Application-for-Graduation-Form.pdf', '2025-04-28 11:23:13'),
-(12, 12, '6 BatStateU-FO-OJT-01_Parent\'s, Guardian\'s Consent Form for Internship Training_Rev. 02.pdf', '2025-04-28 11:23:13'),
-(13, 12, 'FO - Final.pdf', '2025-04-29 09:41:33'),
-(14, 15, 'RO - Final.pdf', '2025-04-29 10:05:31'),
-(15, 15, 'FO - Final.pdf', '2025-04-29 10:05:31');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `folders`
---
-
-CREATE TABLE `folders` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `parent_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `folders`
---
-
-INSERT INTO `folders` (`id`, `name`, `parent_id`) VALUES
-(12, 'OA', NULL),
-(13, 'citizen\'s charter', NULL),
-(14, 'CSC-CARAGA CITIZEN’S CHARTER', 13),
-(15, 'Initial updated CSC Citizen\'s Charter', 13);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `government_info`
 --
 
 CREATE TABLE `government_info` (
   `id` int(11) NOT NULL,
   `employee_no` varchar(100) NOT NULL,
-  `gsis_no` varchar(20) DEFAULT NULL,
-  `pag_ibig_no` varchar(20) DEFAULT NULL,
-  `philhealth_no` varchar(20) DEFAULT NULL,
-  `sss_no` varchar(20) DEFAULT NULL,
-  `tin_no` varchar(20) DEFAULT NULL,
+  `gsis_no` varchar(20) DEFAULT 'N/A',
+  `pag_ibig_no` varchar(20) DEFAULT 'N/A',
+  `philhealth_no` varchar(20) DEFAULT 'N/A',
+  `sss_no` varchar(20) DEFAULT 'N/A',
+  `tin_no` varchar(20) DEFAULT 'N/A',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -303,12 +254,13 @@ CREATE TABLE `government_info` (
 --
 
 INSERT INTO `government_info` (`id`, `employee_no`, `gsis_no`, `pag_ibig_no`, `philhealth_no`, `sss_no`, `tin_no`, `created_at`, `updated_at`) VALUES
-(2, 'HRM-ADMIN', NULL, NULL, NULL, NULL, NULL, '2025-03-11 08:25:50', '2025-03-11 08:25:50'),
-(16, 'EMP002', NULL, NULL, NULL, NULL, NULL, '2025-04-28 20:42:12', '2025-04-28 16:00:00'),
-(17, 'EMP003', NULL, NULL, NULL, NULL, NULL, '2025-04-28 21:55:15', '2025-04-28 21:55:15'),
-(18, 'EMP005', NULL, NULL, NULL, NULL, NULL, '2025-04-29 00:32:29', '2025-04-29 00:32:29'),
-(20, 'err12', NULL, NULL, NULL, NULL, NULL, '2025-04-29 00:47:52', '2025-04-29 00:47:52'),
-(27, 'aas111', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', '2025-04-29 01:55:43', '2025-04-29 01:55:43');
+(2, 'HRM-ADMIN', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', '2025-03-11 08:25:50', '2025-04-30 01:10:54'),
+(16, 'EMP002', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', '2025-04-28 20:42:12', '2025-04-30 01:10:54'),
+(17, 'EMP003', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', '2025-04-28 21:55:15', '2025-04-30 01:10:54'),
+(18, 'EMP005', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', '2025-04-29 00:32:29', '2025-04-30 01:10:54'),
+(20, 'err12', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', '2025-04-29 00:47:52', '2025-04-30 01:10:54'),
+(27, 'aas111', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', '2025-04-29 01:55:43', '2025-04-29 01:55:43'),
+(28, 'emp343', '212-001-991818', 'N/A', 'N/A', 'N/A', 'N/A', '2025-04-29 19:12:11', '2025-04-29 16:00:00');
 
 -- --------------------------------------------------------
 
@@ -398,20 +350,6 @@ ALTER TABLE `events`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `files`
---
-ALTER TABLE `files`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `folder_id` (`folder_id`);
-
---
--- Indexes for table `folders`
---
-ALTER TABLE `folders`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `parent_id` (`parent_id`);
-
---
 -- Indexes for table `government_info`
 --
 ALTER TABLE `government_info`
@@ -466,22 +404,10 @@ ALTER TABLE `events`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT for table `files`
---
-ALTER TABLE `files`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- AUTO_INCREMENT for table `folders`
---
-ALTER TABLE `folders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
-
---
 -- AUTO_INCREMENT for table `government_info`
 --
 ALTER TABLE `government_info`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `service_records`
@@ -498,12 +424,6 @@ ALTER TABLE `service_records`
 --
 ALTER TABLE `admin`
   ADD CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`employee_no`) REFERENCES `employee` (`employee_no`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `folders`
---
-ALTER TABLE `folders`
-  ADD CONSTRAINT `folders_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `folders` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `government_info`

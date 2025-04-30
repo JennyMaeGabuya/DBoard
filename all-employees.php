@@ -619,33 +619,33 @@ include 'emailnotif.php';
                                                                 <div class="form-group col-md-4">
                                                                     <label>GSIS ID No</label>
                                                                     <input name="gsis_no" type="text" class="form-control"
-                                                                        value="<?php echo $gsis; ?>" required />
+                                                                        value="<?php echo $gsis; ?>"  />
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>PAGIBIG ID No</label>
                                                                     <input name="pag_ibig_no" type="text"
                                                                         class="form-control"
-                                                                        value="<?php echo $pag_ibig; ?>" required />
+                                                                        value="<?php echo $pag_ibig; ?>" />
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>PHILHEALTH No</label>
                                                                     <input name="philhealth_no" type="text"
                                                                         class="form-control"
-                                                                        value="<?php echo $philhealth; ?>" required />
+                                                                        value="<?php echo $philhealth; ?>"  />
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>SSS No</label>
                                                                     <input name="sss_no" type="text" class="form-control"
-                                                                        value="<?php echo $sss; ?>" required />
+                                                                        value="<?php echo $sss; ?>"  />
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
                                                                     <label>TIN No</label>
                                                                     <input name="tin_no" type="text" class="form-control"
-                                                                        value="<?php echo $tin; ?>" required />
+                                                                        value="<?php echo $tin; ?>"  />
                                                                 </div>
                                                             </div>
 
