@@ -438,18 +438,30 @@ FROM service_records WHERE employee_no = ?";
     </div>
   </div>
 
+
+
   <?php if (isset($_SESSION['display'])): ?>
     <script>
-      Swal.fire({
-        title: '<?php echo $_SESSION['title']; ?>',
-        text: '<?php echo $_SESSION['display']; ?>',
-        icon: '<?php echo $_SESSION['success']; ?>',
-        confirmButtonText: 'OK'
-      });
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: '<?php echo $_SESSION['success']; ?>', 
+            title: '<?php echo $_SESSION['display']; ?>',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
     </script>
-    <?php unset($_SESSION['display']);
-    unset($_SESSION['success']); ?>
-  <?php endif; ?>
+    <?php
+    unset($_SESSION['display']);
+    unset($_SESSION['success']);
+    unset($_SESSION['title']);
+    ?>
+<?php endif; ?>
 
   <!--SERVICE RECORDS FORM MODAL-->
   <div class="modal fade" id="addservice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

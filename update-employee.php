@@ -156,6 +156,6 @@ if (isset($_POST['update-employee-btn'])) {
     $_SESSION['title'] = 'Success';
     $_SESSION['success'] = 'success';
 
-    header('Location: edit-employee.php');
+    header('Location: all-employees.php');
     exit();
 }
