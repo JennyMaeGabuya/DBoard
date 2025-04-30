@@ -2,7 +2,8 @@
 include 'dbcon.php';
 
 // Function to sanitize filename
-function sanitizeFileName($name) {
+function sanitizeFileName($name)
+{
     return preg_replace('/[\/\\\\?%*:|"<>#&]/', '_', $name);
 }
 
@@ -17,7 +18,7 @@ if (isset($_FILES['files']) && isset($_POST['folder_id'])) {
     $uploadedFiles = [];
     $errorMessages = [];
 
-    $maxFileSize = 20 * 1024 * 1024; // 20MB in bytes
+    $maxFileSize = 150 * 1024 * 1024; // 150MB in bytes
 
     $fileCount = count($_FILES['files']['name']);
     for ($i = 0; $i < $fileCount; $i++) {

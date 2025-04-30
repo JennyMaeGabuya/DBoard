@@ -2,17 +2,24 @@
 include 'emailnotif.php';
 include "dbcon.php";
 session_start();
+
 if (isset($_SESSION['success'])) {
   echo "<script>
-        setTimeout(() => {
-            Swal.fire({
-                title: 'Success!',
-                text: '" . $_SESSION['success'] . "',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-        }, 100);
-    </script>";
+      setTimeout(() => {
+          const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true
+          });
+
+          Toast.fire({
+              icon: 'success',
+              title: '" . addslashes($_SESSION['success']) . "'
+          });
+      }, 100);
+  </script>";
   unset($_SESSION['success']);
 }
 

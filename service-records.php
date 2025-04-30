@@ -231,7 +231,7 @@ FROM service_records WHERE employee_no = ?";
             <div class="widget-box">
               <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
               <script>
-                $(function () {
+                $(function() {
                   new DataTable('#certHistoryTable', {
                     responsive: true,
                     autoWidth: false,
@@ -275,7 +275,7 @@ FROM service_records WHERE employee_no = ?";
                   $count = 1;
 
                   while ($row = $result->fetch_assoc()) {
-                    ?>
+                  ?>
                     <tr>
                       <td style="text-align: center;"><?php echo $count; ?></td>
                       <td><?php echo htmlspecialchars($row['from_date']); ?></td>
@@ -299,7 +299,7 @@ FROM service_records WHERE employee_no = ?";
                         </div>
                       </td>
                     </tr>
-                    <?php
+                  <?php
                     $count++;
                   }
                   ?>
@@ -314,8 +314,8 @@ FROM service_records WHERE employee_no = ?";
   </div>
 
   <script>
-    $(document).ready(function () {
-      $('.btn-warning').on('click', function () {
+    $(document).ready(function() {
+      $('.btn-warning').on('click', function() {
         var empid = $(this).data('empid'); // Get empid from the button's data attribute
         var row = $(this).closest('tr'); // Get the closest row
         var empno = '<?php echo $employee_no; ?>'; // Assuming employee_no is available in the PHP context
@@ -442,26 +442,26 @@ FROM service_records WHERE employee_no = ?";
 
   <?php if (isset($_SESSION['display'])): ?>
     <script>
-        Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: '<?php echo $_SESSION['success']; ?>', 
-            title: '<?php echo $_SESSION['display']; ?>',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        });
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: '<?php echo $_SESSION['success']; ?>',
+        title: '<?php echo $_SESSION['display']; ?>',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
     </script>
     <?php
     unset($_SESSION['display']);
     unset($_SESSION['success']);
     unset($_SESSION['title']);
     ?>
-<?php endif; ?>
+  <?php endif; ?>
 
   <!--SERVICE RECORDS FORM MODAL-->
   <div class="modal fade" id="addservice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -551,11 +551,5 @@ FROM service_records WHERE employee_no = ?";
     </div>
   </div>
 
-  <script>
-    setTimeout(function () {
-      location.reload();
-    }, 300000); 
-  </script>
-  
   <!--Footer-part-->
   <?php include 'includes/footer.php'; ?>

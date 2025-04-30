@@ -196,7 +196,7 @@ include 'emailnotif.php';
                             <script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
 
                             <script>
-                                $(function () {
+                                $(function() {
                                     new DataTable('#myTable', {
                                         responsive: true,
                                         autoWidth: false,
@@ -271,7 +271,7 @@ include 'emailnotif.php';
                                         $cause_of_separation = $row['cause_of_separation'] ?? '';
                                         $imagePath = $row['image'] ?? '';
                                         $imageUrl = !empty($imagePath) ? 'img/profile/' . $imagePath : 'img/mk-logo.png';
-                                        ?>
+                                    ?>
                                         <tr>
                                             <td style="text-align: center;"><?php echo $count; ?></td>
                                             <td>
@@ -325,10 +325,10 @@ include 'emailnotif.php';
                                             </td>
 
                                             <script>
-                                                document.addEventListener("DOMContentLoaded", function () {
+                                                document.addEventListener("DOMContentLoaded", function() {
                                                     // Confirmation before deleting an employee
                                                     document.querySelectorAll(".delete-btn").forEach(button => {
-                                                        button.addEventListener("click", function () {
+                                                        button.addEventListener("click", function() {
                                                             let employee_no = this.getAttribute("data-id");
 
                                                             Swal.fire({
@@ -473,7 +473,7 @@ include 'emailnotif.php';
 
                                                                 <!-- Accept only numbers -->
                                                                 <script>
-                                                                    document.getElementById('mobile').addEventListener('input', function (e) {
+                                                                    document.getElementById('mobile').addEventListener('input', function(e) {
                                                                         const value = e.target.value;
                                                                         // Remove non-numeric characters
                                                                         const numericValue = value.replace(/[^0-9]/g, '');
@@ -520,9 +520,9 @@ include 'emailnotif.php';
                                                                     <label>Sex</label>
                                                                     <select name="sex" class="form-control" required>
                                                                         <option value="Male" <?php if ($sex == "Male")
-                                                                            echo "selected"; ?>>Male</option>
+                                                                                                    echo "selected"; ?>>Male</option>
                                                                         <option value="Female" <?php if ($sex == "Female")
-                                                                            echo "selected"; ?>>Female</option>
+                                                                                                    echo "selected"; ?>>Female</option>
                                                                     </select>
                                                                 </div>
 
@@ -530,23 +530,23 @@ include 'emailnotif.php';
                                                                     <label>Blood Type</label>
                                                                     <select name="blood_type" class="form-control" required>
                                                                         <option value="A+" <?php if ($blood_type == "A+")
-                                                                            echo "selected"; ?>>A+</option>
+                                                                                                echo "selected"; ?>>A+</option>
                                                                         <option value="A-" <?php if ($blood_type == "A-")
-                                                                            echo "selected"; ?>>A-</option>
+                                                                                                echo "selected"; ?>>A-</option>
                                                                         <option value="B+" <?php if ($blood_type == "B+")
-                                                                            echo "selected"; ?>>B+</option>
+                                                                                                echo "selected"; ?>>B+</option>
                                                                         <option value="B-" <?php if ($blood_type == "B-")
-                                                                            echo "selected"; ?>>B-</option>
+                                                                                                echo "selected"; ?>>B-</option>
                                                                         <option value="AB+" <?php if ($blood_type == "AB+")
-                                                                            echo "selected"; ?>>AB+</option>
+                                                                                                echo "selected"; ?>>AB+</option>
                                                                         <option value="AB-" <?php if ($blood_type == "AB-")
-                                                                            echo "selected"; ?>>AB-</option>
+                                                                                                echo "selected"; ?>>AB-</option>
                                                                         <option value="O+" <?php if ($blood_type == "O+")
-                                                                            echo "selected"; ?>>O+</option>
+                                                                                                echo "selected"; ?>>O+</option>
                                                                         <option value="O-" <?php if ($blood_type == "O-")
-                                                                            echo "selected"; ?>>O-</option>
+                                                                                                echo "selected"; ?>>O-</option>
                                                                         <option value="Unknown" <?php if ($blood_type == "Unknown")
-                                                                            echo "selected"; ?>>
+                                                                                                    echo "selected"; ?>>
                                                                             Unknown</option>
                                                                     </select>
                                                                 </div>
@@ -582,7 +582,7 @@ include 'emailnotif.php';
                                                                         <input class="form-check-input" type="radio"
                                                                             name="hr_department" id="radioDefault1"
                                                                             value="1" <?php if ($hr_staff == 1)
-                                                                                echo 'checked'; ?>>
+                                                                                            echo 'checked'; ?>>
                                                                         <label class="form-check-label" for="radioDefault1">
                                                                             Yes
                                                                         </label>
@@ -591,7 +591,7 @@ include 'emailnotif.php';
                                                                         <input class="form-check-input" type="radio"
                                                                             name="hr_department" id="radioDefault2"
                                                                             value="0" <?php if ($hr_staff == 0)
-                                                                                echo 'checked'; ?>>
+                                                                                            echo 'checked'; ?>>
                                                                         <label class="form-check-label" for="radioDefault2">
                                                                             No
                                                                         </label>
@@ -602,9 +602,9 @@ include 'emailnotif.php';
                                                                     <select name="account_status" class="form-control"
                                                                         required>
                                                                         <option value="1" <?php if ($account_status == 1)
-                                                                            echo 'selected'; ?>>Active</option>
+                                                                                                echo 'selected'; ?>>Active</option>
                                                                         <option value="0" <?php if ($account_status == 0)
-                                                                            echo 'selected'; ?>>Inactive</option>
+                                                                                                echo 'selected'; ?>>Inactive</option>
                                                                     </select>
                                                                 </div>
 
@@ -661,7 +661,7 @@ include 'emailnotif.php';
                                                             <script>
                                                                 function previewImage(event, employee_no) {
                                                                     var reader = new FileReader();
-                                                                    reader.onload = function () {
+                                                                    reader.onload = function() {
                                                                         var output = document.getElementById('profileImage_' + employee_no);
                                                                         output.src = reader.result; // Update the image preview
                                                                     };
@@ -675,7 +675,7 @@ include 'emailnotif.php';
                                             </div>
                                         </div>
 
-                                        <?php $count++;
+                                    <?php $count++;
                                     } ?>
                                 </tbody>
                             </table>
@@ -720,7 +720,7 @@ include 'emailnotif.php';
                                     const file = event.target.files[0]; // Get the selected file
                                     const reader = new FileReader(); // Create a FileReader object
 
-                                    reader.onload = function (e) {
+                                    reader.onload = function(e) {
                                         const img = document.getElementById('addprofileImage'); // Get the image element
                                         img.src = e.target.result; // Set the src of the image to the file's data URL
                                     }
@@ -919,7 +919,7 @@ include 'emailnotif.php';
             const file = event.target.files[0];
             const reader = new FileReader();
 
-            reader.onload = function (e) {
+            reader.onload = function(e) {
                 const img = document.getElementById('addprofileImage');
                 img.src = e.target.result; // Set the src of the image to the file's data URL
             }
@@ -928,9 +928,7 @@ include 'emailnotif.php';
                 reader.readAsDataURL(file); // Read the file as a data URL
             }
         }
-    </script>
 
-    <script>
         function checkOtherStatus(formType) {
             var selectElement = document.getElementById("civil_status_" + formType);
             var otherInput = document.getElementById("other_civil_status_" + formType);
@@ -946,35 +944,34 @@ include 'emailnotif.php';
         }
 
         // Ensure proper state on page load (for edit form only)
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             checkOtherStatus('edit'); // Only needed for Edit form
         });
     </script>
 
     <!-- Sweetalert Notifier -->
-  <?php if (isset($_SESSION['display'])): ?>
-    <script>
-        Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: '<?php echo $_SESSION['success']; ?>', // 'success', 'error', 'warning', 'info', or 'question'
-            title: '<?php echo $_SESSION['display']; ?>',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        });
-    </script>
-    <?php
-    unset($_SESSION['display']);
-    unset($_SESSION['success']);
-    unset($_SESSION['title']);
-    ?>
-<?php endif; ?>
-
+    <?php if (isset($_SESSION['display'])): ?>
+        <script>
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: '<?php echo $_SESSION['success']; ?>', // 'success', 'error', 'warning', 'info', or 'question'
+                title: '<?php echo $_SESSION['display']; ?>',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+        </script>
+        <?php
+        unset($_SESSION['display']);
+        unset($_SESSION['success']);
+        unset($_SESSION['title']);
+        ?>
+    <?php endif; ?>
 
     <!--Footer-part-->
     <?php include 'includes/footer.php'; ?>

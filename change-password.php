@@ -272,7 +272,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </ul>
                             <div id="myTabContent" class="tab-content custom-product-edit">
 
-
                                 <div
                                     class="product-tab-list tab-pane fade active in"
                                     id="reviews">
@@ -422,22 +421,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                                 <script>
                                     $(document).ready(function() {
+                                        const Toast = Swal.mixin({
+                                            toast: true,
+                                            position: 'top-end',
+                                            showConfirmButton: false,
+                                            timer: 3000,
+                                            timerProgressBar: true
+                                        });
+
                                         <?php if (isset($_SESSION['error_message'])): ?>
-                                            Swal.fire({
+                                            Toast.fire({
                                                 icon: 'error',
-                                                title: 'Oops...',
-                                                text: "<?= addslashes($_SESSION['error_message']) ?>",
+                                                title: "<?= addslashes($_SESSION['error_message']) ?>"
                                             });
                                             <?php unset($_SESSION['error_message']); ?>
                                         <?php endif; ?>
 
                                         <?php if (isset($_SESSION['success_message']) && !isset($_SESSION['logout_trigger'])): ?>
-                                            Swal.fire({
+                                            Toast.fire({
                                                 icon: 'success',
-                                                title: 'Verified!',
-                                                text: "<?= addslashes($_SESSION['success_message']) ?>",
-                                                allowOutsideClick: false,
-                                                confirmButtonText: 'OK'
+                                                title: "<?= addslashes($_SESSION['success_message']) ?>"
                                             });
                                             <?php unset($_SESSION['success_message']); ?>
                                         <?php endif; ?>

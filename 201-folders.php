@@ -91,13 +91,74 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         .folder-section {
-            margin-top: 30px;
+            margin: 30px 0 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .folder-actions {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .folder-actions button i {
+            font-size: 16px;
+        }
+
+        /* Responsive tweaks for smaller screens */
+        @media (max-width: 768px) {
+            .folder-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .folder-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .folder-actions button {
+                font-size: 14px;
+                padding: 6px 10px;
+            }
+
+            .folder-actions button i {
+                font-size: 14px;
+            }
+
+            .btn-label {
+                display: inline;
+            }
         }
 
         .folders-container {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .folders-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .folders-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .folder i {
+                font-size: 60px;
+            }
+
+            .folder-label {
+                font-size: 14px;
+            }
         }
 
         .folder {
@@ -135,26 +196,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             max-width: 100%;
         }
 
-        @media (max-width: 992px) {
-            .folders-container {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .folders-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .folder i {
-                font-size: 60px;
-            }
-
-            .folder-label {
-                font-size: 14px;
-            }
-        }
-
         .folder input {
             border: none;
             background: transparent;
@@ -168,13 +209,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         .button-container {
             display: flex;
             gap: 10px;
-        }
-
-        .folder-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
         }
 
         .folder-select-box {
@@ -350,22 +384,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             <h3>201 Downloadable File</h3>
                         </div>
 
-                        <div class="folder-section"
-                            style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+                        <div class="folder-section">
                             <div class="folder-list">
                                 <!-- Folder icons go here -->
                             </div>
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-primary btn-border btn-round btn-sm" id="addFolderBtn"
-                                    title="Add Folder">
-                                    <i class="fas fa-folder-plus"></i> Add Folder
+                            <div class="folder-actions">
+                                <button class="btn btn-primary btn-border btn-round btn-sm" id="addFolderBtn" title="Add Folder">
+                                    <i class="fas fa-folder-plus"></i> <span class="btn-label">Add Folder</span>
                                 </button>
-                                <button class="btn btn-danger btn-border btn-round btn-sm" id="deleteSelectedBtn"
-                                    title="Delete Folder">
+                                <button class="btn btn-danger btn-border btn-round btn-sm" id="deleteSelectedBtn" title="Delete Folder">
                                     <i class="fas fa-trash"></i>
                                 </button>
-                                <button class="btn btn-warning btn-border btn-round btn-sm" id="selectBtn"
-                                    title="Select Folder">
+                                <button class="btn btn-warning btn-border btn-round btn-sm" id="selectBtn" title="Select Folder">
                                     <i class="fas fa-check-square"></i>
                                 </button>
                             </div>
@@ -405,6 +435,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             }
                             ?>
                         </div>
+
                         <script>
                             function openFolder(folderId) {
                                 window.location.href = "201-files.php?folder_id=" + folderId;
