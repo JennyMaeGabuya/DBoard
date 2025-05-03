@@ -12,15 +12,39 @@ if (!isset($_GET['id'])) {
 
 $file_id = intval($_GET['id']);
 
-$query = "SELECT filename FROM 201_files WHERE id = $file_id";
-$result = mysqli_query($con, $query);
-$file = mysqli_fetch_assoc($result);
-
-if (!$file) {
+// Get file info including folder_id
+$query = "SELECT filename, folder_id FROM 201_files WHERE id = ?";
+$stmt = mysqli_prepare($con, $query);
+mysqli_stmt_bind_param($stmt, "i", $file_id);
+mysqli_stmt_execute($stmt);
+mysqli_stmt_bind_result($stmt, $filename, $folder_id);
+if (!mysqli_stmt_fetch($stmt)) {
     die("File not found.");
 }
+mysqli_stmt_close($stmt);
 
-$file_path = "../img/201 Uploads/" . $file['filename'];
+// Reconstruct full folder path
+$baseDir = "../img/201 Files/";
+$pathSegments = [];
+$currentId = $folder_id;
+
+while ($currentId !== null) {
+    $stmt = $con->prepare("SELECT name, parent_id FROM 201_folders WHERE id = ?");
+    $stmt->bind_param("i", $currentId);
+    $stmt->execute();
+    $stmt->bind_result($name, $parentId);
+    
+    if ($stmt->fetch()) {
+        array_unshift($pathSegments, preg_replace('/[\/\\\\?%*:|"<>#&]/', '_', $name)); // Sanitize folder name
+        $currentId = $parentId;
+    } else {
+        die("Folder path not found.");
+    }
+
+    $stmt->close();
+}
+
+$file_path = $baseDir . implode('/', $pathSegments) . '/' . $filename;
 
 if (!file_exists($file_path)) {
     die("File does not exist.");
@@ -28,7 +52,7 @@ if (!file_exists($file_path)) {
 
 $mime_type = mime_content_type($file_path);
 
-// Only allow preview for supported file types (e.g., image, PDF, Word)
+// Only allow preview for supported file types
 $previewable_types = [
     'image/jpeg', 
     'image/png', 
@@ -39,19 +63,13 @@ $previewable_types = [
 ];
 
 if (in_array($mime_type, $previewable_types)) {
-    // Set headers for inline display, ensuring the file is previewed in the browser
     header("Content-Type: $mime_type");
     header("Content-Disposition: inline; filename=\"" . basename($file_path) . "\"");
-
-    // For PDF/image/office file preview support
     header("Content-Transfer-Encoding: binary");
     header("Accept-Ranges: bytes");
-
-    // Output the file content for preview
     @readfile($file_path);
     exit;
 } else {
-    // If the file type is not previewable, show an error message or redirect to a download
     echo "This file cannot be previewed.";
     exit;
 }

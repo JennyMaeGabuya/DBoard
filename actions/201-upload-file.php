@@ -9,7 +9,45 @@ function sanitizeFileName($name)
 
 if (isset($_FILES['files']) && isset($_POST['folder_id'])) {
     $folder_id = intval($_POST['folder_id']);
-    $targetDir = "../img/201 Uploads/";
+
+    // Get the folder name from the database
+    $folderQuery = "SELECT name FROM 201_folders WHERE id = ?";
+    $stmt = mysqli_prepare($con, $folderQuery);
+    mysqli_stmt_bind_param($stmt, "i", $folder_id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $folderName);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+
+    if (!$folderName) {
+        echo json_encode(['success' => false, 'message' => 'Invalid folder ID.']);
+        exit;
+    }
+
+    $safeFolderName = sanitizeFileName($folderName);
+    // Reconstruct full folder path based on folder_id
+    $baseDir = "../img/201 Files/";
+    $pathSegments = [];
+    $currentId = $folder_id;
+
+    while ($currentId !== null) {
+        $stmt = $con->prepare("SELECT name, parent_id FROM 201_folders WHERE id = ?");
+        $stmt->bind_param("i", $currentId);
+        $stmt->execute();
+        $stmt->bind_result($name, $parentId);
+
+        if ($stmt->fetch()) {
+            array_unshift($pathSegments, sanitizeFileName($name)); // Sanitize folder names too
+            $currentId = $parentId;
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Invalid folder ID.']);
+            exit;
+        }
+
+        $stmt->close();
+    }
+
+    $targetDir = $baseDir . implode('/', $pathSegments) . '/';
 
     if (!is_dir($targetDir)) {
         mkdir($targetDir, 0777, true);
@@ -18,7 +56,7 @@ if (isset($_FILES['files']) && isset($_POST['folder_id'])) {
     $uploadedFiles = [];
     $errorMessages = [];
 
-    $maxFileSize = 150 * 1024 * 1024; // 150MB in bytes
+    $maxFileSize = 150 * 1024 * 1024; // 150MB
 
     $fileCount = count($_FILES['files']['name']);
     for ($i = 0; $i < $fileCount; $i++) {
@@ -30,11 +68,11 @@ if (isset($_FILES['files']) && isset($_POST['folder_id'])) {
 
         if ($fileError === UPLOAD_ERR_OK) {
             if ($fileSize > $maxFileSize) {
-                $errorMessages[] = "File '$originalName' exceeds the 20MB size limit.";
+                $errorMessages[] = "File '$originalName' exceeds the 150MB size limit.";
                 continue;
             }
 
-            // Check if the same file name already exists under the same folder
+            // Check for duplicate file in same folder
             $checkQuery = "SELECT id FROM 201_files WHERE folder_id = ? AND filename = ?";
             $stmt = mysqli_prepare($con, $checkQuery);
             mysqli_stmt_bind_param($stmt, "is", $folder_id, $originalName);
@@ -57,14 +95,14 @@ if (isset($_FILES['files']) && isset($_POST['folder_id'])) {
                 if (mysqli_stmt_execute($stmt)) {
                     $uploadedFiles[] = $originalName;
                 } else {
-                    $errorMessages[] = "Failed to insert '$originalName' into the database.";
+                    $errorMessages[] = "Database insert failed for '$originalName'.";
                 }
                 mysqli_stmt_close($stmt);
             } else {
-                $errorMessages[] = "Failed to upload '$originalName'.";
+                $errorMessages[] = "Failed to move uploaded file '$originalName'.";
             }
         } else {
-            $errorMessages[] = "Error uploading '$originalName'. Error code: $fileError.";
+            $errorMessages[] = "Upload error for '$originalName'. Code: $fileError.";
         }
     }
 
@@ -77,4 +115,3 @@ if (isset($_FILES['files']) && isset($_POST['folder_id'])) {
 } else {
     echo json_encode(['success' => false, 'message' => 'No files uploaded or folder ID missing.']);
 }
-?>

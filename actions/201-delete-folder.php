@@ -5,55 +5,85 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['folder_ids'])) {
     $folderIds = $_POST['folder_ids'];
     $placeholders = implode(',', array_fill(0, count($folderIds), '?'));
 
-    // Prepare SQL to fetch folder names before deletion
-    $stmtFetch = $con->prepare("SELECT name FROM 201_folders WHERE id IN ($placeholders)");
+    // Fetch folders to delete (id and name)
+    $stmtFetch = $con->prepare("SELECT id, name FROM 201_folders WHERE id IN ($placeholders)");
     $stmtFetch->bind_param(str_repeat('i', count($folderIds)), ...$folderIds);
     $stmtFetch->execute();
     $result = $stmtFetch->get_result();
 
     $foldersToDelete = [];
     while ($row = $result->fetch_assoc()) {
-        $foldersToDelete[] = $row['name'];
+        $foldersToDelete[] = $row;
     }
     $stmtFetch->close();
 
-    // Delete folders from database
-    $stmtDelete = $con->prepare("DELETE FROM 201_folders WHERE id IN ($placeholders)");
-    $stmtDelete->bind_param(str_repeat('i', count($folderIds)), ...$folderIds);
+    // Prepare statements once
+    $stmtDeleteFiles = $con->prepare("DELETE FROM 201_files WHERE folder_id = ?");
+    $stmtDeleteFolder = $con->prepare("DELETE FROM 201_folders WHERE id = ?");
 
-    if ($stmtDelete->execute()) {
-        // Delete the corresponding folders and files from the system
-        foreach ($foldersToDelete as $folderName) {
-            $folderPath = "../img/201 Files/" . $folderName;
-            if (is_dir($folderPath)) {
-                deleteFolder($folderPath);
-            }
+    foreach ($foldersToDelete as $folder) {
+        $folderId = $folder['id'];
+
+        // Recursively delete subfolders (and their files and DB records)
+        deleteSubfolders($folderId, $con, $stmtDeleteFiles, $stmtDeleteFolder);
+
+        // Delete files inside the parent folder
+        $stmtDeleteFiles->bind_param('i', $folderId);
+        $stmtDeleteFiles->execute();
+
+        // Delete parent folder itself from DB
+        $stmtDeleteFolder->bind_param('i', $folderId);
+        $stmtDeleteFolder->execute();
+
+        // Delete folder from file system
+        $folderPath = "../img/201 Files/" . $folder['name'];
+        if (is_dir($folderPath)) {
+            deleteFolder($folderPath);
         }
-
-        echo json_encode(["success" => true]);
-    } else {
-        echo json_encode(["success" => false, "error" => $stmtDelete->error]);
     }
 
-    $stmtDelete->close();
+    echo json_encode(["success" => true]);
+
+    $stmtDeleteFiles->close();
+    $stmtDeleteFolder->close();
     $con->close();
 }
 
-// Function to delete a folder and its contents
-function deleteFolder($folderPath)
+// Recursively delete subfolders and their DB entries
+function deleteSubfolders($parentFolderId, $con, $stmtDeleteFiles, $stmtDeleteFolder)
 {
-    if (!is_dir($folderPath)) {
-        return;
+    $stmt = $con->prepare("SELECT id FROM 201_folders WHERE parent_id = ?");
+    $stmt->bind_param('i', $parentFolderId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $subfolderId = $row['id'];
+
+        // Recursively delete deeper levels first
+        deleteSubfolders($subfolderId, $con, $stmtDeleteFiles, $stmtDeleteFolder);
+
+        // Delete files in subfolder
+        $stmtDeleteFiles->bind_param('i', $subfolderId);
+        $stmtDeleteFiles->execute();
+
+        // Delete subfolder itself from DB
+        $stmtDeleteFolder->bind_param('i', $subfolderId);
+        $stmtDeleteFolder->execute();
     }
 
-    $files = array_diff(scandir($folderPath), ['.', '..']);
-    foreach ($files as $file) {
-        $filePath = $folderPath . DIRECTORY_SEPARATOR . $file;
-        if (is_dir($filePath)) {
-            deleteFolder($filePath);
-        } else {
-            unlink($filePath);
-        }
+    $stmt->close();
+}
+
+// Recursively delete folder from filesystem
+function deleteFolder($folderPath)
+{
+    if (!is_dir($folderPath)) return;
+
+    $items = array_diff(scandir($folderPath), ['.', '..']);
+    foreach ($items as $item) {
+        $itemPath = $folderPath . DIRECTORY_SEPARATOR . $item;
+        is_dir($itemPath) ? deleteFolder($itemPath) : unlink($itemPath);
     }
     rmdir($folderPath);
 }

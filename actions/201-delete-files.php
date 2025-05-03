@@ -14,6 +14,36 @@ function sanitizeFileName($name) {
     return preg_replace('/[\/\\\\?%*:|"<>#&]/', '_', $name);
 }
 
+// Reconstruct folder path from folder_id
+function getFolderPath($folder_id, $con) {
+    $pathSegments = [];
+    $currentId = $folder_id;
+
+    while ($currentId !== null) {
+        $stmt = $con->prepare("SELECT name, parent_id FROM 201_folders WHERE id = ?");
+        $stmt->bind_param("i", $currentId);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            $name = '';
+            $parentId = null;
+            $stmt->bind_result($name, $parentId);
+            $stmt->fetch();
+
+            array_unshift($pathSegments, sanitizeFileName($name));
+            $currentId = $parentId;
+        } else {
+            $stmt->close();
+            return false;
+        }
+
+        $stmt->close();
+    }
+
+    return implode('/', $pathSegments);
+}
+
 if (isset($_GET['id'])) {
     $fileId = intval($_GET['id']);
 
@@ -29,7 +59,13 @@ if (isset($_GET['id'])) {
         $originalName = $file['filename'];
         $safeName = sanitizeFileName($originalName);
 
-        $filePath = "../img/201 Uploads/" . $safeName;
+        $relativePath = getFolderPath($file['folder_id'], $con);
+        if ($relativePath === false) {
+            echo json_encode(['success' => false, 'message' => 'Failed to resolve folder path.']);
+            exit();
+        }
+
+        $filePath = "../img/201 Files/" . $relativePath . "/" . $safeName;
 
         // Delete file from filesystem if it exists
         if (file_exists($filePath)) {
@@ -51,4 +87,4 @@ if (isset($_GET['id'])) {
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid request.']);
 }
-?>
+?> 

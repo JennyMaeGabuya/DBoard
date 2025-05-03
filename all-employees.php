@@ -512,8 +512,7 @@ include 'emailnotif.php';
                                                                         id="other_civil_status_edit" class="form-control"
                                                                         placeholder="Please specify..."
                                                                         value="<?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? htmlspecialchars($civil_status) : ''; ?>"
-                                                                        style="display: <?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? 'block' : 'none'; ?>; margin-top: 5px;"
-                                                                        required>
+                                                                        style="display: <?php echo (!in_array($civil_status, ['Single', 'Married', 'Widowed', 'Separated']) && !empty($civil_status)) ? 'block' : 'none'; ?>; margin-top: 5px;">
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">

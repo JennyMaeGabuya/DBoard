@@ -249,6 +249,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         .folder-dropdown li.rename-folder:hover {
             background-color: #f0f0f0;
         }
+
+        /* Folder search */
+        .folder-search input {
+            padding: 10px 15px;
+            border: 2px solid #007bff;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            width: 100%;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .folder-search input:focus {
+            border-color: #0056b3;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+        }
     </style>
 
 </head>
@@ -381,13 +398,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="product-status-wrap drp-lst">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <h3>201 Downloadable File</h3>
+                            <h3>201 Files</h3>
                         </div>
 
                         <div class="folder-section">
+
                             <div class="folder-list">
                                 <!-- Folder icons go here -->
                             </div>
+
                             <div class="folder-actions">
                                 <button class="btn btn-primary btn-border btn-round btn-sm" id="addFolderBtn" title="Add Folder">
                                     <i class="fas fa-folder-plus"></i> <span class="btn-label">Add Folder</span>
@@ -399,6 +418,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                     <i class="fas fa-check-square"></i>
                                 </button>
                             </div>
+                        </div>
+
+                        <!-- Folder Search Bar -->
+                        <div class="folder-search" style="margin-bottom: 20px;">
+                            <input type="text" id="folderSearchInput" class="form-control" placeholder="Search folders..." onkeyup="filterFolders()" />
                         </div>
 
                         <div class="folders-container">
@@ -414,21 +438,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                             <div class="folder-actions">
                                                 <input type="checkbox" class="folder-checkbox" value="' . $row['id'] . '" style="display: none;">
                                                 <div class="folder-options" style="position: relative; display: inline-block;">
-                                <i class="fa fa-ellipsis-v folder-menu-toggle" data-folder-id="' . $row['id'] . '" style="cursor: pointer; padding: 5px;"></i>
-                                <div class="folder-dropdown" id="dropdown-' . $row['id'] . '" style="display: none; position: absolute; left: 100%; top: 0; background: white; border: 1px solid #ddd; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 1000; min-width: 50px;">
-                                    <ul style="list-style: none; margin: 0; padding: 0;">
-                                        <li class="rename-folder" data-folder-id="' . $row['id'] . '" data-folder-name="' . htmlspecialchars($row['name']) . '" style="padding: 10px; cursor: pointer; border-bottom: 1px solid #eee; transition: background 0.3s;">
-                                            Rename
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                </div>
-                <div class="folder" onclick="openFolder(' . $row['id'] . ')">
-                    <i class="fa fa-folder"></i><br>
-                    <strong>' . htmlspecialchars($row['name']) . '</strong>
-                </div>
-            </div>';
+                                                    <i class="fa fa-ellipsis-v folder-menu-toggle" data-folder-id="' . $row['id'] . '" style="cursor: pointer; padding: 5px;"></i>
+                                                    <div class="folder-dropdown" id="dropdown-' . $row['id'] . '" style="display: none; position: absolute; left: 100%; top: 0; background: white; border: 1px solid #ddd; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 1000; min-width: 50px;">
+                                                        <ul style="list-style: none; margin: 0; padding: 0;">
+                                                            <li class="rename-folder" data-folder-id="' . $row['id'] . '" data-folder-name="' . htmlspecialchars($row['name']) . '" style="padding: 10px; cursor: pointer; border-bottom: 1px solid #eee; transition: background 0.3s;">
+                                                                Rename
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="folder" onclick="openFolder(' . $row['id'] . ')">
+                                                <i class="fa fa-folder"></i><br>
+                                                ' . htmlspecialchars($row['name']) . '
+                                            </div>
+                                        </div>';
                                 }
                             } else {
                                 echo "<p>No folders found.</p>";
@@ -437,6 +462,45 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         </div>
 
                         <script>
+                            // Function to filter folders based on search input
+                            function filterFolders() {
+                                const input = document.getElementById('folderSearchInput').value.toLowerCase();
+                                const folders = document.querySelectorAll('.folders-container .folder-container');
+                                let matchCount = 0;
+
+                                folders.forEach(folder => {
+                                    const folderName = folder.querySelector('.folder').innerText.toLowerCase();
+                                    if (folderName.includes(input)) {
+                                        folder.style.display = 'block';
+                                        matchCount++;
+                                    } else {
+                                        folder.style.display = 'none';
+                                    }
+                                });
+
+                                const noMatchMessageId = "no-match-message";
+                                let noMatchMessage = document.getElementById(noMatchMessageId);
+
+                                if (matchCount === 0) {
+                                    if (!noMatchMessage) {
+                                        noMatchMessage = document.createElement('p');
+                                        noMatchMessage.id = noMatchMessageId;
+                                        noMatchMessage.textContent = "No folders match your search.";
+                                        noMatchMessage.style.cssText = `
+                                                                        color: red;
+                                                                        margin-top: 20px;
+                                                                        font-weight: bold;
+                                                                        font-size: 16px;
+                                                                    `;
+                                        document.querySelector('.folders-container').appendChild(noMatchMessage);
+                                    }
+                                } else {
+                                    if (noMatchMessage) {
+                                        noMatchMessage.remove();
+                                    }
+                                }
+                            }
+
                             function openFolder(folderId) {
                                 window.location.href = "201-files.php?folder_id=" + folderId;
                             }

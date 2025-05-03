@@ -1,29 +1,57 @@
 <?php
-// Start session (if needed)
 session_start();
+include "../dbcon.php";
 
-// Check if the 'file' query parameter is set
-if (isset($_GET['file'])) {
-    $fileName = basename($_GET['file']);
-    $filePath = "../img/201 Uploads/" . $fileName;
+if (isset($_GET['file_id']) && is_numeric($_GET['file_id'])) {
+    $file_id = intval($_GET['file_id']);
 
-    // Check if the file exists
-    if (file_exists($filePath)) {
-        // Set headers to force download
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="' . basename($filePath) . '"');
-        header('Content-Length: ' . filesize($filePath));
-        header('Pragma: no-cache');
-        header('Expires: 0');
+    $stmt = $con->prepare("SELECT filename, folder_id FROM 201_files WHERE id = ?");
+    $stmt->bind_param("i", $file_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-        // Output the file for download
-        readfile($filePath);
-        exit;
+    if ($file = $result->fetch_assoc()) {
+        $filename = $file['filename'];
+        $folder_id = $file['folder_id'];
+
+        $filePath = getFullFolderPath($folder_id, $con) . '/' . $filename;
+
+        if (file_exists($filePath)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="' . basename($filePath) . '"');
+            header('Content-Length: ' . filesize($filePath));
+            header('Pragma: no-cache');
+            header('Expires: 0');
+            readfile($filePath);
+            exit;
+        } else {
+            echo "File not found.";
+        }
     } else {
-        echo "File not found.";
+        echo "Invalid file ID.";
     }
+
+    $stmt->close();
+    $con->close();
 } else {
-    echo "Invalid file.";
+    echo "Invalid request.";
+}
+
+function getFullFolderPath($folder_id, $con)
+{
+    $parts = [];
+
+    while ($folder_id !== null) {
+        $res = mysqli_query($con, "SELECT name, parent_id FROM 201_folders WHERE id = $folder_id");
+        if ($res && $row = mysqli_fetch_assoc($res)) {
+            array_unshift($parts, $row['name']);
+            $folder_id = $row['parent_id'];
+        } else {
+            break;
+        }
+    }
+
+    return '../img/201 Files/' . implode('/', $parts);
 }
 ?>

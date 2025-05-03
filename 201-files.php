@@ -331,7 +331,7 @@ $file_result = mysqli_query($con, $file_query);
                                                                       </button>';
                                             }
 
-                                            echo '<a href="actions/201-download.php?file=' . urlencode($file['filename']) . '" title="Download">
+                                            echo '<a href="actions/201-download.php?file_id=' . $file['id'] . '" title="Download">
                                                 <button class="btn btn-success"><i class="fa fa-download"></i> Download</button>
                                                 </a>
                                                 <a href="#" class="delete-btn-swal" data-id="' . $fileId . '" title="Delete">

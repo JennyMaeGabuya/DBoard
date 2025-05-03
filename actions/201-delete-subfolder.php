@@ -22,7 +22,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         return '../img/201 Files/' . implode('/', $parts);
     }
 
-    // Recursively delete all folders and files
+    // Recursively delete all folders, subfolders, and files
     function deleteFolderAndContents($folder_id, $con)
     {
         // Delete subfolders first
@@ -36,37 +36,41 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         while ($row = mysqli_fetch_assoc($file_result)) {
             $file_path = '../img/uploads/' . $row['filename'];
             if (file_exists($file_path)) {
-                unlink($file_path);
+                unlink($file_path); // Delete the file
             }
         }
         mysqli_query($con, "DELETE FROM 201_files WHERE folder_id = $folder_id");
 
-        // Get and delete the actual folder from the filesystem
+        // Delete the folder from the filesystem
         $folder_path = getFullFolderPath($folder_id, $con);
         if (is_dir($folder_path)) {
             deleteDirectory($folder_path);
         }
 
-        // Delete folder from DB
+        // Finally, delete the folder from the DB
         mysqli_query($con, "DELETE FROM 201_folders WHERE id = $folder_id");
     }
 
     // Helper: recursive directory deletion
     function deleteDirectory($dir)
     {
-        if (!file_exists($dir))
+        if (!file_exists($dir)) {
             return true;
-        if (!is_dir($dir))
-            return unlink($dir);
+        }
+
+        if (!is_dir($dir)) {
+            return unlink($dir); // Return true after deleting the file
+        }
 
         foreach (scandir($dir) as $item) {
-            if ($item === '.' || $item === '..')
+            if ($item === '.' || $item === '..') {
                 continue;
+            }
             $path = $dir . DIRECTORY_SEPARATOR . $item;
             is_dir($path) ? deleteDirectory($path) : unlink($path);
         }
 
-        return rmdir($dir);
+        return rmdir($dir); // Delete the folder itself
     }
 
     // Run the deletion
