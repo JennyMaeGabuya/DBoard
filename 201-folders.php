@@ -253,9 +253,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         /* Folder search */
         .folder-search input {
             padding: 10px 15px;
-            border: 2px solid #007bff;
             border-radius: 6px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
             font-size: 16px;
             width: 100%;
             outline: none;
@@ -264,7 +262,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         .folder-search input:focus {
             border-color: #0056b3;
-            box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
         }
     </style>
 

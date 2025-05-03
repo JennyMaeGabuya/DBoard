@@ -116,6 +116,21 @@ $file_result = mysqli_query($con, $file_query);
             cursor: not-allowed;
             opacity: 0.8;
         }
+
+        /* Folder search */
+        .file-search input {
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 16px;
+            width: 100%;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .file-search input:focus {
+            border-color: #0056b3;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+        }
     </style>
 </head>
 
@@ -265,6 +280,11 @@ $file_result = mysqli_query($con, $file_query);
                             </div>
                         </div>
 
+                        <!-- Folder Search Bar -->
+                        <div class="file-search" style="margin-bottom: 20px;">
+                            <input type="text" id="folderSearchInput" class="form-control" placeholder="Search folders or files..." onkeyup="filterItems()" />
+                        </div>
+
                         <div class="widget-box">
                             <table class="file-table">
                                 <thead>
@@ -365,6 +385,48 @@ $file_result = mysqli_query($con, $file_query);
     </div>
 
     <script>
+        // Function to filter items in the folder
+        function filterItems() {
+            const input = document.getElementById('folderSearchInput').value.trim().toLowerCase();
+            const rows = document.querySelectorAll('.file-table tbody tr');
+            let matchCount = 0;
+
+            rows.forEach(row => {
+                // Skip the no-match row
+                if (row.id === 'no-match-row') return;
+
+                const folderTextEl = row.querySelector('.folder-name-text');
+                const fileLinkEl = row.querySelector('.file-link');
+
+                const name = folderTextEl ?
+                    folderTextEl.textContent.trim().toLowerCase() :
+                    fileLinkEl ?
+                    fileLinkEl.textContent.trim().toLowerCase() :
+                    '';
+
+                const isMatch = name.includes(input);
+
+                row.style.display = isMatch ? '' : 'none';
+                if (isMatch) matchCount++;
+            });
+
+            // Handle the persistent no match row
+            let noMatchRow = document.getElementById('no-match-row');
+            if (!noMatchRow) {
+                const tbody = document.querySelector('.file-table tbody');
+                noMatchRow = document.createElement('tr');
+                noMatchRow.id = 'no-match-row';
+                noMatchRow.innerHTML = `
+            <td colspan="2" style="text-align: center; color: red; font-weight: bold;">
+                No files or folders match your search.
+            </td>`;
+                tbody.appendChild(noMatchRow);
+            }
+
+            // Show/hide message based on match count
+            noMatchRow.style.display = matchCount === 0 ? '' : 'none';
+        }
+
         // Function to handle the preview button click
         document.addEventListener('DOMContentLoaded', function() {
             const previewButtons = document.querySelectorAll('.preview-btn');
