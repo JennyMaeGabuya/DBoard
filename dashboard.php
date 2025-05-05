@@ -27,6 +27,80 @@ if (!isset($_SESSION['user_id'])) {
   header('location:../index.php');
   exit();
 }
+
+// Chart: Account Status Pie Chart
+if (isset($_GET['chart']) && $_GET['chart'] === 'account_status') {
+  $sql = "SELECT account_status, COUNT(*) as count FROM employee GROUP BY account_status";
+  $result = mysqli_query($con, $sql);
+
+  $statuses = [
+    0 => 'Inactive',
+    1 => 'Active'
+  ];
+
+  $labels = [];
+  $data = [];
+  $colors = [];
+
+  while ($row = mysqli_fetch_assoc($result)) {
+    $status = $statuses[$row['account_status']] ?? 'Unknown';
+    $labels[] = $status;
+    $data[] = (int)$row['count'];
+
+    $colors[] = $row['account_status'] == 1 ? 'rgb(75, 192, 192)' : 'rgb(255, 99, 132)';
+  }
+
+  header('Content-Type: application/json');
+  echo json_encode([
+    'labels' => $labels,
+    'data' => $data,
+    'backgroundColor' => $colors
+  ]);
+  exit();
+}
+
+// Chart: Employees by Designation Bar Chart
+if (isset($_GET['chart']) && $_GET['chart'] === 'designation') {
+  $sql = "SELECT designation, COUNT(*) as count 
+          FROM employee 
+          WHERE account_status = 1 
+          GROUP BY designation";
+  $result = mysqli_query($con, $sql);
+
+  $datasets = [];
+  $labels = ['Employees'];
+
+  while ($row = mysqli_fetch_assoc($result)) {
+    $designation = $row['designation'];
+    $count = (int)$row['count'];
+
+    $r = rand(50, 255);
+    $g = rand(50, 255);
+    $b = rand(50, 255);
+
+    $datasets[] = [
+      'label' => $designation,
+      'data' => [$count],
+      'backgroundColor' => "rgba($r, $g, $b, 0.5)",
+      'borderColor' => "rgba($r, $g, $b, 0.8)",
+      'borderWidth' => 1
+    ];
+  }
+
+  $totalResult = mysqli_query($con, "SELECT COUNT(*) as total FROM employee WHERE account_status = 1");
+  $totalRow = mysqli_fetch_assoc($totalResult);
+  $totalActive = $totalRow['total'];
+
+  $output = [
+    'labels' => $labels,
+    'datasets' => $datasets,
+    'total_active' => $totalActive
+  ];
+
+  header('Content-Type: application/json');
+  echo json_encode($output);
+  exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -64,9 +138,9 @@ if (!isset($_SESSION['user_id'])) {
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.all.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.3/dist/sweetalert2.min.css" rel="stylesheet">
-
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -388,112 +462,100 @@ if (!isset($_SESSION['user_id'])) {
       <div class="container-fluid">
         <div class="row">
 
-          <!-- HR Staffs Calculation / The Total Employees -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-            <div class="analytics-sparkle-line reso-mg-b-30">
+          <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+            <div class="analytics-sparkle-line">
               <div class="analytics-content">
-                <h5>HRM Staffs</h5>
-                <h2>
-                  <span class="counter">
-                    <?php
-                    include 'actions/count-staff.php';
-                    echo $totalCount;
-                    ?>
-                  </span>
-                  <span class="tuition-fees">Total Staff</span>
-                </h2>
+                <h5>
+                  Employees (<span id="totalEmployees">Loading...</span> total active)
+                </h5>
 
-                <?php include 'actions/count-employee.php'; ?>
+                <canvas id="designationChart" width="600" height="250"></canvas>
 
-                <span class="text-success"><?php echo $percentage; ?>%</span>
-                <small><?php echo $totalHR; ?> out of <?php echo $totalEmployees; ?> employees</small>
+                <script>
+                  fetch('?chart=designation')
+                    .then(response => response.json())
+                    .then(chartData => {
+                      document.getElementById('totalEmployees').textContent = chartData.total_active;
+                      const config = {
+                        type: 'bar',
+                        data: chartData,
+                        options: {
+                          responsive: true,
+                          plugins: {
+                            title: {
+                              display: true,
+                              text: 'Employee Count by Offices'
+                            },
+                            legend: {
+                              display: true,
+                              position: 'top'
+                            }
+                          },
+                          scales: {
+                            y: {
+                              beginAtZero: true,
+                              ticks: {
+                                stepSize: 1,
+                                callback: value => Number.isInteger(value) ? value : null
+                              }
+                            }
+                          }
+                        }
+                      };
 
-                <div class="progress m-b-0">
-                  <div class="progress-bar progress-bar-success"
-                    role="progressbar"
-                    aria-valuenow="<?php echo $percentage; ?>"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    style="width: <?php echo $percentage; ?>%;">
-                  </div>
-                </div>
+                      new Chart(
+                        document.getElementById('designationChart'),
+                        config
+                      );
+                    });
+                </script>
               </div>
             </div>
           </div>
 
-          <!-- TO FOLLOW -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-            <div class="analytics-sparkle-line reso-mg-b-30">
-              <div class="analytics-content">
-                <h5>Accounting Technologies</h5>
-                <h2>
-                  $<span class="counter">3000</span>
-                  <span class="tuition-fees">Tuition Fees</span>
-                </h2>
-                <span class="text-danger">30%</span>
-                <div class="progress m-b-0">
-                  <div
-                    class="progress-bar progress-bar-danger"
-                    role="progressbar"
-                    aria-valuenow="50"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    style="width: 30%">
-                    <span class="sr-only">230% Complete</span>
-                  </div>
-                </div>
-              </div>
+          <!-- Active and Inactive Accounts -->
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="white-box">
+              <h3>Employee Account Status</h3>
+
+              <canvas id="accountStatusChart" width="auto" height="auto"></canvas>
+
+              <script>
+                fetch('?chart=account_status')
+                  .then(response => response.json())
+                  .then(statusData => {
+                    const config = {
+                      type: 'doughnut',
+                      data: {
+                        labels: statusData.labels,
+                        datasets: [{
+                          label: 'Account Status',
+                          data: statusData.data,
+                          backgroundColor: statusData.backgroundColor,
+                          hoverOffset: 4
+                        }]
+                      },
+
+                      options: {
+                        responsive: true,
+                        plugins: {
+                          legend: {
+                            position: 'bottom'
+                          }
+                        }
+                      }
+                    };
+
+                    new Chart(
+                      document.getElementById('accountStatusChart'),
+                      config
+                    );
+                  });
+              </script>
+
             </div>
           </div>
 
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-            <div
-              class="analytics-sparkle-line reso-mg-b-30 table-mg-t-pro dk-res-t-pro-30">
-              <div class="analytics-content">
-                <h5>Electrical Engineering</h5>
-                <h2>
-                  $<span class="counter">2000</span>
-                  <span class="tuition-fees">Tuition Fees</span>
-                </h2>
-                <span class="text-info">60%</span>
-                <div class="progress m-b-0">
-                  <div
-                    class="progress-bar progress-bar-info"
-                    role="progressbar"
-                    aria-valuenow="50"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    style="width: 60%">
-                    <span class="sr-only">20% Complete</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-            <div
-              class="analytics-sparkle-line table-mg-t-pro dk-res-t-pro-30">
-              <div class="analytics-content">
-                <h5>Chemical Engineering</h5>
-                <h2>
-                  $<span class="counter">3500</span>
-                  <span class="tuition-fees">Tuition Fees</span>
-                </h2>
-                <span class="text-inverse">80%</span>
-                <div class="progress m-b-0">
-                  <div
-                    class="progress-bar progress-bar-inverse"
-                    role="progressbar"
-                    aria-valuenow="50"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    style="width: 80%">
-                    <span class="sr-only">230% Complete</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -681,7 +743,7 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 
   </div>
-  
+
   <script>
     setTimeout(function() {
       location.reload();
