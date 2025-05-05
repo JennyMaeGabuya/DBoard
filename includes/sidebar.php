@@ -115,12 +115,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
               <span class="mini-click-non">Backup Database</span>
             </a>
           </li>
+          <li class="<?= ($current_page == 'settings.php') ? 'active' : ''; ?>">
+            <a href="settings.php">
+              <i class="fa-solid fa-gear"></i>
+              <span class="mini-click-non">Settings</span>
+            </a>
+          </li>
           <li class="<?= ($current_page == 'logout.php') ? 'active' : ''; ?>">
             <a href="logout.php">
               <span class="educate-icon educate-pages icon-wrap sub-icon-mg"></span>
               <span class="mini-click-non">Logout</span>
             </a>
-          </li>
           </li>
         </ul>
       </nav>

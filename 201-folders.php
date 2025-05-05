@@ -489,6 +489,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                                                         margin-top: 20px;
                                                                         font-weight: bold;
                                                                         font-size: 16px;
+                                                                        font-style: italic;
                                                                     `;
                                         document.querySelector('.folders-container').appendChild(noMatchMessage);
                                     }
