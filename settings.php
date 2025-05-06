@@ -181,7 +181,7 @@ if (file_exists($logFile)) {
         <div class="row">
 
             <!-- Left: Upload New Footer -->
-            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="profile-info-inner">
                     <ul class="tab-review-design">
                         <li class="active"><a href="#description">Latest Footer</a></li>
@@ -212,7 +212,7 @@ if (file_exists($logFile)) {
 
 
             <!-- Right: List of Previous Footers -->
-            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="product-payment-inner-st res-mg-t-30 analysis-progrebar-ctn">
                     <ul class="tab-review-design">
                         <li class="active"><a href="#description">Previous Footers</a></li>
@@ -233,9 +233,9 @@ foreach ($images as $img) {
     $id = md5($filename); // Unique ID for preview toggle
     echo '
     <div class="footer-item mb-3">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px;">
             <span style="cursor: pointer; color: #007bff;" onclick="togglePreview(\'' . $id . '\', \'' . $img . '\')">' . $filename . '</span>
-            <button class="btn btn-danger btn-sm" onclick="deleteFooter(\'' . $filename . '\')">Delete</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteFooter(\'' . $filename . '\')"><i class="fa fa-trash"></i></button>
         </div>
         <div id="preview_' . $id . '" style="margin-top: 10px; display: none;">
             <img src="" style="max-width: 100%; border: 1px solid #ccc;" />
