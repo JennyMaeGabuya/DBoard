@@ -22,6 +22,7 @@ if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
     }
 
     // Generate unique name
+    date_default_timezone_set('Asia/Manila');
     $timestamp = date('Ymd_His');
     $newFileName = 'footer_' . $timestamp . '.' . $fileExt;
     $newFilePath = $uploadDir . $newFileName;
