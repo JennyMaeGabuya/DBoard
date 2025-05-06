@@ -18,7 +18,8 @@ if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
     $allowedExts = ['jpg', 'jpeg', 'png', 'gif'];
 
     if (!in_array($fileExt, $allowedExts)) {
-        die("Invalid file type. Allowed: JPG, JPEG, PNG, GIF.");
+        header("Location: settings.php?upload=invalid");
+        exit;
     }
 
     // Generate unique name
@@ -33,11 +34,14 @@ if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $logEntry = $newFileName . '|' . date('Y-m-d H:i:s') . PHP_EOL;
         file_put_contents($logFile, $logEntry, FILE_APPEND);
 
-        echo "<script>alert('Footer uploaded successfully.'); window.location.href='settings.php';</script>";
+        header("Location: settings.php?upload=success");
+        exit;
     } else {
-        die("Upload failed.");
+        header("Location: settings.php?upload=failed");
+        exit;
     }
 } else {
-    die("No image uploaded.");
+    header("Location: settings.php?upload=none");
+    exit;
 }
 ?>

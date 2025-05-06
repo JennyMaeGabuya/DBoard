@@ -1,6 +1,8 @@
 <?php
-$folder = 'img/footer/';
-$logFile = 'img/footer_log.txt';
+header('Content-Type: application/json');
+
+$folder = '../img/footer/';
+$logFile = '../img/footer_log.txt';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filename'])) {
     $filename = basename($_POST['filename']);
@@ -18,11 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filename'])) {
             file_put_contents($logFile, implode("", $filtered));
         }
 
-        echo "Footer deleted successfully.";
+        echo json_encode(['status' => 'success', 'message' => 'Footer deleted successfully.']);
     } else {
-        echo "File not found.";
+        echo json_encode(['status' => 'error', 'message' => 'File not found.']);
     }
 } else {
-    echo "Invalid request.";
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request.']);
 }
 ?>

@@ -88,18 +88,18 @@ class PDF extends FPDF
 
     function Footer()
     {
-        $this->SetY(-30); // Adjust vertical position as needed
-    
+        $this->SetY(-45); // Adjust vertical position as needed
+
         // Path to the log file that stores recent footers
         $logFile = '../img/footer/footer_log.txt';
-    
+
         if (file_exists($logFile)) {
             $lines = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
             $lastLine = end($lines);
             list($filename) = explode('|', $lastLine);
-    
+
             $footerPath = '../img/footer/' . $filename;
-    
+
             if (file_exists($footerPath)) {
                 $this->Image($footerPath, 15, $this->GetY(), 180); // Adjust X, Y, Width
             } else {

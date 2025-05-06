@@ -87,30 +87,30 @@ class PDF extends FPDF
     }
 
     function Footer()
-{
-    $this->SetY(-30); // Adjust vertical position as needed
+    {
+        $this->SetY(-45); // Adjust vertical position as needed
 
-    // Path to the log file that stores recent footers
-    $logFile = '../img/footer/footer_log.txt';
+        // Path to the log file that stores recent footers
+        $logFile = '../img/footer/footer_log.txt';
 
-    if (file_exists($logFile)) {
-        $lines = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        $lastLine = end($lines);
-        list($filename) = explode('|', $lastLine);
+        if (file_exists($logFile)) {
+            $lines = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            $lastLine = end($lines);
+            list($filename) = explode('|', $lastLine);
 
-        $footerPath = '../img/footer/' . $filename;
+            $footerPath = '../img/footer/' . $filename;
 
-        if (file_exists($footerPath)) {
-            $this->Image($footerPath, 15, $this->GetY(), 180); // Adjust X, Y, Width
+            if (file_exists($footerPath)) {
+                $this->Image($footerPath, 15, $this->GetY(), 180); // Adjust X, Y, Width
+            } else {
+                $this->SetFont('Arial', 'I', 8);
+                $this->Cell(0, 10, 'Footer image not found.', 0, 0, 'C');
+            }
         } else {
             $this->SetFont('Arial', 'I', 8);
-            $this->Cell(0, 10, 'Footer image not found.', 0, 0, 'C');
+            $this->Cell(0, 10, 'No footer log found.', 0, 0, 'C');
         }
-    } else {
-        $this->SetFont('Arial', 'I', 8);
-        $this->Cell(0, 10, 'No footer log found.', 0, 0, 'C');
     }
-}
 }
 
 // Create PDF
