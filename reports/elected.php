@@ -88,7 +88,7 @@ class PDF extends FPDF
 
     function Footer()
     {
-        $this->SetY(-45); // Adjust vertical position as needed
+        $this->SetY(-60); // Adjust vertical position as needed
 
         // Path to the log file that stores recent footers
         $logFile = '../img/footer/footer_log.txt';
