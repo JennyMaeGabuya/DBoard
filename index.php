@@ -75,7 +75,7 @@ include('emailnotif.php');
 
         body {
             position: relative;
-            background: url('img/kahoyhall.png') no-repeat center center fixed;
+            background: url('img/login.jpg') no-repeat center center fixed;
             background-size: cover;
         }
 
@@ -86,7 +86,7 @@ include('emailnotif.php');
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(52, 52, 52, 0.5);
+            background-color: rgba(52, 52, 52, 0.2);
             z-index: 0;
         }
 
