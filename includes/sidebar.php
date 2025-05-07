@@ -107,6 +107,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
               <li class="<?= ($current_page == '201-folders.php' || $current_page == '201-files.php') ? 'active' : ''; ?>">
                 <a href="201-folders.php"><span class="mini-sub-pro">201 Files</span></a>
               </li>
+              <li class="<?= ($current_page == 'LF-folders.php' || $current_page == 'LF-files.php') ? 'active' : ''; ?>">
+                <a href="LF-folders.php"><span class="mini-sub-pro">Leave Files</span></a>
+              </li>
             </ul>
           </li>
           <li class="<?= ($current_page == 'backup.php') ? 'active' : ''; ?>">
