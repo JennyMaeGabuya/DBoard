@@ -631,7 +631,7 @@ if (isset($_GET['chart']) && $_GET['chart'] === 'designation') {
         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
           <div class="white-box">
             <h3 class="box-title">Today's Events</h3>
-            <ul class="basic-list" id="event-list">
+            <ul class="basic-list" id="event-list" style="max-height: 100vh; overflow-y: auto;">
               <!-- Events will be loaded here dynamically -->
             </ul>
           </div>
