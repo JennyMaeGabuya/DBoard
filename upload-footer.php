@@ -30,6 +30,9 @@ if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
 
     // Move uploaded file
     if (move_uploaded_file($fileTmp, $newFilePath)) {
+        // Copy the new file as latest-footer.jpg (this will be referenced in settings.php)
+        copy($newFilePath, $uploadDir . 'latest-footer.jpg');
+
         // Append to log file
         $logEntry = $newFileName . '|' . date('Y-m-d H:i:s') . PHP_EOL;
         file_put_contents($logFile, $logEntry, FILE_APPEND);
