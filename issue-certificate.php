@@ -1,6 +1,6 @@
 <?php
 session_start();
-header('Content-Type: application/json'); // Ensure JSON response
+header('Content-Type: application/json');
 
 if (!isset($_SESSION['user_id'])) {
   echo json_encode(["status" => "error", "message" => "Unauthorized access."]);
@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   exit();
 }
 
+// Basic Fields
 $type = $_POST['type'] ?? null;
 $fullname = $_POST['fullname'] ?? null;
 $lastname = $_POST['lastname'] ?? null;
@@ -30,7 +31,11 @@ $cash_gift = $_POST['cash_gift'] ?? null;
 $productivity_enhancement = $_POST['productivity_enhancement'] ?? null;
 $date_issued = $_POST['date_issued'] ?? null;
 
-// Validate required fields
+// Extra Salary Fields (dynamic)
+$extra_salary = $_POST['extra_salary'] ?? [];
+$extra_salary_json = json_encode($extra_salary);
+
+// Validate required
 if (empty($type) || empty($fullname) || empty($lastname) || empty($sex) || empty($start_date) || empty($position) || empty($salary) || empty($pera) || empty($rta) || empty($clothing) || empty($mid_year_bonus) || empty($year_end_bonus) || empty($cash_gift) || empty($productivity_enhancement) || empty($date_issued)) {
   echo json_encode(["status" => "error", "message" => "All fields are required."]);
   exit();
@@ -43,20 +48,22 @@ if ($type === 'appointed') {
     exit();
   }
 
-  $query = "INSERT INTO appointed_cert_issuance (fullname, lastname, sex, start_date, position, office_appointed, salary, pera, rta, clothing, mid_year_bonus, year_end_bonus, cash_gift, productivity_enhancement, date_issued) 
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  $query = "INSERT INTO appointed_cert_issuance 
+              (fullname, lastname, sex, start_date, position, office_appointed, salary, pera, rta, clothing, mid_year_bonus, year_end_bonus, cash_gift, productivity_enhancement, date_issued, extra_salary) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   $stmt = $con->prepare($query);
-  $stmt->bind_param("ssssssdddddddds", $fullname, $lastname, $sex, $start_date, $position, $office_appointed, $salary, $pera, $rta, $clothing, $mid_year_bonus, $year_end_bonus, $cash_gift, $productivity_enhancement, $date_issued);
+  $stmt->bind_param("ssssssddddddddss", $fullname, $lastname, $sex, $start_date, $position, $office_appointed, $salary, $pera, $rta, $clothing, $mid_year_bonus, $year_end_bonus, $cash_gift, $productivity_enhancement, $date_issued, $extra_salary_json);
 } else {
-  $query = "INSERT INTO elected_cert_issuance (fullname, lastname, sex, start_date, position, salary, pera, rta, clothing, mid_year_bonus, year_end_bonus, cash_gift, productivity_enhancement, date_issued) 
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  $query = "INSERT INTO elected_cert_issuance 
+              (fullname, lastname, sex, start_date, position, salary, pera, rta, clothing, mid_year_bonus, year_end_bonus, cash_gift, productivity_enhancement, date_issued, extra_salary) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   $stmt = $con->prepare($query);
-  $stmt->bind_param("sssssdddddddds", $fullname, $lastname, $sex, $start_date, $position, $salary, $pera, $rta, $clothing, $mid_year_bonus, $year_end_bonus, $cash_gift, $productivity_enhancement, $date_issued);
+  $stmt->bind_param("sssssddddddddss", $fullname, $lastname, $sex, $start_date, $position, $salary, $pera, $rta, $clothing, $mid_year_bonus, $year_end_bonus, $cash_gift, $productivity_enhancement, $date_issued, $extra_salary_json);
 }
 
-// Execute and retrieve the ID
+// Execute
 if ($stmt->execute()) {
-  $inserted_id = $stmt->insert_id; // Get the last inserted ID
+  $inserted_id = $stmt->insert_id;
   echo json_encode(["status" => "success", "message" => "Certificate issued successfully.", "id" => $inserted_id]);
 } else {
   echo json_encode(["status" => "error", "message" => "Failed to issue certificate: " . $stmt->error]);

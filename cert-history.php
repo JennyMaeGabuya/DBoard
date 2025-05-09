@@ -202,6 +202,7 @@ include 'emailnotif.php';
                     <th>Action</th>
                   </tr>
                 </thead>
+
                 <tbody>
                   <?php
                   $stmt = $con->prepare("
@@ -226,7 +227,6 @@ include 'emailnotif.php';
                                         start_date, 
                                         date_issued 
                                     FROM elected_cert_issuance 
-
                                     ORDER BY date_issued DESC;
                                 ");
 
@@ -373,8 +373,23 @@ include 'emailnotif.php';
                 <label>Date Issued</label>
                 <input type="date" class="form-control" name="date_issued" required>
               </div>
+
+              <!-- Extra Salary Fields -->
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <hr>
+                  <h5 style=" margin-left: 15px">Other Allowances / Bonuses</h5>
+                  <div id="edit-extra-fields"></div>
+                  <div class="text-right" style="margin-right: 20px;">
+                    <button type="button" class="btn btn-sm btn-primary mg-t-15" onclick="addExtraField('edit')"><i class="fa-solid fa-plus"></i>Add Field</button>
+                  </div>
+                </div>
+              </div>
+
             </div>
 
+            <!-- Hidden input to hold serialized extra fields -->
+            <input type="hidden" name="extra_salary_json">
             <div class="modal-footer">
               <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
               <button type="submit" class="btn btn-success">Update Certificate</button>
@@ -385,8 +400,31 @@ include 'emailnotif.php';
     </div>
   </div>
 
-  <!-- Script for the Modal -->
   <script>
+    // Make this function globally accessible
+    function addExtraField(mode, key = '', value = '') {
+      const container = document.getElementById(`${mode}-extra-fields`);
+      const index = Date.now();
+
+      const fieldGroup = document.createElement('div');
+      fieldGroup.className = 'form-row align-items-center mb-2';
+      fieldGroup.dataset.id = index;
+
+      fieldGroup.innerHTML = `
+      <div class="col-md-5">
+        <input type="text" class="form-control" placeholder="Label" value="${key}" data-key>
+      </div>
+      <div class="col-md-5">
+        <input type="number" step="0.01" class="form-control" placeholder="Amount" value="${value}" data-value>
+      </div>
+      <div class="col-md-2">
+        <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('[data-id]').remove()"><i class="fa-solid fa-trash"></i></button>
+      </div>
+    `;
+
+      container.appendChild(fieldGroup);
+    }
+
     $(document).ready(function() {
       // Open Edit Modal
       $(".edit-btn").click(function() {
@@ -403,8 +441,10 @@ include 'emailnotif.php';
           dataType: "json",
           success: function(response) {
             if (response.status === "success") {
-              // Populate the form fields
               let form = $("#editForm");
+              form[0].reset(); // Clear previous values
+              $("#edit-extra-fields").empty(); // Clear extra fields
+
               form.find("[name='edit_id']").val(response.data.id);
               form.find("[name='edit_type']").val(certType);
               form.find("[name='fullname']").val(response.data.fullname);
@@ -429,7 +469,12 @@ include 'emailnotif.php';
                 $(".appointed-only").hide();
               }
 
-              // Show modal
+              // Parse and add extra salary fields if available
+              const extraSalary = JSON.parse(response.data.extra_salary || '{}');
+              for (const [key, value] of Object.entries(extraSalary)) {
+                addExtraField('edit', key, value);
+              }
+
               $("#editModal").modal("show");
             } else {
               Swal.fire("Error!", response.message, "error");
@@ -438,32 +483,42 @@ include 'emailnotif.php';
         });
       });
 
+      // Serialize extra fields before submission
+      document.getElementById('editForm').addEventListener('submit', function(e) {
+        const extras = {};
+        const extraFields = document.querySelectorAll('#edit-extra-fields [data-id]');
+        extraFields.forEach(group => {
+          const key = group.querySelector('[data-key]').value.trim();
+          const value = parseFloat(group.querySelector('[data-value]').value) || 0;
+          if (key) extras[key] = value;
+        });
+        this.querySelector('input[name="extra_salary_json"]').value = JSON.stringify(extras);
+      });
+
       // Update Certificate
       $("#editForm").submit(function(e) {
         e.preventDefault();
-
         $.ajax({
           url: "update-certificate.php",
           type: "POST",
-          data: $("#editForm").serialize(),
+          data: $(this).serialize(),
           dataType: "json",
           success: function(response) {
             if (response.status === "success") {
-              let certId = $("input[name='edit_id']").val(); // Get the certificate ID
-              let certType = $("input[name='edit_type']").val(); // Get the certificate type (appointed/elected)
-              let reportUrl = `reports/${certType}.php?id=${certId}`; // Construct the report URL
+              const certId = $("input[name='edit_id']").val();
+              const certType = $("input[name='edit_type']").val();
+              const reportUrl = `reports/${certType}.php?id=${certId}`;
 
               Swal.fire({
                 title: "Updated!",
                 text: "Certificate updated successfully.",
                 icon: "success",
-                showConfirmButton: true,
                 confirmButtonText: "View Certificate"
               }).then((result) => {
                 if (result.isConfirmed) {
-                  window.open(reportUrl, "_blank"); // Open the certificate in a new tab
+                  window.open(reportUrl, "_blank");
                 }
-                location.reload(); // Refresh the page
+                location.reload();
               });
             } else {
               Swal.fire("Error!", response.message, "error");
@@ -473,55 +528,50 @@ include 'emailnotif.php';
       });
 
       // Delete Certificate
-      $(document).ready(function() {
-        $(".delete-btn").click(function() {
-          let certId = $(this).data("id");
-          let certType = $(this).data("type"); // Get certificate type
+      $(".delete-btn").click(function() {
+        const certId = $(this).data("id");
+        const certType = $(this).data("type");
 
-          Swal.fire({
-            title: "Are you sure?",
-            text: "This certificate will be permanently deleted!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
-            if (result.isConfirmed) {
-              $.ajax({
-                url: "actions/delete-certificate.php",
-                type: "POST",
-                data: {
-                  id: certId,
-                  type: certType // Include cert type in request
-                },
-                dataType: "json",
-                success: function(response) {
-                  if (response.status === "success") {
-                    Swal.fire({
-                      title: "Deleted!",
-                      text: "Certificate has been deleted successfully.",
-                      icon: "success"
-                    }).then(() => {
-                      location.reload(); // Refresh the page after deletion
-                    });
-                  } else {
-                    Swal.fire("Error!", response.message, "error");
-                  }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                  Swal.fire("Error!", `Failed to delete: ${textStatus}`, "error");
+        Swal.fire({
+          title: "Are you sure?",
+          text: "This certificate will be permanently deleted!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+              url: "actions/delete-certificate.php",
+              type: "POST",
+              data: {
+                id: certId,
+                type: certType
+              },
+              dataType: "json",
+              success: function(response) {
+                if (response.status === "success") {
+                  Swal.fire({
+                    title: "Deleted!",
+                    text: "Certificate has been deleted successfully.",
+                    icon: "success"
+                  }).then(() => location.reload());
+                } else {
+                  Swal.fire("Error!", response.message, "error");
                 }
-              });
-            }
-          });
+              },
+              error: function(jqXHR, textStatus) {
+                Swal.fire("Error!", `Failed to delete: ${textStatus}`, "error");
+              }
+            });
+          }
         });
       });
-    });
 
-    setTimeout(function() {
-      location.reload();
-    }, 300000);
+      // Auto-refresh every 5 minutes
+      setTimeout(() => location.reload(), 300000);
+    });
   </script>
 
   <!--Footer-part-->

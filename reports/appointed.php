@@ -88,7 +88,7 @@ class PDF extends FPDF
 
     function Footer()
     {
-        $this->SetY(-60); // Adjust vertical position as needed
+        $this->SetY(-45); // Adjust vertical position as needed
 
         // Path to the log file that stores recent footers
         $logFile = '../img/footer/footer_log.txt';
@@ -132,6 +132,8 @@ $pdf->MultiCell(0, 5, 'THIS IS TO CERTIFY that as per records available in this 
 
 $pdf->Ln(7);
 $pdf->SetFont('Times', '', 12);
+
+// Fixed Salary Items
 $pdf->Cell(20);
 $pdf->AddDashedRow('Salary', 'P ' . number_format($certificate['salary'], 2));
 
@@ -156,20 +158,32 @@ $pdf->AddDashedRow('Cash Gift', '' . number_format($certificate['cash_gift'], 2)
 $pdf->Cell(20);
 $pdf->AddDashedRow('Productivity Enhancement Incentive', '' . number_format($certificate['productivity_enhancement'], 2));
 
+// Initialize total
+$total = $certificate['salary'] + $certificate['pera'] + $certificate['rta'] + $certificate['clothing'] +
+    $certificate['mid_year_bonus'] + $certificate['year_end_bonus'] + $certificate['cash_gift'] +
+    $certificate['productivity_enhancement'];
+
+// Optional Fields: Parse and Add Dynamically
+$extra_salary = json_decode($certificate['extra_salary'] ?? '{}', true);
+
+if (is_array($extra_salary)) {
+    foreach ($extra_salary as $label => $amount) {
+        $pdf->Cell(20);
+        $pdf->AddDashedRow($label, number_format($amount, 2));
+        $total += floatval($amount);
+    }
+}
+
 // Add a Single Underline for the Subtotal
 $pdf->Cell(130);
 $pdf->Cell(30, 1, '', 'T', 1, 'R');
 
 $pdf->Ln(1);
+
 // Add Total (with Double Underline)
 $pdf->Cell(30);
 $pdf->SetFont('Times', 'B', 12);
 $pdf->Cell(90, 5, 'TOTAL', 0, 0, 'L');
-
-$total = $certificate['salary'] + $certificate['pera'] + $certificate['rta'] + $certificate['clothing'] +
-    $certificate['mid_year_bonus'] + $certificate['year_end_bonus'] + $certificate['cash_gift'] +
-    $certificate['productivity_enhancement'];
-
 $pdf->Cell(40, 5, 'P ' . number_format($total, 2), 0, 1, 'R');
 
 // Double Underline for Total

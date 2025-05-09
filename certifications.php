@@ -273,7 +273,7 @@ include 'emailnotif.php';
               <h4 class="text-center">ANNUAL SALARY</h4>
               <hr>
 
-              <div class="row">
+              <div class="row" id="salaryFields">
                 <div class="form-group col-md-4">
                   <label>Salary</label>
                   <input type="number" step="0.01" class="form-control" name="salary" required>
@@ -309,6 +309,10 @@ include 'emailnotif.php';
                 <div class="form-group col-md-4">
                   <label>Date Issued</label>
                   <input type="date" class="form-control" name="date_issued" required id="adateIssued">
+                </div>
+
+                <div class="text-right" style="margin-right: 20px; margin-bottom: 20px;">
+                  <button type="button" class="btn btn-sm btn-primary" onclick="addSalaryField(this)"><i class="fa-solid fa-plus"></i> Add Field</button>
                 </div>
 
                 <script>
@@ -375,7 +379,7 @@ include 'emailnotif.php';
               <h4 class="text-center">ANNUAL SALARY</h4>
               <hr>
 
-              <div class="row">
+              <div class="row" id="salaryFields">
                 <div class="form-group col-md-4">
                   <label>Salary</label>
                   <input type="number" step="0.01" class="form-control" name="salary" required>
@@ -413,6 +417,10 @@ include 'emailnotif.php';
                   <input type="date" class="form-control" name="date_issued" required id="edateIssued">
                 </div>
 
+                <div class="text-right" style="margin-right: 20px; margin-bottom: 20px;">
+                  <button type="button" class="btn btn-sm btn-primary" onclick="addSalaryField(this)"><i class="fa-solid fa-plus"></i> Add Field</button>
+                </div>
+
                 <script>
                   document.addEventListener("DOMContentLoaded", function() {
                     let today = new Date().toISOString().split("T")[0];
@@ -440,7 +448,23 @@ include 'emailnotif.php';
           e.preventDefault();
 
           let form = $(this);
-          let formData = form.serialize();
+          let formData = form.serializeArray();
+
+          // Collect dynamic salary fields
+          form.find('.dynamic-label').each(function(index) {
+            const label = $(this).val();
+            const value = form.find('.dynamic-value').eq(index).val();
+            if (label && value) {
+              formData.push({
+                name: `extra_salary[${label}]`,
+                value: value
+              });
+            }
+          });
+
+          // Convert to URL-encoded string
+          formData = $.param(formData);
+
           let type = form.attr("id") === "appointedForm" ? "appointed" : "elected";
 
           formData += "&type=" + type;
@@ -499,6 +523,18 @@ include 'emailnotif.php';
           });
         });
       });
+
+      // Function to add a new salary field
+      function addSalaryField(button) {
+        const container = $(button).closest('.modal-body').find('#salaryFields');
+        const fieldHTML = `
+                          <div class="form-group col-md-4">
+                            <label>Custom Field</label>
+                            <input type="text" class="form-control dynamic-label" placeholder="Field Name (e.g., Health Incentive)">
+                            <input type="number" step="0.01" class="form-control dynamic-value mt-1" placeholder="Amount">
+                          </div>`;
+        container.append(fieldHTML);
+      }
     </script>
 
   </div>
