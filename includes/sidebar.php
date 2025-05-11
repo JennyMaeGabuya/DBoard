@@ -72,8 +72,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
               <li class="<?= ($current_page == 'all-employees.php') ? 'active' : ''; ?>">
                 <a href="all-employees.php"><span class="mini-sub-pro">All Employees</span></a>
               </li>
-              <li
-                class="<?= ($current_page == 'all-service-record.php' || $current_page == 'service-records.php') ? 'active' : ''; ?>">
+              <li class="<?= ($current_page == 'inactive.php') ? 'active' : ''; ?>">
+                <a href="inactive.php"><span class="mini-sub-pro">Inactive Accounts</span></a>
+              </li>
+              <li class="<?= ($current_page == 'all-service-record.php' || $current_page == 'service-records.php') ? 'active' : ''; ?>">
                 <a href="all-service-record.php"><span class="mini-sub-pro">Service Records</span></a>
               </li>
             </ul>

@@ -17,7 +17,7 @@ include 'emailnotif.php';
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>All Employees | ERMS</title>
+    <title>Inactive Accounts | ERMS</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="img/mk-logo.ico" />
@@ -76,7 +76,7 @@ include 'emailnotif.php';
                                                     </a>
                                                     <span class="bread-slash"> / </span>
                                                     <a href="#">
-                                                        <strong>Employees</strong>
+                                                        <strong>Inactive Employees</strong>
                                                     </a>
                                                 </li>
                                             </ul>
@@ -173,15 +173,11 @@ include 'emailnotif.php';
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="product-status-wrap drp-lst">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <h4>Employees</h4>
+                            <h4>Inactive Employees</h4>
                         </div>
                         <div class="row">
                             <div class="col-md-6 text-right">
                                 <div class="button-container">
-                                    <a href="#add" data-toggle="modal"
-                                        class="btn btn-primary btn-border btn-round btn-sm">
-                                        <i class="fa-solid fa-plus-circle"></i> Add Employee
-                                    </a>
                                     <a href="reports/csv-employees.php"
                                         class="btn btn-success btn-border btn-round btn-sm">
                                         <i class="fa fa-file-excel-o"></i> Export CSV
@@ -236,7 +232,7 @@ include 'emailnotif.php';
                                             (SELECT s.cause_of_separation FROM service_records s WHERE s.employee_no = e.employee_no ORDER BY s.created_at DESC LIMIT 1) AS cause_of_separation
                                             FROM employee e
                                             LEFT JOIN government_info g ON e.employee_no = g.employee_no
-                                            WHERE e.account_status = 1
+                                            WHERE e.account_status = 0
                                             ORDER BY e.created_at DESC";
 
                                     $view_data = mysqli_query($con, $query);
