@@ -292,7 +292,15 @@ include 'emailnotif.php';
                                                 echo htmlspecialchars($full_name);
                                                 ?>
                                             </td>
-                                            <td><?php echo htmlspecialchars($address); ?></td>
+                                            <td>
+                                                <?php
+                                                $maxLength = 25;
+                                                $shortAddress = strlen($address) > $maxLength
+                                                    ? htmlspecialchars(substr($address, 0, $maxLength)) . '...'
+                                                    : htmlspecialchars($address);
+                                                echo $shortAddress;
+                                                ?>
+                                            </td>
                                             <td><?php echo htmlspecialchars($email_address); ?></td>
                                             <td><?php echo htmlspecialchars($sex); ?></td>
                                             <td>

@@ -176,7 +176,7 @@ include 'emailnotif.php';
                                 <div class="button-container">
                                     <a href="organization-chart.php" class="btn btn-warning btn-border btn-round btn-sm"
                                         target="_blank">
-                                        <i class="fa fa-sitemap"></i> View Chart
+                                        <i class="fa fa-sitemap"></i> Legacy Chart
                                     </a>
                                 </div>
                             </div>
