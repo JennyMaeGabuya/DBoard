@@ -242,54 +242,54 @@ class PDF_MC_Table extends FPDF
         $is_mhrmo = false;
         if (!empty($employee['employee_no'])) {
             $emp = $employee['employee_no'];
-            $stmt = $con->prepare("SELECT role FROM employee WHERE role = 'MHRMO' AND employee_no = ?");
-            $stmt->bind_param("s", $emp);
+            $stmt = $con->prepare("SELECT role FROM employee WHERE role LIKE ? AND employee_no = ?");
+            $like = "%Municipal Human Resource Management Officer%";
+            $stmt->bind_param("ss", $like, $emp);
             $stmt->execute();
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();
-
+        
             if ($row) {
-                $is_mhrmo = true; //is the employee an MHRMO?
+                $is_mhrmo = true;
             }
         }
+        
         $today = date('F j, Y');
         // Initialize variables
         $mayor_name = "";
         $admin_officer_name = "";
         $mhrmo_name = "";
-
-        // Fetch all HR roles
+        
+        // Fetch key positions
         $gstmt = $con->prepare("SELECT firstname, middlename, lastname, name_extension, role 
-                        FROM employee 
-                        WHERE role IN ('Municipal Mayor', 'Admin Officer IV', 'MHRMO') and account_status = 1");
+            FROM employee 
+            WHERE (role = 'Municipal Mayor' OR role LIKE '%Administrative Officer IV%' OR role LIKE '%Municipal Human Resource Management Officer%')
+            AND account_status = 1");
         $gstmt->execute();
         $res = $gstmt->get_result();
-
+        
         while ($row = $res->fetch_assoc()) {
             $middlename_initial = !empty($row['middlename']) ? substr($row['middlename'], 0, 1) . "." : "";
-
             $full_name = trim($row['firstname'] . " " . $middlename_initial . " " . $row['lastname'] . " " . $row['name_extension']);
-
-            switch ($row['role']) {
-                case 'Municipal Mayor':
-                    $mayor_name = $full_name;
-                    break;
-                case 'Admin Officer IV':
-                    $admin_officer_name = $full_name;
-                    break;
-                case 'MHRMO':
-                    $mhrmo_name = $full_name;
-                    break;
+        
+            if ($row['role'] === 'Municipal Mayor') {
+                $mayor_name = $full_name;
+            } elseif (strpos($row['role'], 'Administrative Officer IV') !==false) {
+                $admin_officer_name = $full_name;
+            } elseif (strpos($row['role'], 'Municipal Human Resource Management Officer') !== false) {
+                $mhrmo_name = $full_name;
             }
         }
-
+        
+        // Determine who prepared
         if ($is_mhrmo) {
             $prepared = $admin_officer_name;
             $preparedrole = "Admin Officer IV";
         } else {
             $prepared = $mhrmo_name;
-            $preparedrole = "MHRMO";
+            $preparedrole = "MHRMO"; // Simplified role label
         }
+        
 
         $blockHeight = 50;
 
