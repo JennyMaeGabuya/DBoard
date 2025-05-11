@@ -28,37 +28,6 @@ if (!isset($_SESSION['user_id'])) {
   exit();
 }
 
-// Chart: Account Status Pie Chart
-if (isset($_GET['chart']) && $_GET['chart'] === 'account_status') {
-  $sql = "SELECT account_status, COUNT(*) as count FROM employee GROUP BY account_status";
-  $result = mysqli_query($con, $sql);
-
-  $statuses = [
-    0 => 'Inactive',
-    1 => 'Active'
-  ];
-
-  $labels = [];
-  $data = [];
-  $colors = [];
-
-  while ($row = mysqli_fetch_assoc($result)) {
-    $status = $statuses[$row['account_status']] ?? 'Unknown';
-    $labels[] = $status;
-    $data[] = (int)$row['count'];
-
-    $colors[] = $row['account_status'] == 1 ? 'rgb(75, 192, 192)' : 'rgb(255, 99, 132)';
-  }
-
-  header('Content-Type: application/json');
-  echo json_encode([
-    'labels' => $labels,
-    'data' => $data,
-    'backgroundColor' => $colors
-  ]);
-  exit();
-}
-
 // Chart: Employees by Designation Bar Chart
 if (isset($_GET['chart']) && $_GET['chart'] === 'designation') {
   $sql = "SELECT designation, COUNT(*) as count 
@@ -67,25 +36,43 @@ if (isset($_GET['chart']) && $_GET['chart'] === 'designation') {
           GROUP BY designation";
   $result = mysqli_query($con, $sql);
 
-  $datasets = [];
-  $labels = ['Employees'];
+  $labels = [];
+  $data = [];
+
+  $maxLength = 20;
 
   while ($row = mysqli_fetch_assoc($result)) {
     $designation = $row['designation'];
-    $count = (int)$row['count'];
 
-    $r = rand(50, 255);
-    $g = rand(50, 255);
-    $b = rand(50, 255);
+    // Remove "Office of the" if it's at the beginning
+    if (stripos($designation, 'Office of the') === 0) {
+      $designation = trim(substr($designation, strlen('Office of the')));
+    }
 
-    $datasets[] = [
-      'label' => $designation,
-      'data' => [$count],
-      'backgroundColor' => "rgba($r, $g, $b, 0.5)",
-      'borderColor' => "rgba($r, $g, $b, 0.8)",
-      'borderWidth' => 1
-    ];
+    // Truncate if too long
+    $shortLabel = strlen($designation) > $maxLength
+      ? substr($designation, 0, $maxLength) . '...'
+      : $designation;
+
+    $labels[] = $shortLabel;
+    $data[] = (int)$row['count'];
   }
+
+  // One consistent color or multiple dynamic colors
+  $backgroundColors = array_map(function () {
+    return "rgba(" . rand(50, 255) . "," . rand(50, 255) . "," . rand(50, 255) . ", 0.5)";
+  }, $labels);
+
+  $datasets = [
+    [
+      'data' => $data,
+      'backgroundColor' => $backgroundColors,
+      'borderColor' => array_map(function ($bg) {
+        return str_replace('0.5', '0.8', $bg);
+      }, $backgroundColors),
+      'borderWidth' => 1
+    ]
+  ];
 
   $totalResult = mysqli_query($con, "SELECT COUNT(*) as total FROM employee WHERE account_status = 1");
   $totalRow = mysqli_fetch_assoc($totalResult);
@@ -462,7 +449,7 @@ if (isset($_GET['chart']) && $_GET['chart'] === 'designation') {
       <div class="container-fluid">
         <div class="row">
 
-          <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="analytics-sparkle-line">
               <div class="analytics-content">
                 <h5>
@@ -487,7 +474,7 @@ if (isset($_GET['chart']) && $_GET['chart'] === 'designation') {
                               text: 'Employee Count by Offices'
                             },
                             legend: {
-                              display: true,
+                              display: false,
                               position: 'top'
                             }
                           },
@@ -510,49 +497,6 @@ if (isset($_GET['chart']) && $_GET['chart'] === 'designation') {
                     });
                 </script>
               </div>
-            </div>
-          </div>
-
-          <!-- Active and Inactive Accounts -->
-          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-            <div class="white-box">
-              <h3>Employee Account Status</h3>
-
-              <canvas id="accountStatusChart" width="auto" height="auto"></canvas>
-
-              <script>
-                fetch('?chart=account_status')
-                  .then(response => response.json())
-                  .then(statusData => {
-                    const config = {
-                      type: 'doughnut',
-                      data: {
-                        labels: statusData.labels,
-                        datasets: [{
-                          label: 'Account Status',
-                          data: statusData.data,
-                          backgroundColor: statusData.backgroundColor,
-                          hoverOffset: 4
-                        }]
-                      },
-
-                      options: {
-                        responsive: true,
-                        plugins: {
-                          legend: {
-                            position: 'bottom'
-                          }
-                        }
-                      }
-                    };
-
-                    new Chart(
-                      document.getElementById('accountStatusChart'),
-                      config
-                    );
-                  });
-              </script>
-
             </div>
           </div>
 
