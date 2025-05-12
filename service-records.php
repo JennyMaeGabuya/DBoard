@@ -352,9 +352,9 @@ FROM service_records WHERE employee_no = ?";
     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-        <div class="modal-header bg-primary" style="border-radius: 3px;">
+        <div class="modal-header bg-warning" style="border-radius: 3px;">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" id="exampleModalLabel">SERVICE RECORDS</h4>
+          <h4 class="modal-title" id="exampleModalLabel">Edit Service Records</h4>
         </div>
 
         <div class="modal-body">
@@ -429,7 +429,7 @@ FROM service_records WHERE employee_no = ?";
         <div class="modal-footer">
           <!--  <input type="hidden" id="pos_id" name="id"> -->
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary" name="serviceupdatebtn">Update</button>
+          <button type="submit" class="btn btn-success" name="serviceupdatebtn">Update</button>
 
         </div>
 
@@ -470,7 +470,7 @@ FROM service_records WHERE employee_no = ?";
       <div class="modal-content">
         <div class="modal-header bg-primary" style="border-radius: 3px;">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" id="exampleModalLabel">SERVICE RECORDS</h4>
+          <h4 class="modal-title" id="exampleModalLabel">Add Service Records</h4>
         </div>
 
         <div class="modal-body">

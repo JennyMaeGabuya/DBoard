@@ -29,8 +29,6 @@ if (isset($_POST['servicesavebtn'])) {
     $created_at = date('Y-m-d');
     $updated_at = date('Y-m-d');
 
-
-
     // Record does not exist, insert a new one
     $insertComp = "INSERT INTO service_records (employee_no, from_date, to_date, designation, `status`, salary, station_place, branch, abs_wo_pay , date_separated, cause_of_separation, created_at, updated_at ) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -46,7 +44,6 @@ if (isset($_POST['servicesavebtn'])) {
         $_SESSION['title'] = 'Error';
         $_SESSION['success'] = 'error';
     }
-
 
     // Redirect to the appropriate page
     $previous_page = $_SERVER['HTTP_REFERER'];

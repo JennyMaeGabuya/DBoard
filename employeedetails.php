@@ -13,23 +13,23 @@ if (isset($_GET['employee_no'])) {
 
     // Prepare the SQL statement
     $query = "SELECT e.employee_no as employee_no, 
-e.firstname,
-e.lastname as lastname,
-e.middlename as middlename,
-e.name_extension as name_extension,
-e.dob as dob,
-e.pob as pob, 
-e.sex as sex,
-e.civil_status as civil_status,
-e.address as empaddress, 
-e.blood_type as blood_type,
-e.mobile_no as mobile_no,
-e.email_address as email_address,
-e.image as pic,
- g.tin_no as tin, g.sss_no as sss,
- g.philhealth_no as philhealth, g. pag_ibig_no as pag_ibig, g.gsis_no as gsis FROM employee e
-LEFT JOIN government_info g ON e.employee_no=g.employee_no 
-WHERE e.employee_no = ?";
+            e.firstname,
+            e.lastname as lastname,
+            e.middlename as middlename,
+            e.name_extension as name_extension,
+            e.dob as dob,
+            e.pob as pob, 
+            e.sex as sex,
+            e.civil_status as civil_status,
+            e.address as empaddress, 
+            e.blood_type as blood_type,
+            e.mobile_no as mobile_no,
+            e.email_address as email_address,
+            e.image as pic,
+            g.tin_no as tin, g.sss_no as sss,
+            g.philhealth_no as philhealth, g. pag_ibig_no as pag_ibig, g.gsis_no as gsis FROM employee e
+            LEFT JOIN government_info g ON e.employee_no=g.employee_no 
+            WHERE e.employee_no = ?";
     $stmt = $con->prepare($query);
 
     // Bind the parameter
@@ -84,8 +84,6 @@ WHERE e.employee_no = ?";
     // Close the service statement
     $serviceStmt->close();
 
-
-
     // Check if service records exist
     $serviceQuery = "SELECT COUNT(*) as count FROM service_records WHERE employee_no = ?";
     $serviceStmt = $con->prepare($serviceQuery);
@@ -96,7 +94,19 @@ WHERE e.employee_no = ?";
     $hasServiceRecords = $serviceRow['count'] > 0; // Boolean: true if records exist
     $serviceStmt->close();
 }
-//fetch service records
+
+$logFile = 'img/footer/footer_log.txt';
+$latestFooter = '';
+
+// Read the last line from the log file
+if (file_exists($logFile)) {
+    $lines = file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    if (!empty($lines)) {
+        $lastLine = array_pop($lines);
+        $parts = explode('|', $lastLine);
+        $latestFooter = isset($parts[0]) ? trim($parts[0]) : '';
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -405,7 +415,6 @@ WHERE e.employee_no = ?";
                                     </div>
                                 </div>
 
-
                                 <br>
                                 <div class="row mt-2">
                                     <div class="col-md-12 table-responsive">
@@ -426,8 +435,6 @@ WHERE e.employee_no = ?";
                                             <tr>
                                                 <th>FIRST NAME</th>
                                                 <td colspan="2"><?php echo $firstname; ?></td>
-
-
                                             </tr>
                                             <tr>
                                                 <th colspan="1">MIDDLE NAME</th>
@@ -437,8 +444,6 @@ WHERE e.employee_no = ?";
                                                 <th colspan="1">NAME EXTENSION</th>
                                                 <td colspan="3"> <?php echo $name_extension; ?></td>
                                             </tr>
-
-
                                             <tr>
                                                 <th>Contact No.:</th>
                                                 <td><?php echo $mobile_no; ?></td>
@@ -461,8 +466,6 @@ WHERE e.employee_no = ?";
                                                 <td><?php echo $civil_status; ?></td>
                                                 <th>Sex:</th>
                                                 <td><?php echo $sex; ?></td>
-
-
                                             </tr>
                                             <tr>
                                                 <th>Birthday:</th>
@@ -471,7 +474,7 @@ WHERE e.employee_no = ?";
                                                 <td colspan="3"><?php echo $blood_type; ?></td>
                                             </tr>
                                             <tr>
-                                                <th colspan="4" style="text-align: center; background-color: #ccc;line-height:0.5px;">
+                                                <th colspan="4" style="text-align: center; background-color: #ccc; line-height:0.5px;">
                                                     <h6>GOVERNMENT INFORMATION</h6>
                                                 </th>
                                             </tr>
@@ -496,9 +499,16 @@ WHERE e.employee_no = ?";
 
                                         </table>
                                     </div>
+
+                                    <!-- Footer Section -->
                                     <div class="footer">
-                                        <img src="img/JMI.png" class="jmifooter" alt="">
+                                        <?php if ($latestFooter && file_exists("img/footer/" . $latestFooter)): ?>
+                                            <img src="img/footer/<?php echo htmlspecialchars($latestFooter); ?>" class="jmifooter" alt="Footer Image">
+                                        <?php else: ?>
+                                            <p style="color:red;">No footer image available</p>
+                                        <?php endif; ?>
                                     </div>
+
                                 </div>
 
                             </div>
