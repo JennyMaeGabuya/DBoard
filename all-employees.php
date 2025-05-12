@@ -418,16 +418,36 @@ include 'emailnotif.php';
                                                                         </div>
                                                                         <br>
                                                                         <div class="form-group">
-                                                                            <label for="formFile">Upload Profile
-                                                                                Picture</label>
+                                                                            <label for="formFile_<?php echo $employee_no; ?>">Upload Profile Picture</label>
                                                                             <input class="form-control" type="file"
                                                                                 id="formFile_<?php echo $employee_no; ?>"
                                                                                 name="image" accept="image/*"
-                                                                                onchange="previewImage(event, '<?php echo $employee_no; ?>')">
-                                                                            <small class="text-muted"
-                                                                                style="font-style: italic; color: red;">*
-                                                                                Leave blank to keep existing photo.</small>
+                                                                                onchange="previewImage2(event, '<?php echo $employee_no; ?>')">
+                                                                            <small class="text-muted" style="font-style: italic; color: red;">
+                                                                                * Leave blank to keep existing photo.
+                                                                            </small>
                                                                         </div>
+
+                                                                        <script>
+                                                                            // Function to preview the image dynamically for each employee
+                                                                            function previewImage2(event, employeeNo) {
+                                                                                const file = event.target.files[0]; // Get the selected file
+                                                                                const reader = new FileReader(); // Create a FileReader object
+
+                                                                                reader.onload = function(e) {
+                                                                                    // Get the specific image element for the employee using employeeNo
+                                                                                    const img = document.getElementById('profileImage_' + employeeNo);
+                                                                                    if (img) {
+                                                                                        img.src = e.target.result; // Set the src to the file's data URL for preview
+                                                                                    }
+                                                                                };
+
+                                                                                if (file) {
+                                                                                    reader.readAsDataURL(file); // Read the file as data URL
+                                                                                }
+                                                                            }
+                                                                        </script>
+
                                                                     </div>
                                                                 </div>
 
