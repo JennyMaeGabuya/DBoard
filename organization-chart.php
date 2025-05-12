@@ -1,6 +1,5 @@
 <?php
 require('fpdf/fpdf.php');
-include "dbcon.php";
 
 class PDF extends FPDF
 {
@@ -27,10 +26,12 @@ class PDF extends FPDF
         $this->Ln(15);
     }
 
-    function addPosition($x, $y, $name, $title, $image, $connect_to = null)
+    function addPosition($x, $y, $name, $title, $imagePath, $connect_to = null)
     {
-        $profile_image = !empty($image) ? 'img/profile/' . $image : 'img/mk-logo.png';
-        $this->Image($profile_image, $x - 10, $y, 20);
+        $defaultImage = 'img/mk-logo.png';
+        $finalImage = (file_exists($imagePath) && !empty($imagePath)) ? $imagePath : $defaultImage;
+
+        $this->Image($finalImage, $x - 10, $y, 20);
 
         $this->SetXY($x - 30, $y + 20);
         $this->SetFont('Times', 'B', 12);
@@ -48,54 +49,80 @@ class PDF extends FPDF
 $pdf = new PDF('P', 'mm', 'A4');
 $pdf->AddPage();
 
-// Initial Y position after the header
 $start_y = 55;
 $x_center = 105;
 
-// Fetch staff data from the database
-$query = "SELECT e.firstname, e.middlename, e.lastname, e.name_extension, e.image, e.role 
-          FROM employee e where hr_staff = 1 and account_status = 1
-          ORDER BY FIELD(e.role,  'MHRMO','Municipal Mayor' ) DESC";
-$result = mysqli_query($con, $query);
+// Fixed staff data
+$staff = [
+    'Hon. JANET M. ILAGAN' => [
+        'name' => 'Hon. JANET M. ILAGAN',
+        'title' => 'MUNICIPAL MAYOR',
+        'image' => 'img/Organizational Chart/Janet.png'
+    ],
+    'GALLY D. TIPAN' => [
+        'name' => 'GALLY D. TIPAN',
+        'title' => 'MHRMO',
+        'image' => 'img/Organizational Chart/Gally.png'
+    ],
+    'NOEMI T. TIPAN' => [
+        'name' => 'NOEMI T. TIPAN',
+        'title' => 'ADMIN OFFICER IV',
+        'image' => 'img/Organizational Chart/Noemi.png'
+    ],
+    'GELYN M. KATIMBANG' => [
+        'name' => 'GELYN M. KATIMBANG',
+        'title' => 'ADMIN OFFICER II',
+        'image' => 'img/Organizational Chart/Gelyn.png'
+    ],
+    'ELMIE H. PANGANIBAN' => [
+        'name' => 'ELMIE H. PANGANIBAN',
+        'title' => 'ADMIN AIDE VI',
+        'image' => 'img/Organizational Chart/Elmie.png'
+    ],
+    'MARJORIE O. CABRERA' => [
+        'name' => 'MARJORIE O. CABRERA',
+        'title' => 'ADMIN AIDE IV',
+        'image' => 'img/Organizational Chart/Marjorie.png'
+    ],
+    'LENARD JOSEPH V. ARIOLA' => [
+        'name' => 'LENARD JOSEPH V. ARIOLA',
+        'title' => 'JOB ORDER',
+        'image' => 'img/Organizational Chart/Lenard.png'
+    ],
+    'GILBERT O. GONZALES' => [
+        'name' => 'GILBERT O. GONZALES',
+        'title' => 'ADMIN AIDE I',
+        'image' => 'img/Organizational Chart/Gilbert.png'
+    ]
+];
 
-$staff = [];
-while ($row = mysqli_fetch_assoc($result)) {
-    $full_name = $row['firstname'] . ' ' . ($row['middlename'] ? substr($row['middlename'], 0, 1) . '. ' : '') . $row['lastname'];
-    if (!empty($row['name_extension'])) {
-        $full_name .= ' ' . $row['name_extension'];
-    }
-    if ($row['role'] == 'Municipal Mayor') {
-        $staff[] = [
-            'name' => 'Hon. ' . strtoupper($full_name),
-            'title' => strtoupper($row['role']),
-            'image' => $row['image']
-        ];
-    } else {
-        $staff[] = [
-            'name' => strtoupper($full_name),
-            'title' => strtoupper($row['role']),
-            'image' => $row['image']
-        ];
-    }
-}
+// Chart layout
+$positions = [
+    ['name' => 'Hon. JANET M. ILAGAN', 'x' => $x_center, 'y' => $start_y],
+    ['name' => 'GALLY D. TIPAN', 'x' => $x_center, 'y' => $start_y + 45],
+    ['name' => 'NOEMI T. TIPAN', 'x' => $x_center, 'y' => $start_y + 85],
+    ['name' => 'GELYN M. KATIMBANG', 'x' => $x_center - 65, 'y' => $start_y + 125],
+    ['name' => 'ELMIE H. PANGANIBAN', 'x' => $x_center, 'y' => $start_y + 125],
+    ['name' => 'MARJORIE O. CABRERA', 'x' => $x_center + 65, 'y' => $start_y + 125],
+    ['name' => 'LENARD JOSEPH V. ARIOLA', 'x' => $x_center - 32.5, 'y' => $start_y + 167],
+    ['name' => 'GILBERT O. GONZALES', 'x' => $x_center + 32.5, 'y' => $start_y + 167],
+];
 
-// Assign positions dynamically while keeping the same layout
-$pdf->addPosition($x_center, $start_y, $staff[0]['name'] ?? 'N/A', $staff[0]['title'] ?? 'MUNICIPAL MAYOR', $staff[0]['image'] ?? '', $start_y + 45);
-$pdf->addPosition($x_center, $start_y + 45, $staff[1]['name'] ?? 'N/A', $staff[1]['title'] ?? 'MHRMO', $staff[1]['image'] ?? '', $start_y + 85);
-$pdf->addPosition($x_center, $start_y + 85, $staff[2]['name'] ?? 'N/A', $staff[2]['title'] ?? 'ADMIN OFFICER IV', $staff[2]['image'] ?? '', $start_y + 125);
+// Vertical lines connecting each level
+$pdf->Line($x_center, $start_y + 30, $x_center, $start_y + 45);   // Mayor to MHRMO
+$pdf->Line($x_center, $start_y + 75, $x_center, $start_y + 85);   // MHRMO to Admin Officer IV
+$pdf->Line($x_center, $start_y + 115, $x_center, $start_y + 125); // Admin Officer IV to 3 staff
+$pdf->Line($x_center, $start_y + 157, $x_center, $start_y + 167); // Center staff to bottom two
 
-$spacing = 65;
-$fourth_positions = [-$spacing, 0, $spacing];
-$pdf->Line($x_center - $spacing, $start_y + 125, $x_center + $spacing, $start_y + 125);
-for ($i = 0; $i < 3; $i++) {
-    $pdf->addPosition($x_center + $fourth_positions[$i], $start_y + 125, $staff[$i + 3]['name'] ?? 'N/A', $staff[$i + 3]['title'] ?? 'N/A', $staff[$i + 3]['image'] ?? '', $start_y + 167);
-}
+// Horizontal lines connecting grouped staff
+$pdf->Line($x_center - 65, $start_y + 125, $x_center + 65, $start_y + 125);   // Connect 3 mid staff
+$pdf->Line($x_center - 32.5, $start_y + 167, $x_center + 32.5, $start_y + 167); // Connect bottom 2
 
-$spacing = 65;
-$fifth_positions = [-$spacing / 2, $spacing / 2];
-$pdf->Line($x_center - $spacing / 1, $start_y + 167, $x_center + $spacing / 1, $start_y + 167);
-for ($i = 0; $i < 2; $i++) {
-    $pdf->addPosition($x_center + $fifth_positions[$i], $start_y + 167, $staff[$i + 6]['name'] ?? 'N/A', $staff[$i + 6]['title'] ?? 'N/A', $staff[$i + 6]['image'] ?? '');
+// Draw each person
+foreach ($positions as $pos) {
+    $person = $staff[$pos['name']] ?? ['name' => 'N/A', 'title' => 'N/A', 'image' => ''];
+    $pdf->addPosition($pos['x'], $pos['y'], $person['name'], $person['title'], $person['image']);
 }
 
 $pdf->Output();
+?>
