@@ -12,12 +12,6 @@ include 'emailnotif.php';
 
 $footerDir = 'img/footer/';
 $latestFooter = 'latest-footer.jpg';
-
-if (!file_exists($footerDir . $latestFooter)) {
-    // Optional fallback if latest footer is not found
-    $files = array_reverse(glob($footerDir . "*.{jpg,jpeg,png,gif}", GLOB_BRACE));
-    $latestFooter = $files ? basename($files[0]) : 'default.jpg';
-}
 ?>
 
 <!DOCTYPE html>
@@ -295,26 +289,37 @@ if (!file_exists($footerDir . $latestFooter)) {
                                             <div class="review-content-section">
                                                 <div class="footer-gallery">
                                                     <?php
+                                                    // Get the latest footer from the footer_log file
+                                                    $footerLogFile = 'img/footer/footer_log.txt';
+                                                    $footerLog = file_exists($footerLogFile) ? file($footerLogFile) : [];
+                                                    $lastLogEntry = end($footerLog);
+                                                    $lastFooterFile = $lastLogEntry ? explode('|', $lastLogEntry)[0] : '';
+
                                                     $footerDir = "img/footer/";
                                                     $images = array_reverse(glob($footerDir . "*.{jpg,jpeg,png,gif}", GLOB_BRACE));
+
                                                     foreach ($images as $img) {
                                                         $filename = basename($img);
                                                         $id = md5($filename); // Unique ID for preview toggle
-                                                        $isActive = ($filename === $latestFooter) ? 'active-footer' : '';
+
+                                                        // Check if this footer is the latest one used from the log
+                                                        $isActive = ($filename === $lastFooterFile) ? 'active-footer' : '';
+                                                        $isHidden = ($filename === 'latest-footer.jpg') ? 'style="display: none;"' : '';
+
                                                         echo '
-                                                    <div class="footer-item mb-3 ' . $isActive . '">
-                                                        <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px;">
-                                                            <span style="cursor: pointer; color: #007bff;" onclick="togglePreview(\'' . $id . '\', \'' . $img . '\')">' . $filename . '</span>
-                                                            <div>
-                                                                <button class="btn btn-success btn-sm mr-2" onclick="reuseFooter(\'' . $img . '\')"><i class="fa fa-check"></i> Use</button>
-                                                                <button class="btn btn-danger btn-sm" onclick="deleteFooter(\'' . $filename . '\')"><i class="fa fa-trash"></i></button>
-                                                            </div>
-                                                        </div>
-                                                        <div id="preview_' . $id . '" style="margin-top: 10px; display: none;">
-                                                            <img src="" style="max-width: 100%; border: 1px solid #ccc;" />
-                                                        </div>
-                                                        <hr>
-                                                    </div>';
+                                                            <div class="footer-item mb-3 ' . $isActive . '" ' . $isHidden . '>
+                                                                <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px;">
+                                                                    <span style="cursor: pointer; color: #007bff;" onclick="togglePreview(\'' . $id . '\', \'' . $img . '\')">' . $filename . '</span>
+                                                                    <div>
+                                                                        <button class="btn btn-success btn-sm mr-2" onclick="reuseFooter(\'' . $img . '\')"><i class="fa fa-check"></i> Use</button>
+                                                                        <button class="btn btn-danger btn-sm" onclick="deleteFooter(\'' . $filename . '\')"><i class="fa fa-trash"></i></button>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="preview_' . $id . '" style="margin-top: 10px; display: none;">
+                                                                    <img src="' . $img . '" style="max-width: 100%; border: 1px solid #ccc;" />
+                                                                </div>
+                                                                <hr>
+                                                            </div>';
                                                     }
                                                     ?>
                                                 </div>
