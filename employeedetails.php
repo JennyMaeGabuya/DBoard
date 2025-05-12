@@ -31,7 +31,8 @@ if (isset($_GET['employee_no'])) {
             LEFT JOIN government_info g ON e.employee_no=g.employee_no 
             WHERE e.employee_no = ?";
     $stmt = $con->prepare($query);
-
+    mysqli_set_charset($con, "utf8mb4");
+    
     // Bind the parameter
     $stmt->bind_param("s", $employee_no); // "s" means string
 
@@ -113,7 +114,7 @@ if (file_exists($logFile)) {
 <html class="no-js" lang="en">
 
 <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>Employee Details | ERMS</title>
     <meta name="description" content="" />
