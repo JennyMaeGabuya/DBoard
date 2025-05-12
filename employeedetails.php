@@ -13,13 +13,13 @@ if (isset($_GET['employee_no'])) {
 
     // Prepare the SQL statement
     $query = "SELECT e.employee_no as employee_no, 
-            e.firstname,
+            e.firstname as firstname,
             e.lastname as lastname,
             e.middlename as middlename,
             e.name_extension as name_extension,
             e.dob as dob,
             e.pob as pob, 
-            e.sex as sex,
+            e.sex as sex1,
             e.civil_status as civil_status,
             e.address as empaddress, 
             e.blood_type as blood_type,
@@ -54,7 +54,7 @@ if (isset($_GET['employee_no'])) {
         $dob = $row['dob'];
         $date = new DateTime($dob);
         $bday = $date->format('F j, Y');
-        $sex = $row['sex'];
+        $sex1 = $row['sex1'];
         $civil_status = $row['civil_status'];
         $imagePath = $row['pic'];
         $address = $row['empaddress'];
@@ -464,9 +464,9 @@ if (file_exists($logFile)) {
                                             </tr>
                                             <tr>
                                                 <th>Civil Status:</th>
-                                                <td><?php echo $civil_status; ?></td>
+                                                <td><?php echo $civil_status ; ?></td>
                                                 <th>Sex:</th>
-                                                <td><?php echo $sex; ?></td>
+                                                <td><?php echo $sex1; ?></td>
                                             </tr>
                                             <tr>
                                                 <th>Birthday:</th>
