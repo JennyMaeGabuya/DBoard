@@ -264,6 +264,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             border-color: #0056b3;
             box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
         }
+
+        .folder-count {
+            font-size: 12px;
+            color: red;
+            font-weight: bold;
+        }
     </style>
 
 </head>
@@ -431,15 +437,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                             if (mysqli_num_rows($result) > 0) {
                                 while ($row = mysqli_fetch_assoc($result)) {
+                                    $folder_id = $row['id'];
+
+                                    // Count subfolders
+                                    $subfolder_query = mysqli_query($con, "SELECT COUNT(*) as count FROM 201_folders WHERE parent_id = $folder_id");
+                                    $subfolder_count = mysqli_fetch_assoc($subfolder_query)['count'];
+
+                                    // Count files
+                                    $file_query = mysqli_query($con, "SELECT COUNT(*) as count FROM 201_files WHERE folder_id = $folder_id");
+                                    $file_count = mysqli_fetch_assoc($file_query)['count'];
+
                                     echo '
                                         <div class="folder-container">
                                             <div class="folder-actions">
-                                                <input type="checkbox" class="folder-checkbox" value="' . $row['id'] . '" style="display: none;">
+                                                <input type="checkbox" class="folder-checkbox" value="' . $folder_id . '" style="display: none;">
                                                 <div class="folder-options" style="position: relative; display: inline-block;">
-                                                    <i class="fa fa-ellipsis-v folder-menu-toggle" data-folder-id="' . $row['id'] . '" style="cursor: pointer; padding: 5px;"></i>
-                                                    <div class="folder-dropdown" id="dropdown-' . $row['id'] . '" style="display: none; position: absolute; left: 100%; top: 0; background: white; border: 1px solid #ddd; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 1000; min-width: 50px;">
+                                                    <i class="fa fa-ellipsis-v folder-menu-toggle" data-folder-id="' . $folder_id . '" style="cursor: pointer; padding: 5px;"></i>
+                                                    <div class="folder-dropdown" id="dropdown-' . $folder_id . '" style="display: none; position: absolute; left: 100%; top: 0; background: white; border: 1px solid #ddd; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 1000; min-width: 50px;">
                                                         <ul style="list-style: none; margin: 0; padding: 0;">
-                                                            <li class="rename-folder" data-folder-id="' . $row['id'] . '" data-folder-name="' . htmlspecialchars($row['name']) . '" style="padding: 10px; cursor: pointer; border-bottom: 1px solid #eee; transition: background 0.3s;">
+                                                            <li class="rename-folder" data-folder-id="' . $folder_id . '" data-folder-name="' . htmlspecialchars($row['name']) . '" style="padding: 10px; cursor: pointer; border-bottom: 1px solid #eee; transition: background 0.3s;">
                                                                 Rename
                                                             </li>
                                                         </ul>
@@ -447,9 +463,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                                 </div>
                                             </div>
 
-                                            <div class="folder" onclick="openFolder(' . $row['id'] . ')">
+                                            <div class="folder" onclick="openFolder(' . $folder_id . ')">
                                                 <i class="fa fa-folder"></i><br>
-                                                ' . htmlspecialchars($row['name']) . '
+                                                ' . htmlspecialchars($row['name']) . ' <span class="folder-count">(' . $subfolder_count . '/' . ($subfolder_count + $file_count) . ')</span>
                                             </div>
                                         </div>';
                                 }
