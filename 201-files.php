@@ -337,7 +337,7 @@ $file_result = mysqli_query($con, $file_query);
                                             echo '<tr>
                                                     <td class="filename-cell">
                                                         <i class="fa fa-file-o" style="margin-right: 10px;"></i>
-                                                        <a href="' . $filePath . '" target="_blank" class="file-link" title="' . $fileName . '">' . $displayName . '</a>
+                                                        <a class="file-link" title="' . $fileName . '">' . $displayName . '</a>
                                                     </td>
                                                     <td class="file-actions text-right">';
 

@@ -38,7 +38,7 @@ $file_result = mysqli_query($con, $file_query);
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Leave Files | ERMS</title>
+    <title>Leave Credits | ERMS</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="img/mk-logo.ico" />
@@ -165,7 +165,7 @@ $file_result = mysqli_query($con, $file_query);
                                                     </a>
                                                     <span class="bread-slash"> / </span>
                                                     <a href="LF-folders.php">
-                                                        Leave Folders
+                                                        Leave Credits
                                                     </a>
                                                     <span class="bread-slash"> / </span>
                                                     <a href="#">
@@ -268,7 +268,7 @@ $file_result = mysqli_query($con, $file_query);
 
                         <div class="folder-section"
                             style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
-                            <h3 class="folder-title"><?php echo htmlspecialchars($folder['name']); ?> Files</h3>
+                            <h3 class="folder-title"><?php echo htmlspecialchars($folder['name']); ?>. Files</h3>
                             <div class="folder-list">
                                 <!-- Folder icons go here -->
                             </div>
@@ -337,7 +337,7 @@ $file_result = mysqli_query($con, $file_query);
                                             echo '<tr>
                                                     <td class="filename-cell">
                                                         <i class="fa fa-file-o" style="margin-right: 10px;"></i>
-                                                        <a href="' . $filePath . '" target="_blank" class="file-link" title="' . $fileName . '">' . $displayName . '</a>
+                                                        <a class="file-link" title="' . $fileName . '">' . $displayName . '</a>
                                                     </td>
                                                     <td class="file-actions text-right">';
 

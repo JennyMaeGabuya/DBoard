@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Leave Folders | ERMS</title>
+    <title>Leave Credits | ERMS</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="img/mk-logo.ico" />
@@ -299,7 +299,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                                     </a>
                                                     <span class="bread-slash"> / </span>
                                                     <a href="#">
-                                                        <strong>Leave Folders</strong>
+                                                        <strong>Leave Credits</strong>
                                                     </a>
                                                 </li>
                                             </ul>
@@ -396,7 +396,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="product-status-wrap drp-lst">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <h3>Leave Files</h3>
+                            <h3>Leave Credits</h3>
                         </div>
 
                         <div class="folder-section">

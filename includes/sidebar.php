@@ -110,7 +110,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <a href="201-folders.php"><span class="mini-sub-pro">201 Files</span></a>
               </li>
               <li class="<?= ($current_page == 'LF-folders.php' || $current_page == 'LF-files.php') ? 'active' : ''; ?>">
-                <a href="LF-folders.php"><span class="mini-sub-pro">Leave Files</span></a>
+                <a href="LF-folders.php"><span class="mini-sub-pro">Leave Credits</span></a>
               </li>
             </ul>
           </li>
