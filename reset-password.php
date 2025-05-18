@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         html,
         body {
-            background: url('img/kahoyhall.png') no-repeat center center fixed;
+            background: url('img/login.jpg') no-repeat center center fixed;
             background-size: cover;
             background-blend-mode: overlay;
             background-color: rgba(0, 0, 0, 0.5);
